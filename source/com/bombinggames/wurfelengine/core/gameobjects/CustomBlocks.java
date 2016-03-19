@@ -88,19 +88,17 @@ public interface CustomBlocks {
 	 *
 	 * @param id
 	 * @param value
+	 * @return
+	 */
+	public boolean hasLogic(byte id, byte value);
+	
+	/**
+	 *
+	 * @param id
+	 * @param value
 	 * @param coord
 	 * @return
 	 */
 	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord);
 	
-	/**
-	 * 
-	 * @param id
-	 * @param value
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return 
-	 */
-	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, int x, int y, int z);
 }

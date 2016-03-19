@@ -400,14 +400,16 @@ public class Chunk implements Telegraph {
 							data[x][y][z * 3 + 2] = 100;
 							//if has logicblock then add logicblock
 							if (data[x][y][z] != 0) {
-								AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
-									id,
-									bChar,
-									chunkX * blocksX + x,
-									chunkY * blocksY + y,
-									z
-								);
-								if (logic != null) {
+								if (RenderBlock.hasLogic(id, bChar)) {
+									AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
+										id,
+										bChar,
+										new Coordinate(
+											chunkX * blocksX + x,
+											chunkY * blocksY + y,
+											z
+										)
+									);
 									logicBlocks.add(logic);
 								}
 							}

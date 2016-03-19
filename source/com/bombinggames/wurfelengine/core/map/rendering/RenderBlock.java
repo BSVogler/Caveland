@@ -189,22 +189,12 @@ public class RenderBlock extends AbstractGameObject {
 		return customBlocks.newLogicInstance(id, value, coord);
 	}
 	
-	/**
-	 * Creates a new logic instance. This can happen before the chunk is filled
-	 * at this position.
-	 *
-	 * @param id
-	 * @param value
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return null if has no logic
-	 */
-	public static AbstractBlockLogicExtension createLogicInstance(byte id, byte value, int x, int y, int z) {
+	
+	public static boolean hasLogic(byte id, byte value) {
 		if (customBlocks == null) {
-			return null;
+			return false;
 		}
-		return customBlocks.newLogicInstance(id, value, x, y, z);
+		return customBlocks.hasLogic(id, value);
 	}
 
 	/**

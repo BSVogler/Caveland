@@ -22,6 +22,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import java.util.ArrayList;
 
 /**
  *
@@ -37,102 +38,102 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		CONSTRUCTIONSITE((byte) 11, "Construction Site", false),
+		CONSTRUCTIONSITE((byte) 11, "Construction Site", false, true),
 
 		/**
 		 *
 		 */
-		OVEN((byte) 12, "Oven", false),
+		OVEN((byte) 12, "Oven", false, true),
 
 		/**
 		 *
 		 */
-		TORCH((byte) 13, "Torch", false),
+		TORCH((byte) 13, "Torch", false, true),
 
 		/**
 		 *
 		 */
-		POWERSTATION((byte) 14, "Power Station", false),
+		POWERSTATION((byte) 14, "Power Station", false, false),
 
 		/**
 		 *
 		 */
-		LIFT((byte) 15, "Lift", false),
+		LIFT((byte) 15, "Lift", false, true),
 
 		/**
 		 *
 		 */
-		ENTRY((byte) 16, "Cave Entry", true),
+		ENTRY((byte) 16, "Cave Entry", true, true),
 
 		/**
 		 *
 		 */
-		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false),
+		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false, false),
 		
 		/**
 		 *
 		 */
-		LIFT_Ground((byte) 18, "Lift (Ground)", true),
+		LIFT_Ground((byte) 18, "Lift (Ground)", true, false),
 
 		/**
 		 *
 		 */
-		CRYSTAL((byte) 41, "Crystal Block", true),
+		CRYSTAL((byte) 41, "Crystal Block", true, false),
 
 		/**
 		 *
 		 */
-		SULFUR((byte) 42, "Sulfur Block", true),
+		SULFUR((byte) 42, "Sulfur Block", true, false),
 
 		/**
 		 *
 		 */
-		IRONORE((byte) 43, "Iron Ore Block", true),
+		IRONORE((byte) 43, "Iron Ore Block", true, false),
 
 		/**
 		 *
 		 */
-		COAL((byte) 44, "Coal Block", true),
+		COAL((byte) 44, "Coal Block", true, false),
 
 		/**
 		 *
 		 */
-		TURRET((byte) 52, "Turret", false),
+		TURRET((byte) 52, "Turret", false, true),
 
 		/**
 		 *
 		 */
-		ROBOTFACTORY((byte) 53, "robot factory", false),
+		ROBOTFACTORY((byte) 53, "robot factory", false, true),
 
 		/**
 		 *
 		 */
-		POWERCABLE((byte) 54, "power cable", false),
+		POWERCABLE((byte) 54, "power cable", false, true),
 
 		/**
 		 *
 		 */
-		RAILS((byte) 55, "rails", false),
+		RAILS((byte) 55, "rails", false, false),
 
 		/**
 		 *
 		 */
-		RAILSBOOSTER((byte) 56, "booster rails", false),
+		RAILSBOOSTER((byte) 56, "booster rails", false, true),
 		
 		/**
 		 *
 		 */
-		FLAGPOLE((byte) 60, "flag pole", false),
+		FLAGPOLE((byte) 60, "flag pole", false, true),
 
 		/**
 		 *
 		 */
-		TREE((byte) 72, "tree", false),
+		TREE((byte) 72, "tree", false, false),
 
 		/**
 		 *
 		 */
-		UNDEFINED((byte) -1, "undefined", true);
+		UNDEFINED((byte) -1, "undefined", true, false);
 		
 		/**
 		 * reverse loookup
@@ -187,17 +188,27 @@ public class CavelandBlocks implements CustomBlocks {
 		private final byte id;
 		private final String name;
 		private final boolean hasSides;
-
+		private final boolean hasLogic;
+		private final static ArrayList<CLBlocks> typesWithLogic = new ArrayList<>();
+		
+		static {
+			for (CLBlocks e : CLBlocks.values()) {
+				if (e.hasLogic) {
+					typesWithLogic.add(e);
+				}
+			}
+		}
 		/**
 		 * 
 		 * @param id
 		 * @param name
 		 * @param hasSides rendered with sides or without
 		 */
-		private CLBlocks(byte id, String name, boolean hasSides) {
+		private CLBlocks(byte id, String name, boolean hasSides, boolean hasLogic) {
 			this.id = id;
 			this.name = name;
 			this.hasSides = hasSides;
+			this.hasLogic = hasLogic;
 		}
 
 		@Override
@@ -379,84 +390,40 @@ public class CavelandBlocks implements CustomBlocks {
 	}
 
 	@Override
-	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, int x, int y, int z) {
-		if (id == CLBlocks.ENTRY.id) {
-			return new CaveEntryBlockLogic(id, new Coordinate(x, y, z));
+	public boolean hasLogic(byte id, byte value) {
+		for (CLBlocks e : CLBlocks.typesWithLogic) {
+			if (e.hasLogic && id == e.id) {
+				return true;
+			}
 		}
-		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
-			return new ConstructionSite(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.OVEN.id) {
-			return new OvenLogic(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.POWERSTATION.id) {
-			return new PowerStationLogic(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.LIFT.id) {
-			return new LiftLogic(id, new Coordinate(x, y, z));
-		}
-		
-		if (id == CLBlocks.LIFT_Ground.id) {
-			return new LiftLogicGround(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.ROBOTFACTORY.id) {
-			return new RobotFactory(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.POWERCABLE.id) {
-			return new CableBlock(id, value, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.RAILSBOOSTER.id) {
-			return new BoosterLogic(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.TURRET.id) {
-			return new Turret(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.TORCH.id) {
-			return new PowerTorch(id, new Coordinate(x, y, z));
-		}
-		if (id == CLBlocks.FLAGPOLE.id) {
-			return new Flagpole(id, new Coordinate(x, y, z));
-		}
-		return null;
+		return false;
 	}
 	
 	@Override
 	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord) {
 		if (id == CLBlocks.ENTRY.id) {
 			return new CaveEntryBlockLogic(id, coord);
-		}
-		if (id == CLBlocks.CONSTRUCTIONSITE.id) {
+		}else if (id == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSite(id, coord);
-		}
-		if (id == CLBlocks.OVEN.id) {
+		}else if (id == CLBlocks.OVEN.id) {
 			return new OvenLogic(id, coord);
-		}
-		if (id == CLBlocks.POWERSTATION.id) {
+		}else if (id == CLBlocks.POWERSTATION.id) {
 			return new PowerStationLogic(id, coord);
-		}
-		if (id == CLBlocks.LIFT.id) {
+		} else if (id == CLBlocks.LIFT.id) {
 			return new LiftLogic(id, coord);
-		}
-		
-		if (id == CLBlocks.LIFT_Ground.id) {
+		} else if (id == CLBlocks.LIFT_Ground.id) {
 			return new LiftLogicGround(id, coord);
-		}
-		if (id == CLBlocks.ROBOTFACTORY.id) {
+		} else if (id == CLBlocks.ROBOTFACTORY.id) {
 			return new RobotFactory(id, coord);
-		}
-		if (id == CLBlocks.POWERCABLE.id) {
+		} else if (id == CLBlocks.POWERCABLE.id) {
 			return new CableBlock(id, value, coord);
-		}
-		if (id == CLBlocks.RAILSBOOSTER.id) {
+		} else if (id == CLBlocks.RAILSBOOSTER.id) {
 			return new BoosterLogic(id, coord);
-		}
-		if (id == CLBlocks.TURRET.id) {
+		} else if (id == CLBlocks.TURRET.id) {
 			return new Turret(id, coord);
-		}
-		if (id == CLBlocks.TORCH.id) {
+		} else if (id == CLBlocks.TORCH.id) {
 			return new PowerTorch(id, coord);
-		}
-		if (id == CLBlocks.FLAGPOLE.id) {
+		} else if (id == CLBlocks.FLAGPOLE.id) {
 			return new Flagpole(id, coord);
 		}
 		return null;

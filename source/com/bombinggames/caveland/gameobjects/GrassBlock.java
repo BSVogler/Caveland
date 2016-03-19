@@ -41,6 +41,7 @@ import java.util.Random;
 
 /**
  * Renders a grass block with wind on top.
+ *
  * @author Benedikt Vogler
  */
 public class GrassBlock extends RenderBlock {
@@ -53,47 +54,44 @@ public class GrassBlock extends RenderBlock {
 	private static float windWholeCircle;
 
 	static void setMainForce(Point position) {
-		posXForce=position.x;
-		posYForce=position.y;
-		posZForce=position.z;
+		posXForce = position.x;
+		posYForce = position.y;
+		posZForce = position.z;
 	}
-	
-	
-	public static void initGrass(){
+
+	public static void initGrass() {
 		grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
-		grasSprite.setOrigin(grasSprite.getWidth()/2f,0);
+		grasSprite.setOrigin(grasSprite.getWidth() / 2f, 0);
 	}
-	
+
 	public static void updateWind(float dt) {
 		windWholeCircle = (windWholeCircle + dt * 0.01f) % WINDAMPLITUDE;
 		wind = Math.abs(windWholeCircle - WINDAMPLITUDE / 2)//value between 0 and amp/2
-			-WINDAMPLITUDE / 2;//value between -amp/2 and + amp/2
+			- WINDAMPLITUDE / 2;//value between -amp/2 and + amp/2
 	}
 	private final float seed;
-	
+
 	//lokaler wind
 	private static float posXForce;
 	private static float posYForce;
 	private static float posZForce;
 	private static float force = 9000;
 
-	
 	public GrassBlock(byte id, byte value) {
 		super(id, value);
 		seed = RANDOMGENERATOR.nextFloat();
 	}
-	
 
 	@Override
 	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color) {
 		super.renderSide(view, xPos, yPos, side, color);
-		if (side==Side.TOP) {
+		if (side == Side.TOP) {
 			Sprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
-				int xOffset = (int) (Math.abs((xPos - seed*17) * i * (yPos)) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2);
-				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed*11 - i))) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2+15);
-				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderBlock.VIEW_WIDTH2-10) {
+				int xOffset = (int) (Math.abs((xPos - seed * 17) * i * (yPos)) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2);
+				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2 + 15);
+				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderBlock.VIEW_WIDTH2 - 10) {
 					gras.setColor(
 						getLightlevel(side, 1, 0) / 2f,
 						getLightlevel(side, 1, 1) / 2f - (xOffset + i) % 7 * 0.005f,
@@ -102,18 +100,19 @@ public class GrassBlock extends RenderBlock {
 					);
 					gras.setPosition(
 						xPos + xOffset + RenderBlock.VIEW_WIDTH2,
-						yPos - yOffset*0.5f + RenderBlock.VIEW_DEPTH2
+						yPos - yOffset * 0.5f + RenderBlock.VIEW_DEPTH2
 					);
-					
-					float distanceToForceCenter = (xPos+xOffset-posXForce)*(xPos+xOffset-posXForce)
-						+(-yPos*2 + yOffset-posYForce+800)*(-yPos*2 + yOffset-posYForce+800);
+
+					float distanceToForceCenter = (xPos + xOffset - posXForce) * (xPos + xOffset - posXForce)
+						+ (-yPos * 2 + yOffset - posYForce + 800) * (-yPos * 2 + yOffset - posYForce + 800);
 					float forceRot;
 					if (distanceToForceCenter > 200000) {
 						forceRot = 0;
 					} else {
-						forceRot = (float) (3000000*(Math.random()/2+0.5f) / distanceToForceCenter);
-						if (posXForce<xPos) 
-							forceRot*=-1;
+						forceRot = (float) (3000000 * (Math.random() / 2 + 0.5f) / distanceToForceCenter);
+						if (posXForce < xPos) {
+							forceRot *= -1;
+						}
 						if (forceRot > 90) {
 							forceRot = 90;
 						}
@@ -121,7 +120,7 @@ public class GrassBlock extends RenderBlock {
 							forceRot = -90;
 						}
 					}
-					gras.setRotation(i*0.4f-10.2f+wind+RANDOMGENERATOR.nextFloat()*0.1f*WINDAMPLITUDE/2+forceRot);
+					gras.setRotation(i * 0.4f - 10.2f + wind + RANDOMGENERATOR.nextFloat() * 0.1f * WINDAMPLITUDE / 2 + forceRot);
 					gras.draw(view.getSpriteBatch());
 				}
 			}

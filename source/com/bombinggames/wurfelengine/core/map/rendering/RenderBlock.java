@@ -1303,7 +1303,6 @@ public class RenderBlock extends AbstractGameObject {
 			rebuildCovered(rs);
 		}
 		if (!coveredEnts.isEmpty()) {
-			coveredEnts.addAll(covered);
 			//sort valid in order of depth
 			coveredEnts.sort((AbstractGameObject o1, AbstractGameObject o2) -> {
 				float d1 = o1.getDepth();
@@ -1317,6 +1316,7 @@ public class RenderBlock extends AbstractGameObject {
 					return -1;
 				}
 			});
+			coveredEnts.addAll(covered);
 			return coveredEnts;
 		}
 		return covered;

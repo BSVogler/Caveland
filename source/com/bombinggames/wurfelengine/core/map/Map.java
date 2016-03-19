@@ -52,7 +52,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -150,9 +149,10 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	/**
 	 * Stores the data of the map.
 	 */
-	private final LinkedList<Chunk> data = new LinkedList<>();
+	private Chunk[][] data;
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
+	private final int chunkDim;
 
 	/**
 	 * Loads a map using the default generator.
@@ -176,6 +176,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
+		chunkDim = WE.getCVars().getValueI("mapChunkDim");
+		data = new Chunk[chunkDim][];
+		for (int i = 0; i < data.length; i++) {
+			data[i] = new Chunk[chunkDim / 2];//to have a quadratic map
+		}
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		this.generator = generator;
 		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
@@ -203,18 +208,19 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
 			if (runnable.getChunk() != null) {
-				data.add(runnable.getChunk());
+				data[runnable.getCoordX()+chunkDim/2][runnable.getCoordY()+chunkDim/4] = runnable.getChunk();
 				addEntities(runnable.getChunk().retrieveEntities());
 				setModified();
 				loadingRunnables.remove(i);
 			}
 		}
 		
-		//update chunks, use clone so that each chunk get's updated but the field can be changed
-		@SuppressWarnings("unchecked")
-		LinkedList<Chunk> clone = (LinkedList<Chunk>) data.clone();
-		for (Chunk chunk : clone) {
-			chunk.update(dt);
+		for (Chunk[] chunkX : data) {
+			for (Chunk chunkY : chunkX) {
+				if (chunkY != null) {
+					chunkY.update(dt);
+				}
+			}
 		}
 
 		//update every entity
@@ -243,10 +249,12 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public void postUpdate(float dt) {
 		//check for modification flag
-		@SuppressWarnings("unchecked")
-		LinkedList<Chunk> clone = (LinkedList<Chunk>) data.clone();
-		for (Chunk chunk : clone) {
-			chunk.processModification();
+		for (Chunk[] chunkX : data) {
+			for (Chunk chunkY : chunkX) {
+				if (chunkY != null) {
+					chunkY.processModification();
+				}
+			}
 		}
 
 		modificationCheck();
@@ -278,11 +286,11 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 		loadChunk(coord.getChunkX(), coord.getChunkY());
 	}
 	/**
-	 * Get the data of the map
-	 *
+	 * Get the data of the map.
+	 * From range in X [-chunkDim/2,chunkDim/2]
 	 * @return
 	 */
-	public LinkedList<Chunk> getData() {
+	public Chunk[][] getData() {
 		return data;
 	}
 
@@ -311,8 +319,9 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 
 	/**
 	 * id, value and health
+	 *
 	 * @param coord
-	 * @return 
+	 * @return
 	 */
 	public int getBlock(Coordinate coord) {
 		if (coord.getZ() < 0) {
@@ -405,21 +414,7 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkWithCoords(final Coordinate coord) {
-		int left, top;
-		//loop over storage
-		for (Chunk chunk : data) {
-			left = chunk.getTopLeftCoordinateX();
-			top = chunk.getTopLeftCoordinateY();
-			//check if coordinates are inside the chunk
-			if (left <= coord.getX()
-				&& coord.getX() < left + Chunk.getBlocksX()
-				&& top <= coord.getY()
-				&& coord.getY() < top + Chunk.getBlocksY()) {
-				data.addFirst(data.removeLast());
-				return chunk;
-			}
-		}
-		return null;//not found
+		return data[Math.floorDiv(coord.getX(), Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(coord.getY(), Chunk.getBlocksY())+chunkDim/4];
 	}
 
 	/**
@@ -430,39 +425,61 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkWithCoords(int x, int y) {
-		int left, top;
-		//loop over storage
-		for (Chunk chunk : data) {
-			left = chunk.getTopLeftCoordinateX();
-			top = chunk.getTopLeftCoordinateY();
-			//check if coordinates are inside the chunk
-			if (left <= x
-				&& x < left + Chunk.getBlocksX()
-				&& top <= y
-				&& y < top + Chunk.getBlocksY()) {
-				data.addFirst(data.removeLast());
-				return chunk;
-			}
+		return data[Math.floorDiv(x, Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(y, Chunk.getBlocksY())+chunkDim/4];
+	}
+	
+	public Chunk getChunkWithPoint(Point point) {
+		//bloated in-place code to avoid heap call with toCoord()
+		int xCoord = Math.floorDiv((int) point.getX(), RenderBlock.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) point.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			point.getX() % RenderBlock.GAME_DIAGLENGTH,
+			point.getY() % RenderBlock.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
 		}
-		return null;//not found
+
+		return getChunkWithCoords(xCoord, yCoord);
 	}
 
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c)  c:
-	 * amount of chunks -&gt; O(1)
+	 * get the chunk with the given chunk coords. <br>Runtime: O(c) c: amount of
+	 * chunks -&gt; O(1)
 	 *
 	 * @param chunkX
 	 * @param chunkY
 	 * @return if not in memory return null
 	 */
 	public Chunk getChunk(int chunkX, int chunkY) {
-		for (Chunk chunk : data) {
-			if (chunkX == chunk.getChunkX()
-				&& chunkY == chunk.getChunkY()) {
-				return chunk;
-			}
-		}
-		return null;//not found
+		return data[chunkX+chunkDim/2][chunkY+chunkDim/4];
 	}
 
 	/**
@@ -532,15 +549,19 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public boolean save(int saveSlot) {
-		for (Chunk chunk : data) {
-			try {
-				chunk.save(
-					getPath(),
-					saveSlot
-				);
-			} catch (IOException ex) {
-				Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-				return false;
+		for (Chunk[] chunkX : data) {
+			for (Chunk chunkY : chunkX) {
+				if (chunkY != null) {
+					try {
+						chunkY.save(
+							getPath(),
+							saveSlot
+						);
+					} catch (IOException ex) {
+						Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+						return false;
+					}
+				}
 			}
 		}
 		return true;
@@ -564,11 +585,15 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 * @param save
 	 */
 	public void dispose(boolean save) {
-		for (Chunk chunk : data) {
-			if (save) {
-				chunk.dispose(getPath());
-			} else {
-				chunk.dispose(null);
+		for (Chunk[] chunkX : data) {
+			for (Chunk chunkY : chunkX) {
+				if (chunkY != null) {
+					if (save) {
+						chunkY.dispose(getPath());
+					} else {
+						chunkY.dispose(null);
+					}
+				}
 			}
 		}
 		disposeEntities();

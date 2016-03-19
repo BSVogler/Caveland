@@ -310,7 +310,7 @@ public class Coordinate implements Position {
 	 */
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
-		return Controller.getMap().getData().stream().anyMatch((chunk) -> (chunk.hasCoord(this)));
+		return Controller.getMap().getChunkWithCoords(this)!=null;
 	}
 
 	/**
@@ -322,11 +322,7 @@ public class Coordinate implements Position {
 	@Override
 	public boolean isInMemoryArea() {
 		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
-			for (Chunk chunk : Controller.getMap().getData()) {
-				if (chunk.hasCoord(this)) {
-					return true;
-				}
-			}
+			return Controller.getMap().getChunkWithCoords(this) != null;
 		}
 		return false;
 	}

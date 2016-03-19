@@ -68,9 +68,12 @@ public class MiniMapChunkDebug {
 			ShapeRenderer sh = view.getShapeRenderer();
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(0, 1, 0, 1);
-			LinkedList<Chunk> mapdata = Controller.getMap().getData();
-            for (Chunk chunk : mapdata) {
-				sh.rect(posX+chunk.getChunkX()*20, posY-chunk.getChunkY()*20, 19, 19);
+			Chunk[][] mapdata = Controller.getMap().getData();
+            for (Chunk[] chunkX : mapdata) {
+				for (Chunk chunkY : chunkX) {
+					if (chunkY!=null)
+						sh.rect(posX+chunkY.getChunkX()*20, posY-chunkY.getChunkY()*20, 19, 19);
+				}
 			}
 			sh.setColor(1, 1, 0, 0.1f);
 			LinkedList<RenderChunk> rS = view.getRenderStorage().getData();

@@ -287,26 +287,24 @@ public class Chunk implements Telegraph {
 			if (bChar == SIGN_COMMAND) {
 				skip = true;
 				command = true;
-			} else {
-				if (command) {
-					if (bChar == SIGN_EMTPYLAYER) {
-						for (x = 0; x < blocksX; x++) {
-							for (y = 0; y < blocksY; y++) {
-								data[x][y][z] = 0;
-								data[x][y][z+1] = 0;
-								data[x][y][z+2] = 100;
-							}
+			} else if (command) {
+				if (bChar == SIGN_EMTPYLAYER) {
+					for (x = 0; x < blocksX; x++) {
+						for (y = 0; y < blocksY; y++) {
+							data[x][y][z * 3] = 0;
+							data[x][y][z * 3 + 1] = 0;
+							data[x][y][z * 3 + 2] = 100;
 						}
-						skip = true;
 					}
-
-					if (bChar == SIGN_ENDBLOCKS || bChar==-1)
-						return bChar;
-
-					command = false;
+					skip = true;
 				}
-			}
 
+				if (bChar == SIGN_ENDBLOCKS || bChar == -1) {
+					return bChar;
+				}
+
+				command = false;
+			}
 
 			if (bChar != SIGN_COMMAND && skip == false) {
 				try {
@@ -315,49 +313,50 @@ public class Chunk implements Telegraph {
 
 						id = bChar;
 						if (id == 0) {
-							data[x][y][z] = 0;
-							data[x][y][z+1] = 0;
-							data[x][y][z+2] = 100;
+							data[x][y][z * 3] = 0;
+							data[x][y][z * 3 + 1] = 0;
+							data[x][y][z * 3 + 2] = 100;
 							id = -1;
 							x++;
 							if (x == blocksX) {
 								y++;
-								x=0;
+								x = 0;
 							}
 							if (y == blocksY) {
-								x=0;
-								y=0;
+								x = 0;
+								y = 0;
 								z++;
 							}
 						}
 					} else {
-						data[x][y][z] = id;
-						data[x][y][z+1] = bChar;
-						data[x][y][z+2] = 100;
+						data[x][y][z * 3] = id;
+						data[x][y][z * 3 + 1] = bChar;
+						data[x][y][z * 3 + 2] = 100;
 						//if has logicblock then add logicblock
 						if (data[x][y][z] != 0) {
 							AbstractBlockLogicExtension logic = RenderBlock.createLogicInstance(
-								data[x][y][z],
-								data[x][y][z+1],
-								new Coordinate(coordX*blocksX+x, coordY*blocksY+y, z)
+								data[x][y][z * 3],
+								data[x][y][z * 3 + 1],
+								new Coordinate(coordX * blocksX + x, coordY * blocksY + y, z)
 							);
-							if (logic != null)
+							if (logic != null) {
 								logicBlocks.add(logic);
+							}
 						}
 						id = -1;
 						x++;
 						if (x == blocksX) {
 							y++;
-							x=0;
+							x = 0;
 						}
 						if (y == blocksY) {
-							x=0;
-							y=0;
-							z+=3;
+							x = 0;
+							y = 0;
+							z++;
 						}
 					}
-				} catch (ArrayIndexOutOfBoundsException ex){
-					Gdx.app.error("Chunk", "too much blocks loaded:"+x+","+y+","+z+". Map file corrrupt?");
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					Gdx.app.error("Chunk", "too much blocks loaded:" + x + "," + y + "," + z + ". Map file corrrupt?");
 				}
 			}
 		} while (bChar != -1);
@@ -482,17 +481,15 @@ public class Chunk implements Telegraph {
 			if (dirty) {
 				for (int y = 0; y < blocksY; y++) {
 					for (int x = 0; x < blocksX; x++) {
-						if (data[x][y][z] == 0) {
-							fos.write(0);
-						} else {
-							fos.write(new byte[]{data[x][y][z], data[x][y][z+1]});
-						}
+						fos.write(new byte[]{data[x][y][z], data[x][y][z+1]});
 					}
 				}
 			} else {
+				//layer is empty: can compress into one sign
 				fos.write(new byte[]{SIGN_COMMAND, SIGN_EMTPYLAYER});
 			}
 		}
+		
 		fos.write(new byte[]{SIGN_COMMAND, SIGN_ENDBLOCKS});
 		fos.flush();
 

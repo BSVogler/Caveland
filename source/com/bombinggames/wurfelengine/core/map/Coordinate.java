@@ -719,41 +719,41 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * Add the coordiante to a list of changed.
+	 * Add light to the renderblock at this coordiante
 	 *
 	 * @param view
 	 * @param side
 	 * @param color
 	 * @param vertex
 	 */
-	public void addLight(GameView view, Side side, Color color, int vertex) {
-		RenderBlock neighb = getRenderBlock(view.getRenderStorage());
-		if (neighb != null && !neighb.isHidden()) {
-			view.getRenderStorage().setLightFlag(neighb);
-			neighb.addLightlevel(color.r, side, 0, vertex);
-			neighb.addLightlevel(color.g, side, 1, vertex);
-			neighb.addLightlevel(color.b, side, 2, vertex);
+	public void addLight(GameView view, Side side, int vertex, Color color) {
+		RenderBlock rB = getRenderBlock(view.getRenderStorage());
+		if (rB != null && !rB.isHidden()) {
+			view.getRenderStorage().setLightFlag(rB);
+			rB.addLightlevel(color.r, side, 0, vertex);
+			rB.addLightlevel(color.g, side, 1, vertex);
+			rB.addLightlevel(color.b, side, 2, vertex);
 		}
 	}
 
 	/**
-	 * Add light to the top of a coordinate
+	 * Add light to the back edge of a coordinate and it's neighbors-
 	 *
 	 * @param view
 	 * @param color
 	 * @param side
 	 */
-	public void addLightlevel(GameView view, Color color, Side side) {
+	public void addLightToBackEdge(GameView view, Side side, Color color) {
 		if (side == Side.TOP) {
-			this.addLight(view, side, color, 1);
-			goToNeighbour(0).addLight(view, side, color, 3);
-			goToNeighbour(3).addLight(view, side, color, 0);
-			goToNeighbour(6).addLight(view, side, color, 2);
+			this.addLight(view, side, 1, color);
+			goToNeighbour(0).addLight(view, side, 3, color);
+			goToNeighbour(3).addLight(view, side, 0, color);
+			goToNeighbour(6).addLight(view, side, 2, color);
 			goToNeighbour(3);//go back
 		} else {
 			RenderBlock neighb = getRenderBlock(view.getRenderStorage());
 			if (neighb != null && !neighb.isHidden()) {
-				//view.getRenderStorage().setLightFlag(neighb); //in the way this algorthm is used this line is not needed
+				//view.getRenderStorage().setLightFlag(rB); //in the way this algorthm is used this line is not needed
 				neighb.addLightlevel(color.r, side, 0, 0);
 				neighb.addLightlevel(color.g, side, 1, 0);
 				neighb.addLightlevel(color.b, side, 2, 0);

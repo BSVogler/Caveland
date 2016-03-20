@@ -356,7 +356,7 @@ public class Camera{
 
 		if (
 			getVisibleRightBorder()
-			>
+			>=
 			(centerChunkX+2)*Chunk.getBlocksX()
 			//&& centerChunkX-1==//calculated xIndex -1
 			) {

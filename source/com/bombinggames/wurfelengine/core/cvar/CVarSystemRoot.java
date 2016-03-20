@@ -133,7 +133,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new StringCVar(""), "lastConsoleCommand");
 		register(new IntCVar(20), "undohistorySize");
 		register(new IntCVar(500), "mapIndexSpaceSize");
-		register(new IntCVar(536870912), "mapMaxMemoryUse");//bytes, 512MB
+		register(new IntCVar(536870912), "mapMaxMemoryUse");//bytes, 512MB->17,9km^2
 	}
 
 	public CVarSystemMap getMapCVars() {

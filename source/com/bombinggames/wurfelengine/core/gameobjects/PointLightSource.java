@@ -185,9 +185,9 @@ public class PointLightSource extends AbstractEntity {
 						tmp.set(xCenter + x, yCenter + y, zCenter + z);
 						RenderBlock rB = tmp.getRenderBlock(view.getRenderStorage());
 						if (rB != null && !rB.isHidden()) {
-							tmp.addLightlevel(view, color.cpy().mul(blocklight[0]), Side.LEFT);
-							tmp.addLightlevel(view, color.cpy().mul(blocklight[1]), Side.TOP);
-							tmp.addLightlevel(view, color.cpy().mul(blocklight[2]), Side.RIGHT);
+							tmp.addLightToBackEdge(view, Side.LEFT, color.cpy().mul(blocklight[0]));
+							tmp.addLightToBackEdge(view, Side.TOP, color.cpy().mul(blocklight[1]));
+							tmp.addLightToBackEdge(view, Side.RIGHT, color.cpy().mul(blocklight[2]));
 						}
 					}
 				}

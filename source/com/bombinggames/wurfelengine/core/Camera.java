@@ -135,6 +135,10 @@ public class Camera{
 	private final Point center = new Point(0, 0, 0);
 	private final ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
 	private final LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
+	/**
+	 * The radius which is used for loading the chunks around the center. May be reduced after the first time to a smaller value.
+	 */
+	private int loadingRadius = 10;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -404,10 +408,18 @@ public class Camera{
 	private void checkNeededChunks() {
 		//check every chunk
 		if (centerChunkX == 0 && centerChunkY == 0 || WE.getCVars().getValueB("mapChunkSwitch")) {
-			for (int x = -2; x <= 2; x++) {
-				for (int y = -2; y <= 2; y++) {
+			for (int x = -loadingRadius; x <= loadingRadius; x++) {
+				int lRad = loadingRadius/2;
+				if (lRad <= 2) {
+					lRad = 2;
+				}
+				for (int y = -lRad; y <= lRad; y++) {
 					checkChunk(centerChunkX + x, centerChunkY + y);
 				}
+			}
+			//after the first time reduce
+			if (loadingRadius > 2) {
+				loadingRadius = 2;
 			}
 		}
 	}

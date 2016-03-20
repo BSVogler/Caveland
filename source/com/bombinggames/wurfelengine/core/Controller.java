@@ -151,7 +151,7 @@ public class Controller implements GameManager {
 	private String mapName = "default";
 	private final Cursor cursor = new Cursor();
 	private ArrayList<AbstractEntity> selectedEntities = new ArrayList<>(4);
-	private final Command[] commandHistory = new Command[WE.getCVars().getValueI("historySize")];
+	private final Command[] commandHistory = new Command[WE.getCVars().getValueI("undohistorySize")];
 	private int lastCommandPos = -1;
 
 	/**

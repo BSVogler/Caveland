@@ -277,7 +277,7 @@ public class Point extends Vector3 implements Position {
     
     @Override
     public boolean isInMemoryAreaHorizontal() {
-		return Controller.getMap().getData().stream().anyMatch((chunk) -> (chunk.hasPoint(this)));//todo may not be possible to access a cell even if returns true
+		return Controller.getMap().getChunkWithPoint(this)!=null;
     }
 	
 	@Override

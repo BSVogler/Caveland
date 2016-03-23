@@ -63,11 +63,16 @@ public interface Renderable {
 
 	/**
 	 * Marked as visited.
+	 * @param id
 	 */
-	public void markPermanent();
+	public void markPermanent(int id);
 
-	
-	public boolean isMarked();
+	/**
+	 * 
+	 * @param id
+	 * @return 
+	 */
+	public boolean isMarked(int id);
 	
 	/**
 	 * Draws an object if it is not hidden and not clipped.

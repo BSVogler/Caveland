@@ -69,7 +69,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private transient static int drawCalls = 0;
 	private static Texture textureDiff;
 	private static Texture textureNormal;
-	private static boolean currentMarkedFlag;
+	private static int currentMarkedFlag;
 
 	/**
 	 * disposes static fields
@@ -223,9 +223,10 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * inverses the dirty flag comparison so everything marked is now unmarked.
 	 * used to mark the visited obejcts with depthsort.
+	 * @param id
 	 */
-	public static void inverseMarkedFlag() {
-		currentMarkedFlag = !currentMarkedFlag;
+	public static void inverseMarkedFlag(int id) {
+		currentMarkedFlag ^= 1 << id;
 	}
 
 	//render information
@@ -239,7 +240,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * default is RGBA 0x808080FF.
 	 */
 	private transient Color tint = new Color(0.5f, 0.5f, 0.5f, 1f);
-	private boolean marked;
+	private int marked;
 
 	/**
 	 * Creates an object.
@@ -251,7 +252,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		if (id == 0) {
 			setHidden(true);
 		}
-		markPermanent();//create as marked
+		//markPermanent();//create as marked
 	}
 
 	/**
@@ -538,13 +539,13 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	@Override
-	public final boolean isMarked() {
-		return marked == AbstractGameObject.currentMarkedFlag;
+	public final boolean isMarked(int id) {
+		return ((marked>>id)&1) == ((AbstractGameObject.currentMarkedFlag >> id) & 1);
 	}
 
 	@Override
-	public void markPermanent() {
-		marked = AbstractGameObject.currentMarkedFlag;
+	public void markPermanent(int id) {
+		marked ^= (-((AbstractGameObject.currentMarkedFlag >> id) & 1) ^ marked) & (1 << id);
 	}
 
 	@Override

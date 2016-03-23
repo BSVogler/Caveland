@@ -139,6 +139,7 @@ public class Camera{
 	 * The radius which is used for loading the chunks around the center. May be reduced after the first time to a smaller value.
 	 */
 	private int loadingRadius = 10;
+	private int id;
 
 	/**
 	 * Updates the needed chunks after recaclucating the center chunk of the
@@ -607,7 +608,7 @@ public class Camera{
 			Chunk.getBlocksZ() - 1
 		);
 		//inverse dirty flag
-		AbstractGameObject.inverseMarkedFlag();
+		AbstractGameObject.inverseMarkedFlag(id);
 		//check every block
 		while (iterator.hasNext()) {
 			RenderBlock cell = iterator.next();
@@ -633,10 +634,10 @@ public class Camera{
 	 * @param n root node
 	 */
 	private void visit(AbstractGameObject n) {
-		if (!n.isMarked()) {
+		if (!n.isMarked(id)) {
 			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
 			if (covered.size() > 0) {
-				n.markPermanent();
+				n.markPermanent(id);
 					for (AbstractGameObject m : covered) {
 						if (inViewFrustum(
 							m.getPosition().getViewSpcX(),
@@ -1107,6 +1108,11 @@ public class Camera{
 		return active;
 	}
 
+	public void setId(int id){
+		this.id = id;
+	}
+	
+	
 	void dispose() {
 	}
 

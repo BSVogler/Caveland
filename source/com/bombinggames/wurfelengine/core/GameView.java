@@ -62,6 +62,11 @@ import java.util.logging.Logger;
  */
 public class GameView implements GameManager {
 
+	/**
+	 * saves the amount of active cameras
+	 */
+	private static int cameraIdCounter = 0;
+
 	    /**
      * Shoud be called before the object get initialized.
      * Initializes class fields.
@@ -550,6 +555,8 @@ public class GameView implements GameManager {
      */
     protected void addCamera(final Camera camera) {
         this.cameras.add(camera);
+		GameView.cameraIdCounter++;
+		camera.setId(GameView.cameraIdCounter);
 		getRenderStorage().addCamera(camera);
     }
     
@@ -639,6 +646,8 @@ public class GameView implements GameManager {
 		shRenderer.dispose();
 		spriteBatch.dispose();
 		stage.dispose();
+		
+		cameraIdCounter=0;
 	}
 	
 }

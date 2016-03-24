@@ -73,10 +73,4 @@ public class CLMovableEntity extends MovableEntity {
 		//do regular check
 		return super.collidesWithWorld(pos, colissionRadius);
 	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 }

@@ -30,8 +30,6 @@
  */
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
-
 /**
  *
  * @author Benedikt Vogler
@@ -44,10 +42,4 @@ public class Money extends CLMovableEntity {
 		super((byte) 20, 0, false);
 		setMass(0.1f);
 	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-	
 }

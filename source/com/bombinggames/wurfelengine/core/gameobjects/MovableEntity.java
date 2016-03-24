@@ -48,7 +48,7 @@ import java.util.ArrayList;
  *A clas used mainly for characters or object which can walk around. To control the character you should use a {@link Controllable} or modify the movemnet via {@link #setMovement(com.badlogic.gdx.math.Vector3) }.
  * @author Benedikt
  */
-public class MovableEntity extends AbstractEntity implements Cloneable  {
+public class MovableEntity extends AbstractEntity  {
 	private static final long serialVersionUID = 4L;
 	
 	private transient static String waterSound = "splash";
@@ -865,11 +865,6 @@ public class MovableEntity extends AbstractEntity implements Cloneable  {
 		this.friction = friction;
 	}
 	
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException{
-		return new MovableEntity(this);
-	}
-
 	/**
 	 * performs a step. Plays a sound.
 	 */

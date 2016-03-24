@@ -38,6 +38,9 @@ import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.Random;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 
 /**
  * Renders a grass block with wind on top.

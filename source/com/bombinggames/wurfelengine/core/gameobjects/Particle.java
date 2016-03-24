@@ -143,11 +143,6 @@ public class Particle extends MovableEntity {
 		}
 	}
 
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 	/**
 	 *
 	 * @return

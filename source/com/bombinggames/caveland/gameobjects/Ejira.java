@@ -795,11 +795,6 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	}
 
 	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	@Override
 	public void jump() {
 		//check if an arijump can be performed
 		if (hasPosition()) {

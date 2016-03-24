@@ -9,11 +9,11 @@ import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -282,11 +282,6 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 				currentChat.register(view, ((Ejira) actor).getPlayerNumber(), actor, this);
 			}
 		}
-	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 
 	@Override

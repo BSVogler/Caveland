@@ -445,11 +445,6 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
-	@Override
 	public boolean interactable() {
 		return (passenger==null);
 	}

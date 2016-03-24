@@ -220,10 +220,4 @@ public class Bullet extends MovableEntity {
 		}
 		return true;
 	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 }

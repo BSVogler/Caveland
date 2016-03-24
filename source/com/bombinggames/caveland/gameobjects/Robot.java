@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -198,11 +198,6 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	 */
 	public void setTarget(MovableEntity target) {
 		this.enemyTarget = target;
-	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 
 	/**

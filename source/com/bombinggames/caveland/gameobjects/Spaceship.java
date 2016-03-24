@@ -3,13 +3,13 @@ package com.bombinggames.caveland.gameobjects;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 
 /**
@@ -123,10 +123,4 @@ public class Spaceship extends MovableEntity {
 			WE.getCVarsSave().get("IntroCutsceneCompleted").setValue(true);
 		}
 	}
-
-	@Override
-	public MovableEntity clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 }

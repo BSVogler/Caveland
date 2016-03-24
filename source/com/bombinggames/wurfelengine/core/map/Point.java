@@ -128,8 +128,8 @@ public class Point extends Vector3 implements Position {
 		return new Coordinate(
 			Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH),
 			Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1, //maybe dangerous to optimize code here!
-Math.floorDiv((int) z, RenderCell.GAME_EDGELENGTH)
-		).goToNeighbour(Coordinate.getNeighbourSide(//find the specific coordinate (detail)
+			Math.floorDiv((int) z, RenderCell.GAME_EDGELENGTH)
+		).goToNeighbour(Coordinate.getNeighbourSide( //find the specific coordinate (detail)
 			x % RenderCell.GAME_DIAGLENGTH,
 			y % RenderCell.GAME_DIAGLENGTH
 		));
@@ -210,7 +210,8 @@ Math.floorDiv((int) z, RenderCell.GAME_EDGELENGTH)
 		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
 		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(x % RenderCell.GAME_DIAGLENGTH,
+		switch (Coordinate.getNeighbourSide(
+			x % RenderCell.GAME_DIAGLENGTH,
 			y % RenderCell.GAME_DIAGLENGTH
 		)) {
 			case 0:
@@ -758,7 +759,8 @@ Math.floorDiv((int) z, RenderCell.GAME_EDGELENGTH)
 	public boolean canSee(Point p, float maxdistance) {
 		Vector3 vecToTarget = p.cpy().sub(this).nor();
 		//check if can see target
-		Intersection intersect = p.rayMarching(vecToTarget,
+		Intersection intersect = p.rayMarching(
+			vecToTarget,
 			maxdistance,
 			null,
 			(Byte t) -> !RenderCell.isTransparent(t,(byte)0)

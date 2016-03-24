@@ -831,7 +831,7 @@ public class MovableEntity extends AbstractEntity  {
 				}
 				pos.setZ(pos.getZ() - 1);//move one down for check
 
-				boolean colission = (pos.isObstacle()) || collidesWithWorld(pos, colissionRadius);
+				boolean colission = pos.isObstacle() || collidesWithWorld(pos, colissionRadius);
 				pos.setZ(pos.getZ() + 1);//reverse
 
 				return colission;

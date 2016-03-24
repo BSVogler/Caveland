@@ -346,7 +346,7 @@ public class Map implements IndexedGraph<PfNode> {
 		if (z < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
 		}
-		Chunk chunk = Map.this.getChunkContaining(x, y);
+		Chunk chunk = getChunkContaining(x, y);
 		if (chunk == null) {
 			return 0;
 		} else {

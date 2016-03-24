@@ -183,7 +183,7 @@ public class RenderStorage implements Telegraph  {
 			RenderChunk chunk = getChunk(coord);
 			//should be loaded but check nevertheless
 			if (chunk != null) {
-				chunk.resetShadingCoord(
+				chunk.resetShadingFor(
 					coord.getX() - chunk.getTopLeftCoordinateX(),
 					coord.getY() - chunk.getTopLeftCoordinateY(),
 					coord.getZ()
@@ -271,9 +271,9 @@ public class RenderStorage implements Telegraph  {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-	public RenderCell getBlock(final int x, final int y, final int z) {
+	public RenderCell getCell(final int x, final int y, final int z) {
 		if (z < 0) {
-			return getNewGroundBlockInstance();
+			return getNewGroundCellInstance();
 		}
 		RenderChunk chunkWithBlock = null;
 		int left, top;
@@ -295,25 +295,25 @@ public class RenderStorage implements Telegraph  {
 		if (chunkWithBlock == null) {
 			return null;
 		} else {
-			return chunkWithBlock.getBlock(x, y, z);//find chunk in x coord
+			return chunkWithBlock.getCell(x, y, z);//find chunk in x coord
 		}
 	}
 
 	/**
-	 * If the block can not be found returns null pointer.
+	 * If the cell can not be found returns null pointer.
 	 *
 	 * @param coord transform safe
 	 * @return
 	 */
-	public RenderCell getBlock(final Coordinate coord) {
+	public RenderCell getCell(final Coordinate coord) {
 		if (coord.getZ() < 0) {
-			return getNewGroundBlockInstance();
+			return getNewGroundCellInstance();
 		}
 		RenderChunk chunk = getChunk(coord);
 		if (chunk == null) {
 			return null;
 		} else {
-			return chunk.getBlock(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
+			return chunk.getCell(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 		}
 	}
 	
@@ -323,9 +323,9 @@ public class RenderStorage implements Telegraph  {
 	 * @param point transform safe
 	 * @return
 	 */
-	public RenderCell getBlock(final Point point) {
+	public RenderCell getCell(final Point point) {
 		if (point.getZ() < 0) {
-			return getNewGroundBlockInstance();
+			return getNewGroundCellInstance();
 		}
 		
 		float x = point.x;
@@ -367,7 +367,7 @@ public class RenderStorage implements Telegraph  {
 				break;
 		}
 
-		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, RenderCell.GAME_EDGELENGTH));
+		return RenderStorage.this.getCell(xCoord, yCoord, Math.floorDiv((int) point.z, RenderCell.GAME_EDGELENGTH));
 	}
 	
 	
@@ -390,7 +390,7 @@ public class RenderStorage implements Telegraph  {
 		//DataIterator floorIterator = chunk.getIterator(0, 0);
 //		while (floorIterator.hasNext()) {
 //			if (((Block) floorIterator.next()).hidingPastBlock())
-//				chunk.getBlock(
+//				chunk.getCell(
 //					floorIterator.getCurrentIndex()[0],
 //					floorIterator.getCurrentIndex()[1],
 //					chunkY)setClippedTop(
@@ -415,14 +415,9 @@ public class RenderStorage implements Telegraph  {
 				final int y = dataIter.getCurrentIndex()[1];
 				final int z = dataIter.getCurrentIndex()[2];
 
-				RenderCell neighbour;
 				//left side
 				//get neighbour block
-				if (y % 2 == 0) {//next row is shifted right
-					neighbour = getIndex(chunk, x - 1, y + 1, z);
-				} else {
-					neighbour = getIndex(chunk, x, y + 1, z);
-				}
+				RenderCell neighbour = getCellByIndex(chunk, x - ((y % 2 == 0) ? 1 : 0), y + 1, z);//next row can be shifted right(?)
 
 				if (neighbour != null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
@@ -431,12 +426,7 @@ public class RenderStorage implements Telegraph  {
 
 				//right side
 				//get neighbour block
-				if (y % 2 == 0)//next row is shifted right
-				{
-					neighbour = getIndex(chunk, x, y + 1, z);
-				} else {
-					neighbour = getIndex(chunk, x + 1, y + 1, z);
-				}
+				neighbour = getCellByIndex(chunk, x + ((y % 2 == 0) ? 0 : 1), y + 1, z);//next row is shifted right
 
 				if (neighbour != null
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
@@ -445,7 +435,7 @@ public class RenderStorage implements Telegraph  {
 
 				//check top
 				if (z < Chunk.getBlocksZ() - 1) {
-					neighbour = getIndex(chunk, x, y + 2, z + 1);
+					neighbour = getCellByIndex(chunk, x, y + 2, z + 1);
 					if ((chunkData[x][y][z + 1] != null
 						&& (chunkData[x][y][z + 1].hidingPastBlock()
 						|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
@@ -458,28 +448,28 @@ public class RenderStorage implements Telegraph  {
 	}
 	
 	/**
-	 * Helper function. Gets a block at an index. can be outside of this chunk
+	 * Helper function. Gets a block at an index. index can be outside of this chunk. If it is outside will get the correct chunk.
 	 *
-	 * @param chunk
+	 * @param chunk the chunk where the index shoulde be found on
 	 * @param x index
 	 * @param y index
 	 * @param z index
 	 * @return
 	 */
-	private RenderCell getIndex(RenderChunk chunk, int x, int y, int z) {
+	private RenderCell getCellByIndex(RenderChunk chunk, int x, int y, int z) {
 		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX()) {//index outside current chunk
-			return getBlock(
+			return getCell(
 				chunk.getTopLeftCoordinateX() + x,
 				chunk.getTopLeftCoordinateY() + y,
 				z
 			);
 		} else {
-			return chunk.getBlockViaIndex(x, y, z);
+			return chunk.getCellByIndex(x, y, z);
 		}
 	}
 
-	private RenderCell getNewGroundBlockInstance() {
-		return RenderCell.getRenderBlock((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
+	private RenderCell getNewGroundCellInstance() {
+		return RenderCell.getRenderCell((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
 	}
 
 	public LinkedList<RenderChunk> getData() {
@@ -512,7 +502,7 @@ public class RenderStorage implements Telegraph  {
 		if (coords.getZ() < -1)//filter below lowest level
 			return true;
 		
-		RenderCell block = getBlock(coords);
+		RenderCell block = getCell(coords);
 		if (block==null)
 			return false;
 		return block.isClipped();

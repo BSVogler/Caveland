@@ -597,19 +597,19 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 			Coordinate coord = getCoord();
 			coord.add(0, 0, -1);//go one down because the ents are added one too high
 			RenderCell block;
-//			block = rs.getBlock(coord);//draw block in this cell first
+//			block = rs.getCell(coord);//draw block in this cell first
 //			if (block != null) {
 //				res.add(block);
 //			}
-//			block = rs.getBlock(coord.goToNeighbour(7));//block behind left
+//			block = rs.getCell(coord.goToNeighbour(7));//block behind left
 //			if (block != null) {
 //				res.add(block);
 //			}
-//			block = rs.getBlock(coord.goToNeighbour(1));//block behind
+//			block = rs.getCell(coord.goToNeighbour(1));//block behind
 //			if (block != null) {
 //				res.add(block);
 //			}
-//			block = rs.getBlock(coord.goToNeighbour(3));//block behind right
+//			block = rs.getCell(coord.goToNeighbour(3));//block behind right
 //			if (block != null) {
 //				res.add(block);
 //			}
@@ -620,7 +620,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 //				if (block != null) {
 //					res.add(block);
 //				}
-				block = rs.getBlock(coord.add(0, 0, -1).goToNeighbour(4));//front right
+				block = rs.getCell(coord.add(0, 0, -1).goToNeighbour(4));//front right
 				if (block != null) {
 					res.add(block);
 				}

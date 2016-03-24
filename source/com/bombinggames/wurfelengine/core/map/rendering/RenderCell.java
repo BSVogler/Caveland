@@ -231,7 +231,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @param value
 	 * @return
 	 */
-	public static RenderCell getRenderBlock(byte id, byte value) {
+	public static RenderCell getRenderCell(byte id, byte value) {
 		if (id == 0 || id == 4) {//air and invisible wall
 			RenderCell a = new RenderCell(id, value);
 			a.setHidden(true);
@@ -553,7 +553,7 @@ public class RenderCell extends AbstractGameObject {
 	/**
 	 * For direct creation. You should use the factory method instead.
 	 * @param id 
-	 * @see #getRenderBlock(byte, byte) 
+	 * @see #getRenderCell(byte, byte) 
 	 */
     public RenderCell(byte id){
         super(id);
@@ -564,7 +564,7 @@ public class RenderCell extends AbstractGameObject {
 	 * For direct creation. You should use the factory method instead.
 	 * @param id
 	 * @param value 
-	 * @see #getRenderBlock(byte, byte) 
+	 * @see #getRenderCell(byte, byte) 
 	 */
 	public RenderCell(byte id, byte value){
 		super(id, value);
@@ -1325,47 +1325,47 @@ public class RenderCell extends AbstractGameObject {
 		Coordinate nghb = getPosition();
 		RenderCell block;
 		if (nghb.getZ() > 0) {
-			block = rs.getBlock(nghb.add(0, 0, -1));//go down
+			block = rs.getCell(nghb.add(0, 0, -1));//go down
 			if (block != null) {
 				covered.add(block);
 			}
 			//back right
-			block = rs.getBlock(nghb.goToNeighbour(1));
+			block = rs.getCell(nghb.goToNeighbour(1));
 			if (block != null) {
 				covered.add(block);
 			}
 			//back left
-			block = rs.getBlock(nghb.goToNeighbour(6));
+			block = rs.getCell(nghb.goToNeighbour(6));
 			if (block != null) {
 				covered.add(block);
 			}
 			//back
-			block = rs.getBlock(nghb.goToNeighbour(1));
+			block = rs.getCell(nghb.goToNeighbour(1));
 			if (block != null) {
 				covered.add(block);
 			}
 			nghb.add(0, 2, 1);
 		}
-		block = rs.getBlock(nghb.goToNeighbour(0));//back
+		block = rs.getCell(nghb.goToNeighbour(0));//back
 		if (block != null) {
 			covered.add(block);
 		}
-		block = rs.getBlock(nghb.goToNeighbour(3));//back right
+		block = rs.getCell(nghb.goToNeighbour(3));//back right
 		if (block != null) {
 			covered.add(block);
 		}
 
 		//back left
-		block = rs.getBlock(nghb.goToNeighbour(6));
+		block = rs.getCell(nghb.goToNeighbour(6));
 		if (block != null) {
 			covered.add(block);
 		}
 		if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
-			block = rs.getBlock(nghb.add(0, 0, 1));//back
+			block = rs.getCell(nghb.add(0, 0, 1));//back
 			if (block != null) {
 				covered.add(block);
 			}
-			block = rs.getBlock(nghb.goToNeighbour(2));//back
+			block = rs.getCell(nghb.goToNeighbour(2));//back
 			if (block != null) {
 				covered.add(block);
 			}

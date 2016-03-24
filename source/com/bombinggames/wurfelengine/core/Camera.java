@@ -585,11 +585,11 @@ public class Camera{
 				)
 				&& ent.getPosition().getZ() < zRenderingLimit
 			) {
-				RenderCell block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
+				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
 				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change in line above
-				if (block != null) {
-					block.addCoveredEnts(ent);
-					modifiedCells.add(block);
+				if (cell != null) {
+					cell.addCoveredEnts(ent);
+					modifiedCells.add(cell);
 				} else {
 					//add at end of renderList
 					renderAppendix.add(ent);
@@ -609,7 +609,7 @@ public class Camera{
 		);
 		//inverse dirty flag
 		AbstractGameObject.inverseMarkedFlag(id);
-		//check every block
+		//check every cell
 		while (iterator.hasNext()) {
 			RenderCell cell = iterator.next();
 
@@ -791,7 +791,7 @@ public class Camera{
 	}
 
 	/**
-	 * Returns the bottom seight border y-coordinate of the lowest block
+	 * Returns the bottom seight border y-coordinate of the lowest cell
 	 *
 	 * @return measured in grid-coordinates
 	 * @see #getVisibleFrontBorderHigh()
@@ -804,7 +804,7 @@ public class Camera{
 	}
 
 	/**
-	 * Returns the bottom seight border y-coordinate of the highest block
+	 * Returns the bottom seight border y-coordinate of the highest cell
 	 *
 	 * @return measured in grid-coordinates
 	 * @see #getVisibleFrontBorderLow()

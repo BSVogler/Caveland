@@ -712,7 +712,7 @@ public class Coordinate implements Position {
 		} else if (z >= Chunk.getBlocksZ()) {
 			return null;
 		} else {
-			return rs.getBlock(this);
+			return rs.getCell(this);
 		}
 	}
 

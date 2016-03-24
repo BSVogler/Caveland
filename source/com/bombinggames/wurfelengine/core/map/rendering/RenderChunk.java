@@ -98,9 +98,9 @@ public class RenderChunk {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
 					//update only if cell changed
-					int block = chunk.getBlockViaIndex(xInd, yInd, z);
+					int block = chunk.getCellByIndex(xInd, yInd, z);
 					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
-						data[xInd][yInd][z] = RenderCell.getRenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
+						data[xInd][yInd][z] = RenderCell.getRenderCell((byte) (block & 255), (byte) ((block >> 8) & 255));
 					}
 					data[xInd][yInd][z].getPosition().set(
 						tlX + xInd,
@@ -108,7 +108,7 @@ public class RenderChunk {
 						z
 					);
 					data[xInd][yInd][z].setUnclipped();
-					resetShadingCoord(xInd, yInd, z);
+					resetShadingFor(xInd, yInd, z);
 				}
 			}
 		}
@@ -121,7 +121,7 @@ public class RenderChunk {
 	 * @param z coordinate
 	 * @return
 	 */
-	RenderCell getBlock(int x, int y, int z) {
+	RenderCell getCell(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) {
 			return null;
 		}
@@ -154,14 +154,14 @@ public class RenderChunk {
 	 * Resets the shading for one block. Calculates drop shadow from blocks
 	 * above.
 	 *
-	 * @param idexX
-	 * @param idexY
-	 * @param idexZ
+	 * @param idexX index pos
+	 * @param idexY index pos
+	 * @param idexZ index pos
 	 */
-	public void resetShadingCoord(int idexX, int idexY, int idexZ) {
+	public void resetShadingFor(int idexX, int idexY, int idexZ) {
 		int blocksZ = Chunk.getBlocksZ();
 		if (idexZ < Chunk.getBlocksZ() && idexZ >= 0) {
-			RenderCell block = getBlockViaIndex(idexX, idexY, idexZ);
+			RenderCell block = data[idexX][idexY][idexZ];
 			if (block != null) {
 				data[idexX][idexY][idexZ].setLightlevel(1);
 
@@ -221,7 +221,7 @@ public class RenderChunk {
 		return chunk.getChunkY();
 	}
 
-	protected RenderCell getBlockViaIndex(int x, int y, int z) {
+	protected RenderCell getCellByIndex(int x, int y, int z) {
 		return data[x][y][z];
 	}
 

@@ -67,7 +67,8 @@ public class PlayerWithWeapon extends MovableEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		weapon.spawn(point.cpy());
+		if (weapon!=null)
+			weapon.spawn(point.cpy());
 		return this;
 	}
 
@@ -122,7 +123,7 @@ public class PlayerWithWeapon extends MovableEntity {
 	}
 
 	/**
-	 *
+	 * Get the camera used to identify the aiming direction.
 	 * @return
 	 */
 	public Camera getCamera() {

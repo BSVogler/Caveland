@@ -421,13 +421,22 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	//getter & setter
-	@Override
+	/**
+	 * the id of the sprite using for rendering.<br>
+	 * By default is the same as the object id but in some cases some
+	 * objects share one sprite so they can have the same.
+	 *
+	 * @return if spritevalue is not custom set uses value.
+	 */
 	public byte getSpriteId() {
 		return spriteId;
 	}
 
 
-	@Override
+	/**
+     * Get the value. It is like a sub-id and can identify the status.
+     * @return in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
+     */
 	public byte getSpriteValue() {
 		return spriteValue;
 	}
@@ -502,7 +511,10 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		spriteId = id;
 	}
 
-	@Override
+	/**
+     * Set the value.
+     * @param value in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
+     */
 	public void setSpriteValue(byte value) {
 		if (value < RenderBlock.VALUESNUM) {
 			spriteValue = value;
@@ -538,13 +550,21 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 		return AbstractGameObject.getSprite(getCategory(), spriteId, spriteValue);
 	}
 
-	@Override
-	public final boolean isMarked(int id) {
+	/**
+	 * Check if it is marked in this frame. Used for depth sorting.
+	 * @param id camera id
+	 * @return 
+	 */
+	public final boolean isMarkedDS(final int id) {
 		return ((marked>>id)&1) == ((AbstractGameObject.currentMarkedFlag >> id) & 1);
 	}
 
-	@Override
-	public void markPermanent(int id) {
+	/**
+	 * Marks as visited in the depth sorting algorithm.
+	 * @param id camera id
+	 * @see com.bombinggames.wurfelengine.core.Camera#visit(com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject) 
+	 */
+	public void markPermanentDS(final int id) {
 		marked ^= (-((AbstractGameObject.currentMarkedFlag >> id) & 1) ^ marked) & (1 << id);
 	}
 

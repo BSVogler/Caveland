@@ -15,27 +15,6 @@ import java.util.LinkedList;
 public interface Renderable {
 	
 	/**
-	 * the id of the sprite using for rendering.<br>
-	 * By default is the same as the object id but in some cases some
-	 * objects share one sprite so they can have the same.
-	 *
-	 * @return if spritevalue is not custom set uses value.
-	 */
-	public byte getSpriteId();
-	
-	/**
-     * Get the value. It is like a sub-id and can identify the status.
-     * @return in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
-     */
-	public byte getSpriteValue();
-	
-	/**
-     * Set the value.
-     * @param value in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
-     */
-	public void setSpriteValue(byte value);
-
-	/**
 	 * How bright is the object?
 	 * The lightlevel is a scale applied to the color. 1 is default value.
 	 * @return 1 is default bright. 0 is black.
@@ -61,19 +40,6 @@ public interface Renderable {
 	 */
 	void setLightlevel(float lightlevel);
 
-	/**
-	 * Marked as visited.
-	 * @param id
-	 */
-	public void markPermanent(int id);
-
-	/**
-	 * 
-	 * @param id
-	 * @return 
-	 */
-	public boolean isMarked(int id);
-	
 	/**
 	 * Draws an object if it is not hidden and not clipped.
 	 *
@@ -105,7 +71,6 @@ public interface Renderable {
 	 */
 	public Coordinate getCoord();
 	
-
 	/**
 	 *
 	 * @param camera

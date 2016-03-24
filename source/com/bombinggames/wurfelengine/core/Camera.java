@@ -634,10 +634,10 @@ public class Camera{
 	 * @param n root node
 	 */
 	private void visit(AbstractGameObject n) {
-		if (!n.isMarked(id)) {
+		if (!n.isMarkedDS(id)) {
 			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
 			if (covered.size() > 0) {
-				n.markPermanent(id);
+				n.markPermanentDS(id);
 					for (AbstractGameObject m : covered) {
 						if (inViewFrustum(
 							m.getPosition().getViewSpcX(),

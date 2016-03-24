@@ -270,7 +270,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param chunkY
 	 */
 	public void loadChunk(int chunkX, int chunkY) {
-		if (getChunk(chunkX, chunkY) == null) {
+		if (Map.this.getChunk(chunkX, chunkY) == null) {
 			if (!isLoading(chunkX, chunkY)) {
 				ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
 				loadingRunnables.add(cl);
@@ -334,7 +334,7 @@ public class Map implements IndexedGraph<PfNode> {
 		if (coord.getZ() < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
 		}
-		Chunk chunk = getChunkWithCoords(coord);
+		Chunk chunk = getChunkContaining(coord);
 		if (chunk == null) {
 			return 0;
 		} else {
@@ -346,7 +346,7 @@ public class Map implements IndexedGraph<PfNode> {
 		if (z < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
 		}
-		Chunk chunk = getChunkWithCoords(x, y);
+		Chunk chunk = Map.this.getChunkContaining(x, y);
 		if (chunk == null) {
 			return 0;
 		} else {
@@ -367,7 +367,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public void setBlock(final RenderBlock block) {
-		getChunkWithCoords(block.getPosition()).setBlock(block);
+		getChunkContaining(block.getPosition()).setBlock(block);
 	}
 
 	/**
@@ -380,14 +380,14 @@ public class Map implements IndexedGraph<PfNode> {
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
 	public void setBlock(Coordinate coord, byte id) {
-		Chunk chunk = getChunkWithCoords(coord);
+		Chunk chunk = getChunkContaining(coord);
 		if (chunk != null) {
 			chunk.setBlock(coord, id);
 		}
 	}
 	
 	public void setBlock(Coordinate coord, int block) {
-		Chunk chunk = getChunkWithCoords(coord);
+		Chunk chunk = getChunkContaining(coord);
 		if (chunk != null) {
 			chunk.setBlock(coord, (byte)(block&255), (byte)((block>>8)&255));
 		}
@@ -395,7 +395,7 @@ public class Map implements IndexedGraph<PfNode> {
 
 	
 	public void setBlock(Coordinate coord, byte id, byte value) {
-		Chunk chunk = getChunkWithCoords(coord);
+		Chunk chunk = getChunkContaining(coord);
 		if (chunk != null) {
 			chunk.setBlock(coord, id, value);
 		}
@@ -407,11 +407,11 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
-		getChunkWithCoords(coord).setValue(coord, value);
+		getChunkContaining(coord).setValue(coord, value);
 	}
 	
 	void setHealth(Coordinate coord, byte health) {
-		getChunkWithCoords(coord).setHealth(coord, health);
+		getChunkContaining(coord).setHealth(coord, health);
 	}
 
 	/**
@@ -420,7 +420,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param coord not altered
 	 * @return can return null if not loaded
 	 */
-	public Chunk getChunkWithCoords(final Coordinate coord) {
+	public Chunk getChunkContaining(final Coordinate coord) {
 		return data[Math.floorDiv(coord.getX(), Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(coord.getY(), Chunk.getBlocksY())+chunkDim/4];
 	}
 
@@ -431,11 +431,16 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param y grid coordinate
 	 * @return can return null if not loaded
 	 */
-	public Chunk getChunkWithCoords(int x, int y) {
+	public Chunk getChunkContaining(int x, int y) {
 		return data[Math.floorDiv(x, Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(y, Chunk.getBlocksY())+chunkDim/4];
 	}
 	
-	public Chunk getChunkWithPoint(Point point) {
+	/**
+	 * 
+	 * @param point
+	 * @return 
+	 */
+	public Chunk getChunkContaining(Point point) {
 		//bloated in-place code to avoid heap call with toCoord()
 		int xCoord = Math.floorDiv((int) point.getX(), RenderBlock.GAME_DIAGLENGTH);
 		int yCoord = Math.floorDiv((int) point.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
@@ -474,7 +479,7 @@ public class Map implements IndexedGraph<PfNode> {
 				break;
 		}
 
-		return getChunkWithCoords(xCoord, yCoord);
+		return getChunkContaining(xCoord, yCoord);
 	}
 
 	/**
@@ -588,7 +593,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public AbstractBlockLogicExtension getLogic(Coordinate coord) {
-		Chunk chunk = getChunkWithCoords(coord);
+		Chunk chunk = getChunkContaining(coord);
 		if (chunk == null) {
 			return null;
 		} else {
@@ -602,7 +607,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param block
 	 */
 	public void addLogic(AbstractBlockLogicExtension block) {
-		Chunk chunk = getChunkWithCoords(block.getPosition());
+		Chunk chunk = getChunkContaining(block.getPosition());
 		chunk.addLogic(block);
 	}
 
@@ -892,8 +897,9 @@ public class Map implements IndexedGraph<PfNode> {
 
 	public boolean isLoading(int chunkX, int chunkY) {
 		for (ChunkLoader lR : loadingRunnables) {
-			if (lR.getCoordX() == chunkX && lR.getCoordY() == chunkY)
+			if (lR.getCoordX() == chunkX && lR.getCoordY() == chunkY) {
 				return true;
+			}
 		}
 		return false;
 	}

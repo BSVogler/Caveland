@@ -275,10 +275,10 @@ public class Point extends Vector3 implements Position {
 	}
 	
     
-    @Override
-    public boolean isInMemoryAreaHorizontal() {
-		return Controller.getMap().getChunkWithPoint(this)!=null;
-    }
+	@Override
+	public boolean isInMemoryAreaHorizontal() {
+		return Controller.getMap().getChunkContaining(this) != null;
+	}
 	
 	@Override
     public boolean isInMemoryArea() {
@@ -794,7 +794,7 @@ public class Point extends Vector3 implements Position {
 
 	@Override
 	public Chunk getChunk() {
-		return Controller.getMap().getChunkWithCoords(toCoord());
+		return Controller.getMap().getChunkContaining(toCoord());
 	}
 
 	/**

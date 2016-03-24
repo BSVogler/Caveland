@@ -379,7 +379,7 @@ public class Camera{
 //		if (
 //		getVisibleBackBorder()
 //		<
-//		chunkMap.getChunk(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
+//		chunkMap.getChunkContaining(centerChunkX, centerChunkY-1).getTopLeftCoordinate().getX()
 //		//&& centerChunkX-1==//calculated xIndex -1
 //		) {
 //		centerChunkY--;
@@ -390,7 +390,7 @@ public class Camera{
 //		<
 //		map.getBlocksZ()*RenderBlock.VIEW_HEIGHT
 //		-RenderBlock.VIEW_DEPTH2*(
-//		chunkMap.getChunk(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
+//		chunkMap.getChunkContaining(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
 //		)
 //		//&& centerChunkX-1==//calculated xIndex -1
 //		) {

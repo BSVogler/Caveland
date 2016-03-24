@@ -567,6 +567,9 @@ public class Camera{
 		depthlist.clear();
 		maxsprites = WE.getCVars().getValueI("MaxSprites");
 
+		//inverse dirty flag
+		AbstractGameObject.inverseMarkedFlag(id);
+		
 		//add entitys which should be rendered
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
 				
@@ -607,9 +610,7 @@ public class Camera{
 			0,
 			Chunk.getBlocksZ() - 1
 		);
-		//inverse dirty flag
-		AbstractGameObject.inverseMarkedFlag(id);
-		//check every cell
+		//check/visit every visible cell
 		while (iterator.hasNext()) {
 			RenderCell cell = iterator.next();
 
@@ -623,10 +624,9 @@ public class Camera{
 			}
 		}
 		for (RenderCell modifiedCell : modifiedCells) {
-			visit(modifiedCell);
 			modifiedCell.clearCoveredEnts();
 		}
-		depthlist.addAll(renderAppendix);
+		depthlist.addAll(renderAppendix);//render every entity which has not parent block at the end
 	}
 	
 	/**

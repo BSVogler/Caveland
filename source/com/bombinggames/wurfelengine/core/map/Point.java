@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.core.map;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -200,6 +201,10 @@ public class Point extends Vector3 implements Position {
 		if (z >= Chunk.getGameHeight()) {
 			return 0;
 		}
+		
+		if (z < 0) {
+			return (byte) WE.getCVars().getValueI("groundBlockID");
+		}
 
 		//bloated in-place code to avoid heap call with toCoord()
 		int xCoord = Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH);
@@ -239,7 +244,7 @@ public class Point extends Vector3 implements Position {
 				break;
 		}
 
-		return Controller.getMap().getBlock(xCoord, yCoord, Math.floorDiv((int) z, RenderBlock.GAME_EDGELENGTH));
+		return Controller.getMap().getBlock(xCoord, yCoord, (int) (z / RenderBlock.GAME_EDGELENGTH));
 	}
     
 	/**

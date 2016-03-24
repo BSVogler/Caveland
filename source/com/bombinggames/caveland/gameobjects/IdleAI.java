@@ -38,7 +38,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.Serializable;
 
 /**
@@ -55,7 +55,7 @@ public class IdleAI implements Telegraph, Serializable {
 	 */
 	private Point home;
 	private float timeTillMove;
-	private final float idleRaidus = RenderBlock.GAME_EDGELENGTH * 2;
+	private final float idleRaidus = RenderCell.GAME_EDGELENGTH * 2;
 
 	/**
 	 *

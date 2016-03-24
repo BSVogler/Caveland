@@ -31,7 +31,7 @@
 package com.bombinggames.wurfelengine.core.map;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 
 /**
@@ -97,12 +97,12 @@ public class Intersection {
 	 * @return null if not hitting
 	 */
 	public static Intersection intersect(final Coordinate target, final Point p, final Vector3 dir) {
-		float backX = target.getX() * RenderBlock.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0);
-		float backY = target.getY() * RenderBlock.GAME_DIAGLENGTH2 - RenderBlock.GAME_DIAGLENGTH2;
-		float backZ = target.getZ() * RenderBlock.GAME_EDGELENGTH;
-		float frontX = target.getX() * RenderBlock.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0);
-		float frontY = target.getY() * RenderBlock.GAME_DIAGLENGTH2 + RenderBlock.GAME_DIAGLENGTH2;
-		float frontZ = target.getZ() * RenderBlock.GAME_EDGELENGTH + RenderBlock.GAME_DIAGLENGTH2;
+		float backX = target.getX() * RenderCell.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0);
+		float backY = target.getY() * RenderCell.GAME_DIAGLENGTH2 - RenderCell.GAME_DIAGLENGTH2;
+		float backZ = target.getZ() * RenderCell.GAME_EDGELENGTH;
+		float frontX = target.getX() * RenderCell.GAME_DIAGLENGTH + (target.getY() % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0);
+		float frontY = target.getY() * RenderCell.GAME_DIAGLENGTH2 + RenderCell.GAME_DIAGLENGTH2;
+		float frontZ = target.getZ() * RenderCell.GAME_EDGELENGTH + RenderCell.GAME_DIAGLENGTH2;
 
 		Intersection inter = new Intersection();
 
@@ -155,7 +155,7 @@ public class Intersection {
 		Point targetP = target.toPoint();
 
 		//lower a bit to prevent that is at next grid level
-		if (i_outside3.z >= targetP.getZ() + RenderBlock.GAME_EDGELENGTH) {
+		if (i_outside3.z >= targetP.getZ() + RenderCell.GAME_EDGELENGTH) {
 			inter.point = new Point(
 				i_outside3.x,
 				i_outside3.y,

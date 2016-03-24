@@ -31,7 +31,7 @@
 package com.bombinggames.wurfelengine.core.map.Iterators;
 
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.NoSuchElementException;
@@ -46,7 +46,7 @@ public class CameraSpaceIterator {
 	/**
 	 * Always points to a block. Iterates over a chunk.
 	 */
-	private DataIterator<RenderBlock> blockIterator;
+	private DataIterator<RenderCell> blockIterator;
 	private final int centerChunkX;
 	private final int centerChunkY;
 	private RenderChunk currentChunk;
@@ -90,7 +90,7 @@ public class CameraSpaceIterator {
 	 *
 	 * @return
 	 */
-	public RenderBlock next() throws NoSuchElementException {
+	public RenderCell next() throws NoSuchElementException {
 		if (blockIterator == null || !blockIterator.hasNext()) {
 			//reached end of chunk, move to next chunk
 			currentChunk = null;

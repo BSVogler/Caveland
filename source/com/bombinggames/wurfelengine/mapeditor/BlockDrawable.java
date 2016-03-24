@@ -33,7 +33,7 @@ package com.bombinggames.wurfelengine.mapeditor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  * a class what renders a block using the drawable interface.
@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
  */
 public class BlockDrawable extends TextureRegionDrawable {
 
-	private final RenderBlock block;
+	private final RenderCell block;
 
 	/**
 	 *
@@ -60,10 +60,10 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 * @param size relative size
 	 */
 	public BlockDrawable(byte id, byte value, float size) {
-		if (id >= RenderBlock.OBJECTTYPESNUM) {
-			this.block = RenderBlock.getRenderBlock((byte) 0, (byte) 0);//invalid id.
+		if (id >= RenderCell.OBJECTTYPESNUM) {
+			this.block = RenderCell.getRenderBlock((byte) 0, (byte) 0);//invalid id.
 		} else {
-			this.block = RenderBlock.getRenderBlock(id, value);
+			this.block = RenderCell.getRenderBlock(id, value);
 		}
 		block.setPosition(null);
 		block.setScaling(size);
@@ -89,7 +89,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 			//block.setColor(new Color(1, 1, 1, 1));
 			block.resetLight();
 			block.render(WE.getGameplay().getView(),
-				(int) (x + RenderBlock.VIEW_WIDTH2 * block.getScaling()),//should be with -getLeftWidth() but then deos not align
+				(int) (x + RenderCell.VIEW_WIDTH2 * block.getScaling()),//should be with -getLeftWidth() but then deos not align
 				(int) y,
 				null,
 				true
@@ -115,7 +115,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getLeftWidth() {
-		return RenderBlock.VIEW_WIDTH2 * block.getScaling();
+		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getRightWidth() {
-		return RenderBlock.VIEW_WIDTH2 * block.getScaling();
+		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getMinHeight() {
-		return (RenderBlock.VIEW_HEIGHT + RenderBlock.VIEW_DEPTH) * block.getScaling();
+		return (RenderCell.VIEW_HEIGHT + RenderCell.VIEW_DEPTH) * block.getScaling();
 	}
 
 	/**
@@ -160,6 +160,6 @@ public class BlockDrawable extends TextureRegionDrawable {
 	 */
 	@Override
 	public float getMinWidth() {
-		return RenderBlock.VIEW_WIDTH * block.getScaling();
+		return RenderCell.VIEW_WIDTH * block.getScaling();
 	}
 }

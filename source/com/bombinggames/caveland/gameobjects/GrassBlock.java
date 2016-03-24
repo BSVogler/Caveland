@@ -36,8 +36,12 @@ import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.Random;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
+import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
@@ -47,7 +51,7 @@ import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.
  *
  * @author Benedikt Vogler
  */
-public class GrassBlock extends RenderBlock {
+public class GrassBlock extends RenderCell {
 
 	private static final long serialVersionUID = 1L;
 	public static final float WINDAMPLITUDE = 30f;
@@ -92,18 +96,17 @@ public class GrassBlock extends RenderBlock {
 			Sprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
-				int xOffset = (int) (Math.abs((xPos - seed * 17) * i * (yPos)) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2);
-				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderBlock.GAME_EDGELENGTH - RenderBlock.GAME_EDGELENGTH2 + 15);
-				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderBlock.VIEW_WIDTH2 - 10) {
+				int xOffset = (int) (Math.abs((xPos - seed * 17) * i * (yPos)) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
+				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2 + 15);
+				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.VIEW_WIDTH2 - 10) {
 					gras.setColor(
 						getLightlevel(side, 1, 0) / 2f,
 						getLightlevel(side, 1, 1) / 2f - (xOffset + i) % 7 * 0.005f,
 						getLightlevel(side, 1, 2) / 2f,
 						1
 					);
-					gras.setPosition(
-						xPos + xOffset + RenderBlock.VIEW_WIDTH2,
-						yPos - yOffset * 0.5f + RenderBlock.VIEW_DEPTH2
+					gras.setPosition(xPos + xOffset + RenderCell.VIEW_WIDTH2,
+						yPos - yOffset * 0.5f + RenderCell.VIEW_DEPTH2
 					);
 
 					float distanceToForceCenter = (xPos + xOffset - posXForce) * (xPos + xOffset - posXForce)

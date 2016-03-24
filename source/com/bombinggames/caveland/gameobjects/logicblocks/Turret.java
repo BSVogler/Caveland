@@ -33,7 +33,7 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
@@ -108,8 +108,7 @@ public class Turret extends AbstractPowerBlock {
 			gun.setFixedPos(getPosition().toPoint());
 		}
 		
-		gun.getFixedPos().setZ(
-			getPosition().toPoint().getZ()+RenderBlock.GAME_EDGELENGTH*0.8f+online*RenderBlock.GAME_EDGELENGTH*0.6f
+		gun.getFixedPos().setZ(getPosition().toPoint().getZ()+RenderCell.GAME_EDGELENGTH*0.8f+online*RenderCell.GAME_EDGELENGTH*0.6f
 		);
 		
 		
@@ -118,7 +117,7 @@ public class Turret extends AbstractPowerBlock {
 			
 			//locate target
 			target = null;
-			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(RenderBlock.GAME_DIAGLENGTH * 4, Robot.class);
+			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(RenderCell.GAME_DIAGLENGTH * 4, Robot.class);
 			if (!nearby.isEmpty()) {
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {
@@ -126,11 +125,10 @@ public class Turret extends AbstractPowerBlock {
 					if (target.getTeamId() != getTeamId()) {
 						Vector3 vecToTarget = target.getPosition().cpy().sub(gun.getFixedPos()).nor();
 						//check if can see target
-						Intersection intersect = gun.getFixedPos().rayMarching(
-							vecToTarget,
+						Intersection intersect = gun.getFixedPos().rayMarching(vecToTarget,
 							MAXDISTANCE,
 							null,
-							(Byte t) -> !RenderBlock.isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
+							(Byte t) -> !RenderCell.isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
 						);
 
 						if (
@@ -144,10 +142,10 @@ public class Turret extends AbstractPowerBlock {
 							if (
 								target != null
 								&& target.hasPosition()
-								&& getPosition().distanceTo(target) <= MAXDISTANCE * RenderBlock.GAME_EDGELENGTH
+								&& getPosition().distanceTo(target) <= MAXDISTANCE * RenderCell.GAME_EDGELENGTH
 							) {
 								//aim a bit higher
-								vecToTarget = target.getPosition().cpy().add(0, 0, RenderBlock.GAME_EDGELENGTH2).sub(gun.getFixedPos()).nor();
+								vecToTarget = target.getPosition().cpy().add(0, 0, RenderCell.GAME_EDGELENGTH2).sub(gun.getFixedPos()).nor();
 								gun.setAimDir(vecToTarget);
 								gun.shoot();
 							}

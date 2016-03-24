@@ -37,7 +37,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -322,7 +322,7 @@ public class SoundEngine {
 			}
 
 			int decay = WE.getCVars().getValueI("soundDecay");
-			volume = decay * RenderBlock.GAME_EDGELENGTH / (minDistance * minDistance + decay * RenderBlock.GAME_EDGELENGTH);//loose energy radial
+			volume = decay * RenderCell.GAME_EDGELENGTH / (minDistance * minDistance + decay * RenderCell.GAME_EDGELENGTH);//loose energy radial
 			if (volume > 1) {
 				volume = 1;
 			}

@@ -31,7 +31,7 @@
 package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.bombinggames.caveland.gameobjects.Flag;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 
@@ -53,7 +53,7 @@ public class Flagpole extends AbstractBlockLogicExtension {
 		if (flag == null || flag.shouldBeDisposed()) {
 			flag = (Flag) new Flag().spawn(getPosition().toPoint());
 		}
-		flag.getPosition().set(getPosition().toPoint().add(0, 0, 2.5f*RenderBlock.GAME_EDGELENGTH));
+		flag.getPosition().set(getPosition().toPoint().add(0, 0, 2.5f*RenderCell.GAME_EDGELENGTH));
 	}
 
 	@Override

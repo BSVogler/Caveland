@@ -44,11 +44,11 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
 /**
@@ -148,11 +148,11 @@ public class Minimap implements Telegraph {
             for (int y = 0; y < mapdata[x].length; y++) {
 
                 if (topTileZ[x][y]<0)//ground floor
-                    mapdata[x][y] = RenderBlock.getRepresentingColor((byte) WE.getCVars().getValueI("groundblockinstance"),(byte) 0);
+                    mapdata[x][y] = RenderCell.getRepresentingColor((byte) WE.getCVars().getValueI("groundblockinstance"),(byte) 0);
                 else {
                     int block = Controller.getMap().getBlock(x, y, topTileZ[x][y]);
                     if ((block&255) !=0)
-                        mapdata[x][y] = RenderBlock.getRepresentingColor((byte)(block&255), (byte)((block>>8)&255));
+                        mapdata[x][y] = RenderCell.getRepresentingColor((byte)(block&255), (byte)((block>>8)&255));
                     else 
                         mapdata[x][y] = new Color();//make air black
                 } 
@@ -205,11 +205,11 @@ public class Minimap implements Telegraph {
 					float rectX = 
 						+ ((ent.getPosition().getX()
 						+ (ent.getPosition().toCoord().getY()%2==1?0.5f:0)
-						)/RenderBlock.GAME_DIAGLENGTH
+						)/RenderCell.GAME_DIAGLENGTH
 						- 0.5f)
 						* scaleX;
 					float rectY = 
-						- (ent.getPosition().getY()/RenderBlock.GAME_DIAGLENGTH
+						- (ent.getPosition().getY()/RenderCell.GAME_DIAGLENGTH
 						+ 0.5f
 						)* scaleY*2;
 					sh.translate(rectX, rectY, 0);
@@ -229,9 +229,9 @@ public class Minimap implements Telegraph {
 					rectX = (int) (
 						(tmpPos.getX()
 							+ (tmpPos.toCoord().getY()%2==1 ? 0.5f : 0)
-						  ) / RenderBlock.GAME_DIAGLENGTH * scaleX
+						  ) / RenderCell.GAME_DIAGLENGTH * scaleX
 					);
-					rectY = (int) (tmpPos.getY()/RenderBlock.GAME_DIAGLENGTH2 * scaleY);
+					rectY = (int) (tmpPos.getY()/RenderCell.GAME_DIAGLENGTH2 * scaleY);
 
 					view.drawString(tmpPos.getX() +" | "+ tmpPos.getY() +" | "+ (int) tmpPos.getZ(),
 						(int) (posX+rectX),
@@ -299,31 +299,31 @@ public class Minimap implements Telegraph {
 						//ground level
 						sh.setColor(Color.GREEN);
 					sh.translate(0, -mapdata[0].length*scaleY, 0);//projection is y-up
-					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2,
-						scaleX*camera.getWidthInProjSpc()/ RenderBlock.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc()/ RenderBlock.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderCell.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderCell.VIEW_DEPTH2,
+						scaleX*camera.getWidthInProjSpc()/ RenderCell.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc()/ RenderCell.VIEW_DEPTH2
 					);
 
 					//player level getCameras() rectangle
 			//            if (controller.getPlayer()!=null){
 			//                sh.setColor(Color.GRAY);
 			//                sh.rect(
-			//                    scaleX * camera.getProjectionPosX() / RenderBlock.VIEW_WIDTH,
-			//                    + scaleY * camera.getProjectionPosY() / RenderBlock.VIEW_DEPTH2
-			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
-			//                    scaleX*camera.getProjectionWidth() / RenderBlock.VIEW_WIDTH,
-			//                    scaleY*camera.getProjectionHeight() / RenderBlock.VIEW_DEPTH2
+			//                    scaleX * camera.getProjectionPosX() / RenderCell.VIEW_WIDTH,
+			//                    + scaleY * camera.getProjectionPosY() / RenderCell.VIEW_DEPTH2
+			//                        + scaleY *2*(controller.getPlayer().getPosition().getCoord().getZ() * RenderCell.VIEW_HEIGHT)/ RenderCell.VIEW_DEPTH,
+			//                    scaleX*camera.getProjectionWidth() / RenderCell.VIEW_WIDTH,
+			//                    scaleY*camera.getProjectionHeight() / RenderCell.VIEW_DEPTH2
 			//                );
 			//            }
 
 					//top level getCameras() rectangle
 					sh.setColor(Color.WHITE);
-					sh.rect(scaleX * camera.getViewSpaceX() / RenderBlock.VIEW_WIDTH,
-						scaleY * camera.getViewSpaceY() / RenderBlock.VIEW_DEPTH2
-							-scaleY *2*(Chunk.getBlocksZ() * RenderBlock.VIEW_HEIGHT)/ RenderBlock.VIEW_DEPTH,
-						scaleX*camera.getWidthInProjSpc() / RenderBlock.VIEW_WIDTH,
-						scaleY*camera.getHeightInProjSpc() / RenderBlock.VIEW_DEPTH2
+					sh.rect(scaleX * camera.getViewSpaceX() / RenderCell.VIEW_WIDTH,
+						scaleY * camera.getViewSpaceY() / RenderCell.VIEW_DEPTH2
+							-scaleY *2*(Chunk.getBlocksZ() * RenderCell.VIEW_HEIGHT)/ RenderCell.VIEW_DEPTH,
+						scaleX*camera.getWidthInProjSpc() / RenderCell.VIEW_WIDTH,
+						scaleY*camera.getHeightInProjSpc() / RenderCell.VIEW_DEPTH2
 					);
 					
 				sh.end();

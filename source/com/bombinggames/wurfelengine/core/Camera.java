@@ -48,7 +48,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.SideSprite;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -133,7 +133,7 @@ public class Camera{
 	private int renderResWidth;
 	private int maxsprites;
 	private final Point center = new Point(0, 0, 0);
-	private final ArrayList<RenderBlock> modifiedCells = new ArrayList<>(30);
+	private final ArrayList<RenderCell> modifiedCells = new ArrayList<>(30);
 	private final LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 	/**
 	 * The radius which is used for loading the chunks around the center. May be reduced after the first time to a smaller value.
@@ -263,7 +263,7 @@ public class Camera{
 		}
 		position.x = focusEntity.getPosition().getViewSpcX();
 		position.y = (int) (focusEntity.getPosition().getViewSpcY()
-						+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2);//have middle of object in center
+						+ focusEntity.getDimensionZ() * RenderCell.ZAXISSHORTENING/2);//have middle of object in center
 		initFocus();
 	}
 
@@ -279,7 +279,7 @@ public class Camera{
 				Vector2 newPos = new Vector2(
 					focusEntity.getPosition().getViewSpcX(),
 					(int) (focusEntity.getPosition().getViewSpcY()
-						+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2)//have middle of object in center
+						+ focusEntity.getDimensionZ() * RenderCell.ZAXISSHORTENING/2)//have middle of object in center
 				);
 
 				//only follow if outside leap radius
@@ -388,8 +388,8 @@ public class Camera{
 //		if (
 //		position.y- getHeightInProjSpc()/2
 //		<
-//		map.getBlocksZ()*RenderBlock.VIEW_HEIGHT
-//		-RenderBlock.VIEW_DEPTH2*(
+//		map.getBlocksZ()*RenderCell.VIEW_HEIGHT
+//		-RenderCell.VIEW_DEPTH2*(
 //		chunkMap.getChunkContaining(centerChunkX, centerChunkY+1).getTopLeftCoordinate().getY()+Chunk.getBlocksY()//bottom coordinate
 //		)
 //		//&& centerChunkX-1==//calculated xIndex -1
@@ -515,7 +515,7 @@ public class Camera{
 			AbstractGameObject.getTextureDiffuse().bind(0);
 
 			//settings for this frame
-			RenderBlock.setStaticShade(WE.getCVars().getValueB("enableAutoShade"));
+			RenderCell.setStaticShade(WE.getCVars().getValueB("enableAutoShade"));
 			SideSprite.setAO(WE.getCVars().getValueF("ambientOcclusion"));
 			
 			//render vom bottom to top
@@ -571,7 +571,7 @@ public class Camera{
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
 				
 		//add entities to renderstorage
-		ArrayList<RenderBlock> modifiedCells = this.modifiedCells;
+		ArrayList<RenderCell> modifiedCells = this.modifiedCells;
 		modifiedCells.clear();
 		modifiedCells.ensureCapacity(ents.size());
 		LinkedList<AbstractEntity> renderAppendix = this.renderAppendix;
@@ -585,8 +585,8 @@ public class Camera{
 				)
 				&& ent.getPosition().getZ() < zRenderingLimit
 			) {
-				RenderBlock block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, RenderBlock.GAME_EDGELENGTH));//add in cell above
-				ent.getPosition().add(0, 0, -RenderBlock.GAME_EDGELENGTH);//reverse change in line above
+				RenderCell block = gameView.getRenderStorage().getBlock(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
+				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change in line above
 				if (block != null) {
 					block.addCoveredEnts(ent);
 					modifiedCells.add(block);
@@ -611,7 +611,7 @@ public class Camera{
 		AbstractGameObject.inverseMarkedFlag(id);
 		//check every block
 		while (iterator.hasNext()) {
-			RenderBlock cell = iterator.next();
+			RenderCell cell = iterator.next();
 
 			if (cell != null) {
 				if (inViewFrustum(
@@ -622,7 +622,7 @@ public class Camera{
 				}
 			}
 		}
-		for (RenderBlock modifiedCell : modifiedCells) {
+		for (RenderCell modifiedCell : modifiedCells) {
 			visit(modifiedCell);
 			modifiedCell.clearCoveredEnts();
 		}
@@ -668,17 +668,17 @@ public class Camera{
 		return
 				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY - RenderBlock.VIEW_HEIGHT * 2)//bottom of sprite
+				(proY - RenderCell.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY + RenderBlock.VIEW_HEIGHT2 + RenderBlock.VIEW_DEPTH)//top of sprite
+				(proY + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX + RenderBlock.VIEW_WIDTH2)//right side of sprite
+				(proX + RenderCell.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX - RenderBlock.VIEW_WIDTH2)//left side of sprite
+				(proX - RenderCell.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInProjSpc() / 2
 		;
@@ -746,7 +746,7 @@ public class Camera{
 	 * @return left x position in view space
 	 */
 	public float getVisibleLeftBorderVS() {
-		return (position.x - getWidthInProjSpc() / 2)- RenderBlock.VIEW_WIDTH2;
+		return (position.x - getWidthInProjSpc() / 2)- RenderCell.VIEW_WIDTH2;
 	}
 
 	/**
@@ -755,7 +755,7 @@ public class Camera{
 	 * @return the left (X) border coordinate
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / RenderBlock.VIEW_WIDTH - 1);
+		return (int) ((position.x - getWidthInProjSpc() / 2) / RenderCell.VIEW_WIDTH - 1);
 	}
 
 	/**
@@ -765,7 +765,7 @@ public class Camera{
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc() / 2) / RenderBlock.VIEW_WIDTH + 1);
+		return (int) ((position.x + getWidthInProjSpc() / 2) / RenderCell.VIEW_WIDTH + 1);
 	}
 	
 	/**
@@ -775,7 +775,7 @@ public class Camera{
 	 * @return measured in grid-coordinates
 	 */
 	public float getVisibleRightBorderVS() {
-		return position.x + getWidthInProjSpc() / 2 + RenderBlock.VIEW_WIDTH2;
+		return position.x + getWidthInProjSpc() / 2 + RenderCell.VIEW_WIDTH2;
 	}
 
 	/**
@@ -786,7 +786,7 @@ public class Camera{
 	public int getVisibleBackBorder() {
 		//TODO verify
 		return (int) ((position.y + getHeightInProjSpc() / 2)//camera top border
-			/ -RenderBlock.VIEW_DEPTH2//back to game space
+			/ -RenderCell.VIEW_DEPTH2//back to game space
 		);
 	}
 
@@ -799,7 +799,7 @@ public class Camera{
 	public int getVisibleFrontBorderLow() {
 		return (int) (
 			(position.y- getHeightInProjSpc()/2) //bottom camera border
-			/ -RenderBlock.VIEW_DEPTH2 //back to game coordinates
+			/ -RenderCell.VIEW_DEPTH2 //back to game coordinates
 		);
 	}
 
@@ -811,8 +811,8 @@ public class Camera{
 	 */
 	public int getVisibleFrontBorderHigh() {
 		return (int) ((position.y - getHeightInProjSpc() / 2) //bottom camera border
-			/ -RenderBlock.VIEW_DEPTH2 //back to game coordinates
-			+ Chunk.getBlocksY()*3 * RenderBlock.VIEW_HEIGHT / RenderBlock.VIEW_DEPTH2 //todo verify, try to add z component
+			/ -RenderCell.VIEW_DEPTH2 //back to game coordinates
+			+ Chunk.getBlocksY()*3 * RenderCell.VIEW_HEIGHT / RenderCell.VIEW_DEPTH2 //todo verify, try to add z component
 			);
 	}
 
@@ -1038,10 +1038,9 @@ public class Camera{
 	public void setFocusEntity(AbstractEntity focusEntity) {
 		if (this.focusEntity != focusEntity) {
 			this.focusEntity = focusEntity;
-			position.set(
-				focusEntity.getPosition().getViewSpcX(),
+			position.set(focusEntity.getPosition().getViewSpcX(),
 				(int) (focusEntity.getPosition().getViewSpcY()
-					+ focusEntity.getDimensionZ() * RenderBlock.ZAXISSHORTENING/2)//have middle of object in center
+					+ focusEntity.getDimensionZ() * RenderCell.ZAXISSHORTENING/2)//have middle of object in center
 			);
 		}
 	}

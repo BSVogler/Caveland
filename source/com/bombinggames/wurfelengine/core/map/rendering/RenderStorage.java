@@ -64,7 +64,7 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
 	 */
-	private final LinkedList<RenderBlock> dirtyFlags = new LinkedList<>();
+	private final LinkedList<RenderCell> dirtyFlags = new LinkedList<>();
 	private int zRenderingLimit;
 
 	/**
@@ -85,9 +85,9 @@ public class RenderStorage implements Telegraph  {
 		checkNeededChunks();
 		//update rendderblocks
 		for (RenderChunk renderChunk : data) {
-			for (RenderBlock[][] x : renderChunk.getData()) {
-				for (RenderBlock[] y : x) {
-					for (RenderBlock z : y) {
+			for (RenderCell[][] x : renderChunk.getData()) {
+				for (RenderCell[] y : x) {
+					for (RenderCell z : y) {
 						if (z != null) {
 							z.update(dt);
 						}
@@ -120,7 +120,7 @@ public class RenderStorage implements Telegraph  {
 					lastCenterX.set(i, camera.getCenterChunkX());
 					lastCenterY.set(i, camera.getCenterChunkY());
 					//rebuild
-					RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
+					RenderCell.setRebuildCoverList(WE.getGameplay().getFrameNum());
 				}
 			}
 		}
@@ -178,7 +178,7 @@ public class RenderStorage implements Telegraph  {
 	 * reset light to normal level for cordinates marked as dirty
 	 */
 	private void resetShadingForDirty() {
-		for (RenderBlock rb : dirtyFlags) {
+		for (RenderCell rb : dirtyFlags) {
 			Coordinate coord = rb.getPosition();
 			RenderChunk chunk = getChunk(coord);
 			//should be loaded but check nevertheless
@@ -197,7 +197,7 @@ public class RenderStorage implements Telegraph  {
 	 * Marks this block as "dirty". O(n)
 	 * @param rB
 	 */
-	public void setLightFlag(RenderBlock rB) {
+	public void setLightFlag(RenderCell rB) {
 		if (!dirtyFlags.contains(rB))
 			dirtyFlags.add(rB);
 	}
@@ -271,7 +271,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param z coordinate
 	 * @return the single block you wanted
 	 */
-	public RenderBlock getBlock(final int x, final int y, final int z) {
+	public RenderCell getBlock(final int x, final int y, final int z) {
 		if (z < 0) {
 			return getNewGroundBlockInstance();
 		}
@@ -305,7 +305,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param coord transform safe
 	 * @return
 	 */
-	public RenderBlock getBlock(final Coordinate coord) {
+	public RenderCell getBlock(final Coordinate coord) {
 		if (coord.getZ() < 0) {
 			return getNewGroundBlockInstance();
 		}
@@ -323,7 +323,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param point transform safe
 	 * @return
 	 */
-	public RenderBlock getBlock(final Point point) {
+	public RenderCell getBlock(final Point point) {
 		if (point.getZ() < 0) {
 			return getNewGroundBlockInstance();
 		}
@@ -331,12 +331,11 @@ public class RenderStorage implements Telegraph  {
 		float x = point.x;
 		float y = point.y;
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(
-			x % RenderBlock.GAME_DIAGLENGTH,
-			y % RenderBlock.GAME_DIAGLENGTH
+		switch (Coordinate.getNeighbourSide(x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -368,7 +367,7 @@ public class RenderStorage implements Telegraph  {
 				break;
 		}
 
-		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, RenderBlock.GAME_EDGELENGTH));
+		return getBlock(xCoord, yCoord, Math.floorDiv((int) point.z, RenderCell.GAME_EDGELENGTH));
 	}
 	
 	
@@ -383,7 +382,7 @@ public class RenderStorage implements Telegraph  {
 		if (chunk == null) {
 			throw new IllegalArgumentException();
 		}
-		RenderBlock[][][] chunkData = chunk.getData();
+		RenderCell[][][] chunkData = chunk.getData();
 
 		chunk.resetClipping();
 
@@ -401,14 +400,14 @@ public class RenderStorage implements Telegraph  {
 //				);
 //		}
 		//iterate over chunk
-		DataIterator<RenderBlock> dataIter = new DataIterator<>(
+		DataIterator<RenderCell> dataIter = new DataIterator<>(
 			chunkData,
 			0,
 			toplimit
 		);
 
 		while (dataIter.hasNext()) {
-			RenderBlock current = dataIter.next();//next is the current block
+			RenderCell current = dataIter.next();//next is the current block
 
 			if (current != null) {
 				//calculate index position relative to camera border
@@ -416,7 +415,7 @@ public class RenderStorage implements Telegraph  {
 				final int y = dataIter.getCurrentIndex()[1];
 				final int z = dataIter.getCurrentIndex()[2];
 
-				RenderBlock neighbour;
+				RenderCell neighbour;
 				//left side
 				//get neighbour block
 				if (y % 2 == 0) {//next row is shifted right
@@ -467,7 +466,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param z index
 	 * @return
 	 */
-	private RenderBlock getIndex(RenderChunk chunk, int x, int y, int z) {
+	private RenderCell getIndex(RenderChunk chunk, int x, int y, int z) {
 		if (x < 0 || y >= Chunk.getBlocksY() || x >= Chunk.getBlocksX()) {//index outside current chunk
 			return getBlock(
 				chunk.getTopLeftCoordinateX() + x,
@@ -479,8 +478,8 @@ public class RenderStorage implements Telegraph  {
 		}
 	}
 
-	private RenderBlock getNewGroundBlockInstance() {
-		return RenderBlock.getRenderBlock((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
+	private RenderCell getNewGroundBlockInstance() {
+		return RenderCell.getRenderBlock((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
 	}
 
 	public LinkedList<RenderChunk> getData() {
@@ -513,7 +512,7 @@ public class RenderStorage implements Telegraph  {
 		if (coords.getZ() < -1)//filter below lowest level
 			return true;
 		
-		RenderBlock block = getBlock(coords);
+		RenderCell block = getBlock(coords);
 		if (block==null)
 			return false;
 		return block.isClipped();
@@ -531,7 +530,7 @@ public class RenderStorage implements Telegraph  {
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()) {
 			reinitChunks();
-			RenderBlock.setRebuildCoverList(WE.getGameplay().getFrameNum());
+			RenderCell.setRebuildCoverList(WE.getGameplay().getFrameNum());
 			return true;
 		}
 		

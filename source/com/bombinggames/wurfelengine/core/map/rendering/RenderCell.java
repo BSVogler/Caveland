@@ -50,22 +50,22 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
 /**
- * It is something which can be rendered and therefore render information saved shared across cameras. A RenderBlock should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is not referenced, so changing this {@link RenderBlock} changes the data in the map.<br>
+ * It is something which can be rendered and therefore render information saved shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is not referenced, so changing this {@link RenderCell} changes the data in the map.<br>
  * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @see Block
  * @author Benedikt Vogler
  */
-public class RenderBlock extends AbstractGameObject {
+public class RenderCell extends AbstractGameObject {
     private static final long serialVersionUID = 1L;
 	/**
 	 * indexed acces to spritesheet {id}{value}{side}
 	 */
-    private static AtlasRegion[][][] blocksprites = new AtlasRegion[RenderBlock.OBJECTTYPESNUM][RenderBlock.VALUESNUM][3];
+    private static AtlasRegion[][][] blocksprites = new AtlasRegion[RenderCell.OBJECTTYPESNUM][RenderCell.VALUESNUM][3];
 	
     /**
      * a list where a representing color of the block is stored
      */
-    private static final Color[][] COLORLIST = new Color[RenderBlock.OBJECTTYPESNUM][RenderBlock.VALUESNUM];
+    private static final Color[][] COLORLIST = new Color[RenderCell.OBJECTTYPESNUM][RenderCell.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
 	private static long rebuildCoverList = 0;
@@ -225,15 +225,15 @@ public class RenderBlock extends AbstractGameObject {
 	}
 
 	/**
-	 * creates a new RenderBlock instance based on the data
+	 * creates a new RenderCell instance based on the data
 	 *
 	 * @param id
 	 * @param value
 	 * @return
 	 */
-	public static RenderBlock getRenderBlock(byte id, byte value) {
+	public static RenderCell getRenderBlock(byte id, byte value) {
 		if (id == 0 || id == 4) {//air and invisible wall
-			RenderBlock a = new RenderBlock(id, value);
+			RenderCell a = new RenderCell(id, value);
 			a.setHidden(true);
 			return a;
 		}
@@ -245,7 +245,7 @@ public class RenderBlock extends AbstractGameObject {
 		if (customBlocks != null) {
 			return customBlocks.toRenderBlock(id, value);
 		} else {
-			return new RenderBlock(id, value);
+			return new RenderCell(id, value);
 		}
 	}
 
@@ -430,7 +430,7 @@ public class RenderBlock extends AbstractGameObject {
 	public static boolean isSpriteDefined(byte spriteId, byte spriteValue) {
 		return spriteId != 0
 			&& getSpritesheet() != null
-			&& getSpritesheet().findRegion('b' + Byte.toString(spriteId) + "-" + spriteValue + "-0" + (RenderBlock.hasSides(spriteId, spriteValue) ? "-0" : "")) != null;
+			&& getSpritesheet().findRegion('b' + Byte.toString(spriteId) + "-" + spriteValue + "-0" + (RenderCell.hasSides(spriteId, spriteValue) ? "-0" : "")) != null;
 	}
 	
 	/**
@@ -438,12 +438,12 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param frameNum 
 	 */
 	public static void setRebuildCoverList(long frameNum) {
-		RenderBlock.rebuildCoverList = frameNum;
+		RenderCell.rebuildCoverList = frameNum;
 	}
 
    /**
      * Returns a color representing the block. Picks from the sprite sprite.
-     * @param id id of the RenderBlock
+     * @param id id of the RenderCell
      * @param value the value of the block.
      * @return copy of a color representing the block
      */
@@ -452,7 +452,7 @@ public class RenderBlock extends AbstractGameObject {
             COLORLIST[id][value] = new Color();
             int colorInt;
             
-            if (RenderBlock.hasSides(id, value)){//if has sides, take top block    
+            if (RenderCell.hasSides(id, value)){//if has sides, take top block    
                 AtlasRegion texture = getBlockSprite(id, value, Side.TOP);
                 if (texture == null) return new Color();
                 colorInt = getPixmap().getPixel(
@@ -555,7 +555,7 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param id 
 	 * @see #getRenderBlock(byte, byte) 
 	 */
-    public RenderBlock(byte id){
+    public RenderCell(byte id){
         super(id);
 		this.id = id;
 	}
@@ -566,19 +566,19 @@ public class RenderBlock extends AbstractGameObject {
 	 * @param value 
 	 * @see #getRenderBlock(byte, byte) 
 	 */
-	public RenderBlock(byte id, byte value){
+	public RenderCell(byte id, byte value){
 		super(id, value);
 		this.id = id;
 		this.value = value;
 	}
 	
 	public boolean isObstacle() {
-		return RenderBlock.isObstacle(id, value);
+		return RenderCell.isObstacle(id, value);
 	}
 
     @Override
     public String getName() {
-        return RenderBlock.getName(id, value);
+        return RenderCell.getName(id, value);
     }
 
 	@Override
@@ -593,7 +593,7 @@ public class RenderBlock extends AbstractGameObject {
 	
 	@Override
 	public int getDimensionZ() {
-		return RenderBlock.GAME_EDGELENGTH;
+		return RenderCell.GAME_EDGELENGTH;
 	}
 
 	@Override
@@ -608,15 +608,15 @@ public class RenderBlock extends AbstractGameObject {
 
 	/**
 	 * places the object on the map. You can extend this to get the coordinate.
-	 * RenderBlock may be placed without this method call. A regular renderblock
-	 * is not spawned expect explicitely called.
+ RenderCell may be placed without this method call. A regular renderblock
+ is not spawned expect explicitely called.
 	 *
 	 * @param rS
 	 * @param coord the position on the map
 	 * @return itself
 	 * @see #setPosition(com.bombinggames.wurfelengine.core.map.Position)
 	 */
-	public RenderBlock spawn(RenderStorage rS, Coordinate coord) {
+	public RenderCell spawn(RenderStorage rS, Coordinate coord) {
 		setPosition(coord);
 		Controller.getMap().setBlock(this);
 		return this;
@@ -774,26 +774,23 @@ public class RenderBlock extends AbstractGameObject {
 				//render damage
 				switch (side) {
 					case LEFT:
-						renderDamageOverlay(
-							view,
+						renderDamageOverlay(view,
 							camera,
-							getPosition().toPoint().add(-RenderBlock.GAME_DIAGLENGTH2 / 2, 0, 0),
+							getPosition().toPoint().add(-RenderCell.GAME_DIAGLENGTH2 / 2, 0, 0),
 							(byte) (3 * damageOverlayStep)
 						);
 						break;
 					case TOP:
-						renderDamageOverlay(
-							view,
+						renderDamageOverlay(view,
 							camera,
-							getPosition().toPoint().add(0, 0, RenderBlock.GAME_EDGELENGTH),
+							getPosition().toPoint().add(0, 0, RenderCell.GAME_EDGELENGTH),
 							(byte) (3 * damageOverlayStep + 1)
 						);
 						break;
 					case RIGHT:
-						renderDamageOverlay(
-							view,
+						renderDamageOverlay(view,
 							camera,
-							getPosition().toPoint().add(RenderBlock.GAME_DIAGLENGTH2 / 2, 0, 0),
+							getPosition().toPoint().add(RenderCell.GAME_DIAGLENGTH2 / 2, 0, 0),
 							(byte) (3 * damageOverlayStep + 2)
 						);
 						break;
@@ -958,11 +955,11 @@ public class RenderBlock extends AbstractGameObject {
 	 */
 	public boolean isTransparent() {
 		if (id==0) return true;
-		return RenderBlock.isTransparent(id,value);
+		return RenderCell.isTransparent(id,value);
 	}
 	
 	public boolean isIndestructible() {
-		return RenderBlock.isIndestructible(id,value);
+		return RenderCell.isIndestructible(id,value);
 	}
 	
 	/**
@@ -978,14 +975,14 @@ public class RenderBlock extends AbstractGameObject {
 		if (id == 0) {
 			return false;
 		}
-		return RenderBlock.hasSides(getSpriteId(),getSpriteValue());
+		return RenderCell.hasSides(getSpriteId(),getSpriteValue());
 	}
 
 	public boolean isLiquid() {
 		if (id == 0) {
 			return false;
 		}
-		return RenderBlock.isLiquid(id,value);
+		return RenderCell.isLiquid(id,value);
 	}
 
 	@Override
@@ -1326,7 +1323,7 @@ public class RenderBlock extends AbstractGameObject {
 		LinkedList<AbstractGameObject> covered = this.covered;
 		covered.clear();
 		Coordinate nghb = getPosition();
-		RenderBlock block;
+		RenderCell block;
 		if (nghb.getZ() > 0) {
 			block = rs.getBlock(nghb.add(0, 0, -1));//go down
 			if (block != null) {

@@ -1,6 +1,6 @@
 package com.bombinggames.wurfelengine.core.map;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *
@@ -48,7 +48,7 @@ public interface CustomBlocks {
 	 * @param value
 	 * @return
 	 */
-	public RenderBlock toRenderBlock(byte id, byte value);
+	public RenderCell toRenderBlock(byte id, byte value);
 
 	/**
 	 * Is the block a true block with three sides or does it get rendered by a

@@ -41,16 +41,16 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
  */
 public class RenderChunk {
 
-	private static final Pool<RenderBlock[][][]> DATAPOOL;
-	private final RenderBlock data[][][];
+	private static final Pool<RenderCell[][][]> DATAPOOL;
+	private final RenderCell data[][][];
 	private Chunk chunk;
 	private boolean cameraAccess;
 
 	static {
-		DATAPOOL = new Pool<RenderBlock[][][]>(3) {
+		DATAPOOL = new Pool<RenderCell[][][]>(3) {
 			@Override
-			protected RenderBlock[][][] newObject() {
-				return new RenderBlock[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+			protected RenderCell[][][] newObject() {
+				return new RenderCell[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
 			}
 		};
 	}
@@ -100,7 +100,7 @@ public class RenderChunk {
 					//update only if cell changed
 					int block = chunk.getBlockViaIndex(xInd, yInd, z);
 					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
-						data[xInd][yInd][z] = RenderBlock.getRenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
+						data[xInd][yInd][z] = RenderCell.getRenderBlock((byte) (block & 255), (byte) ((block >> 8) & 255));
 					}
 					data[xInd][yInd][z].getPosition().set(
 						tlX + xInd,
@@ -121,14 +121,14 @@ public class RenderChunk {
 	 * @param z coordinate
 	 * @return
 	 */
-	RenderBlock getBlock(int x, int y, int z) {
+	RenderCell getBlock(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) {
 			return null;
 		}
 		return data[x - chunk.getTopLeftCoordinateX()][y - chunk.getTopLeftCoordinateY()][z];
 	}
 
-	RenderBlock[][][] getData() {
+	RenderCell[][][] getData() {
 		return data;
 	}
 
@@ -161,7 +161,7 @@ public class RenderChunk {
 	public void resetShadingCoord(int idexX, int idexY, int idexZ) {
 		int blocksZ = Chunk.getBlocksZ();
 		if (idexZ < Chunk.getBlocksZ() && idexZ >= 0) {
-			RenderBlock block = getBlockViaIndex(idexX, idexY, idexZ);
+			RenderCell block = getBlockViaIndex(idexX, idexY, idexZ);
 			if (block != null) {
 				data[idexX][idexY][idexZ].setLightlevel(1);
 
@@ -205,7 +205,7 @@ public class RenderChunk {
 	 * @param limitZ the last layer (including).
 	 * @return
 	 */
-	public DataIterator<RenderBlock> getIterator(final int startingZ, final int limitZ) {
+	public DataIterator<RenderCell> getIterator(final int startingZ, final int limitZ) {
 		return new DataIterator<>(
 			data,
 			startingZ,
@@ -221,7 +221,7 @@ public class RenderChunk {
 		return chunk.getChunkY();
 	}
 
-	protected RenderBlock getBlockViaIndex(int x, int y, int z) {
+	protected RenderCell getBlockViaIndex(int x, int y, int z) {
 		return data[x][y][z];
 	}
 

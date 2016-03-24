@@ -20,7 +20,7 @@ import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
 import org.lwjgl.opengl.Display;
 
@@ -255,7 +255,7 @@ public class CLGameView extends GameView {
 //				//iterate over cameracontent
 //				DataIterator<RenderBlock> iterator = renderChunk.getIterator(0, Chunk.getBlocksZ()-1);
 //				while (iterator.hasNext()) {
-//					RenderBlock next = iterator.next();
+//					RenderCell next = iterator.next();
 //					if (next != null && next.getBlockData()!=null) {
 //						//clip floor
 //						if (-1 == ChunkGenerator.insideOutside(next.getPosition())) {
@@ -273,7 +273,7 @@ public class CLGameView extends GameView {
 //		}
 		if (WE.getCVars().getValueB("experimentalCameraJoin") && getCameras().size() >= 2) {
 			//todo should compare in view space
-			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < RenderBlock.GAME_EDGELENGTH * 5) {
+			if (getPlayer(0).getPosition().distanceTo(getPlayer(1).getPosition()) < RenderCell.GAME_EDGELENGTH * 5) {
 				if (!getCameras().get(0).isFullWindow()) {
 					getCameras().get(0).setFullWindow(true);
 				}

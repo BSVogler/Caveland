@@ -8,7 +8,7 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  * A light source is an invisible entity which spawns light from one point.
@@ -118,17 +118,16 @@ public class PointLightSource extends AbstractEntity {
 
 						//send rays
 						dir.set(x + 0.1f, y + 0.2f, z - 0.4f).nor();//offset because???
-						Intersection inters = origin.raycast(
-							dir,
+						Intersection inters = origin.raycast(dir,
 							floatradius * 2,
 							null,
-							(Byte t) -> !RenderBlock.isTransparent(t, (byte) 0)
+							(Byte t) -> !RenderCell.isTransparent(t, (byte) 0)
 						);
 						//check if intersected
 						if (inters != null && inters.getPoint() != null) {
 							//get back edge of block
-							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -RenderBlock.GAME_DIAGLENGTH2, 0);
-							float pow = origin.distanceTo(impactP) / RenderBlock.GAME_EDGELENGTH;
+							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -RenderCell.GAME_DIAGLENGTH2, 0);
+							float pow = origin.distanceTo(impactP) / RenderCell.GAME_EDGELENGTH;
 							float l = (1 + brightness) / (pow * pow);
 
 							Vector3 vecToBlock = origin.cpy().sub(impactP).nor();
@@ -183,7 +182,7 @@ public class PointLightSource extends AbstractEntity {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
 						tmp.set(xCenter + x, yCenter + y, zCenter + z);
-						RenderBlock rB = tmp.getRenderBlock(view.getRenderStorage());
+						RenderCell rB = tmp.getRenderBlock(view.getRenderStorage());
 						if (rB != null && !rB.isHidden()) {
 							tmp.addLightToBackEdge(view, Side.LEFT, color.cpy().mul(blocklight[0]));
 							tmp.addLightToBackEdge(view, Side.TOP, color.cpy().mul(blocklight[1]));

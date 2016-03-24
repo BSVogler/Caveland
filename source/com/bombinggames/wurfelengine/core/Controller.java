@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.core.lightengine.LightEngine;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public class Controller implements GameManager {
 	public static void staticDispose() {
 		Gdx.app.debug("ControllerClass", "Disposing.");
 		AbstractGameObject.staticDispose();
-		RenderBlock.staticDispose();
+		RenderCell.staticDispose();
 		map.dispose(false);
 		map = null;
 		lightEngine = null;

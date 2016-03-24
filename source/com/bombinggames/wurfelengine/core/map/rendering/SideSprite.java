@@ -913,7 +913,7 @@ public class SideSprite extends TextureRegion {
 	public void setRegion(float u, float v, float u2, float v2) {
 		super.setRegion(u, v, u2, v2);
 
-		final float f = RenderBlock.VIEW_WIDTH4/(float) getTexture().getWidth();//s/4096=x, where s is a quarter of the block width which is by default s=50
+		final float f = RenderCell.VIEW_WIDTH4/(float) getTexture().getWidth();//s/4096=x, where s is a quarter of the block width which is by default s=50
 		vertices[U1] = u;
 		vertices[V1] = v2 - ((side == Side.LEFT || side == Side.TOP) ? f : 0f);
 

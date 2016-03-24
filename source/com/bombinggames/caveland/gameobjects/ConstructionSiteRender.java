@@ -1,12 +1,12 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class ConstructionSiteRender extends RenderBlock {
+public class ConstructionSiteRender extends RenderCell {
 	private static final long serialVersionUID = 1L;
 	
 	/**

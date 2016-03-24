@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *The seletion indicator in the level editor.
@@ -83,7 +83,7 @@ public class Cursor extends AbstractEntity {
         setHidden(getPosition().getZ() < 0);//hide if is under map
 		Point isectP = pos.toPoint();
 		if (normalSide == Side.TOP) {
-			isectP.setZ((isectP.getZGrid() + 1) * RenderBlock.GAME_EDGELENGTH);
+			isectP.setZ((isectP.getZGrid() + 1) * RenderCell.GAME_EDGELENGTH);
 		}
         normal.setPosition(isectP);
     }

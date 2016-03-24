@@ -1,12 +1,12 @@
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *
  * @author Benedikt Vogler
  */
-public class CustomTree extends RenderBlock {
+public class CustomTree extends RenderCell {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * The treetop is used to identify the treetop. It is invisible but it is an obstacle.

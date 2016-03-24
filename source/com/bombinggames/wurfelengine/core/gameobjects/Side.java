@@ -33,7 +33,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *
@@ -136,7 +136,7 @@ public enum Side {
 		Point coordPoint = point.toCoord().toPoint();
 		if (point.getZ() <= coordPoint.getZ()) {
 			return Side.BOTTOM;
-		} else if (point.getZ() >= coordPoint.getZ() + RenderBlock.GAME_EDGELENGTH - 2f) {//point is at top with a 2 error margin
+		} else if (point.getZ() >= coordPoint.getZ() + RenderCell.GAME_EDGELENGTH - 2f) {//point is at top with a 2 error margin
 			return Side.TOP;
 		} else {
 			Side normal;

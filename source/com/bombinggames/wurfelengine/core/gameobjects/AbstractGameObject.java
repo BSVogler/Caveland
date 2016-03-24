@@ -41,10 +41,10 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.VIEW_DEPTH2;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.VIEW_HEIGHT2;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.VIEW_WIDTH2;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_DEPTH2;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_HEIGHT2;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_WIDTH2;
 import java.io.Serializable;
 
 /**
@@ -65,7 +65,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * indexed acces to the spritesheet
 	 */
-	private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][RenderBlock.OBJECTTYPESNUM][RenderBlock.VALUESNUM];//{category}{id}{value}
+	private transient static AtlasRegion[][][] sprites = new AtlasRegion['z'][RenderCell.OBJECTTYPESNUM][RenderCell.VALUESNUM];//{category}{id}{value}
 	private transient static int drawCalls = 0;
 	private static Texture textureDiff;
 	private static Texture textureNormal;
@@ -295,7 +295,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 */
 	public float getDepth() {
 		Point pos = getPoint();
-		return pos.getY() + (pos.getZ() + getDimensionZ()) * RenderBlock.ZAXISSHORTENING;//or Point.SQRT12?
+		return pos.getY() + (pos.getZ() + getDimensionZ()) * RenderCell.ZAXISSHORTENING;//or Point.SQRT12?
 	}
 
 	/**
@@ -516,7 +516,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
      * @param value in range [0;{@link Block#VALUESNUM}]. Is -1 if about to destroyed.
      */
 	public void setSpriteValue(byte value) {
-		if (value < RenderBlock.VALUESNUM) {
+		if (value < RenderCell.VALUESNUM) {
 			spriteValue = value;
 		}
 	}

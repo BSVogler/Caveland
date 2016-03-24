@@ -9,7 +9,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
 /**
@@ -94,7 +94,7 @@ public class Spaceship extends MovableEntity {
 			dir.z = 0;
 			setMovement(dir.nor().scl(11));//always fly to startCrash point
 		}
-		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < RenderBlock.GAME_EDGELENGTH*25) {
+		if (crashing == false && crashCoordinates != null && crashCoordinates.distanceToHorizontal(getPosition()) < RenderCell.GAME_EDGELENGTH*25) {
 			startCrash();
 		}
 

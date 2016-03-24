@@ -39,8 +39,8 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.util.ArrayList;
 
@@ -218,10 +218,10 @@ public class MovableEntity extends AbstractEntity  {
 	}
    
 	/**
-	 * Jump with a specific speed
+	 * Jump with a specific speed. Can jump if in air.
 	 *
 	 * @param velo the velocity in m/s
-	 * @param playSound
+	 * @param playSound plays jump sound if <i>true</i>
 	 */
 	public void jump(float velo, boolean playSound) {
 		final Vector2 horMov = getMovementHor();
@@ -336,11 +336,11 @@ public class MovableEntity extends AbstractEntity  {
 			}
 			
 			//if entering water
-			if (!inLiquid && RenderBlock.isLiquid(getPosition().getBlockId()) && getMass() > 1f) {
+			if (!inLiquid && RenderCell.isLiquid(getPosition().getBlockId()) && getMass() > 1f) {
 				if (waterSound != null) {
 					WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
 				}
-				inLiquid = RenderBlock.isLiquid(getPosition().getBlockId());//save if in water
+				inLiquid = RenderCell.isLiquid(getPosition().getBlockId());//save if in water
 			} else {
 				inLiquid = false;
 			}
@@ -505,10 +505,9 @@ public class MovableEntity extends AbstractEntity  {
 			sh.begin(ShapeRenderer.ShapeType.Filled);
 			sh.setColor(Color.GREEN);
 			//life bar
-			sh.rect(
-				xPos - RenderBlock.VIEW_WIDTH2,
-				yPos + RenderBlock.VIEW_HEIGHT,
-				getHealth() * RenderBlock.VIEW_WIDTH / 1000,
+			sh.rect(xPos - RenderCell.VIEW_WIDTH2,
+				yPos + RenderCell.VIEW_HEIGHT,
+				getHealth() * RenderCell.VIEW_WIDTH / 1000,
 				5
 			);
 			sh.end();
@@ -526,13 +525,13 @@ public class MovableEntity extends AbstractEntity  {
 		int colRad = colissionRadius;
 		int block = (byte) pos.add(0, -colRad, 0).getBlock();
 		//back corner top
-		if (RenderBlock.isObstacle(block)) {
+		if (RenderCell.isObstacle(block)) {
 			pos.add(0, colRad, 0);
 			return true;
 		}
 		//front corner
 		block = pos.add(0, 2 * colRad, 0).getBlock();
-		if (RenderBlock.isObstacle(block)) {
+		if (RenderCell.isObstacle(block)) {
 			pos.add(0, -colRad, 0);
 			return true;
 		}
@@ -540,14 +539,14 @@ public class MovableEntity extends AbstractEntity  {
 		//check X
 		//left
 		block = pos.add(-colRad, -colRad, 0).getBlock();
-		if (RenderBlock.isObstacle(block)) {
+		if (RenderCell.isObstacle(block)) {
 			pos.add(colRad, 0, 0);
 			return true;
 		}
 		//bottom corner
 		block = pos.add(2 * colRad, 0, 0).getBlock();
 		pos.add(-colRad, 0, 0);
-		return RenderBlock.isObstacle(block);
+		return RenderCell.isObstacle(block);
 	}
 	
 	/**
@@ -566,7 +565,7 @@ public class MovableEntity extends AbstractEntity  {
 		float heightBefore = pos.z;
 		int dimZ = getDimensionZ();
 		//chek in the middle if bigger then a block
-		if (dimZ > RenderBlock.GAME_EDGELENGTH) {
+		if (dimZ > RenderCell.GAME_EDGELENGTH) {
 			pos.add(0, 0, dimZ / 2);
 			if (checkCollisionCorners(pos)) {
 				pos.add(0, 0, -dimZ / 2);

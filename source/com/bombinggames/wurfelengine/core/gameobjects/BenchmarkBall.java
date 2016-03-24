@@ -34,7 +34,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 
 /**
  *

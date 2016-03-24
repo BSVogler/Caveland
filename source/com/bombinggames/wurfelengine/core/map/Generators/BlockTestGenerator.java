@@ -32,7 +32,7 @@
 package com.bombinggames.wurfelengine.core.map.Generators;
 
 import com.bombinggames.wurfelengine.core.map.Generator;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.OBJECTTYPESNUM;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.OBJECTTYPESNUM;
 
 /**
  *A generator which uses every block.

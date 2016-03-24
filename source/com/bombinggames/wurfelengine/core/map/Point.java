@@ -39,7 +39,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -104,7 +104,7 @@ public class Point extends Vector3 implements Position {
 	 * @return in grid coordinates.
 	 */
 	public int getZGrid() {
-		return (int) (z / RenderBlock.GAME_EDGELENGTH);
+		return (int) (z / RenderCell.GAME_EDGELENGTH);
 	}
 
 	/**
@@ -126,12 +126,12 @@ public class Point extends Vector3 implements Position {
 	public Coordinate toCoord() {
 		//find out where the position is (basic)
 		return new Coordinate(
-			Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH),
-			Math.floorDiv((int) y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1, //maybe dangerous to optimize code here!
-			Math.floorDiv((int) z, RenderBlock.GAME_EDGELENGTH)
-		).goToNeighbour(Coordinate.getNeighbourSide( //find the specific coordinate (detail)
-			x % RenderBlock.GAME_DIAGLENGTH,
-			y % RenderBlock.GAME_DIAGLENGTH
+			Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH),
+			Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1, //maybe dangerous to optimize code here!
+Math.floorDiv((int) z, RenderCell.GAME_EDGELENGTH)
+		).goToNeighbour(Coordinate.getNeighbourSide(//find the specific coordinate (detail)
+			x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
 		));
 	}
 
@@ -189,7 +189,7 @@ public class Point extends Vector3 implements Position {
 	 * @return the offset to the coordiantes center.
 	 */
 	public float getRelToCoordZ() {
-		return getZ() - getZGrid() * RenderBlock.GAME_EDGELENGTH;
+		return getZ() - getZGrid() * RenderCell.GAME_EDGELENGTH;
 	}
 	
    @Override
@@ -207,12 +207,11 @@ public class Point extends Vector3 implements Position {
 		}
 
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) x, RenderBlock.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(
-			x % RenderBlock.GAME_DIAGLENGTH,
-			y % RenderBlock.GAME_DIAGLENGTH
+		switch (Coordinate.getNeighbourSide(x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -244,7 +243,7 @@ public class Point extends Vector3 implements Position {
 				break;
 		}
 
-		return Controller.getMap().getBlock(xCoord, yCoord, (int) (z / RenderBlock.GAME_EDGELENGTH));
+		return Controller.getMap().getBlock(xCoord, yCoord, (int) (z / RenderCell.GAME_EDGELENGTH));
 	}
     
 	/**
@@ -265,7 +264,7 @@ public class Point extends Vector3 implements Position {
     public int getViewSpcY() {
         return (int)( 
 			-getY() / 2
-            + (int) (getZ() * RenderBlock.ZAXISSHORTENING)
+            + (int) (getZ() * RenderCell.ZAXISSHORTENING)
 		);
     }
 
@@ -454,7 +453,7 @@ public class Point extends Vector3 implements Position {
 				){
 					//found intersection point
 					isectP.setFromCoord(isectC);
-					if (distanceTo(isectP) <= maxDistance*RenderBlock.GAME_EDGELENGTH)
+					if (distanceTo(isectP) <= maxDistance*RenderCell.GAME_EDGELENGTH)
 						return Intersection.intersect(isectC, this, dir);
 					else return null;
 				}
@@ -493,12 +492,12 @@ public class Point extends Vector3 implements Position {
         //ground hit
         if (curZ <= 0) {
 			Point intersectpoint = new Point(
-				curX * RenderBlock.GAME_DIAGLENGTH + (curY % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0),
-				curY * RenderBlock.GAME_DIAGLENGTH2,
+				curX * RenderCell.GAME_DIAGLENGTH + (curY % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0),
+				curY * RenderCell.GAME_DIAGLENGTH2,
 				0
 			);
 			float distance = this.distanceTo(intersectpoint);
-			if (distance <= RenderBlock.GAME_EDGELENGTH * maxDistance) {
+			if (distance <= RenderCell.GAME_EDGELENGTH * maxDistance) {
 				return new Intersection(intersectpoint, Side.TOP, distance);
 			} else {
 				return null;
@@ -563,7 +562,7 @@ public class Point extends Vector3 implements Position {
 			&& lastCoordZ > 0
 			&& lastCoordZ < Chunk.getBlocksZ()
 			|| isectC.isInMemoryArea())
-			&& distanceToSquared(traverseP) < maxDistance*RenderBlock.GAME_EDGELENGTH*maxDistance*RenderBlock.GAME_EDGELENGTH
+			&& distanceToSquared(traverseP) < maxDistance*RenderCell.GAME_EDGELENGTH*maxDistance*RenderCell.GAME_EDGELENGTH
 		){
 			//move
 			traverseP.add(dir);
@@ -592,7 +591,7 @@ public class Point extends Vector3 implements Position {
 		if (traverseP.getZ() <= 0) {
 			traverseP.setZ(0);//clamp at 0
 			float distance = this.distanceTo(traverseP);
-			if (distance <= RenderBlock.GAME_EDGELENGTH * maxDistance) {
+			if (distance <= RenderCell.GAME_EDGELENGTH * maxDistance) {
 				return new Intersection(traverseP, Side.TOP, distance);
 			} else {
 				return null;
@@ -759,11 +758,10 @@ public class Point extends Vector3 implements Position {
 	public boolean canSee(Point p, float maxdistance) {
 		Vector3 vecToTarget = p.cpy().sub(this).nor();
 		//check if can see target
-		Intersection intersect = p.rayMarching(
-			vecToTarget,
+		Intersection intersect = p.rayMarching(vecToTarget,
 			maxdistance,
 			null,
-			(Byte t) -> !RenderBlock.isTransparent(t,(byte)0)
+			(Byte t) -> !RenderCell.isTransparent(t,(byte)0)
 		);
 		return !(intersect != null
 			&& distanceTo(intersect.getPoint()) < distanceTo(p)//check if point is before
@@ -807,13 +805,13 @@ public class Point extends Vector3 implements Position {
 	 * @param coord 
 	 */
 	private void setFromCoord(final Coordinate coord) {
-		x = coord.getX() * RenderBlock.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0);
-		y = coord.getY() * RenderBlock.GAME_DIAGLENGTH2;
-		z = coord.getZ() * RenderBlock.GAME_EDGELENGTH;
+		x = coord.getX() * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0);
+		y = coord.getY() * RenderCell.GAME_DIAGLENGTH2;
+		z = coord.getZ() * RenderCell.GAME_EDGELENGTH;
 	}
 
 	public boolean isObstacle() {
-		return RenderBlock.isObstacle(getBlockId());
+		return RenderCell.isObstacle(getBlockId());
 	}
 
 }

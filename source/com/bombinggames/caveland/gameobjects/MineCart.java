@@ -17,9 +17,9 @@ import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH2;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH2;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -76,9 +76,9 @@ public class MineCart extends MovableEntity implements Interactable {
 		back.setSaveToDisk(false);
 		back.setName("MineCart Back");
 		//back = new SimpleEntity((byte) 42,(byte) 1);
-		//back.spawn(getPosition().cpy().add(0, RenderBlock.GAME_DIAGLENGTH2, 0));//the back is located in back
+		//back.spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		back.setSaveToDisk(false);
-		front = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 1).spawn(getPosition().cpy().add(0, RenderBlock.GAME_DIAGLENGTH2, 0));//the back is located in back
+		front = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 1).spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSaveToDisk(false);
 		front.setName("MineCart Front");
 	}
@@ -100,7 +100,7 @@ public class MineCart extends MovableEntity implements Interactable {
 				lightsource.setPosition(getPosition().cpy());
 			}
 			
-			lightsource.getPosition().set(getPosition()).add(0, 0, RenderBlock.GAME_EDGELENGTH2);
+			lightsource.getPosition().set(getPosition()).add(0, 0, RenderCell.GAME_EDGELENGTH2);
 			lightsource.update(dt);
 
 			//on rails?
@@ -165,18 +165,17 @@ public class MineCart extends MovableEntity implements Interactable {
 				//the thing moved now put it back on the track
 //				float percentageOfCurve = 0;
 //				getPosition().y
-				//percentageOfCurve += getMovementHor().len()*RenderBlock.GAME_EDGELENGTH/(Math.PI*RenderBlock.GAME_EDGELENGTH2);//divide by quaarter of circle outline
+				//percentageOfCurve += getMovementHor().len()*RenderCell.GAME_EDGELENGTH/(Math.PI*RenderCell.GAME_EDGELENGTH2);//divide by quaarter of circle outline
 				//left or right side offset
 						int offset = -1;
 						if (value== 5) {
 							offset = 1;
 						}
 						Vector3 circularVec = getPosition().cpy().sub(//0P
-							getPosition().toCoord().toPoint().add(offset*RenderBlock.GAME_DIAGLENGTH2, 0, 0)//0C
-						).nor().scl(RenderBlock.GAME_EDGELENGTH2);//movement is on radius of half of the block
+getPosition().toCoord().toPoint().add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)//0C
+						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
-						pos.setPositionRelativeToCoord(
-							circularVec.add(offset*RenderBlock.GAME_DIAGLENGTH2, 0, 0)
+						pos.setPositionRelativeToCoord(circularVec.add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)
 						);
 						break;
 					case 2:
@@ -193,11 +192,10 @@ public class MineCart extends MovableEntity implements Interactable {
 							offset = -1;
 						}
 						circularVec = getPosition().cpy().sub(//0P
-							getPosition().toCoord().toPoint().add(0, offset*RenderBlock.GAME_DIAGLENGTH2, 0)//0C
-						).nor().scl(RenderBlock.GAME_EDGELENGTH2);//movement is on radius of half of the block
+getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)//0C
+						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
-						pos.setPositionRelativeToCoord(
-							circularVec.add(0, offset*RenderBlock.GAME_DIAGLENGTH2, 0)
+						pos.setPositionRelativeToCoord(circularVec.add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)
 						);
 						break;
 				}
@@ -456,7 +454,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private void checkCollisionInFront() {
 		if (getSpeed() > 0) {
 			ArrayList<MovableEntity> entitiesInFront;
-			entitiesInFront = getPosition().cpy().add(getOrientation().scl(80)).getEntitiesNearby(RenderBlock.GAME_EDGELENGTH2, MovableEntity.class);
+			entitiesInFront = getPosition().cpy().add(getOrientation().scl(80)).getEntitiesNearby(RenderCell.GAME_EDGELENGTH2, MovableEntity.class);
 			for (MovableEntity ent : entitiesInFront) {
 				if (this != ent) {//don't collide with itself
 					ent.setMovement(

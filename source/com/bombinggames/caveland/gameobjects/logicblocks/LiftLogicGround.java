@@ -9,7 +9,7 @@ import com.bombinggames.caveland.gameobjects.LiftBasket;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -41,13 +41,13 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 	@Override
 	public void update(float dt) {
 		//does not create a basket only connects
-		ArrayList<LiftBasket> possibleBaskets = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_EDGELENGTH, LiftBasket.class);
+		ArrayList<LiftBasket> possibleBaskets = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH, LiftBasket.class);
 		if (!possibleBaskets.isEmpty()) {
 			basket = possibleBaskets.get(0);
 		}
 
 		//stop at ground
-		if (basket != null && basket.getMovementDir() < 0 && basket.isOnGround() && getPosition().distanceToHorizontal(basket) < RenderBlock.GAME_EDGELENGTH) {
+		if (basket != null && basket.getMovementDir() < 0 && basket.isOnGround() && getPosition().distanceToHorizontal(basket) < RenderCell.GAME_EDGELENGTH) {
 			basket.setMovementDir(0);
 		}
 
@@ -73,7 +73,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 		//clear entry
 		int groundBlock = getPosition().cpy().goToNeighbour(5).add(0, 0, 1).getBlock();
-		if ((groundBlock&255) != 0 && RenderBlock.isObstacle(groundBlock)) {
+		if ((groundBlock&255) != 0 && RenderCell.isObstacle(groundBlock)) {
 			getPosition().cpy().goToNeighbour(5).add(0, 0, 1).destroy();
 		}
 	}
@@ -90,7 +90,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 			return;
 		}
 
-		ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_EDGELENGTH * 2, ExitPortal.class);
+		ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
 		if (!possibleExitPortals.isEmpty()) {
 			try {
 				if (!possibleExitPortals.get(0).getTarget().isInMemoryAreaHorizontal()) {
@@ -109,7 +109,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 	private void toggleBasket(AbstractEntity actor) {
 		//start
-		if (basket.getMovementDir() == 0 && getPosition().distanceToHorizontal(basket) < RenderBlock.GAME_EDGELENGTH) {
+		if (basket.getMovementDir() == 0 && getPosition().distanceToHorizontal(basket) < RenderCell.GAME_EDGELENGTH) {
 			basket.setMovementDir(1);
 
 			if (actor instanceof MovableEntity) {

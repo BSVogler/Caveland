@@ -11,7 +11,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  *
@@ -53,7 +53,7 @@ public class TFlint extends Collectible implements Interactable {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		sparksGenerator.spawn(point.cpy().add(0, 0, RenderBlock.GAME_EDGELENGTH*0.8f));
+		sparksGenerator.spawn(point.cpy().add(0, 0, RenderCell.GAME_EDGELENGTH*0.8f));
 		return this;
 	}
 	
@@ -66,7 +66,7 @@ public class TFlint extends Collectible implements Interactable {
 		if (!shouldBeDisposed()) {
 			sparksGenerator.setActive(lit);
 			if (lit) {
-				sparksGenerator.getPosition().set(getPosition()).add(0, 0, RenderBlock.GAME_EDGELENGTH*0.8f);
+				sparksGenerator.getPosition().set(getPosition()).add(0, 0, RenderCell.GAME_EDGELENGTH*0.8f);
 				timer-=dt;
 			}
 			if (timer <= 0) {

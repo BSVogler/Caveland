@@ -41,7 +41,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
 /**
@@ -75,7 +75,7 @@ public class LiftBasket extends MovableEntity {
 
 		if (hasPosition()) {
 
-			if (leavingPassenger != null && leavingPassenger.getPosition().distanceTo(this) > RenderBlock.GAME_EDGELENGTH) {
+			if (leavingPassenger != null && leavingPassenger.getPosition().distanceTo(this) > RenderCell.GAME_EDGELENGTH) {
 				leavingPassenger = null;
 			}
 
@@ -97,14 +97,14 @@ public class LiftBasket extends MovableEntity {
 				} else if (movementDir < 0//moving down
 					&& !getPosition().isObstacle()//may be a problem if chunk not yet loaded, todo
 					) {
-					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_EDGELENGTH * 2, Portal.class);
+					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, Portal.class);
 					if (!possibleExitPortals.isEmpty()) {
 						possibleExitPortals.get(0).teleport(this);
 					}
 				}
 			} else //underworld
-			 if (getPosition().z > RenderBlock.GAME_EDGELENGTH * 9) {
-					ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_EDGELENGTH * 2, ExitPortal.class);
+			 if (getPosition().z > RenderCell.GAME_EDGELENGTH * 9) {
+					ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
 					if (!possibleExitPortals.isEmpty()) {
 						possibleExitPortals.get(0).teleport(this);
 					} else {
@@ -123,7 +123,7 @@ public class LiftBasket extends MovableEntity {
 				}
 			} else {
 				//enter with minecart
-				ArrayList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(RenderBlock.GAME_EDGELENGTH2, MineCart.class);
+				ArrayList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH2, MineCart.class);
 				if (!possibleMineCart.isEmpty()) {
 					setPassenger(possibleMineCart.get(0));
 				}
@@ -190,7 +190,7 @@ public class LiftBasket extends MovableEntity {
 		setHidden(true);
 		if (back == null) {
 			back = new SimpleEntity((byte) 25, (byte) 0);
-			back.setDimensionZ(RenderBlock.GAME_EDGELENGTH * 2);
+			back.setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
 			back.setName("Lift Basket Back");
 			back.setSaveToDisk(false);
 		}
@@ -199,7 +199,7 @@ public class LiftBasket extends MovableEntity {
 		if (front == null) {
 			front = new SimpleEntity((byte) 25, (byte) 1);
 			front.setName("Lift Basket front");
-			front.setDimensionZ(RenderBlock.GAME_EDGELENGTH * 2);
+			front.setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
 			front.setSaveToDisk(false);
 		}
 
@@ -210,7 +210,7 @@ public class LiftBasket extends MovableEntity {
 			}
 
 			back.getPosition().set(getPosition());
-			back.getPosition().y -= RenderBlock.GAME_DIAGLENGTH2;
+			back.getPosition().y -= RenderCell.GAME_DIAGLENGTH2;
 
 			if (!front.hasPosition()) {
 				front.spawn(getPosition().cpy());

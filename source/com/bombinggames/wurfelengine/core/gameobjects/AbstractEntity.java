@@ -36,9 +36,9 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_DIAGLENGTH2;
-import static com.bombinggames.wurfelengine.core.map.rendering.RenderBlock.GAME_EDGELENGTH;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_DIAGLENGTH2;
+import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -596,7 +596,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		if (position!=null) {
 			Coordinate coord = getCoord();
 			coord.add(0, 0, -1);//go one down because the ents are added one too high
-			RenderBlock block;
+			RenderCell block;
 //			block = rs.getBlock(coord);//draw block in this cell first
 //			if (block != null) {
 //				res.add(block);

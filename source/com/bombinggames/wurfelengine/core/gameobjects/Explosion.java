@@ -10,7 +10,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
 /**
@@ -72,7 +72,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 					Coordinate coord = point.toCoord().add(x, y, z);
    					int intdamage = (int) (damage
 						* (1 - getPosition().distanceToSquared(coord)
-						/ (radius * radius * RenderBlock.GAME_EDGELENGTH * RenderBlock.GAME_EDGELENGTH)));
+						/ (radius * radius * RenderCell.GAME_EDGELENGTH * RenderCell.GAME_EDGELENGTH)));
 					if (intdamage > 0) {
 						if (intdamage > 100) {
 							intdamage = 100; //clamp so it's under 127 to avoid byte overflow
@@ -92,7 +92,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 					for (MovableEntity ent : list) {
 						intdamage = (int) (damage
 						* (1 - getPosition().distanceToSquared(ent)
-						/ (radius * radius * RenderBlock.GAME_EDGELENGTH * RenderBlock.GAME_EDGELENGTH)));
+						/ (radius * radius * RenderCell.GAME_EDGELENGTH * RenderCell.GAME_EDGELENGTH)));
 						intdamage*=1.2;//entities should break a little easier
 						if (intdamage > 100) {
 							intdamage = 100; //clamp so it's under 127 to avoid byte overflow

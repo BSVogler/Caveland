@@ -50,7 +50,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.LoadMenu;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -79,7 +79,7 @@ public class GameView implements GameManager {
         //font.scale(-0.5f);
         
         //load sprites
-        RenderBlock.loadSheet();
+        RenderCell.loadSheet();
     }
 	
 	/**
@@ -447,11 +447,10 @@ public class GameView implements GameManager {
 		if (cameras.size() > 0) {
 			Point p = screenToGameBasic(x, y);
 			//find point at top of map
-			float deltaZ = Chunk.getGameHeight() - RenderBlock.GAME_EDGELENGTH - p.getZ();
+			float deltaZ = Chunk.getGameHeight() - RenderCell.GAME_EDGELENGTH - p.getZ();
 			p.add(0, deltaZ * Point.SQRT2, deltaZ);//top of map
 
-			return p.rayMarching(
-				new Vector3(0, -1, -RenderBlock.ZAXISSHORTENING),//shoot in viewing direction, can not find correct vector: todo. Was -Point.SQRT12
+			return p.rayMarching(new Vector3(0, -1, -RenderCell.ZAXISSHORTENING),//shoot in viewing direction, can not find correct vector: todo. Was -Point.SQRT12
 				Float.POSITIVE_INFINITY,
 				this,
 				null

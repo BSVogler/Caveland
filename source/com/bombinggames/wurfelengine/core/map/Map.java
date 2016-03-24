@@ -46,7 +46,7 @@ import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.Generators.AirGenerator;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -366,7 +366,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @see
 	 * #setBlock(com.bombinggames.wurfelengine.Core.Gameobjects.RenderBlock)
 	 */
-	public void setBlock(final RenderBlock block) {
+	public void setBlock(final RenderCell block) {
 		getChunkContaining(block.getPosition()).setBlock(block);
 	}
 
@@ -442,12 +442,11 @@ public class Map implements IndexedGraph<PfNode> {
 	 */
 	public Chunk getChunkContaining(Point point) {
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) point.getX(), RenderBlock.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) point.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) point.getX(), RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) point.getY(), RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(
-			point.getX() % RenderBlock.GAME_DIAGLENGTH,
-			point.getY() % RenderBlock.GAME_DIAGLENGTH
+		switch (Coordinate.getNeighbourSide(point.getX() % RenderCell.GAME_DIAGLENGTH,
+			point.getY() % RenderCell.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -726,7 +725,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public Point getCenter() {
-		return getCenter(Chunk.getBlocksZ() * RenderBlock.GAME_EDGELENGTH / 2);
+		return getCenter(Chunk.getBlocksZ() * RenderCell.GAME_EDGELENGTH / 2);
 	}
 
 	/**

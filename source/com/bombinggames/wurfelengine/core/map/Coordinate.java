@@ -41,7 +41,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
@@ -140,14 +140,12 @@ public class Coordinate implements Position {
 	 * @see #toCoord()
 	 */
 	public Coordinate setFromPoint(Point from) {
-		set(
-			Math.floorDiv((int) from.getX(), RenderBlock.GAME_DIAGLENGTH),
-			Math.floorDiv((int) from.getY(), RenderBlock.GAME_DIAGLENGTH) * 2 + 1,
-			Math.floorDiv((int) from.getZ(), RenderBlock.GAME_EDGELENGTH)
+		set(Math.floorDiv((int) from.getX(), RenderCell.GAME_DIAGLENGTH),
+			Math.floorDiv((int) from.getY(), RenderCell.GAME_DIAGLENGTH) * 2 + 1,
+			Math.floorDiv((int) from.getZ(), RenderCell.GAME_EDGELENGTH)
 		);
-		return goToNeighbour(Coordinate.getNeighbourSide(
-			from.getX() % RenderBlock.GAME_DIAGLENGTH,
-			from.getY() % RenderBlock.GAME_DIAGLENGTH
+		return goToNeighbour(Coordinate.getNeighbourSide(from.getX() % RenderCell.GAME_DIAGLENGTH,
+			from.getY() % RenderCell.GAME_DIAGLENGTH
 		));
 	}
 
@@ -361,31 +359,31 @@ public class Coordinate implements Position {
 	public static int getNeighbourSide(float x, float y) {
 		//modulo
 		if (y < 0) {
-			y += RenderBlock.GAME_DIAGLENGTH;
+			y += RenderCell.GAME_DIAGLENGTH;
 		}
 		if (x < 0) {
-			x += RenderBlock.GAME_DIAGLENGTH;
+			x += RenderCell.GAME_DIAGLENGTH;
 		}
 
 		int result = 8;//standard result
-		if (x + y <= RenderBlock.GAME_DIAGLENGTH2) {
+		if (x + y <= RenderCell.GAME_DIAGLENGTH2) {
 			result = 7;
 		}
-		if (x - y >= RenderBlock.GAME_DIAGLENGTH2) {
+		if (x - y >= RenderCell.GAME_DIAGLENGTH2) {
 			if (result == 7) {
 				result = 0;
 			} else {
 				result = 1;
 			}
 		}
-		if (x + y >= 3 * RenderBlock.GAME_DIAGLENGTH2) {
+		if (x + y >= 3 * RenderCell.GAME_DIAGLENGTH2) {
 			if (result == 1) {
 				result = 2;
 			} else {
 				result = 3;
 			}
 		}
-		if (-x + y >= RenderBlock.GAME_DIAGLENGTH2) {
+		if (-x + y >= RenderCell.GAME_DIAGLENGTH2) {
 			switch (result) {
 				case 3:
 					result = 4;
@@ -460,9 +458,9 @@ public class Coordinate implements Position {
 	@Override
 	public Point toPoint() {
 		return new Point(
-			x * RenderBlock.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0),
-			y * RenderBlock.GAME_DIAGLENGTH2,
-			z * RenderBlock.GAME_EDGELENGTH
+			x * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0),
+			y * RenderCell.GAME_DIAGLENGTH2,
+			z * RenderCell.GAME_EDGELENGTH
 		);
 	}
 
@@ -503,14 +501,14 @@ public class Coordinate implements Position {
 
 	@Override
 	public int getViewSpcX() {
-		return x * RenderBlock.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
+		return x * RenderCell.VIEW_WIDTH //x-coordinate multiplied by the projected size in x direction
 			//+ AbstractGameObject.VIEW_WIDTH2 //add half tile for center
-			+ (y % 2 != 0 ? RenderBlock.VIEW_WIDTH2 : 0); //offset by y
+			+ (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0); //offset by y
 	}
 
 	@Override
 	public int getViewSpcY() {
-		return -y * RenderBlock.VIEW_DEPTH2 + z * RenderBlock.VIEW_HEIGHT;
+		return -y * RenderCell.VIEW_DEPTH2 + z * RenderCell.VIEW_HEIGHT;
 	}
 
 	@Override
@@ -580,7 +578,7 @@ public class Coordinate implements Position {
 			} else {
 				Controller.getMap().setHealth(this, (byte) (getHealth() - amount));
 			}
-			if (getHealth() <= 0 && !RenderBlock.isIndestructible(block, (byte)0)) {
+			if (getHealth() <= 0 && !RenderCell.isIndestructible(block, (byte)0)) {
 				//broadcast event that this block got destroyed
 				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
 				setBlock(0);
@@ -708,7 +706,7 @@ public class Coordinate implements Position {
 	 * @param rs
 	 * @return can return null
 	 */
-	public RenderBlock getRenderBlock(RenderStorage rs) {
+	public RenderCell getRenderBlock(RenderStorage rs) {
 		if (z < 0) {
 			return null;
 		} else if (z >= Chunk.getBlocksZ()) {
@@ -727,7 +725,7 @@ public class Coordinate implements Position {
 	 * @param vertex
 	 */
 	public void addLight(GameView view, Side side, int vertex, Color color) {
-		RenderBlock rB = getRenderBlock(view.getRenderStorage());
+		RenderCell rB = getRenderBlock(view.getRenderStorage());
 		if (rB != null && !rB.isHidden()) {
 			view.getRenderStorage().setLightFlag(rB);
 			rB.addLightlevel(color.r, side, 0, vertex);
@@ -751,7 +749,7 @@ public class Coordinate implements Position {
 			goToNeighbour(6).addLight(view, side, 2, color);
 			goToNeighbour(3);//go back
 		} else {
-			RenderBlock neighb = getRenderBlock(view.getRenderStorage());
+			RenderCell neighb = getRenderBlock(view.getRenderStorage());
 			if (neighb != null && !neighb.isHidden()) {
 				//view.getRenderStorage().setLightFlag(rB); //in the way this algorthm is used this line is not needed
 				neighb.addLightlevel(color.r, side, 0, 0);
@@ -772,12 +770,11 @@ public class Coordinate implements Position {
 
 	boolean contains(Point point) {
 		//bloated in-place code to avoid heap call with toCoord()
-		int xCoord = Math.floorDiv((int) point.x, RenderBlock.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) point.y, RenderBlock.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int xCoord = Math.floorDiv((int) point.x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) point.y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
 		//find the specific coordinate (detail)
-		switch (Coordinate.getNeighbourSide(
-			point.x % RenderBlock.GAME_DIAGLENGTH,
-			point.y % RenderBlock.GAME_DIAGLENGTH
+		switch (Coordinate.getNeighbourSide(point.x % RenderCell.GAME_DIAGLENGTH,
+			point.y % RenderCell.GAME_DIAGLENGTH
 		)) {
 			case 0:
 				yCoord -= 2;
@@ -809,7 +806,7 @@ public class Coordinate implements Position {
 				break;
 		}
 
-		return !(Math.floorDiv((int) point.z, RenderBlock.GAME_EDGELENGTH) != z
+		return !(Math.floorDiv((int) point.z, RenderCell.GAME_EDGELENGTH) != z
 			|| xCoord != x
 			|| yCoord != y);
 	}

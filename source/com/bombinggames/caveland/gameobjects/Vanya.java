@@ -13,7 +13,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -57,7 +57,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 		if (hasPosition()) {
 			//destroy nearby vanyas
-			getPosition().getEntitiesNearby(10 * RenderBlock.GAME_EDGELENGTH, Vanya.class).forEach((Object t) -> {
+			getPosition().getEntitiesNearby(10 * RenderCell.GAME_EDGELENGTH, Vanya.class).forEach((Object t) -> {
 				if (!t.equals(this)) {
 					((AbstractEntity) t).dispose();
 				}
@@ -118,7 +118,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 			//look at players
 			if (nextWaypoint == null) {
-				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * RenderBlock.GAME_EDGELENGTH, Ejira.class);
+				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * RenderCell.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
 					Vector3 vecToEjira = ejiraList.get(0).getPosition().cpy().sub(getPosition());
 					setSpeedHorizontal(0);
@@ -131,7 +131,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 			}
 
 			//check if players steped on next part of the tutorial
-//			ArrayList<Ejira> players = getPosition().getEntitiesNearby(RenderBlock.GAME_EDGELENGTH * 10, Ejira.class);
+//			ArrayList<Ejira> players = getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH * 10, Ejira.class);
 //			for (Ejira player : players) {
 //				if (player.getPosition().toCoord().getX() > -3 && player.getPosition().toCoord().getY() > 9) {
 //					goTo(new Coordinate(0, 11, 5));
@@ -164,9 +164,9 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 	}
 	
 	private boolean reachedWaypoint(){
-		return getPosition().distanceToHorizontal(nextWaypoint.getPos()) > RenderBlock.GAME_EDGELENGTH / 4
+		return getPosition().distanceToHorizontal(nextWaypoint.getPos()) > RenderCell.GAME_EDGELENGTH / 4
 				||
-			(isFloating() && getPosition().distanceTo(nextWaypoint.getPos()) > RenderBlock.GAME_EDGELENGTH / 4 );
+			(isFloating() && getPosition().distanceTo(nextWaypoint.getPos()) > RenderCell.GAME_EDGELENGTH / 4 );
 	}
 
 	@Override

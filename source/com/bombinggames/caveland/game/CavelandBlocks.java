@@ -21,7 +21,7 @@ import com.bombinggames.wurfelengine.core.map.CustomBlocks;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
 /**
@@ -280,12 +280,12 @@ public class CavelandBlocks implements CustomBlocks {
 	
 	//overwrites
 	@Override
-	public RenderBlock toRenderBlock(byte id, byte value) {
+	public RenderCell toRenderBlock(byte id, byte value) {
 		if (id == 1) {
 			GrassBlock grass = new GrassBlock(id, value);
 			return grass;
 		} else if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
-			RenderBlock iO = new RenderBlock(id, value);
+			RenderCell iO = new RenderCell(id, value);
 			if (value> 0){
 				iO.setSpriteId((byte) 3);
 			}
@@ -295,7 +295,7 @@ public class CavelandBlocks implements CustomBlocks {
 		} else if (id == CLBlocks.CONSTRUCTIONSITE.id) {
 			return new ConstructionSiteRender(id, value);
 		}else {
-			return new RenderBlock(id, value);
+			return new RenderCell(id, value);
 		}
 	}
 

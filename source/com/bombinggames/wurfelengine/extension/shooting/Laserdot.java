@@ -33,7 +33,7 @@ package com.bombinggames.wurfelengine.extension.shooting;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
@@ -67,11 +67,10 @@ public class Laserdot extends SimpleEntity {
 	public void update(Vector3 aimDir, Point origin) {
 		if (hasPosition() && !aimDir.isZero()) {
 			
-			Intersection raycast = origin.rayMarching(
-				aimDir,
+			Intersection raycast = origin.rayMarching(aimDir,
 				12,
 				null,
-				(Byte t) -> !RenderBlock.isTransparent(t,(byte) 0) && t != ignoreId
+				(Byte t) -> !RenderCell.isTransparent(t,(byte) 0) && t != ignoreId
 			);
 			setHidden(raycast == null);
 			if (raycast != null && raycast.getPoint() != null) {

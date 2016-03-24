@@ -42,7 +42,7 @@ import com.bombinggames.wurfelengine.extension.shooting.Weapon;
  *
  * @author Benedikt
  */
-public class PlayerWithWeapon extends MovableEntity {
+public class UserControlledMovableEntity extends MovableEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,7 +55,7 @@ public class PlayerWithWeapon extends MovableEntity {
 	 * @param spritesPerDir
 	 * @param height
 	 */
-	public PlayerWithWeapon(int spritesPerDir, int height) {
+	public UserControlledMovableEntity(int spritesPerDir, int height) {
 		super((byte) 30, spritesPerDir);
 
 		setObstacle(true);

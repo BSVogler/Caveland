@@ -1400,4 +1400,9 @@ public class RenderCell extends AbstractGameObject {
 		return Controller.getMap().getHealth(coord);
 	}
 
+	@Override
+	public String toString() {
+		return Integer.toHexString(hashCode())+" @"+getPosition().toString()+" id: "+ id+" value: "+value;
+	}
+
 }

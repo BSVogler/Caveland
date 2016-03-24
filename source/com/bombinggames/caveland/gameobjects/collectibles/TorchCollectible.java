@@ -64,11 +64,6 @@ public class TorchCollectible extends Collectible implements Interactable {
 	}
 	
 	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-	
-	@Override
 	public boolean interactableOnlyWithPickup() {
 		return true;
 	}

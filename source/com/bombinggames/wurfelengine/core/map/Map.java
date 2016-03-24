@@ -61,7 +61,7 @@ import java.util.logging.Logger;
  *
  * @author Benedikt Vogler
  */
-public class Map implements Cloneable, IndexedGraph<PfNode> {
+public class Map implements IndexedGraph<PfNode> {
 
 	private static Generator defaultGenerator = new AirGenerator();
 
@@ -853,11 +853,6 @@ public class Map implements Cloneable, IndexedGraph<PfNode> {
 	 */
 	public boolean isModified() {
 		return modified;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 
 	@Override

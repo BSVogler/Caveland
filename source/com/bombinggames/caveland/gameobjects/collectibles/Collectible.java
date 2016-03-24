@@ -114,11 +114,6 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		return !preventPickup && (timeParentBlocked < 0 || !parent.equals(lastParent));
 	}
 
-	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return new Collectible(this);
-	}
-
 	/**
 	 * some movement effect
 	 */

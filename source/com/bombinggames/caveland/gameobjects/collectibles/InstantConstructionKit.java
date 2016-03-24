@@ -265,9 +265,4 @@ public class InstantConstructionKit extends Collectible implements Interactable 
 	public boolean interactableOnlyWithPickup() {
 		return true;
 	}
-
-	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
 }

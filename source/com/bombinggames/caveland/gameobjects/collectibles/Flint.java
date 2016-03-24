@@ -1,8 +1,8 @@
 package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
 
 /**
@@ -29,11 +29,6 @@ public class Flint extends Collectible {
 	public Flint(Flint flint) {
 		super(flint);
 		setFriction(2000);
-	}
-
-	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return new Flint(this);
 	}
 
 	@Override

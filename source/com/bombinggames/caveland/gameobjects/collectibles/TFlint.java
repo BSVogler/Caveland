@@ -6,12 +6,12 @@ import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.gameobjects.Interactable;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 
 /**
  *
@@ -80,11 +80,6 @@ public class TFlint extends Collectible implements Interactable {
 		}
 	}
 	
-	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return new TFlint(this);
-	}
-
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
 		WE.SOUND.play("hiss", getPosition());

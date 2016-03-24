@@ -115,10 +115,4 @@ public class ConstructionKit extends Collectible implements Interactable {
 	public boolean interactable() {
 		return true;
 	}
-
-	@Override
-	public Collectible clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-	
 }

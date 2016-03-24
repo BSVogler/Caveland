@@ -104,6 +104,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	private char category = 'e';
 	private boolean useRawDelta = false;
 	private float mass = 0.4f;
+	private LinkedList<AbstractGameObject> covered = new LinkedList<>();
 	/**
 	 * Create an abstractEntity.
 	 *
@@ -592,42 +593,46 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	
 	@Override
 	public LinkedList<AbstractGameObject> getCovered(RenderStorage rs) {
-		LinkedList<AbstractGameObject> res = new LinkedList<>();
-		if (position!=null) {
+		covered.clear();
+		if (position != null) {
 			Coordinate coord = getCoord();
 			coord.add(0, 0, -1);//go one down because the ents are added one too high
 			RenderCell block;
 //			block = rs.getCell(coord);//draw block in this cell first
 //			if (block != null) {
-//				res.add(block);
+//				covered.add(block);
 //			}
 //			block = rs.getCell(coord.goToNeighbour(7));//block behind left
 //			if (block != null) {
-//				res.add(block);
+//				covered.add(block);
 //			}
 //			block = rs.getCell(coord.goToNeighbour(1));//block behind
 //			if (block != null) {
-//				res.add(block);
+//				covered.add(block);
 //			}
 //			block = rs.getCell(coord.goToNeighbour(3));//block behind right
 //			if (block != null) {
-//				res.add(block);
+//				covered.add(block);
 //			}
 //			coord.goToNeighbour(5);
 
 			//render this ent before blocks below
-			if (coord.getZ() > 0) {
-//				if (block != null) {
-//					res.add(block);
-//				}
-				block = rs.getCell(coord.add(0, 0, -1).goToNeighbour(4));//front right
-				if (block != null) {
-					res.add(block);
+			if (coord.getZ()<3){
+				covered.add(rs.getCell(coord));
+			} else {
+				if (coord.getZ() > 0) {
+	//				if (block != null) {
+	//					covered.add(block);
+	//				}
+					block = rs.getCell(coord.add(0, 0, -1).goToNeighbour(4));//front
+					if (block != null) {
+						covered.add(block);
+					}
 				}
-				
 			}
+				
 		}
-		return res;
+		return covered;
 	}
 
 	@Override

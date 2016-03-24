@@ -193,7 +193,7 @@ public class Point extends Vector3 implements Position {
 	
    @Override
 	public byte getBlockId() {
-		return (byte) (getBlock()%255);
+		return (byte) (getBlock()&255);
 	}
 	
 	public int getBlock(){

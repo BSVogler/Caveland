@@ -63,7 +63,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	}
 	
 	/**
-	 * Register a class of entities.
+	 * Register a class of entities. The class must have a constructor without parameters.
 	 * @param name the name of the entitie. e.g. "Ball"
 	 * @param entityClass the class you want to register
 	 */

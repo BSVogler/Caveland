@@ -36,8 +36,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -50,22 +48,20 @@ public class EntityDrawable extends TextureRegionDrawable {
 	/**
 	 *
 	 * @param type
+	 * @throws java.lang.InstantiationException
+	 * @throws java.lang.IllegalAccessException
 	 */
-	public EntityDrawable(Class<? extends AbstractEntity> type) {
-		try {
-			instance = type.newInstance();
-			if (instance.getSpriteId() > 0) {
-				//if bigger then default sprite size
-				float spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
-				float regularHeight = RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH;
-				if (spiteHeight > regularHeight) {
-					scaling = (regularHeight / spiteHeight);
-				}
+	public EntityDrawable(Class<? extends AbstractEntity> type) throws InstantiationException, IllegalAccessException {
+		instance = type.newInstance();
+		if (instance.getSpriteId() > 0) {
+			//if bigger then default sprite size
+			float spiteHeight = AbstractGameObject.getSprite('e', instance.getSpriteId(), instance.getSpriteValue()).packedHeight;
+			float regularHeight = RenderBlock.VIEW_HEIGHT+RenderBlock.VIEW_DEPTH;
+			if (spiteHeight > regularHeight) {
+				scaling = (regularHeight / spiteHeight);
 			}
-			instance.setScaling(scaling*0.5f);
-		} catch (InstantiationException | IllegalAccessException ex) {
-			Logger.getLogger(EntityDrawable.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		instance.setScaling(scaling*0.5f);
 	}
 
 	@Override
@@ -146,6 +142,6 @@ public class EntityDrawable extends TextureRegionDrawable {
      */
     @Override
     public float getMinWidth() {
-        return RenderBlock.VIEW_WIDTH*(instance.getScaling());
+		return RenderBlock.VIEW_WIDTH*(instance.getScaling());
     }
 }

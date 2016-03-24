@@ -40,6 +40,8 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderBlock;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A table containing all blocks where you can choose your block.
@@ -124,13 +126,17 @@ public class PlacableTable extends Table {
 				for (Map.Entry<String, Class<? extends AbstractEntity>> entry
 					: AbstractEntity.getRegisteredEntities().entrySet()
 				) {
-					add(
-						new PlacableItem(
-							new EntityDrawable(entry.getValue()),
-							new EntityListener(entry.getKey(), entry.getValue(), foundItems)
-						)
-					);
-
+					try {
+						add(
+							new PlacableItem(
+								new EntityDrawable(entry.getValue()),
+								new EntityListener(entry.getKey(), entry.getValue(), foundItems)
+							)
+						);
+					} catch (InstantiationException | IllegalAccessException ex) {
+						Gdx.app.error(this.getClass().getName(), "Please make sure that every registered entity has a construcor without arguments");
+						Logger.getLogger(PlacableTable.class.getName()).log(Level.SEVERE, null, ex);
+					}
 					foundItems++;
 					if (foundItems % 4 == 0) {
 						row();//make new row

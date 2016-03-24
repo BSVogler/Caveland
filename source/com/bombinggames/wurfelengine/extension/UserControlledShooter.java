@@ -90,7 +90,8 @@ public class UserControlledShooter extends MovableEntity implements Controllable
 	 */
 	@Override
 	public void jump() {
-		jump(5, true);
+		if (isOnGround())
+			jump(5, true);
 	}
 
 	/**

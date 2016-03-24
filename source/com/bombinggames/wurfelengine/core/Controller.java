@@ -307,11 +307,20 @@ public class Controller implements GameManager {
 			devtools = null;
 		}
 
+		
+	}
+	
+	public void showCursor(){
 		if (!cursor.hasPosition()) {
 			cursor.spawn(
 				new Point(0, 0, Chunk.getBlocksZ() - 1)
 			);
 		}
+		cursor.setHidden(false);
+	}
+	
+	public void hideCursor(){
+		cursor.setHidden(true);
 	}
 
 	/**

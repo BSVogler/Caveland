@@ -244,13 +244,13 @@ public class GameView implements GameManager {
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
+		controller.hideCursor();
+		
 		//enable cameras
 		for (Camera camera : cameras) {
 			camera.setActive(true);
 		}
 		
-		//renderstorage.refresh();
-
 		if (WE.SOUND != null) {
 			WE.SOUND.setView(this);
 		}
@@ -263,6 +263,7 @@ public class GameView implements GameManager {
 
 		//restore gameSpeed
 		WE.getCVars().get("timespeed").setValue(gameSpeed);
+		
 		onEnter();
 	}
 	

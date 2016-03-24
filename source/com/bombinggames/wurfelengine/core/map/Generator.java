@@ -42,7 +42,7 @@ public interface Generator {
      * @param x absolute coord
      * @param y absolute coord
      * @param z absolute coord
-     * @return the block which belongs to the given coordinates
+     * @return the block which belongs to the given coordinates. first byte id, second byte value
      */
     public abstract int generate(int x, int y, int z);   
 	

@@ -33,13 +33,13 @@ package com.bombinggames.wurfelengine.extension.shooting;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
- *
+ * Uses sprite e22-0
  * @author Benedikt Vogler
  */
 public class Laserdot extends SimpleEntity {

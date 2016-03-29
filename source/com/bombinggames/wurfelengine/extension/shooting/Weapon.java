@@ -38,11 +38,11 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.AimBand;
 
 /**

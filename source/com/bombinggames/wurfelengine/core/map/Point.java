@@ -55,6 +55,13 @@ public class Point extends Vector3 implements Position {
 	private static final long serialVersionUID = 2L;
 
 	/**
+	 * Creates a point refering to a position in the game world. Points at 0,0,0.
+	 */
+	public Point() {
+	}
+
+	
+	/**
 	 * Creates a point refering to a position in the game world.
 	 *
 	 * @param posX The distance from the left border of the map (game space)

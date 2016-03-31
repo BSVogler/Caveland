@@ -170,7 +170,7 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Loads a map.
+	 * Loads a map. Loads map and save cvars.
 	 *
 	 * @param name if available on disk it will load the meta file
 	 * @param generator the generator used for generating new chunks

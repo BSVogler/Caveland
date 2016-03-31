@@ -38,6 +38,7 @@ import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import com.bombinggames.wurfelengine.mapeditor.CursorInfo;
 
 /**
  *The seletion indicator in the level editor.
@@ -47,24 +48,30 @@ public class Cursor extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
     private final SimpleEntity normal;
     private Side normalSide;
+	private CursorInfo selDet;
     
     /**
      *
+	 * @param selDet
      */
     public Cursor() {
         super((byte) 13);
 		setSaveToDisk(false);
 		setName("selectionEntity");
-        
+		
         normal = new SimpleEntity((byte) 14);
 		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
 		normal.setUseRawDelta(true);
-		normal.enableShadow();
+		//normal.enableShadow();
 		normal.setAnimation(anim);
         normal.setLightlevel(10);
 		normal.setSaveToDisk(false);
 		normal.setName("normal");
     }
+	
+	public void setInfo(CursorInfo selDet){
+		this.selDet = selDet;
+	}
 
 	@Override
 	public AbstractEntity spawn(Point point) {
@@ -79,13 +86,15 @@ public class Cursor extends AbstractEntity {
 	
     @Override
     public void setPosition(Point pos) {
-        super.setPosition( pos.toCoord());
+		Coordinate coord = pos.toCoord();
+        super.setPosition( coord);
         setHidden(getPosition().getZ() < 0);//hide if is under map
-		Point isectP = pos.toPoint();
+		Point isectP = pos.cpy();
 		if (normalSide == Side.TOP) {
 			isectP.setZ((isectP.getZGrid() + 1) * RenderCell.GAME_EDGELENGTH);
 		}
-        normal.setPosition(isectP);
+        normal.getPosition().set(isectP);
+		selDet.updateFrom(pos.getBlock(), coord);
     }
         
     /**

@@ -34,10 +34,15 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.Command;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -46,6 +51,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  * A toolbar for the editor.
@@ -54,7 +60,9 @@ import com.bombinggames.wurfelengine.core.map.Point;
  */
 public class Toolbar extends Window {
 
-	private final Cursor cursor;
+	PlacableTable getTableLeft() {
+		return leftTable;
+	}
 
 	/**
 	 * a enum listing the available tools
@@ -123,36 +131,37 @@ public class Toolbar extends Window {
 		public boolean selectFromEntities() {
 			return selectFromEntities;
 		}
-		
+
 		/**
 		 * Get the action when the tool is used in a command object.
+		 *
 		 * @param view
 		 * @param cursor
 		 * @param placableGUI
 		 * @return
 		 */
-		public Command getCommand(GameView view, Cursor cursor, SelectionDetails placableGUI){
+		public Command getCommand(GameView view, Cursor cursor, PlacableTable placableGUI) {
 			switch (this) {
 				case DRAW:
 					return new Command() {
 						private Coordinate coord;
 						private int previous;
 						private int block;
-						
-						public void init(){
-							
+
+						public void init() {
+
 						}
-						
+
 						@Override
 						public void execute() {
-							if (coord==null) {
+							if (coord == null) {
 								coord = cursor.getCoordInNormalDirection();
 								block = placableGUI.getBlock();
 								previous = coord.getBlock();
 							}
 							Controller.getMap().setBlock(coord, block);
 						}
-						
+
 						@Override
 						public void undo() {
 							Controller.getMap().setBlock(coord, previous);
@@ -163,17 +172,17 @@ public class Toolbar extends Window {
 						private Coordinate coord;
 						private int previous;
 						private int block;
-						
+
 						@Override
 						public void execute() {
-							if (coord==null) {
+							if (coord == null) {
 								coord = cursor.getPosition().toCoord();
 								block = placableGUI.getBlock();
 								previous = coord.getBlock();
 							}
 							Controller.getMap().setBlock(coord, block);
 						}
-						
+
 						@Override
 						public void undo() {
 							Controller.getMap().setBlock(coord, previous);
@@ -183,7 +192,7 @@ public class Toolbar extends Window {
 					return new Command() {
 						private AbstractEntity ent = null;
 						private Point point;
-						
+
 						@Override
 						public void execute() {
 							if (point == null) {
@@ -193,7 +202,7 @@ public class Toolbar extends Window {
 							ent = placableGUI.getEntity();
 							ent.spawn(point.cpy());
 						}
-						
+
 						@Override
 						public void undo() {
 							ent.dispose();
@@ -208,7 +217,7 @@ public class Toolbar extends Window {
 
 						@Override
 						public void execute() {
-							if (coord==null) {
+							if (coord == null) {
 								coord = cursor.getPosition().toCoord();
 								previous = coord.getBlock();
 							}
@@ -224,38 +233,40 @@ public class Toolbar extends Window {
 		}
 	}
 
-	private Tool selectionLeft = Tool.DRAW;
-	private Tool selectionRight = Tool.ERASE;
+	private final Cursor cursor;
 
+	private Tool selectionLeft = Tool.DRAW;
+	private final Tool selectionRight = Tool.ERASE;
+	private PlacableTable table;
+	private final Slider slider;
 	private final GameView view;
 
 	private final Image[] items = new Image[Tool.values().length];
 	private final PlacableTable leftTable;
-	private final PlacableTable rightTable;
-	
+
 	/**
 	 * creates a new toolbar
 	 *
 	 * @param view
 	 * @param sprites
-	 * @param left
-	 * @param right
 	 * @param cursor
+	 * @param stage
 	 */
-	public Toolbar(GameView view, TextureAtlas sprites, PlacableTable left, PlacableTable right, Cursor cursor) {
+	public Toolbar(GameView view, TextureAtlas sprites, Cursor cursor, Stage stage) {
 		super("Tools", WE.getEngineView().getSkin());
-		
+
 		this.view = view;
-		this.leftTable = left;
-		this.rightTable = right;
 		this.cursor = cursor;
-		
+
 		setPosition(
 			view.getStage().getWidth() / 2 - items.length * 50 / 2,
 			view.getStage().getHeight() - 100
 		);
 		setWidth(Tool.values().length * 25);
 		setHeight(45);
+
+		this.leftTable = new PlacableTable(this);
+        stage.addActor(leftTable);
 		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
@@ -266,24 +277,17 @@ public class Toolbar extends Window {
 
 		//initialize selection
 		if (selectionLeft.selectFromBlocks) { //show entities on leftTable
-			left.showBlocks(view);
-		} else {//show blocks on leftTable
-			if (selectionLeft.selectFromEntities) {
-				left.showEntities(view);
-			} else {
-				left.hide(true);
-			}
+			leftTable.showBlocks(view);
+		} else if (selectionLeft.selectFromEntities) {//show blocks on leftTable
+			leftTable.showEntities(view);
+		} else {
+			leftTable.hide();
 		}
 
-		if (selectionRight.selectFromBlocks) { //show entities on leftTable
-			right.showBlocks(view);
-		} else { //show blocks on leftTable
-			if (selectionRight.selectFromEntities) {
-				right.showEntities(view);
-			} else {
-				right.hide(true);
-			}
-		}
+		slider = new Slider(-1, RenderCell.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
+		slider.setPosition(0, 20);
+		slider.addListener(new ChangeListenerImpl(this));
+		addActor(slider);
 	}
 
 	/**
@@ -322,13 +326,14 @@ public class Toolbar extends Window {
 	public Tool getRightTool() {
 		return selectionRight;
 	}
-	
+
 	/**
 	 * select a tool
+	 *
 	 * @param left
-	 * @param tool 
+	 * @param tool
 	 */
-	public void selectTool(boolean left, Tool tool){
+	public void selectTool(boolean left, Tool tool) {
 		selectionLeft = tool;
 		if (left) {
 			if (tool.selectFromBlocks) { //show entities on leftTable
@@ -337,21 +342,15 @@ public class Toolbar extends Window {
 				if (tool.selectFromEntities) {
 					this.leftTable.showEntities(view);
 				} else {
-					this.leftTable.hide(true);
+					this.leftTable.hide();
 				}
 			}
 			cursor.showNormal(tool.showNormal);
-		} else {
-			if (tool.selectFromBlocks) { //show entities on leftTable
-				rightTable.showBlocks(view);
-			} else { //show blocks on leftTable
-				if (tool.selectFromEntities) {
-					rightTable.showEntities(view);
-				} else {
-					rightTable.hide(true);
-				}
-			}
 		}
+	}
+
+	byte getValue() {
+		return (byte) (slider.getValue() * RenderCell.VALUESNUM);
 	}
 
 	//class to detect clicks
@@ -373,6 +372,21 @@ public class Toolbar extends Window {
 
 			return true;
 		}
+	}
 
+	private static class ChangeListenerImpl extends ChangeListener {
+
+		private final Toolbar parent;
+
+		ChangeListenerImpl(Toolbar parent) {
+			this.parent = parent;
+		}
+
+		@Override
+		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+			if (((ProgressBar) actor).getValue() > -1) {
+				parent.table.setValue((byte) ((ProgressBar) actor).getValue());
+			}
+		}
 	}
 }

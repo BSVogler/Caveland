@@ -50,32 +50,31 @@ import java.util.logging.Logger;
  */
 public class PlacableTable extends Table {
 
-	private final SelectionDetails placableGUI;
-
 	private boolean placeBlocks = true;
+	/**
+	 * list position
+	 */
 	private byte selected;
+	private byte id;
+	private byte value;
+	private Class<? extends AbstractEntity> entityClass;
 	/**
 	 * stores the block drawables
 	 */
 	private final ArrayList<BlockDrawable> blockDrawables = new ArrayList<>(40);
+	
+	private Toolbar parent;
 
 	/**
 	 *
-	 * @param colorGUI the linked preview of the selection
-	 * @param left
+	 * @param parent
 	 */
-	public PlacableTable(SelectionDetails colorGUI, boolean left) {
-		this.placableGUI = colorGUI;
-
+	public PlacableTable(Toolbar parent) {
 		setWidth(400);
-		setHeight(Gdx.graphics.getHeight()*0.80f);
+		setHeight(Gdx.graphics.getHeight() * 0.80f);
 		setY(10);
-
-		if (left) {
-			setX(30);
-		} else {
-			setX(1480);
-		}
+		setX(30);
+		this.parent = parent;
 	}
 
 	/**
@@ -84,7 +83,6 @@ public class PlacableTable extends Table {
 	 */
 	public void show(GameView view) {
 		if (!isVisible()) {
-			placableGUI.setVisible(true);
 			setVisible(true);
 		}
 
@@ -148,20 +146,14 @@ public class PlacableTable extends Table {
 
 	/**
 	 *
-	 * @param includingSelection including the colro selection gui
 	 */
-	public void hide(boolean includingSelection) {
+	public void hide() {
 		if (hasChildren()) {
 			clear();
 		}
 
 		if (isVisible()) {
-			placableGUI.moveToBorder(placableGUI.getWidth() + 100);
 			setVisible(false);
-		}
-
-		if (includingSelection) {
-			placableGUI.hide();
 		}
 	}
 
@@ -171,7 +163,6 @@ public class PlacableTable extends Table {
 	 */
 	protected void showBlocks(GameView view) {
 		placeBlocks = true;
-		placableGUI.setMode(placeBlocks);
 		clearChildren();
 		show(view);
 	}
@@ -182,9 +173,8 @@ public class PlacableTable extends Table {
 	 */
 	protected void showEntities(GameView view) {
 		placeBlocks = false;
-		placableGUI.setMode(placeBlocks);
-		if (placableGUI.getEntity() == null) {//no init value for entity
-			placableGUI.setEntity(
+		if (getEntity() == null) {//no init value for entity
+			setEntity(
 				AbstractEntity.getRegisteredEntities().keySet().iterator().next(),
 				AbstractEntity.getRegisteredEntities().values().iterator().next()
 			);
@@ -196,11 +186,11 @@ public class PlacableTable extends Table {
 
 	/**
 	 * selects the item //TODO needs more generic method including entities
-	 * @param id the id of the listener
+	 * @param pos the pos of the listener
 	 */
-	void selectBlock(byte id) {
-		if (id <= getChildren().size) {
-			selected = id;
+	void selectBlock(byte pos) {
+		if (pos <= getChildren().size) {
+			selected = pos;
 			for (Actor c : getChildren()) {
 				c.setScale(0.35f);
 			}
@@ -214,6 +204,63 @@ public class PlacableTable extends Table {
 	 */
 	void setValue(byte value) {
 		blockDrawables.get(selected).setValue(value);
+	}
+	
+	/**
+	 * Trys returning a new instance of a selected entity class.
+	 * @return if it fails returns null 
+	 */
+	public AbstractEntity getEntity(){
+		if (entityClass == null) return null;
+		try {
+			AbstractEntity ent = entityClass.newInstance();
+			if (parent.getValue()>-1)
+				ent.setSpriteValue(parent.getValue());
+			return ent;
+		} catch (InstantiationException | IllegalAccessException ex) {
+			Logger.getLogger(CursorInfo.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	/**
+	 * Sets the current color to this entity class.
+	 * @param name name which gets displayed
+	 * @param entclass
+	 */
+	public void setEntity(String name, Class<? extends AbstractEntity> entclass) {
+		entityClass = entclass;
+		//label.setText(name);
+	}
+	
+	private void setId(byte id) {
+		this.id = id;
+	}
+	/**
+	 *
+	 * @return
+	 */
+	public byte getId() {
+		return id;
+	}
+		
+	/**
+	 *
+	 * @return
+	 */
+	public byte getValue() {
+		return value;
+	}
+	
+	public int getBlock(){
+		return (value<<8)+id;
+	}
+
+	void select(byte blockId, byte blockValue) {
+//		for (Actor ch : getChildren()) {
+//			((PlacableItem) ch).getget(id);
+//		}
+//		selectBlock(id);
 	}
 
 	/**
@@ -242,7 +289,7 @@ public class PlacableTable extends Table {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			placableGUI.setEntity(name, entclass);
+			setEntity(name, entclass);
 			if (id <= getChildren().size) {
 				for (Actor c : getChildren()) {
 					c.setScale(0.5f);
@@ -275,7 +322,7 @@ public class PlacableTable extends Table {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-			placableGUI.setId(blockId);
+			PlacableTable.this.setId(blockId);
 			selectBlock(id);
 		}
 	}

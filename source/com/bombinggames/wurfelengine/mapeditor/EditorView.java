@@ -81,10 +81,7 @@ public class EditorView extends GameView implements Telegraph {
     private final Vector2 camermove = new Vector2(); 
     
     private final Navigation nav = new Navigation();
-    private PlacableTable leftTable;
-	private SelectionDetails leftColorGUI;
-	private PlacableTable rightTable;
-	private SelectionDetails rightColorGUI;
+	private CursorInfo cursorInfo;
 	
 	private Toolbar toolSelection;
 	private boolean selecting = false;
@@ -134,17 +131,11 @@ public class EditorView extends GameView implements Telegraph {
 		
         addCamera(camera);
 		
-		leftColorGUI = new SelectionDetails(getStage(), this.controller.getCursor(), true);
-		getStage().addActor(leftColorGUI);
-        leftTable = new PlacableTable(leftColorGUI, true);
-		leftColorGUI.setTable(leftTable);
-        getStage().addActor(leftTable);
+		cursorInfo = new CursorInfo(getStage(), this.controller.getCursor());
+		this.controller.getCursor().setInfo(cursorInfo);
 		
-		rightColorGUI = new SelectionDetails(getStage(), this.controller.getCursor(), false);
-		getStage().addActor(rightColorGUI);
-        rightTable = new PlacableTable(rightColorGUI, false);
-        getStage().addActor(rightTable);
-
+		getStage().addActor(cursorInfo);
+		
         //setup GUI
         TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
         
@@ -171,7 +162,7 @@ public class EditorView extends GameView implements Telegraph {
         if (Controller.getLightEngine() != null)
             Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 		
-		toolSelection = new Toolbar(this, spritesheet, leftTable, rightTable, controller.getCursor());
+		toolSelection = new Toolbar(this, spritesheet, controller.getCursor(), getStage());
 		getStage().addActor(toolSelection);
     }
 
@@ -474,12 +465,11 @@ public class EditorView extends GameView implements Telegraph {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			buttondown = button;
 			cursor.update(view, screenX, screenY);
-			leftColorGUI.update(cursor);
 			Coordinate coords = cursor.getPosition().toCoord();
             
 			//pipet
 			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
-				leftColorGUI.setBlock(coords.getBlockId(), coords.getBlockValue());
+				toolSelection.getTableLeft().select(coords.getBlockId(), coords.getBlockValue());
             } else {
 				Tool toolUsed;
 				
@@ -492,12 +482,12 @@ public class EditorView extends GameView implements Telegraph {
 				switch (toolUsed){
 					case DRAW:
 						dragLayer = cursor.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft()));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft()));
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -511,7 +501,7 @@ public class EditorView extends GameView implements Telegraph {
 						}
 						break;
 					case SPAWN:
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, leftColorGUI)
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft())
 						);
 						break;
 				}
@@ -524,7 +514,6 @@ public class EditorView extends GameView implements Telegraph {
 			buttondown = -1;
 
 			cursor.update(view, screenX, screenY);
-			leftColorGUI.update(cursor);
 			Coordinate coords = cursor.getPosition().toCoord();
 
 			Tool toggledTool;
@@ -561,7 +550,6 @@ public class EditorView extends GameView implements Telegraph {
         @Override
         public boolean touchDragged(int screenX, int screenY, int pointer) {
 			cursor.update(view, screenX, screenY);
-			leftColorGUI.update(cursor);
 
 			//dragging selection?
 			if (WE.getEngineView().getCursor() == 2) {
@@ -593,7 +581,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (coords.getBlockId() == 0) {
-						Controller.getMap().setBlock(coords, leftColorGUI.getId(),leftColorGUI.getValue());
+						Controller.getMap().setBlock(coords, toolSelection.getTableLeft().getId(),toolSelection.getTableLeft().getValue());
 					}
 				}
 			}
@@ -605,7 +593,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlockId(coords) != 0) {
-						Controller.getMap().setBlock(coords, leftColorGUI.getId(), leftColorGUI.getValue());
+						Controller.getMap().setBlock(coords, toolSelection.getTableLeft().getId(), toolSelection.getTableLeft().getValue());
 					}
 				}
 			}
@@ -618,8 +606,6 @@ public class EditorView extends GameView implements Telegraph {
         @Override
         public boolean mouseMoved(int screenX, int screenY) {
             cursor.update(view, screenX, screenY);
-            leftColorGUI.update(cursor);
-			rightColorGUI.update(cursor);
 			
 			AbstractEntity entityUnderMouse = null;
 			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting){
@@ -696,8 +682,8 @@ public class EditorView extends GameView implements Telegraph {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
 						new Coordinate(x, y, from.getZ()),
-						leftColorGUI.getId(),
-						leftColorGUI.getValue()
+						toolSelection.getTableLeft().getId(),
+						toolSelection.getTableLeft().getValue()
 					);
 				}
 			}

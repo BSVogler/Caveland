@@ -192,7 +192,7 @@ public class EditorView extends GameView implements Telegraph {
 	 * @param x2 view space
 	 * @param y2 view space
 	 */
-	public void select(int x1, int y1, int x2, int y2) {
+	public void selectEntities(int x1, int y1, int x2, int y2) {
 		//1 values are the smaller ones, make sure that this is the case
 		if (x2 < x1) {
 			int tmp = x1;
@@ -507,7 +507,7 @@ public class EditorView extends GameView implements Telegraph {
 							selecting = true;
 							selectDownX = screenX;
 							selectDownY = screenY;
-							select((int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera), (int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera));
+							selectEntities((int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera), (int) screenXtoView(screenX, camera), (int) screenYtoView(screenY, camera));
 						}
 						break;
 					case SPAWN:
@@ -578,7 +578,7 @@ public class EditorView extends GameView implements Telegraph {
 					ent.getPosition().add(screenX - lastX, (screenY - lastY) * 2, 0);
 				}
 			} else if (selecting) {//currently selecting
-				select(
+				selectEntities(
 					(int) screenXtoView(selectDownX, camera),
 					(int) screenYtoView(selectDownY, camera),
 					(int) screenXtoView(screenX, camera),

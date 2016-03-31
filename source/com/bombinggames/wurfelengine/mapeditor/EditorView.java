@@ -361,7 +361,7 @@ public class EditorView extends GameView implements Telegraph {
         public boolean keyDown(int keycode) {
             //manage camera speed
             if (keycode == Keys.SHIFT_LEFT)
-                view.setCameraSpeed(1);
+                view.setCameraSpeed(2);
 
 			if (keycode == Keys.G)
 				WE.switchView(gameplayView, false);

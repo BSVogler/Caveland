@@ -813,9 +813,9 @@ public class Point extends Vector3 implements Position {
 	 * Set x,y,z based on a coordinate.
 	 * @param coord 
 	 */
-	private void setFromCoord(final Coordinate coord) {
-		x = coord.getX() * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0);
-		y = coord.getY() * RenderCell.GAME_DIAGLENGTH2;
+	public void setFromCoord(final Coordinate coord) {
+		x = coord.getX() * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0)+RenderCell.GAME_DIAGLENGTH2;
+		y = coord.getY() * RenderCell.GAME_DIAGLENGTH2+RenderCell.GAME_DIAGLENGTH2;
 		z = coord.getZ() * RenderCell.GAME_EDGELENGTH;
 	}
 

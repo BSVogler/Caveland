@@ -637,6 +637,7 @@ public class Console {
 					WE.getCVarsMap().setSaveCVars(new CVarSystemSave(
 						new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/save" + path.substring(path.indexOf(':') + 1) + "/meta.wecvar")
 					));
+					//todo overwrites currently loaded cvars
 					WE.getCVarsSave().load();
 				}
 			}

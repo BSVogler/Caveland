@@ -71,16 +71,16 @@ public class Controller implements GameManager {
 	}
 
 	/**
-	 * Tries loading a map.
+	 * Tries loading a new map instance.
 	 *
 	 * @param path
 	 * @param saveslot this saveslot will become the active
 	 * @return returns true if the map could be loaded and false if it failed
 	 */
 	public static boolean loadMap(File path, int saveslot) {
+		//dispose old instance
 		if (map != null) {
 			map.dispose(false);
-			//if loading another map, save linked objects
 		}
 		try {
 			map = new Map(path, saveslot);

@@ -180,6 +180,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 */
 	public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
+		this.generator = generator;
+		//init data array
 		chunkDim = WE.getCVars().getValueI("mapIndexSpaceSize");
 		data = new Chunk[chunkDim][];
 		for (int i = 0; i < data.length; i++) {
@@ -188,9 +190,9 @@ public class Map implements IndexedGraph<PfNode> {
 		int maxChunks = WE.getCVars().getValueI("mapMaxMemoryUse") / (Chunk.getBlocksX()*Chunk.getBlocksY()*Chunk.getBlocksZ()*3); //
 		loadedChunks = new ArrayList<>(maxChunks);
 		WE.getCVars().get("loadedMap").setValue(name.getName());
-		this.generator = generator;
+		
+		//load map cvars
 		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
-
 		WE.getCVars().setMapCVars(mapCVars);
 		mapCVars.load();
 
@@ -203,7 +205,7 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Updates Ïmostly the entities.
+	 * Updates amostly the entities.
 	 *
 	 * @param dt time in ms
 	 */
@@ -614,7 +616,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * uses a specific save slot for loading and saving the map. Loads the save
 	 * cvars.
 	 *
-	 * @param slot
+	 * @param slot slot number
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;

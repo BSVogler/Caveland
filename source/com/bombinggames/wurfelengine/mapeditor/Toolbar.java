@@ -246,6 +246,9 @@ public class Toolbar extends Window {
 		super("Tools", WE.getEngineView().getSkin());
 		
 		this.view = view;
+		this.leftTable = left;
+		this.rightTable = right;
+		this.cursor = cursor;
 		
 		setPosition(
 			view.getStage().getWidth() / 2 - items.length * 50 / 2,
@@ -254,10 +257,6 @@ public class Toolbar extends Window {
 		setWidth(Tool.values().length * 25);
 		setHeight(45);
 		
-		this.leftTable = left;
-		this.rightTable = right;
-		this.cursor = cursor;
-
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
 			items[i].setPosition(i * 25, 2);

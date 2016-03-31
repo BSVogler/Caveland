@@ -1,6 +1,7 @@
 package com.bombinggames.caveland.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
@@ -36,7 +37,8 @@ public class CLGameController extends Controller implements Telegraph {
 	@Override
 	public void init() {
 		super.init();
-
+		
+		MessageManager.getInstance().addListener(this, Events.mapReloaded.getId());
 		Gdx.app.log("CustomGameController", "Initializing");
 		
 		setLightEngine(new CustomLightEngine());

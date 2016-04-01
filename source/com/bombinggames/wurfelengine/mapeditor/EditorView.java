@@ -469,7 +469,7 @@ public class EditorView extends GameView implements Telegraph {
             
 			//pipet
 			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
-				toolSelection.getTableLeft().select(coords.getBlockId(), coords.getBlockValue());
+				toolSelection.getTable().select(coords.getBlockId(), coords.getBlockValue());
             } else {
 				Tool toolUsed;
 				
@@ -482,12 +482,12 @@ public class EditorView extends GameView implements Telegraph {
 				switch (toolUsed){
 					case DRAW:
 						dragLayer = cursor.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft()));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable()));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft()));
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable()));
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -501,7 +501,7 @@ public class EditorView extends GameView implements Telegraph {
 						}
 						break;
 					case SPAWN:
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTableLeft())
+						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable())
 						);
 						break;
 				}
@@ -581,7 +581,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (coords.getBlockId() == 0) {
-						Controller.getMap().setBlock(coords, toolSelection.getTableLeft().getId(),toolSelection.getTableLeft().getValue());
+						Controller.getMap().setBlock(coords, toolSelection.getTable().getId(),toolSelection.getTable().getValue());
 					}
 				}
 			}
@@ -593,7 +593,7 @@ public class EditorView extends GameView implements Telegraph {
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0) {
 					if (Controller.getMap().getBlockId(coords) != 0) {
-						Controller.getMap().setBlock(coords, toolSelection.getTableLeft().getId(), toolSelection.getTableLeft().getValue());
+						Controller.getMap().setBlock(coords, toolSelection.getTable().getId(), toolSelection.getTable().getValue());
 					}
 				}
 			}
@@ -682,8 +682,8 @@ public class EditorView extends GameView implements Telegraph {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
 						new Coordinate(x, y, from.getZ()),
-						toolSelection.getTableLeft().getId(),
-						toolSelection.getTableLeft().getValue()
+						toolSelection.getTable().getId(),
+						toolSelection.getTable().getValue()
 					);
 				}
 			}

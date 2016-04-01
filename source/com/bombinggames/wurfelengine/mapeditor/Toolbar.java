@@ -39,8 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bombinggames.wurfelengine.Command;
@@ -59,10 +58,6 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
  * @author Benedikt Vogler
  */
 public class Toolbar extends Window {
-
-	PlacableTable getTableLeft() {
-		return leftTable;
-	}
 
 	/**
 	 * a enum listing the available tools
@@ -238,11 +233,10 @@ public class Toolbar extends Window {
 	private Tool selectionLeft = Tool.DRAW;
 	private final Tool selectionRight = Tool.ERASE;
 	private PlacableTable table;
-	private final Slider slider;
+	private final TextField valuesActor;
 	private final GameView view;
 
 	private final Image[] items = new Image[Tool.values().length];
-	private final PlacableTable leftTable;
 
 	/**
 	 * creates a new toolbar
@@ -263,31 +257,35 @@ public class Toolbar extends Window {
 			view.getStage().getHeight() - 100
 		);
 		setWidth(Tool.values().length * 25);
-		setHeight(45);
+		setHeight(90);
 
-		this.leftTable = new PlacableTable(this);
-        stage.addActor(leftTable);
+		this.table = new PlacableTable(this);
+        stage.addActor(table);
 		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
-			items[i].setPosition(i * 25, 2);
+			items[i].setPosition(i * 25, 40);
 			items[i].addListener(new ToolSelectionListener(Tool.values()[i]));
 			addActor(items[i]);
 		}
+		//row();
 
 		//initialize selection
 		if (selectionLeft.selectFromBlocks) { //show entities on leftTable
-			leftTable.showBlocks(view);
+			table.showBlocks(view);
 		} else if (selectionLeft.selectFromEntities) {//show blocks on leftTable
-			leftTable.showEntities(view);
+			table.showEntities(view);
 		} else {
-			leftTable.hide();
+			table.hide();
 		}
 
-		slider = new Slider(-1, RenderCell.VALUESNUM - 1, 1, false, WE.getEngineView().getSkin());
-		slider.setPosition(0, 20);
-		slider.addListener(new ChangeListenerImpl(this));
-		addActor(slider);
+		valuesActor = new TextField("1", WE.getEngineView().getSkin());
+		valuesActor.setWidth(30);
+		valuesActor.setPosition(2, 2);
+		valuesActor.setMaxLength(1+RenderCell.VALUESNUM/100);
+		valuesActor.setTextFieldFilter((TextField textField, char c) -> Character.isDigit(c));
+		valuesActor.addListener(new ChangeListenerImpl(this));
+		addActor(valuesActor);
 	}
 
 	/**
@@ -326,6 +324,14 @@ public class Toolbar extends Window {
 	public Tool getRightTool() {
 		return selectionRight;
 	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	PlacableTable getTable() {
+		return table;
+	}
 
 	/**
 	 * select a tool
@@ -337,20 +343,34 @@ public class Toolbar extends Window {
 		selectionLeft = tool;
 		if (left) {
 			if (tool.selectFromBlocks) { //show entities on leftTable
-				this.leftTable.showBlocks(view);
-			} else {//show blocks on leftTable
-				if (tool.selectFromEntities) {
-					this.leftTable.showEntities(view);
-				} else {
-					this.leftTable.hide();
-				}
+				this.table.showBlocks(view);
+			} else if (tool.selectFromEntities) { //show blocks on leftTable
+				this.table.showEntities(view);
+			} else {
+				this.table.hide();
 			}
 			cursor.showNormal(tool.showNormal);
 		}
 	}
 
-	byte getValue() {
-		return (byte) (slider.getValue() * RenderCell.VALUESNUM);
+	/**
+	 * Get the value of the text field.
+	 * @return -1 if invalid number
+	 */
+	private byte getValue() {
+		if (valuesActor.getText().isEmpty()) {
+			return -1;
+		}
+		byte value;
+		try {
+			value = (byte) (Byte.valueOf(valuesActor.getText()));
+		} catch (NumberFormatException ex) {
+			return -1;
+		}
+		if (value > RenderCell.VALUESNUM || value < 0) {
+			return -1;
+		}
+		return value;
 	}
 
 	//class to detect clicks
@@ -384,8 +404,12 @@ public class Toolbar extends Window {
 
 		@Override
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-			if (((ProgressBar) actor).getValue() > -1) {
-				parent.table.setValue((byte) ((ProgressBar) actor).getValue());
+			//only send value to table if valid
+			if (parent.getValue() > -1) {
+				parent.table.setValue(parent.getValue());
+			}
+			if (parent.valuesActor.getText().length() > 1) {
+				parent.valuesActor.selectAll();
 			}
 		}
 	}

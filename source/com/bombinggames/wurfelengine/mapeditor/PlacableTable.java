@@ -203,6 +203,7 @@ public class PlacableTable extends Table {
 	 * @param value 
 	 */
 	void setValue(byte value) {
+		this.value = value;
 		blockDrawables.get(selected).setValue(value);
 	}
 	
@@ -211,11 +212,14 @@ public class PlacableTable extends Table {
 	 * @return if it fails returns null 
 	 */
 	public AbstractEntity getEntity(){
-		if (entityClass == null) return null;
+		if (entityClass == null) {
+			return null;
+		}
 		try {
 			AbstractEntity ent = entityClass.newInstance();
-			if (parent.getValue()>-1)
-				ent.setSpriteValue(parent.getValue());
+			if (value > -1) {
+				ent.setSpriteValue(value);
+			}
 			return ent;
 		} catch (InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(CursorInfo.class.getName()).log(Level.SEVERE, null, ex);

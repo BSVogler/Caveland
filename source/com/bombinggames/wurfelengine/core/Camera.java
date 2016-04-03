@@ -58,7 +58,7 @@ import java.util.LinkedList;
  *
  * @author Benedikt Vogler
  */
-public class Camera{
+public class Camera {
 
 	/**
 	 * top limit in game space

@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.basicmainmenu;
+package com.bombinggames.wurfelengine.extension.basicmainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -66,7 +66,7 @@ public class MenuView {
 	protected MenuView(MenuController controller) {
 		this.controller = controller;
 		//load textures
-		lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/Core/BasicMainMenu/Images/Lettering.png")));
+		lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/lettering.png")));
 		lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth()) / 2);
 		lettering.setY(Gdx.graphics.getHeight() - 150);
 

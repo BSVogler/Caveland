@@ -52,12 +52,12 @@ import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
-import com.bombinggames.wurfelengine.core.basicmainmenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.core.console.Console;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemRoot;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.extension.basicmainmenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.soundengine.SoundEngine;
 import java.io.File;
 import java.util.ArrayList;
@@ -68,14 +68,14 @@ import java.util.ArrayList;
  * and the API libGDX v1.8.0 (may work with older versions).
  *
  * @author Benedikt S. Vogler
- * @version 1.7.2
+ * @version 1.7.3
  */
 public class WE {
 
 	/**
 	 * The version of the Engine
 	 */
-	public static final String VERSION = "1.7.2";
+	public static final String VERSION = "1.7.3";
 	/**
 	 * the working directory where the config and files are saved
 	 */
@@ -591,7 +591,7 @@ public class WE {
 
 		WurfelEngineIntro() {
 			batch = new SpriteBatch();
-			lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/core/BasicMainMenu/Images/Lettering.png")));
+			lettering = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/wurfelengine/lettering.png")));
 			lettering.setX((Gdx.graphics.getWidth() - lettering.getWidth()) / 2);
 			lettering.setY((Gdx.graphics.getHeight() - lettering.getHeight()) / 2);
 			startupsound = Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/soundengine/sounds/startup.mp3"));

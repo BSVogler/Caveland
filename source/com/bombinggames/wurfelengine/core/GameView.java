@@ -243,6 +243,9 @@ public class GameView implements GameManager {
 	@Override
 	public final void enter() {
 		Gdx.app.debug("GameView", "Entering");
+		if (!isInitalized()) {
+			Gdx.app.error(this.getClass().toString(), "Called method enter() before initializing.");
+		}
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
 		controller.hideCursor();
 		
@@ -533,7 +536,7 @@ public class GameView implements GameManager {
     }
     
      /**
-     * Returns a camera.
+     * Returns a camera. The first camera is handled as the main camera.
      * @return The virtual cameras rendering the scene
      */
     public ArrayList<Camera> getCameras() {

@@ -59,6 +59,7 @@ import com.bombinggames.wurfelengine.mapeditor.Toolbar.Tool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -69,7 +70,7 @@ public class EditorView extends GameView implements Telegraph {
 	/**
 	 * used for copying data from the current game view
 	 */
-	private GameView gameplayView;
+	private Optional<GameView> gameplayView;
     /**
      * the camera rendering the sceen
      */
@@ -104,7 +105,7 @@ public class EditorView extends GameView implements Telegraph {
         Gdx.app.debug("MEView", "Initializing");
 		
         this.controller = controller;
-        this.gameplayView = oldView;
+        this.gameplayView = Optional.ofNullable(oldView);
 		
 		if (oldView != null) {
 			setRenderStorage(oldView.getRenderStorage());//use the same render storage
@@ -169,7 +170,7 @@ public class EditorView extends GameView implements Telegraph {
 	@Override
     public void onEnter() {
 		controller.showCursor();
-		camera.setCenter(gameplayView.getCameras().get(0).getCenter().cpy());//always keep the camera position
+		gameplayView.ifPresent(t -> {camera.setCenter(t.getCameras().get(0).getCenter().cpy());});//always keep the camera position
         WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();
@@ -354,11 +355,15 @@ public class EditorView extends GameView implements Telegraph {
             if (keycode == Keys.SHIFT_LEFT)
                 view.setCameraSpeed(2);
 
-			if (keycode == Keys.G)
-				WE.switchView(gameplayView, false);
-			
-			if (keycode == Keys.ESCAPE)
-				WE.switchView(gameplayView, false);
+			if (gameplayView.isPresent()) {
+				if (keycode == Keys.G) {
+					WE.switchView(gameplayView.get(), false);
+				}
+
+				if (keycode == Keys.ESCAPE) {
+					WE.switchView(gameplayView.get(), false);
+				}
+			}
 			
 			if (keycode == Keys.E) {
 				moveEntities = 1;
@@ -482,12 +487,12 @@ public class EditorView extends GameView implements Telegraph {
 				switch (toolUsed){
 					case DRAW:
 						dragLayer = cursor.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable()));
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable()));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable()));
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable()));
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -501,7 +506,7 @@ public class EditorView extends GameView implements Telegraph {
 						}
 						break;
 					case SPAWN:
-						getController().executeCommand(toolUsed.getCommand(gameplayView, cursor, toolSelection.getTable())
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable())
 						);
 						break;
 				}

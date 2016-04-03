@@ -1,16 +1,18 @@
 /*
- * Copyright 2014 Benedikt Vogler.
+ * Copyright 2015 Benedikt Vogler.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
+ * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
+ *   visible in an intro screen or main menu.
  * * Redistributions of source code must retain the above copyright notice, 
  *   this list of conditions and the following disclaimer.
  * * Redistributions in binary form must reproduce the above copyright notice, 
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
- * * Neither the name of Bombing Games nor Benedikt Vogler nor the names of its contributors 
+ * * Neither the name of Benedikt Vogler nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software without specific
  *   prior written permission.
  *
@@ -26,9 +28,55 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package com.bombinggames.wurfelengine.extension.basicmainmenu;
+
+import com.badlogic.gdx.Gdx;
 
 /**
- * This package provies a basic main menu to start a game instance.
+ * The controller of the main Menu manages the data.
  *
+ * @author Benedikt
  */
-package com.bombinggames.wurfelengine.core.basicmainmenu;
+public class MenuController {
+
+	private final BasicMenuItem[] menuItems;
+
+	/**
+	 * Creates a new Controller
+	 *
+	 * @param menuItems
+	 */
+	public MenuController(BasicMenuItem[] menuItems) {
+		this.menuItems = menuItems;
+		BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/extension/BasicMainMenu/click2.wav")));
+	}
+
+	/**
+	 * updates screen logic
+	 *
+	 * @param dt
+	 */
+	public void update(float dt) {
+		for (BasicMenuItem basicMenuItem : menuItems) {
+			if (basicMenuItem.isClicked()) {
+				basicMenuItem.action();
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	public void show() {
+
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public BasicMenuItem[] getMenuItems() {
+		return menuItems;
+	}
+
+}

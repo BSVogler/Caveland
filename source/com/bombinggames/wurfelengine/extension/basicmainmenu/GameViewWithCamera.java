@@ -28,55 +28,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.basicmainmenu;
 
-import com.badlogic.gdx.Gdx;
+package com.bombinggames.wurfelengine.extension.basicmainmenu;
+
+import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.GameView;
 
 /**
- * The controller of the main Menu manages the data.
- *
- * @author Benedikt
+ *A simple Controller which adds a camera.
+ * @author Benedikt Vogler
  */
-public class MenuController {
+public class GameViewWithCamera extends GameView {
 
-	private final BasicMenuItem[] menuItems;
-
-	/**
-	 * Creates a new Controller
-	 *
-	 * @param menuItems
-	 */
-	public MenuController(BasicMenuItem[] menuItems) {
-		this.menuItems = menuItems;
-		BasicMenuItem.setSound(Gdx.audio.newSound(Gdx.files.internal("com/bombinggames/wurfelengine/core/BasicMainMenu/click2.wav")));
+	@Override
+	public void init(Controller controller, GameView oldView) {
+		super.init(controller, oldView);
+		addCamera(new Camera(this));
 	}
-
-	/**
-	 * updates screen logic
-	 *
-	 * @param dt
-	 */
-	public void update(float dt) {
-		for (BasicMenuItem basicMenuItem : menuItems) {
-			if (basicMenuItem.isClicked()) {
-				basicMenuItem.action();
-			}
-		}
-	}
-
-	/**
-	 *
-	 */
-	public void show() {
-
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public BasicMenuItem[] getMenuItems() {
-		return menuItems;
-	}
-
 }

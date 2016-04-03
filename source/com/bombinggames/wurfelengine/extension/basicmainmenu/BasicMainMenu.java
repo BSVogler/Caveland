@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.basicmainmenu;
+package com.bombinggames.wurfelengine.extension.basicmainmenu;
 
 import com.bombinggames.wurfelengine.core.AbstractMainMenu;
 import com.bombinggames.wurfelengine.core.Controller;

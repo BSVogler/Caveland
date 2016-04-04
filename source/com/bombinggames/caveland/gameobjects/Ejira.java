@@ -482,6 +482,13 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		}
 	}
 
+	/**
+	 * rotation interpolation
+	 * @param start
+	 * @param end
+	 * @param percent
+	 * @return 
+	 */
 	private Vector2 slerp(Vector2 start, Vector2 end, float percent) {
 		// Dot product - the cosine of the angle between 2 vectors.
 		float dot = start.dot(end);

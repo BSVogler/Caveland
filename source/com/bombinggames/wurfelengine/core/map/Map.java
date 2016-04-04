@@ -896,6 +896,12 @@ public class Map implements IndexedGraph<PfNode> {
 		return Chunk.getBlocksX() * Chunk.getBlocksY();
 	}
 
+	/**
+	 * check wether a chunk is currently being loaded.
+	 * @param chunkX
+	 * @param chunkY
+	 * @return 
+	 */
 	public boolean isLoading(int chunkX, int chunkY) {
 		for (ChunkLoader lR : loadingRunnables) {
 			if (lR.getCoordX() == chunkX && lR.getCoordY() == chunkY) {

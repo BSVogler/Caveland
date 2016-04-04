@@ -39,6 +39,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
+ * Light is per default disabled.
  *
  * @author Benedikt Vogler
  */
@@ -67,9 +68,10 @@ public class ParticleEmitter extends AbstractEntity {
 	public ParticleEmitter() {
 		this(50);
 	}
-	
+
 	/**
 	 * active by default
+	 *
 	 * @param size size of pool
 	 */
 	//public Emitter(Class<MovableEntity> emitterClass) {
@@ -105,7 +107,9 @@ public class ParticleEmitter extends AbstractEntity {
 	@Override
 	public AbstractEntity spawn(Point point) {
 		super.spawn(point);
-		checkLightSource();
+		if (lightsource != null ) {
+			lightsource.setPosition(point.cpy());
+		}
 		return this;
 	}
 
@@ -115,7 +119,7 @@ public class ParticleEmitter extends AbstractEntity {
 
 		if (active && hasPosition()) {
 			setColor(new Color(1, 0, 0, 1));//only important if visible
-			if (lightsource != null && prototype.getType() == ParticleType.FIRE) {
+			if (lightsource != null) {
 				lightsource.setPosition(getPosition());
 				lightsource.update(dt);
 			}
@@ -127,7 +131,7 @@ public class ParticleEmitter extends AbstractEntity {
 				particle.setPool(pool);
 				particle.setType(prototype.getType());
 				particle.getColor().set(prototype.getColor());
-				particle.setRotation((float) (Math.random()*360f));
+				particle.setRotation((float) (Math.random() * 360f));
 				particle.addMovement(
 					startingVector.add(
 						(float) (Math.random() - 0.5f) * 2 * spread.x,
@@ -160,7 +164,6 @@ public class ParticleEmitter extends AbstractEntity {
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
-		checkLightSource();
 	}
 
 	/**
@@ -169,7 +172,6 @@ public class ParticleEmitter extends AbstractEntity {
 	 */
 	public void setPrototype(Particle prototype) {
 		this.prototype = prototype;
-		checkLightSource();
 	}
 
 	/**
@@ -210,30 +212,22 @@ public class ParticleEmitter extends AbstractEntity {
 	}
 
 	/**
-	 * if it can emit light
+	 * If it can emit light.
 	 *
-	 * @param brightness
+	 * @param brightness values &gt; 0 enable the light source. Typicall values
+	 * 0-100
 	 */
 	public void setBrightness(float brightness) {
-		checkLightSource();
-		if (lightsource != null) {
-			lightsource.setBrightness(brightness);
+		if (brightness < 0 && lightsource != null) {
+			lightsource.dispose();
+			lightsource = null;
+			return;
 		}
-	}
-
-	/**
-	 * checks if the config for the light source is okay
-	 */
-	private void checkLightSource() {
-		if (hasPosition() && prototype.getType() == ParticleType.FIRE) {
-			if (lightsource == null) {
-				lightsource = new PointLightSource(Color.YELLOW, 5, 11, WE.getGameplay().getView());
-				lightsource.setPosition(getPosition().cpy());
-			} else {
-				lightsource.getPosition().set(getPosition());
-			}
-			lightsource.enable();
+		if (lightsource == null) {
+			lightsource = new PointLightSource(Color.YELLOW, 5, 11, WE.getGameplay().getView());
 		}
+		lightsource.setBrightness(brightness);
+		lightsource.enable();
 	}
 
 	@Override

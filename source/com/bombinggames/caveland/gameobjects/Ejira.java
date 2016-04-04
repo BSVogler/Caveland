@@ -186,7 +186,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter = new ParticleEmitter(80);
 		emitter.setParticleDelay(7);
 		emitter.setPrototype(particle);
-		emitter.setBrightness(0.1f);
+		//emitter.setBrightness(3.1f);
 		emitter.setActive(false);
 		emitter.setHidden(true);
 		emitter.setSaveToDisk(false);
@@ -195,7 +195,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter2 = new ParticleEmitter(80);
 		emitter2.setParticleDelay(7);
 		emitter2.setPrototype(particle);
-		emitter2.setBrightness(0.1f);
+		emitter2.setBrightness(10.1f);
 		emitter2.setActive(false);
 		emitter2.setHidden(true);
 		emitter2.setSaveToDisk(false);
@@ -450,12 +450,15 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			
 			if (jetpackOn){
 				jetPackTime -= dt;
-			} else if (isOnGround()) {
-				jetPackTime = WE.getCVars().getValueF("jetpackMaxTime");
 			}
 			
-			if (jetPackTime < 0 || isOnGround()){
+			if (jetpackOn && jetPackTime <= 0) {
 				extinguishJetpack();
+			}
+			
+			//refill
+			if ( isOnGround() && jetPackTime <= 0){
+				jetPackTime = WE.getCVars().getValueF("jetpackMaxTime");
 			}
 
 			//update emitter

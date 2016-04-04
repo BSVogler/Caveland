@@ -167,7 +167,7 @@ public class PointLightSource extends AbstractEntity {
 
 		if (enabled && hasPosition()) {
 			//check if moved and therefore has to be recalculated
-			if (lastPos == null || !lastPos.equals(getPosition())) {
+			if (!getPosition().equals(lastPos)) {
 				lightNearbyBlocks(dt);
 			}
 

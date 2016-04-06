@@ -62,7 +62,6 @@ public class EngineView {//is GameView so it can render in game space
 	private OrthographicCamera camera;
     private EditorToggler editorToggler;
 	private ShapeRenderer shRenderer;
-	private OrthographicCamera libGDXcamera;
 	private final SpriteBatch spriteBatch = new SpriteBatch(2000);
 	private Stage stage;
 	private InputProcessor inactiveInpProcssrs;
@@ -70,7 +69,6 @@ public class EngineView {//is GameView so it can render in game space
 	public void init(Controller controller, GameView oldView) {
 		Gdx.app.debug("EngineView","Initializing...");
 		shRenderer = new ShapeRenderer();
-		libGDXcamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //set up font
         //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
         font = new BitmapFont(false);

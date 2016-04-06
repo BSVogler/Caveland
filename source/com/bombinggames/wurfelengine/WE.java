@@ -677,8 +677,7 @@ public class WE {
 				Gdx.app.error("WEMain", "Using a predefined BasicMainMenu.");
 				mainMenu = new BasicMainMenu();
 			}
-			engineView = new EngineView();
-			engineView.init(null, null);
+			engineView = new EngineView(null, null);
 
 			console = new Console(
 				engineView.getSkin(),

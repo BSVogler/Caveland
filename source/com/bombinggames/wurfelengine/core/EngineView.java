@@ -28,7 +28,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.core;
 
 import com.badlogic.gdx.Gdx;
@@ -48,159 +47,168 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.mapeditor.EditorToggler;
 
 /**
- * A view which is not dependend on the currently active game. Singleton.
+ * A view which is not dependend on the currently active game. Only one instance
+ * should be used.
+ *
  * @author Benedikt Vogler
  * @since 1.2.26
  */
 public class EngineView {//is GameView so it can render in game space
-    private BitmapFont font;
-    private Skin skin;
-    private Cursor cursor;
+
+	private final BitmapFont font = new BitmapFont(false);
+	private final Skin skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/core/skin/uiskin.json"));
+	private Cursor cursor;
 	private Cursor cursorDrag;
 	private Cursor cursorPointer;
 	private int cursorId;
-	private OrthographicCamera camera;
-    private EditorToggler editorToggler;
-	private ShapeRenderer shRenderer;
+	private final OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	private final EditorToggler editorToggler = new EditorToggler();
+	private final ShapeRenderer shRenderer = new ShapeRenderer();
 	private final SpriteBatch spriteBatch = new SpriteBatch(2000);
-	private Stage stage;
-	private InputProcessor inactiveInpProcssrs;
-
-	public void init(Controller controller, GameView oldView) {
-		Gdx.app.debug("EngineView","Initializing...");
-		shRenderer = new ShapeRenderer();
-        //set up font
-        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
-        font = new BitmapFont(false);
-        //font.scale(2);
-
-        font.setColor(Color.GREEN);
-        //font.scale(-0.5f);
-        
-        skin = new Skin(Gdx.files.internal("com/bombinggames/wurfelengine/core/skin/uiskin.json"));
-        
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.update();
-        //getSpriteBatch().setProjectionMatrix(camera.combined);
-		//getShapeRenderer().setProjectionMatrix(camera.combined);
-		
-		editorToggler = new EditorToggler();
-		
-		stage = new Stage(
+	private final Stage stage = new Stage(
 			new StretchViewport(
 				Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight()
 			),
 			spriteBatch
-		);//spawn at fullscreen
+		);//spawn at fullscreen;
+	private InputProcessor inactiveInpProcssrs;
+
+	/**
+	 * Iniatializises.
+	 *
+	 * @param controller
+	 * @param oldView
+	 */
+	public EngineView(Controller controller, GameView oldView) {
+		Gdx.app.debug("EngineView", "Initializing...");
+		//set up font
+		//font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
+		//font.scale(2);
+
+		font.setColor(Color.GREEN);
+		//font.scale(-0.5f);
+
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.update();
+		//getSpriteBatch().setProjectionMatrix(camera.combined);
+		//getShapeRenderer().setProjectionMatrix(camera.combined);
+
 		Gdx.input.setInputProcessor(stage);
-		
+
 		//spriteBatch.setProjectionMatrix(libGDXcamera.combined);
 		//shRenderer.setProjectionMatrix(libGDXcamera.combined);
 		//spriteBatch.setTransformMatrix(new Matrix4());//reset transformation
 		//shRenderer.setTransformMatrix(new Matrix4());//reset transformation
 	}
-	
+
 	/**
-     * The libGDX scene2d stage
-     * @return 
-     */
-    public Stage getStage() {
-        return stage;
-    }
+	 * The libGDX scene2d stage
+	 *
+	 * @return
+	 */
+	public Stage getStage() {
+		return stage;
+	}
 
 	public void update(float dt) {
 		editorToggler.setVisible(WE.getCVars().getValueB("editorVisible"));
 		editorToggler.update(this, dt);
 	}
-	
+
 	/**
-     * render in screen space
-     * @return 
-     */
-    public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
-    }
-	
-	 /**
-     * to render in screen space with view space scaling?
-     * @return
-     */
-    public ShapeRenderer getShapeRenderer() {
-        return shRenderer;
-    }
-	
-	   /**
-     * The equalizationScale is a factor which scales the GUI/HUD to have the same relative size with different resolutions.
-     * @return the scale factor
-     */
-    public float getEqualizationScale() {
+	 * render in screen space
+	 *
+	 * @return
+	 */
+	public SpriteBatch getSpriteBatch() {
+		return spriteBatch;
+	}
+
+	/**
+	 * to render in screen space with view space scaling?
+	 *
+	 * @return
+	 */
+	public ShapeRenderer getShapeRenderer() {
+		return shRenderer;
+	}
+
+	/**
+	 * The equalizationScale is a factor which scales the GUI/HUD to have the
+	 * same relative size with different resolutions.
+	 *
+	 * @return the scale factor
+	 */
+	public float getEqualizationScale() {
 		return Gdx.graphics.getWidth() / (int) WE.getCVars().get("renderResolutionWidth").getValue();
-    }
-	
-    /**
-     * Resets the input processors.
-     */
-    public void resetInputProcessors() {
-        Gdx.input.setInputProcessor(getStage());
-        inactiveInpProcssrs = null;
-        addInputProcessor(stage);
-    }
-    
-    /**
-     * Add an inputProcessor to the views.
-     * @param processor 
-     */
-    public void addInputProcessor(final InputProcessor processor){
+	}
+
+	/**
+	 * Resets the input processors.
+	 */
+	public void resetInputProcessors() {
+		Gdx.input.setInputProcessor(getStage());
+		inactiveInpProcssrs = null;
+		addInputProcessor(stage);
+	}
+
+	/**
+	 * Add an inputProcessor to the views.
+	 *
+	 * @param processor
+	 */
+	public void addInputProcessor(final InputProcessor processor) {
 		InputMultiplexer inpMulPlex = new InputMultiplexer(Gdx.input.getInputProcessor());
-        inpMulPlex.addProcessor(processor);
-        Gdx.input.setInputProcessor(inpMulPlex);
-    }
-    
-    /**
-     * Deactivates every input processor but one.
-     * @param processor the processor you want to "filter"
-     * @see #unfocusInputProcessor() 
-     * @since V1.2.21
-     */
-    public void focusInputProcessor(final InputProcessor processor){
-        inactiveInpProcssrs = Gdx.input.getInputProcessor();//save current ones
-        Gdx.input.setInputProcessor(stage); //reset
-        addInputProcessor(processor);//add the focus
-    }
-    
-    /**
-     * Reset that every input processor works again.
-     * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
-     * @since V1.2.21
-     */
-    public void unfocusInputProcessor(){
-        Gdx.input.setInputProcessor(stage); //reset
+		inpMulPlex.addProcessor(processor);
+		Gdx.input.setInputProcessor(inpMulPlex);
+	}
+
+	/**
+	 * Deactivates every input processor but one.
+	 *
+	 * @param processor the processor you want to "filter"
+	 * @see #unfocusInputProcessor()
+	 * @since V1.2.21
+	 */
+	public void focusInputProcessor(final InputProcessor processor) {
+		inactiveInpProcssrs = Gdx.input.getInputProcessor();//save current ones
+		Gdx.input.setInputProcessor(stage); //reset
+		addInputProcessor(processor);//add the focus
+	}
+
+	/**
+	 * Reset that every input processor works again.
+	 *
+	 * @see #focusInputProcessor(com.badlogic.gdx.InputProcessor)
+	 * @since V1.2.21
+	 */
+	public void unfocusInputProcessor() {
+		Gdx.input.setInputProcessor(stage); //reset
 		addInputProcessor(inactiveInpProcssrs);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public BitmapFont getFont() {
-        return font;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public Skin getSkin() {
-        return skin;
-    }
-	
-    /**
-     * 
-	 * @param id 0 default, 1 pointer, 2 drag 
-     */
-    public void setCursor(int id) {
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public BitmapFont getFont() {
+		return font;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public Skin getSkin() {
+		return skin;
+	}
+
+	/**
+	 *
+	 * @param id 0 default, 1 pointer, 2 drag
+	 */
+	public void setCursor(int id) {
 		cursorId = id;
 		switch (id) {
 			case 1:
@@ -227,11 +235,12 @@ public class EngineView {//is GameView so it can render in game space
 				Gdx.graphics.setCursor(cursor);
 				break;
 		}
-    }
+	}
 
 	/**
 	 * returns the current cursor
-	 * @return 0 default, 1 pointer, 2 drag 
+	 *
+	 * @return 0 default, 1 pointer, 2 drag
 	 */
 	public int getCursor() {
 		return cursorId;

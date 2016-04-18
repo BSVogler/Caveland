@@ -88,23 +88,21 @@ public class CameraSpaceIterator {
 	/**
 	 * Loops over the map areas covered by the camera.
 	 *
-	 * @return
+	 * @return Can return null.
 	 */
 	public RenderCell next() throws NoSuchElementException {
+		//reached end of chunk?-> move to next chunk
 		if (blockIterator == null || !blockIterator.hasNext()) {
-			//reached end of chunk, move to next chunk
 			currentChunk = null;
 			blockIterator = null;
-			while (currentChunk == null && hasNextChunk()) {//if has one move to next
+			while (currentChunk == null && getNextChunk(chunkNum) != null) {//if has one move to next
 				currentChunk = getNextChunk(chunkNum);
 				chunkNum++;
 			}
 			//found chunk
 			if (currentChunk != null) {
 				blockIterator = currentChunk.getIterator(startingZ, topLevel);//reset chunkIterator
-			}
-			//could not find a new  block iterator
-			if (blockIterator == null) {
+			} else {//can not find a new  block iterator
 				return null;
 			}
 		}
@@ -130,10 +128,6 @@ public class CameraSpaceIterator {
 		};
 	}
 
-	private boolean hasNextChunk() {
-		return getNextChunk(chunkNum) != null;
-	}
-
 	/**
 	 * 
 	 * @param current starting index: [0-8]
@@ -154,6 +148,6 @@ public class CameraSpaceIterator {
 	}
 
 	public boolean hasNext() {
-		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || hasNextChunk());
+		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || getNextChunk(chunkNum) != null);
 	}
 }

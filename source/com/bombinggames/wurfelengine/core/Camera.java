@@ -580,10 +580,12 @@ public class Camera {
 		LinkedList<AbstractEntity> renderAppendix = this.renderAppendix;
 		renderAppendix.clear();
 		
+		//this should be made parallel via streams
 		for (AbstractEntity ent : ents) {
 			if (ent.hasPosition()
 				&& !ent.isHidden()
-				&& inViewFrustum(ent.getPosition().getViewSpcX(),
+				&& inViewFrustum(
+					ent.getPosition().getViewSpcX(),
 					ent.getPosition().getViewSpcY()
 				)
 				&& ent.getPosition().getZ() < zRenderingLimit
@@ -602,7 +604,6 @@ public class Camera {
 		
 		//iterate over renderstorage
 		objectsToBeRendered = 0;
-		//clear/reset flags
 		CameraSpaceIterator iterator = new CameraSpaceIterator(
 			gameView.getRenderStorage(),
 			centerChunkX,
@@ -614,19 +615,18 @@ public class Camera {
 		while (iterator.hasNext()) {
 			RenderCell cell = iterator.next();
 
-			if (cell != null) {
-				if (inViewFrustum(
-					cell.getPosition().getViewSpcX(),
-					cell.getPosition().getViewSpcY()
-				)) {
-					visit(cell);
-				}
+			if (cell != null && inViewFrustum(
+				cell.getPosition().getViewSpcX(),
+				cell.getPosition().getViewSpcY()
+			)) {
+				visit(cell);
 			}
 		}
+		//remove ents from modified blocks
 		for (RenderCell modifiedCell : modifiedCells) {
 			modifiedCell.clearCoveredEnts();
 		}
-		depthlist.addAll(renderAppendix);//render every entity which has not parent block at the end
+		depthlist.addAll(renderAppendix);//render every entity which has no parent block at the end of the list
 	}
 	
 	/**

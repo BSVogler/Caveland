@@ -26,7 +26,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.mapeditor;
 
 import com.badlogic.gdx.Gdx;
@@ -66,24 +65,25 @@ import java.util.Optional;
  * @author Benedikt Vogler
  */
 public class EditorView extends GameView implements Telegraph {
-    private Controller controller;
+
+	private Controller controller;
 	/**
 	 * used for copying data from the current game view
 	 */
 	private Optional<GameView> gameplayView;
-    /**
-     * the camera rendering the sceen
-     */
-    private Camera camera;
-    private float cameraspeed =0.5f;
-    /**
-     * vector holding information about movement of the camera
-     */
-    private final Vector2 camermove = new Vector2(); 
-    
-    private final Navigation nav = new Navigation();
+	/**
+	 * the camera rendering the sceen
+	 */
+	private Camera camera;
+	private float cameraspeed = 0.5f;
+	/**
+	 * vector holding information about movement of the camera
+	 */
+	private final Vector2 camermove = new Vector2();
+
+	private final Navigation nav = new Navigation();
 	private CursorInfo cursorInfo;
-	
+
 	private Toolbar toolSelection;
 	private boolean selecting = false;
 	/**
@@ -99,19 +99,19 @@ public class EditorView extends GameView implements Telegraph {
 	 */
 	private int moveEntities;
 
-    @Override
-    public void init(final Controller controller, final GameView oldView) {
-        super.init(controller, oldView);
-        Gdx.app.debug("MEView", "Initializing");
-		
-        this.controller = controller;
-        this.gameplayView = Optional.ofNullable(oldView);
-		
+	@Override
+	public void init(final Controller controller, final GameView oldView) {
+		super.init(controller, oldView);
+		Gdx.app.debug("MEView", "Initializing");
+
+		this.controller = controller;
+		this.gameplayView = Optional.ofNullable(oldView);
+
 		if (oldView != null) {
 			setRenderStorage(oldView.getRenderStorage());//use the same render storage
 		}
-		
-		if (oldView != null){
+
+		if (oldView != null) {
 			camera = new Camera(
 				this,
 				0,
@@ -129,26 +129,25 @@ public class EditorView extends GameView implements Telegraph {
 				Gdx.graphics.getHeight()
 			);
 		}
-		
-        addCamera(camera);
-		
+
+		addCamera(camera);
+
 		cursorInfo = new CursorInfo(getStage(), this.controller.getCursor());
 		this.controller.getCursor().setInfo(cursorInfo);
-		
+
 		getStage().addActor(cursorInfo);
-		
-        //setup GUI
-        TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
-        
-         //add load button
+
+		//setup GUI
+		TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
+
+		//add load button
 //        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
 //        loadbutton.setX(Gdx.graphics.getWidth()-80);
 //        loadbutton.setY(Gdx.graphics.getHeight()-40);
 //        loadbutton.addListener(new LoadButton(this,controller));
 //        getStage().addActor(loadbutton);
-        
-        //add save button
-        final Image savebutton = new Image(spritesheet.findRegion("save_button"));
+		//add save button
+		final Image savebutton = new Image(spritesheet.findRegion("save_button"));
 		savebutton.setX(Gdx.graphics.getWidth() - 150);
 		savebutton.setY(Gdx.graphics.getHeight() - 50);
 		savebutton.addListener(new ClickListener() {
@@ -159,26 +158,30 @@ public class EditorView extends GameView implements Telegraph {
 			}
 		});
 		getStage().addActor(savebutton);
-        
-        if (Controller.getLightEngine() != null)
-            Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
-		
+
+		if (Controller.getLightEngine() != null) {
+			Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
+		}
+
 		toolSelection = new Toolbar(this, spritesheet, controller.getCursor(), getStage());
 		getStage().addActor(toolSelection);
-    }
+	}
 
 	@Override
-    public void onEnter() {
+	public void onEnter() {
 		controller.showCursor();
-		gameplayView.ifPresent(t -> {camera.setCenter(t.getCameras().get(0).getCenter().cpy());});//always keep the camera position
-        WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
+		gameplayView.ifPresent(t -> {
+			camera.setCenter(t.getCameras().get(0).getCenter().cpy());
+		});//always keep the camera position
+		WE.getEngineView().addInputProcessor(new EditorInputListener(this.controller, this));
 		Gdx.input.setCursorCatched(false);
 		WE.SOUND.pauseMusic();
 		WE.getCVars().get("timespeed").setValue(0f);//stop the game time
-    }
-	
+	}
+
 	/**
 	 * Select every entity in this area.
+	 *
 	 * @param x1 view space
 	 * @param y1 view space
 	 * @param x2 view space
@@ -205,7 +208,7 @@ public class EditorView extends GameView implements Telegraph {
 					&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth() / 2 <= x2 //left spr. border
 					&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight() / 2 <= y2 //bottom spr. border
 					&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= y1 //top spr. border
-				){
+					) {
 					newSel.add(ent);
 					MessageManager.getInstance().dispatchMessage(
 						this,
@@ -225,57 +228,57 @@ public class EditorView extends GameView implements Telegraph {
 				Events.deselectInEditor.getId()
 			);
 		}
-		
+
 		getController().setSelectedEnt(newSel);
 	}
-	
-    /**
-     *
-     * @param speed
-     */
-    protected void setCameraSpeed(float speed){
-        cameraspeed = speed;
-    }
-    
-    /**
-     *
-     * @param x in game space
-     * @param y in game space
-     */
-    protected void setCameraMoveVector(float x,float y){
-        camermove.x = x;
-        camermove.y = y;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    protected Vector2 getCameraMoveVector(){
-        return camermove;
-    }
-    
-    @Override
-    public void render() {
-        super.render();
+
+	/**
+	 *
+	 * @param speed
+	 */
+	protected void setCameraSpeed(float speed) {
+		cameraspeed = speed;
+	}
+
+	/**
+	 *
+	 * @param x in game space
+	 * @param y in game space
+	 */
+	protected void setCameraMoveVector(float x, float y) {
+		camermove.x = x;
+		camermove.y = y;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	protected Vector2 getCameraMoveVector() {
+		return camermove;
+	}
+
+	@Override
+	public void render() {
+		super.render();
 		ShapeRenderer shr = getShapeRenderer();
 		if (controller.getSelectedEntities() != null) {
 			shr.begin(ShapeRenderer.ShapeType.Line);
 			shr.setColor(0.8f, 0.8f, 0.8f, 0.8f);
-			
+
 			//outlines for selected entities
 			for (AbstractEntity selectedEntity : controller.getSelectedEntities()) {
 				TextureAtlas.AtlasRegion aR = selectedEntity.getSprite();
 				shr.rect(
 					selectedEntity.getPosition().getProjectionSpaceX(this, camera) - aR.getRegionWidth() / 2,
-					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
+					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight() / 2,
 					aR.getRegionWidth(),
 					aR.getRegionHeight()
 				);
 				drawString(
 					selectedEntity.getName(),
 					selectedEntity.getPosition().getProjectionSpaceX(this, camera) + aR.getRegionWidth() / 2,
-					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight()/ 2,
+					selectedEntity.getPosition().getProjectionSpaceY(this, camera) - aR.getRegionHeight() / 2,
 					true
 				);
 			}
@@ -286,32 +289,32 @@ public class EditorView extends GameView implements Telegraph {
 			if (selecting) {
 				WE.getEngineView().getShapeRenderer().rect(
 					selectDownX,
-					-selectDownY+Gdx.graphics.getHeight(),
+					-selectDownY + Gdx.graphics.getHeight(),
 					Gdx.input.getX() - selectDownX,//todo bug here
-					(selectDownY-Gdx.input.getY())
+					(selectDownY - Gdx.input.getY())
 				);
 			}
 			WE.getEngineView().getShapeRenderer().end();
 		}
-		
+
 		nav.render(this);
 		toolSelection.render(shr);
-    }
+	}
 
-    @Override
+	@Override
 	public void update(final float dt) {
 		if (camera != null) {
 			float rdt = Gdx.graphics.getRawDeltaTime() * 1000f;//use "screen"-game time
 			camera.move((int) (camermove.x * cameraspeed * rdt), (int) (camermove.y * cameraspeed * rdt));
 		}
-		
+
 		//move selected entities up or down
 		if (moveEntities != 0) {
 			controller.getSelectedEntities().forEach(
-				(AbstractEntity e) -> e.getPosition().setZ(e.getPosition().getZ()+moveEntities*5)
+				(AbstractEntity e) -> e.getPosition().setZ(e.getPosition().getZ() + moveEntities * 5)
 			);
 		}
-		
+
 		super.update(dt);
 	}
 
@@ -320,40 +323,40 @@ public class EditorView extends GameView implements Telegraph {
 		return true;
 	}
 
-    
-    /**
-     * Manages the key inpts when in mapeditor view.
-     */
-    private class EditorInputListener implements InputProcessor {
-        private final Controller controller;
-        private final EditorView view;
+	/**
+	 * Manages the key inpts when in mapeditor view.
+	 */
+	private class EditorInputListener implements InputProcessor {
+
+		private final Controller controller;
+		private final EditorView view;
 		/**
 		 * the last button which went down
 		 */
-        private int buttondown =-1;
+		private int buttondown = -1;
 		/**
 		 * the z layer during touch down
 		 */
-        private int dragLayer;
-        private final Cursor cursor;
+		private int dragLayer;
+		private final Cursor cursor;
 		private Coordinate bucketDown;
 		private int lastX;
 		private int lastY;
 		private boolean symDown;
 		private boolean shiftDown;
 
-        EditorInputListener(Controller controller, EditorView view) {
-            this.controller = controller;
-            this.view = view;
-            cursor = controller.getCursor();
-        }
+		EditorInputListener(Controller controller, EditorView view) {
+			this.controller = controller;
+			this.view = view;
+			cursor = controller.getCursor();
+		}
 
-
-        @Override
-        public boolean keyDown(int keycode) {
-            //manage camera speed
-            if (keycode == Keys.SHIFT_LEFT)
-                view.setCameraSpeed(2);
+		@Override
+		public boolean keyDown(int keycode) {
+			//manage camera speed
+			if (keycode == Keys.SHIFT_LEFT) {
+				view.setCameraSpeed(2);
+			}
 
 			if (gameplayView.isPresent()) {
 				if (keycode == Keys.G) {
@@ -364,7 +367,7 @@ public class EditorView extends GameView implements Telegraph {
 					WE.switchView(gameplayView.get(), false);
 				}
 			}
-			
+
 			if (keycode == Keys.E) {
 				moveEntities = 1;
 			}
@@ -372,7 +375,7 @@ public class EditorView extends GameView implements Telegraph {
 			if (keycode == Input.Keys.Q) {
 				moveEntities = -1;
 			}
-		
+
 			if (keycode == Input.Keys.SYM) {
 				symDown = true;
 			}
@@ -380,119 +383,126 @@ public class EditorView extends GameView implements Telegraph {
 			if (keycode == Input.Keys.SHIFT_LEFT) {
 				shiftDown = true;
 			}
-			
+
 			//manage camera movement
-			if (keycode == Input.Keys.W)
+			if (keycode == Input.Keys.W) {
 				view.setCameraMoveVector(view.getCameraMoveVector().x, -1);
-			if (keycode == Input.Keys.S)
+			}
+			if (keycode == Input.Keys.S) {
 				view.setCameraMoveVector(view.getCameraMoveVector().x, 1);
-			if (keycode == Input.Keys.A)
+			}
+			if (keycode == Input.Keys.A) {
 				view.setCameraMoveVector(-1, view.getCameraMoveVector().y);
-			if (keycode == Input.Keys.D)
+			}
+			if (keycode == Input.Keys.D) {
 				view.setCameraMoveVector(1, view.getCameraMoveVector().y);
+			}
 
 			if (keycode == Input.Keys.FORWARD_DEL || keycode == Input.Keys.DEL) {
 				for (AbstractEntity ent : controller.getSelectedEntities()) {
 					ent.dispose();
 				}
 			}
-			
+
 			if (keycode == Input.Keys.NUM_1) {
 				if (Tool.values().length > 0) {
-					toolSelection.selectTool(true, Tool.values()[0]);
+					toolSelection.selectTool(Tool.values()[0]);
 				}
 			}
 			if (keycode == Input.Keys.NUM_2) {
 				if (Tool.values().length > 1) {
-					toolSelection.selectTool(true, Tool.values()[1]);
+					toolSelection.selectTool(Tool.values()[1]);
 				}
 			}
 			if (keycode == Input.Keys.NUM_3) {
 				if (Tool.values().length > 2) {
-					toolSelection.selectTool(true, Tool.values()[2]);
+					toolSelection.selectTool(Tool.values()[2]);
 				}
 			}
 			if (keycode == Input.Keys.NUM_4) {
 				if (Tool.values().length > 3) {
-					toolSelection.selectTool(true, Tool.values()[3]);
+					toolSelection.selectTool(Tool.values()[3]);
 				}
 			}
 			if (keycode == Input.Keys.NUM_5) {
 				if (Tool.values().length > 4) {
-					toolSelection.selectTool(true, Tool.values()[4]);
+					toolSelection.selectTool(Tool.values()[4]);
 				}
 			}
 			return false;
-        }
+		}
 
-        @Override
-        public boolean keyUp(int keycode) {
-            if (keycode == Keys.SHIFT_LEFT) {
-                view.setCameraSpeed(0.5f);
+		@Override
+		public boolean keyUp(int keycode) {
+			if (keycode == Keys.SHIFT_LEFT) {
+				view.setCameraSpeed(0.5f);
 				shiftDown = false;
 			}
-            
-            if (keycode == Input.Keys.W
-                 || keycode == Input.Keys.S
-                )
-                view.setCameraMoveVector(view.getCameraMoveVector().x, 0);
-            
-           if (keycode == Input.Keys.A
+
+			if (keycode == Input.Keys.W
+				|| keycode == Input.Keys.S) {
+				view.setCameraMoveVector(view.getCameraMoveVector().x, 0);
+			}
+
+			if (keycode == Input.Keys.A
 				|| keycode == Input.Keys.D) {
 				view.setCameraMoveVector(0, view.getCameraMoveVector().y);
 			}
-		   
-		   if (keycode == Keys.E || keycode == Keys.Q) {
+
+			if (keycode == Keys.E || keycode == Keys.Q) {
 				moveEntities = 0;
 			}
-		   
-		   if (keycode == Input.Keys.SYM)
-				symDown = false;
-            
-            return false;
-        }
 
-        @Override
-        public boolean keyTyped(char character) {
+			if (keycode == Input.Keys.SYM) {
+				symDown = false;
+			}
+
+			return false;
+		}
+
+		@Override
+		public boolean keyTyped(char character) {
 			if (symDown && character == 'z' && !shiftDown) {
 				controller.undoCommand();
 				return true;
 			}
-			
+
 			if (symDown && (character == 'Z' || shiftDown && character == 'z')) {
 				controller.redoCommand();
 				return true;
 			}
-            return false;
-        }
+			return false;
+		}
 
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		@Override
+		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 			buttondown = button;
 			cursor.update(view, screenX, screenY);
 			Coordinate coords = cursor.getPosition().toCoord();
-            
+
 			//pipet
-			if (button==Buttons.MIDDLE || (button==Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))){//middle mouse button works as pipet
-				toolSelection.getTable().select(coords.getBlockId(), coords.getBlockValue());
-            } else {
+			if (button == Buttons.MIDDLE || (button == Buttons.LEFT && Gdx.input.isKeyPressed(Keys.ALT_LEFT))) {//middle mouse button works as pipet
+				if (toolSelection.getActiveTable() instanceof BlockTable) {
+					((BlockTable) toolSelection.getActiveTable()).select(coords.getBlockId(), coords.getBlockValue());
+				}
+			} else {
 				Tool toolUsed;
-				
-				if (button == Buttons.RIGHT){
+
+				if (button == Buttons.RIGHT) {
 					toolUsed = toolSelection.getRightTool();
 				} else {
 					toolUsed = toolSelection.getLeftTool();
 				}
-				
-				switch (toolUsed){
+
+				switch (toolUsed) {
 					case DRAW:
 						dragLayer = cursor.getCoordInNormalDirection().getZ();
-						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable()));
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getActiveTable()));
 						break;
 					case REPLACE:
 					case ERASE:
 						dragLayer = coords.getZ();
-						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable()));
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getActiveTable()));
 						break;
 					case BUCKET:
 						bucketDown = coords;
@@ -506,13 +516,13 @@ public class EditorView extends GameView implements Telegraph {
 						}
 						break;
 					case SPAWN:
-						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getTable())
+						getController().executeCommand(toolUsed.getCommand(cursor, toolSelection.getActiveTable())
 						);
 						break;
 				}
 			}
-            return false;
-        }
+			return false;
+		}
 
 		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -550,10 +560,10 @@ public class EditorView extends GameView implements Telegraph {
 			}
 
 			return true;
-        }
+		}
 
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
+		@Override
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
 			cursor.update(view, screenX, screenY);
 
 			//dragging selection?
@@ -566,7 +576,7 @@ public class EditorView extends GameView implements Telegraph {
 				}
 				selectedEnts.clear();
 				selectedEnts.addAll(map.values());
-				
+
 				for (AbstractEntity ent : selectedEnts) {
 					ent.getPosition().add(screenX - lastX, (screenY - lastY) * 2, 0);
 				}
@@ -578,60 +588,54 @@ public class EditorView extends GameView implements Telegraph {
 					(int) screenYtoView(screenY, camera)
 				);
 			}
-				
+
 			//dragging with left and draw tool
 			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.DRAW)
 				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)) {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
-				if (coords.getZ() >= 0) {
-					if (coords.getBlockId() == 0) {
-						Controller.getMap().setBlock(coords, toolSelection.getTable().getId(),toolSelection.getTable().getValue());
-					}
+				if (coords.getZ() >= 0 && coords.getBlockId() == 0 && toolSelection.getActiveTable() instanceof BlockTable) {
+					Controller.getMap().setBlock(coords, ((BlockTable) toolSelection.getActiveTable()).getIdOfSelection(), toolSelection.getActiveTable().getValue());
 				}
 			}
-			
-			if ((buttondown==Buttons.LEFT && toolSelection.getLeftTool()== Toolbar.Tool.REPLACE)
-				|| (buttondown==Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.REPLACE)
-			) {
+
+			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.REPLACE)
+				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.REPLACE)) {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
-				if (coords.getZ() >= 0) {
-					if (Controller.getMap().getBlockId(coords) != 0) {
-						Controller.getMap().setBlock(coords, toolSelection.getTable().getId(), toolSelection.getTable().getValue());
+				if (coords.getZ() >= 0 && Controller.getMap().getBlockId(coords) != 0 && toolSelection.getActiveTable() instanceof BlockTable) {
+					Controller.getMap().setBlock(coords, ((BlockTable) toolSelection.getActiveTable()).getIdOfSelection(), toolSelection.getActiveTable().getValue());
+				}
+			}
+
+			lastX = screenX;
+			lastY = screenY;
+			return true;
+		}
+
+		@Override
+		public boolean mouseMoved(int screenX, int screenY) {
+			cursor.update(view, screenX, screenY);
+
+			AbstractEntity entityUnderMouse = null;
+			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting) {
+				//find ent under mouse
+				for (AbstractEntity ent : getMap().getEntities()) {
+					if (ent.hasPosition()
+						&& ent.getSpriteId() > 0
+						&& ent.getSpriteValue() > -1
+						&& ent.getPosition().getViewSpcX() + ent.getSprite().getRegionWidth() / 2 >= (int) screenXtoView(screenX, camera) //right sprite borde
+						&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth() / 2 <= (int) screenXtoView(screenX, camera) //left spr. border
+						&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight() / 2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
+						&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= (int) screenYtoView(screenY, camera) //top spr. border
+						&& !(ent instanceof EntityShadow)
+						&& !ent.getName().equals("normal")
+						&& !ent.getName().equals("selectionEntity")) {
+						entityUnderMouse = ent;
 					}
 				}
 			}
-			
-			lastX =screenX; 	
-			lastY =screenY;
-            return true;
-        }
 
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            cursor.update(view, screenX, screenY);
-			
-			AbstractEntity entityUnderMouse = null;
-			if (toolSelection.getLeftTool() == Tool.SELECT && !selecting){
-				//find ent under mouse
-				for (AbstractEntity ent : getMap().getEntities()) {
-					if (
-						ent.hasPosition()
-						&& ent.getSpriteId() > 0
-						&& ent.getSpriteValue() > -1
-						&& ent.getPosition().getViewSpcX() + ent.getSprite().getRegionWidth()/2 >= (int) screenXtoView(screenX, camera) //right sprite borde
-						&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth()/2 <= (int) screenXtoView(screenX, camera) //left spr. border
-						&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight()/2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
-						&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight()/2 >= (int) screenYtoView(screenY, camera) //top spr. border
-						&& !(ent instanceof EntityShadow)
-						&& !ent.getName().equals("normal")
-						&& !ent.getName().equals("selectionEntity")
-					)
-						entityUnderMouse = ent;
-				}
-			}
-			
 			//if entity under mosue is selected
 			if (entityUnderMouse != null && controller.getSelectedEntities().contains(entityUnderMouse)) {
 				WE.getEngineView().setCursor(2);
@@ -639,7 +643,6 @@ public class EditorView extends GameView implements Telegraph {
 				WE.getEngineView().setCursor(0);
 			}
 
-					
 			//show selection list if mouse is at position and if tool supports selection		
 //            if (
 //				screenX<100
@@ -656,15 +659,14 @@ public class EditorView extends GameView implements Telegraph {
 //                view.rightSelector.show();
 //            else if (view.rightSelector.isVisible() && screenX < view.rightSelector.getX())
 //                view.rightSelector.hide(false);
-			
-			lastX = screenX; 	
+			lastX = screenX;
 			lastY = screenY;
-            return false;
-        }
+			return false;
+		}
 
 		@Override
 		public boolean scrolled(int amount) {
-			camera.setZRenderingLimit(view.getRenderStorage().getZRenderingLimit()*RenderCell.GAME_EDGELENGTH - amount);
+			camera.setZRenderingLimit(view.getRenderStorage().getZRenderingLimit() * RenderCell.GAME_EDGELENGTH - amount);
 			return true;
 		}
 
@@ -687,8 +689,8 @@ public class EditorView extends GameView implements Telegraph {
 				for (int y = top; y <= bottom; y++) {
 					getMap().setBlock(
 						new Coordinate(x, y, from.getZ()),
-						toolSelection.getTable().getId(),
-						toolSelection.getTable().getValue()
+						((BlockTable) toolSelection.getActiveTable()).getIdOfSelection(),
+						toolSelection.getActiveTable().getValue()
 					);
 				}
 			}

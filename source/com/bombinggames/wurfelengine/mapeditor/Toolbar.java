@@ -131,10 +131,10 @@ public class Toolbar extends Window {
 		 * 
 		 *
 		 * @param cursor
-		 * @param placableGUI
+		 * @param placableTable
 		 * @return
 		 */
-		public Command getCommand(Cursor cursor, PlacableTable placableGUI) {
+		public Command getCommand(Cursor cursor, AbstractPlacableTable placableTable) {
 			switch (this) {
 				case DRAW:
 					return new Command() {
@@ -150,7 +150,7 @@ public class Toolbar extends Window {
 						public void execute() {
 							if (coord == null) {
 								coord = cursor.getCoordInNormalDirection();
-								block = placableGUI.getBlock();
+								block = ((BlockTable)placableTable).getSelectedBlock();
 								previous = coord.getBlock();
 							}
 							Controller.getMap().setBlock(coord, block);
@@ -171,7 +171,7 @@ public class Toolbar extends Window {
 						public void execute() {
 							if (coord == null) {
 								coord = cursor.getPosition().toCoord();
-								block = placableGUI.getBlock();
+								block = ((BlockTable)placableTable).getSelectedBlock();
 								previous = coord.getBlock();
 							}
 							Controller.getMap().setBlock(coord, block);
@@ -191,9 +191,9 @@ public class Toolbar extends Window {
 						public void execute() {
 							if (point == null) {
 								point = cursor.getNormal().getPosition();
-								ent = placableGUI.getEntity();
+								ent = ((EntityTable)placableTable).getEntity();
 							}
-							ent = placableGUI.getEntity();
+							ent = ((EntityTable)placableTable).getEntity();
 							ent.spawn(point.cpy());
 						}
 
@@ -231,7 +231,8 @@ public class Toolbar extends Window {
 
 	private Tool selectionLeft = Tool.DRAW;
 	private final Tool selectionRight = Tool.ERASE;
-	private PlacableTable table;
+	private final EntityTable entTable;
+	private final BlockTable blockTable;
 	private final TextField valuesActor;
 	private final GameView view;
 
@@ -258,8 +259,11 @@ public class Toolbar extends Window {
 		setWidth(Tool.values().length * 25);
 		setHeight(90);
 
-		this.table = new PlacableTable(this);
-        stage.addActor(table);
+		this.entTable = new EntityTable();
+		this.blockTable = new BlockTable();
+        stage.addActor(entTable);
+		entTable.hide();
+		stage.addActor(blockTable);
 		
 		for (int i = 0; i < items.length; i++) {
 			items[Tool.values()[i].id] = new Image(sprites.findRegion(Tool.values()[i].name));
@@ -270,13 +274,7 @@ public class Toolbar extends Window {
 		//row();
 
 		//initialize selection
-		if (selectionLeft.selectFromBlocks) { //show entities on leftTable
-			table.showBlocks(view);
-		} else if (selectionLeft.selectFromEntities) {//show blocks on leftTable
-			table.showEntities(view);
-		} else {
-			table.hide();
-		}
+		showTable(selectionLeft);
 
 		valuesActor = new TextField("1", WE.getEngineView().getSkin());
 		valuesActor.setWidth(30);
@@ -285,6 +283,37 @@ public class Toolbar extends Window {
 		valuesActor.setTextFieldFilter((TextField textField, char c) -> Character.isDigit(c));
 		valuesActor.addListener(new ChangeListenerImpl(this));
 		addActor(valuesActor);
+	}
+	
+	/**
+	 * Table which is associated with the current tool
+	 * @return can return null
+	 */
+	protected AbstractPlacableTable getActiveTable(){
+		if (selectionLeft.selectFromBlocks) { //show entities on leftTable
+			return blockTable;
+		} else if (selectionLeft.selectFromEntities) {//show blocks on leftTable
+			return entTable;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Show/hide tables according to the tool.
+	 * @param tool 
+	 */
+	private void showTable(Tool tool){
+		if (tool.selectFromBlocks) { //show entities on leftTable
+			blockTable.show(view);
+			entTable.hide();
+		} else if (tool.selectFromEntities) {//show blocks on leftTable
+			entTable.show(view);
+			blockTable.hide();
+		} else {
+			blockTable.hide();
+			entTable.hide();
+		}
 	}
 
 	/**
@@ -324,32 +353,16 @@ public class Toolbar extends Window {
 		return selectionRight;
 	}
 	
-	/**
-	 * 
-	 * @return 
-	 */
-	PlacableTable getTable() {
-		return table;
-	}
 
 	/**
 	 * select a tool
 	 *
-	 * @param left
 	 * @param tool
 	 */
-	public void selectTool(boolean left, Tool tool) {
+	public void selectTool(Tool tool) {
 		selectionLeft = tool;
-		if (left) {
-			if (tool.selectFromBlocks) { //show entities on leftTable
-				this.table.showBlocks(view);
-			} else if (tool.selectFromEntities) { //show blocks on leftTable
-				this.table.showEntities(view);
-			} else {
-				this.table.hide();
-			}
-			cursor.showNormal(tool.showNormal);
-		}
+		showTable(tool);
+		cursor.showNormal(tool.showNormal);
 	}
 
 	/**
@@ -384,9 +397,7 @@ public class Toolbar extends Window {
 		@Override
 		public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 			if (button == Buttons.LEFT) {
-				selectTool(true, tool);
-			} else if (button == Buttons.RIGHT) {
-				selectTool(false, tool);
+				selectTool(tool);
 			}
 
 			return true;
@@ -405,7 +416,7 @@ public class Toolbar extends Window {
 		public void changed(ChangeListener.ChangeEvent event, Actor actor) {
 			//only send value to table if valid
 			if (parent.getValue() > -1) {
-				parent.table.setValue(parent.getValue());
+				parent.getActiveTable().setValue(parent.getValue());
 			}
 			if (parent.valuesActor.getText().length() > 1) {
 				parent.valuesActor.selectAll();

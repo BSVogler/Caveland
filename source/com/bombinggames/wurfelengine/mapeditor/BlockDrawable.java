@@ -162,4 +162,9 @@ public class BlockDrawable extends TextureRegionDrawable {
 	public float getMinWidth() {
 		return RenderCell.VIEW_WIDTH * block.getScaling();
 	}
+	
+	public RenderCell getRenderBlock(){
+		return block;
+	}
+	
 }

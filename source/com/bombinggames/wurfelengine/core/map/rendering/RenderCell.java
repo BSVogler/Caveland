@@ -490,7 +490,9 @@ public class RenderCell extends AbstractGameObject {
 		}
     }
 
-	
+	/**
+	 * game logic value. Sprite Id may differ.
+	 */
 	private final byte id;
 	private byte value;
 	private Coordinate coord = new Coordinate(0, 0, 0);
@@ -1380,10 +1382,20 @@ public class RenderCell extends AbstractGameObject {
 		coveredEnts.clear();
 	}
 
+	/**
+	 * game logic value. Sprite Id may differ.
+	 * @return 
+	 * @see #getSpriteId() 
+	 */
 	public byte getId() {
 		return id;
 	}
 
+	/**
+	 * game logic value. Sprite value may differ.
+	 * @return 
+	 * @see #getSpriteValue()
+	 */
 	public byte getValue() {
 		return value;
 	}

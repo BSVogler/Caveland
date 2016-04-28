@@ -193,8 +193,10 @@ public class Toolbar extends Window {
 								point = cursor.getNormal().getPosition();
 								ent = ((EntityTable)placableTable).getEntity();
 							}
-							ent = ((EntityTable)placableTable).getEntity();
-							ent.spawn(point.cpy());
+							if (ent != null) {
+								ent = ((EntityTable) placableTable).getEntity();
+								ent.spawn(point.cpy());
+							}
 						}
 
 						@Override

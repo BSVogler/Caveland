@@ -122,6 +122,11 @@ public class Coordinate implements Position {
 	public int getZGrid() {
 		return z;
 	}
+	
+	@Override
+	public float getZPoint(){
+		return z*RenderCell.GAME_EDGELENGTH;
+	}
 
 	public Coordinate set(int x, int y, int z) {
 		this.x = x;

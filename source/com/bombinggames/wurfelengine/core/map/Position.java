@@ -236,4 +236,6 @@ public interface Position extends Serializable {
 	 * @return in grid coordinates.
 	 */
 	public abstract int getZGrid();
+
+	public abstract float getZPoint();
 }

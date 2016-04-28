@@ -109,6 +109,10 @@ public class Point extends Vector3 implements Position {
 		return (int) (z / RenderCell.GAME_EDGELENGTH);
 	}
 
+	@Override
+	public float getZPoint(){
+		return z;
+	}
 	/**
 	 *
 	 * @param height
@@ -171,24 +175,24 @@ public class Point extends Vector3 implements Position {
 	}
 
 	/**
-	 *
-	 * @return the offset to the coordiantes center.
+	 * Distance to cell center.
+	 * @return the offset to the coordinates center.
 	 */
 	public float getRelToCoordX() {
 		return x - toCoord().toPoint().x;
 	}
 
 	/**
-	 *
-	 * @return the offset to the coordiantes center.
+	 * Distance to cell center.
+	 * @return the offset to the coordinates center.
 	 */
 	public float getRelToCoordY() {
 		return y - toCoord().toPoint().y;
 	}
 
 	/**
-	 *
-	 * @return the offset to the coordiantes center.
+	 * Distance to cell center.
+	 * @return the offset to the coordinates center.
 	 */
 	public float getRelToCoordZ() {
 		return getZ() - getZGrid() * RenderCell.GAME_EDGELENGTH;
@@ -199,6 +203,10 @@ public class Point extends Vector3 implements Position {
 		return (byte) (getBlock()&255);
 	}
 	
+	/**
+	 * 
+	 * @return 
+	 */
 	public int getBlock(){
 		if (z >= Chunk.getGameHeight()) {
 			return 0;

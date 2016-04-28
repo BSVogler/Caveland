@@ -5,7 +5,7 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * * If this software is used for a game the official „Wurfel Engine“ logo or its name must be
+ * * If this software is used for dist game the official „Wurfel Engine“ logo or its name must be
  *   visible in an intro screen or main menu.
  * * Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
@@ -86,7 +86,7 @@ public class Camera {
 	/**
 	 * the viewport width&height. Origin top left.
 	 */
-	private int screenWidth, screenHeight;
+	private int screenWidth, heightScreen;
 
 	/**
 	 * the position on the screen (viewportWidth/Height ist the affiliated).
@@ -113,8 +113,10 @@ public class Camera {
 	private float shakeTime;
 
 	private final GameView gameView;
-	private int viewSpaceWidth;
-	private int viewSpaceHeight;
+	private int widthView;
+	private int heightView;
+	private int heightProj;
+	private int widthProj;
 	private int centerChunkX;
 	private int centerChunkY;
 	/**
@@ -157,8 +159,9 @@ public class Camera {
 	public Camera(final GameView view) {
 		gameView = view;
 		screenWidth = Gdx.graphics.getBackBufferWidth();
-		screenHeight = Gdx.graphics.getBackBufferHeight();
+		heightScreen = Gdx.graphics.getBackBufferHeight();
 		updateViewSpaceSize();
+		widthProj = (int) (widthView / zoom);//update cache
 
 		Point center = Controller.getMap().getCenter();
 		position.x = center.getViewSpcX();
@@ -183,11 +186,13 @@ public class Camera {
 	public Camera(final GameView view, final int x, final int y, final int width, final int height) {
 		gameView = view;
 		screenWidth = width;
-		screenHeight = height;
+		heightScreen = height;
 		screenPosX = x;
 		screenPosY = y;
 		renderResWidth = WE.getCVars().getValueI("renderResolutionWidth");
+		widthView = renderResWidth;
 		updateViewSpaceSize();
+		widthProj = (int) (widthView / zoom);//update cache
 
 		Point center = Controller.getMap().getCenter();
 		position.x = center.getViewSpcX();
@@ -214,11 +219,14 @@ public class Camera {
 	public Camera(final GameView view, final int x, final int y, final int width, final int height, final Point center) {
 		gameView = view;
 		screenWidth = width;
-		screenHeight = height;
+		heightScreen = height;
 		screenPosX = x;
 		screenPosY = y;
 		renderResWidth = WE.getCVars().getValueI("renderResolutionWidth");
+		widthView = renderResWidth;
+		widthView = renderResWidth;
 		updateViewSpaceSize();
+		widthProj = (int) (widthView / zoom);//update cache
 		position.x = center.getViewSpcX();
 		position.y = center.getViewSpcY();
 		initFocus();
@@ -242,11 +250,13 @@ public class Camera {
 	public Camera(final GameView view, final int x, final int y, final int width, final int height, final AbstractEntity focusentity) {
 		gameView = view;
 		screenWidth = width;
-		screenHeight = height;
+		heightScreen = height;
 		screenPosX = x;
 		screenPosY = y;
 		renderResWidth = WE.getCVars().getValueI("renderResolutionWidth");
+		widthView = renderResWidth;
 		updateViewSpaceSize();
+		widthProj = (int) (widthView / zoom);//update cache
 		if (focusentity == null) {
 			throw new NullPointerException("Parameter 'focusentity' is null");
 		}
@@ -446,9 +456,9 @@ public class Camera {
 			//set up the viewport, yIndex-up
 			HdpiUtils.glViewport(
 				screenPosX,
-				Gdx.graphics.getHeight() - screenHeight - screenPosY,
+				Gdx.graphics.getHeight() - heightScreen - screenPosY,
 				screenWidth,
-				screenHeight
+				heightScreen
 			);
 
 			//render map
@@ -651,23 +661,20 @@ public class Camera {
 	 * @return
 	 */
 	public boolean inViewFrustum(Position pos){
-		return
-				(position.y + getHeightInProjSpc() / 2)
+		int vspY = pos.getViewSpcY();
+		if (!(
+				(position.y + (heightProj>>1))
 				>
-				(pos.getViewSpcY() - RenderCell.VIEW_HEIGHT * 2)//bottom of sprite
+				(vspY - (RenderCell.VIEW_HEIGHT<<1))//bottom of sprite
 			&&
-				(pos.getViewSpcY() + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
+				(vspY + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
 				>
-				position.y - getHeightInProjSpc() / 2
-			&&
-				(pos.getViewSpcX() + RenderCell.VIEW_WIDTH2)//right side of sprite
-				>
-				position.x - getWidthInProjSpc() / 2
-			&&
-				(pos.getViewSpcX() - RenderCell.VIEW_WIDTH2)//left side of sprite
-				<
-				position.x + getWidthInProjSpc() / 2
-		;
+				position.y - (heightProj>>1))
+		)
+			return false;
+		int dist = (int) (pos.getViewSpcX()-position.x); //left side of sprite
+		//left and right check in one clause by using distance via squaring
+		return dist * dist < ( (widthProj >> 1) + RenderCell.VIEW_WIDTH2) * ((widthProj >> 1) + RenderCell.VIEW_WIDTH2);
 	}
 
 	/**
@@ -677,7 +684,8 @@ public class Camera {
 	 */
 	public void setZoom(float zoom) {
 		this.zoom = zoom;
-		updateViewSpaceSize();//todo check for redundant call?
+		updateViewSpaceSize();
+		widthProj = (int) (widthView / zoom);//update cache
 	}
 
 	/**
@@ -687,6 +695,7 @@ public class Camera {
 	 */
 	public void setInternalRenderResolution(int resolution) {
 		renderResWidth = resolution;
+		widthView = renderResWidth;
 		updateViewSpaceSize();
 	}
 
@@ -715,7 +724,7 @@ public class Camera {
 	 * @return left x position in view space
 	 */
 	public float getVisibleLeftBorderVS() {
-		return (position.x - getWidthInProjSpc() / 2)- RenderCell.VIEW_WIDTH2;
+		return (position.x - widthProj*0.5f)- RenderCell.VIEW_WIDTH2;
 	}
 
 	/**
@@ -724,7 +733,7 @@ public class Camera {
 	 * @return the left (X) border coordinate
 	 */
 	public int getVisibleLeftBorder() {
-		return (int) ((position.x - getWidthInProjSpc() / 2) / RenderCell.VIEW_WIDTH - 1);
+		return (int) ((position.x - widthProj*0.5) / RenderCell.VIEW_WIDTH - 1);
 	}
 
 	/**
@@ -734,7 +743,7 @@ public class Camera {
 	 * @return measured in grid-coordinates
 	 */
 	public int getVisibleRightBorder() {
-		return (int) ((position.x + getWidthInProjSpc() / 2) / RenderCell.VIEW_WIDTH + 1);
+		return (int) ((position.x + widthProj*0.5) / RenderCell.VIEW_WIDTH + 1);
 	}
 	
 	/**
@@ -744,7 +753,7 @@ public class Camera {
 	 * @return measured in grid-coordinates
 	 */
 	public float getVisibleRightBorderVS() {
-		return position.x + getWidthInProjSpc() / 2 + RenderCell.VIEW_WIDTH2;
+		return position.x + widthProj*0.5f + RenderCell.VIEW_WIDTH2;
 	}
 
 	/**
@@ -754,9 +763,9 @@ public class Camera {
 	 */
 	public int getVisibleBackBorder() {
 		//TODO verify
-		return (int) ((position.y + getHeightInProjSpc() / 2)//camera top border
+		return (int) ((position.y + heightProj * 0.5)//camera top border
 			/ -RenderCell.VIEW_DEPTH2//back to game space
-		);
+			);
 	}
 
 	/**
@@ -766,10 +775,9 @@ public class Camera {
 	 * @see #getVisibleFrontBorderHigh()
 	 */
 	public int getVisibleFrontBorderLow() {
-		return (int) (
-			(position.y- getHeightInProjSpc()/2) //bottom camera border
+		return (int) ((position.y - heightProj * 0.5) //bottom camera border
 			/ -RenderCell.VIEW_DEPTH2 //back to game coordinates
-		);
+			);
 	}
 
 	/**
@@ -779,9 +787,9 @@ public class Camera {
 	 * @see #getVisibleFrontBorderLow()
 	 */
 	public int getVisibleFrontBorderHigh() {
-		return (int) ((position.y - getHeightInProjSpc() / 2) //bottom camera border
+		return (int) ((position.y - heightProj * 0.5) //bottom camera border
 			/ -RenderCell.VIEW_DEPTH2 //back to game coordinates
-			+ Chunk.getBlocksY()*3 * RenderCell.VIEW_HEIGHT / RenderCell.VIEW_DEPTH2 //todo verify, try to add z component
+			+ Chunk.getBlocksY() * 3 * RenderCell.VIEW_HEIGHT / RenderCell.VIEW_DEPTH2 //todo verify, try to add z component
 			);
 	}
 
@@ -810,7 +818,7 @@ public class Camera {
 	 * @return in game pixels
 	 */
 	public final int getWidthInViewSpc() {
-		return viewSpaceWidth;
+		return widthView;
 	}
 
 	/**
@@ -820,15 +828,15 @@ public class Camera {
 	 * @return in game pixels
 	 */
 	public final int getHeightInViewSpc() {
-		return viewSpaceHeight;
+		return heightView;
 	}
 
 	/**
 	 * updates the cache
 	 */
-	public final void updateViewSpaceSize() {
-		viewSpaceWidth = renderResWidth;
-		viewSpaceHeight = (int) (screenHeight / getScreenSpaceScaling());
+	private void updateViewSpaceSize() {
+		heightView = (int) (heightScreen / getScreenSpaceScaling());
+		heightProj = (int) (heightView / zoom);
 	}
 
 	/**
@@ -839,7 +847,7 @@ public class Camera {
 	 * @return in viewMat pixels
 	 */
 	public final int getWidthInProjSpc() {
-		return (int) (viewSpaceWidth / zoom);
+		return widthProj;
 	}
 
 	/**
@@ -849,7 +857,7 @@ public class Camera {
 	 * @return in projective pixels
 	 */
 	public final int getHeightInProjSpc() {
-		return (int) (viewSpaceHeight / zoom);
+		return heightProj;
 	}
 
 	/**
@@ -876,7 +884,7 @@ public class Camera {
 	 * @return the value before scaling
 	 */
 	public int getHeightInScreenSpc() {
-		return screenHeight;
+		return heightScreen;
 	}
 
 	/**
@@ -905,7 +913,7 @@ public class Camera {
 	public void setFullWindow(boolean fullWindow) {
 		this.fullWindow = fullWindow;
 		this.screenWidth = Gdx.graphics.getWidth();
-		this.screenHeight = Gdx.graphics.getHeight();
+		this.heightScreen = Gdx.graphics.getHeight();
 		this.screenPosX = 0;
 		this.screenPosY = 0;
 		updateViewSpaceSize();
@@ -920,7 +928,7 @@ public class Camera {
 	public void resize(int width, int height) {
 		if (fullWindow) {
 			this.screenWidth = width;
-			this.screenHeight = height;
+			this.heightScreen = height;
 			this.screenPosX = 0;
 			this.screenPosY = 0;
 			updateViewSpaceSize();
@@ -938,12 +946,12 @@ public class Camera {
 			fullWindow = false;
 		}
 		this.screenWidth = width;
-		this.screenHeight = height;
+		this.heightScreen = height;
 		updateViewSpaceSize();
 	}
 
 	/**
-	 * Move xIndex and yIndex coordinate
+	 * Move x and y coordinate
 	 *
 	 * @param x in game space
 	 * @param y in game space

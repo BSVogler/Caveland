@@ -574,7 +574,7 @@ public class Camera {
 		LinkedList<AbstractEntity> renderAppendix = this.renderAppendix;
 		renderAppendix.clear();
 		
-		//this should be made parallel via streams
+		//this should be made parallel via streams //ents.stream().parallel().forEach(action);?
 		for (AbstractEntity ent : ents) {
 			if (ent.hasPosition()
 				&& !ent.isHidden()
@@ -582,7 +582,7 @@ public class Camera {
 				&& ent.getPosition().getZ() < gameView.getRenderStorage().getZRenderingLimit()
 			) {
 				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
-				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change in line above
+				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change from line above
 				if (cell != null) {
 					cell.addCoveredEnts(ent);
 					modifiedCells.add(cell);

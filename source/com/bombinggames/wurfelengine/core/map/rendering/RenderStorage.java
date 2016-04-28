@@ -120,7 +120,7 @@ public class RenderStorage implements Telegraph  {
 					lastCenterX.set(i, camera.getCenterChunkX());
 					lastCenterY.set(i, camera.getCenterChunkY());
 					//rebuild
-					RenderCell.setRebuildCoverList(WE.getGameplay().getFrameNum());
+					RenderCell.rebuildCoverList();
 				}
 			}
 		}
@@ -532,7 +532,7 @@ public class RenderStorage implements Telegraph  {
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()) {
 			reinitChunks();
-			RenderCell.setRebuildCoverList(WE.getGameplay().getFrameNum());
+			RenderCell.rebuildCoverList();
 			return true;
 		}
 		

@@ -68,6 +68,9 @@ public class RenderCell extends AbstractGameObject {
     private static final Color[][] COLORLIST = new Color[RenderCell.OBJECTTYPESNUM][RenderCell.VALUESNUM];
 	private static boolean fogEnabled;
 	private static boolean staticShade;
+	/**
+	 * frame number of last rebuild
+	 */
 	private static long rebuildCoverList = 0;
 	private static SimpleEntity destruct = new SimpleEntity((byte) 3,(byte) 0);
 	private static Color tmpColor = new Color();
@@ -435,10 +438,9 @@ public class RenderCell extends AbstractGameObject {
 	
 	/**
 	 * set the timestamp when the content changed
-	 * @param frameNum 
 	 */
-	public static void setRebuildCoverList(long frameNum) {
-		RenderCell.rebuildCoverList = frameNum;
+	public static void rebuildCoverList() {
+		RenderCell.rebuildCoverList = WE.getGameplay().getFrameNum();
 	}
 
    /**
@@ -539,9 +541,12 @@ public class RenderCell extends AbstractGameObject {
 	 * three bits used, for each side one: TODO: move to aoFlags byte #3
 	 */
 	private byte clipping;
+	/**
+	 * stores references to neighbor blocks which are covered.
+	 */
 	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
 	/**
-	 * for topological sort. Contains entities and blocks
+	 * for topological sort. At the end contains both entities and blocks
 	 */
 	private final LinkedList<AbstractGameObject> coveredEnts = new LinkedList<>();
 	private SideSprite site1;
@@ -1318,6 +1323,10 @@ public class RenderCell extends AbstractGameObject {
 		return covered;
 	}
 	
+	/**
+	 * Rebuilds the list of covered cells by this cell.
+	 * @param rs 
+	 */
 	private void rebuildCovered(RenderStorage rs) {
 		LinkedList<AbstractGameObject> covered = this.covered;
 		covered.clear();

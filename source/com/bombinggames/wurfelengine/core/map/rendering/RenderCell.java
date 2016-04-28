@@ -1300,7 +1300,7 @@ public class RenderCell extends AbstractGameObject {
 
 	@Override
 	public LinkedList<AbstractGameObject> getCovered(RenderStorage rs) {
-		if (lastRebuild < rebuildCoverList) {
+		if (lastRebuild < rebuildCoverList) {//only rebuild once per frame
 			rebuildCovered(rs);
 		}
 		if (!coveredEnts.isEmpty()) {
@@ -1352,7 +1352,7 @@ public class RenderCell extends AbstractGameObject {
 			if (block != null) {
 				covered.add(block);
 			}
-			nghb.add(0, 2, 1);
+			nghb.add(0, 2, 1);//go back to origin
 		}
 		block = rs.getCell(nghb.goToNeighbour(0));//back
 		if (block != null) {
@@ -1363,21 +1363,20 @@ public class RenderCell extends AbstractGameObject {
 			covered.add(block);
 		}
 
-		//back left
-		block = rs.getCell(nghb.goToNeighbour(6));
+		block = rs.getCell(nghb.goToNeighbour(6));//back left
 		if (block != null) {
 			covered.add(block);
 		}
 		if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
-			block = rs.getCell(nghb.add(0, 0, 1));//back
+			block = rs.getCell(nghb.add(0, 0, 1));//back left above
 			if (block != null) {
 				covered.add(block);
 			}
-			block = rs.getCell(nghb.goToNeighbour(2));//back
+			block = rs.getCell(nghb.goToNeighbour(2));//back right above
 			if (block != null) {
 				covered.add(block);
 			}
-			nghb.add(-1, 0, -1);
+			nghb.add(-1, 0, -1);//back to back left
 		}
 
 		nghb.goToNeighbour(3);//return to origin

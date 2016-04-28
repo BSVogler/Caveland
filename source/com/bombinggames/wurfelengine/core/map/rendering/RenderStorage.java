@@ -221,7 +221,7 @@ public class RenderStorage implements Telegraph  {
 	}
 	
 	/**
-	 * get the chunk where the coordinates are on
+	 * get the chunk where the coordinates are on.
 	 *
 	 * @param coord not altered
 	 * @return can return null if not loaded

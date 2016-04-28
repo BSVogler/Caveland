@@ -1290,10 +1290,7 @@ public class RenderCell extends AbstractGameObject {
 		return id != 0
 				&& !isClipped()
 				&& !isHidden()
-				&& camera.inViewFrustum(
-					coord.getViewSpcX(),
-					coord.getViewSpcY()
-				);
+				&& camera.inViewFrustum(coord);
 	}
 
 	@Override

@@ -48,6 +48,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.SideSprite;
 import java.util.ArrayList;
@@ -577,10 +578,7 @@ public class Camera {
 		for (AbstractEntity ent : ents) {
 			if (ent.hasPosition()
 				&& !ent.isHidden()
-				&& inViewFrustum(
-					ent.getPosition().getViewSpcX(),
-					ent.getPosition().getViewSpcY()
-				)
+				&& inViewFrustum(ent.getPosition())
 				&& ent.getPosition().getZ() < gameView.getRenderStorage().getZRenderingLimit()
 			) {
 				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
@@ -595,7 +593,7 @@ public class Camera {
 			}
 		}
 		
-		//iterate over renderstorage
+		//iterate over every block in renderstorage
 		objectsToBeRendered = 0;
 		CameraSpaceIterator iterator = new CameraSpaceIterator(
 			gameView.getRenderStorage(),
@@ -608,10 +606,7 @@ public class Camera {
 		while (iterator.hasNext()) {
 			RenderCell cell = iterator.next();
 
-			if (cell != null && inViewFrustum(
-				cell.getPosition().getViewSpcX(),
-				cell.getPosition().getViewSpcY()
-			)) {
+			if (cell != null && inViewFrustum(cell.getPosition())) {
 				visit(cell);
 			}
 		}
@@ -632,10 +627,7 @@ public class Camera {
 			if (covered.size() > 0) {
 				n.markPermanentDS(id);
 					for (AbstractGameObject m : covered) {
-						if (inViewFrustum(
-							m.getPosition().getViewSpcX(),
-							m.getPosition().getViewSpcY()
-						)) {
+						if (inViewFrustum(m.getPosition())) {
 							visit(m);
 						}
 					}
@@ -655,11 +647,12 @@ public class Camera {
 	/**
 	 * checks if the projected position is inside the viewMat Frustum
 	 *
-	 * @param proX projective space
-	 * @param proY projective space
+	 * @param pos
 	 * @return
 	 */
-	public boolean inViewFrustum(int proX, int proY){
+	public boolean inViewFrustum(Position pos){
+		int proX = pos.getViewSpcX();
+		int proY = pos.getViewSpcY();
 		return
 				(position.y + getHeightInProjSpc() / 2)
 				>

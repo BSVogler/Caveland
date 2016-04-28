@@ -118,6 +118,11 @@ public class Coordinate implements Position {
 		return z;
 	}
 
+	@Override
+	public int getZGrid() {
+		return z;
+	}
+
 	public Coordinate set(int x, int y, int z) {
 		this.x = x;
 		this.y = y;

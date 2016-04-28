@@ -104,12 +104,7 @@ public class Point extends Vector3 implements Position {
 		return z;
 	}
 
-	/**
-	 * Get the z in block grid coordinates of the coordinate. Faster the
-	 * transofmring to coordinate first.
-	 *
-	 * @return in grid coordinates.
-	 */
+	@Override
 	public int getZGrid() {
 		return (int) (z / RenderCell.GAME_EDGELENGTH);
 	}

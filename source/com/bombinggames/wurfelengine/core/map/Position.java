@@ -228,4 +228,12 @@ public interface Position extends Serializable {
 	 * @return
 	 */
 	public abstract int getChunkY();
+
+	/**
+	 * Get the z in block grid coordinates of the coordinate. Faster than
+	 * transforming to coordinate first.
+	 *
+	 * @return in grid coordinates.
+	 */
+	public abstract int getZGrid();
 }

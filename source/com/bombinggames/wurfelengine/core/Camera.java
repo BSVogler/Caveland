@@ -61,11 +61,6 @@ import java.util.LinkedList;
 public class Camera {
 
 	/**
-	 * top limit in game space
-	 */
-	private float zRenderingLimit = Float.POSITIVE_INFINITY;
-
-	/**
 	 * the position of the camera in view space. Y-up. Read only field.
 	 */
 	private final Vector2 position = new Vector2();
@@ -185,8 +180,6 @@ public class Camera {
 	 * @param view
 	 */
 	public Camera(final GameView view, final int x, final int y, final int width, final int height) {
-		zRenderingLimit = Chunk.getBlocksZ()-1;
-
 		gameView = view;
 		screenWidth = width;
 		screenHeight = height;
@@ -588,7 +581,7 @@ public class Camera {
 					ent.getPosition().getViewSpcX(),
 					ent.getPosition().getViewSpcY()
 				)
-				&& ent.getPosition().getZ() < zRenderingLimit
+				&& ent.getPosition().getZ() < gameView.getRenderStorage().getZRenderingLimit()
 			) {
 				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
 				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change in line above
@@ -609,7 +602,7 @@ public class Camera {
 			centerChunkX,
 			centerChunkY,
 			0,
-			Chunk.getBlocksZ() - 1
+			(int) (gameView.getRenderStorage().getZRenderingLimit()/RenderCell.GAME_EDGELENGTH)
 		);
 		//check/visit every visible cell
 		while (iterator.hasNext()) {
@@ -647,12 +640,14 @@ public class Camera {
 						}
 					}
 			}
-			if (n.shouldBeRendered(this)) {
-				if (objectsToBeRendered < maxsprites) {
-					//fill only up to available size
-					depthlist.add(n);
-					objectsToBeRendered++;
-				}
+			if (
+				n.shouldBeRendered(this)
+				&& n.getPosition().getZPoint() < gameView.getRenderStorage().getZRenderingLimit()
+				&& objectsToBeRendered < maxsprites
+			) {
+				//fill only up to available size
+				depthlist.add(n);
+				objectsToBeRendered++;
 			}
 		}
 	}
@@ -723,23 +718,6 @@ public class Camera {
 		return screenWidth / (float) renderResWidth;
 	}
 
-	/**
-	 * If the limit is set to the map's height or more it becomes deactivated.
-	 *
-	 * @param limit minimum is 0, everything to this limit becomes rendered
-	 */
-	public void setZRenderingLimit(float limit) {
-		if (limit != zRenderingLimit) {//only if it differs
-
-			zRenderingLimit = limit;
-
-			//clamp
-			if (limit < 0) {
-				zRenderingLimit = 0;//min is 0
-			}
-		}
-	}
-	
 	/**
 	 * Returns the left border of the actual visible area.
 	 *

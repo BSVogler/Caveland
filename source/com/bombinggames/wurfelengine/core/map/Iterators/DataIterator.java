@@ -66,8 +66,8 @@ public class DataIterator<T> implements Iterator<T> {
 	) {
 		this.startingZ  = startingZ;
 		this.limitZ = limitZ;
-		if (this.limitZ > Chunk.getBlocksZ()) {
-			this.limitZ = Chunk.getBlocksZ();
+		if (this.limitZ >= Chunk.getBlocksZ()) {
+			this.limitZ = Chunk.getBlocksZ()-1;
 		}
 		if (this.limitZ <= startingZ) {
 			this.limitZ = startingZ+1;

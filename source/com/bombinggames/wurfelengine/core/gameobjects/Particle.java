@@ -20,8 +20,8 @@ public class Particle extends MovableEntity {
 	 * if this reaches zero it is destroyed
 	 */
 	private float timeTillDeath;
-	private Color startingColor = new Color(1, 1, 1, 0.5f);
-	private float startingAlpha;
+	private final Color startingColor = new Color(1, 1, 1, 0.5f);
+	private float startingAlpha = 1f;
 	private ParticleType type = ParticleType.REGULAR;
 	private boolean rotateRight;
 	private Pool<Particle> pool;
@@ -63,7 +63,8 @@ public class Particle extends MovableEntity {
 		}
 		setFloating(true);
 		setName("Particle");
-		setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
+		super.setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
+		startingColor.set(getColor());
 		setMass(0.0005f);
 		rotateRight = Math.random() > 0.5f;
 	}
@@ -86,8 +87,8 @@ public class Particle extends MovableEntity {
 
 	@Override
 	public void setColor(Color color) {
-		super.setColor(color);
-		startingColor = color.cpy();
+		super.getColor().set(color);
+		startingColor.set(color);
 		startingAlpha = color.a;
 	}
 

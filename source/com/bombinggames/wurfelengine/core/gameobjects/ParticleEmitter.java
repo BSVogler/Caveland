@@ -130,7 +130,7 @@ public class ParticleEmitter extends AbstractEntity {
 				Particle particle = pool.obtain();
 				particle.setPool(pool);
 				particle.setType(prototype.getType());
-				particle.getColor().set(prototype.getColor());
+				particle.setColor(prototype.getColor());
 				particle.setRotation((float) (Math.random() * 360f));
 				particle.addMovement(
 					startingVector.add(

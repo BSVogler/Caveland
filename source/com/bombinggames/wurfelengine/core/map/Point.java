@@ -452,7 +452,7 @@ public class Point extends Vector3 implements Position {
 			if (
 				view == null
 				||
-				(curZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
+				(curZ*RenderCell.GAME_EDGELENGTH < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
 				byte id = isectC.getBlockId();
 				if (
@@ -582,7 +582,7 @@ public class Point extends Vector3 implements Position {
 			if (
 				view == null
 				||
-				(lastCoordZ < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
+				(lastCoordZ*RenderCell.GAME_EDGELENGTH < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
 				byte id = isectC.getBlockId();
 				if (

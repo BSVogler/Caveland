@@ -65,7 +65,7 @@ public class RenderStorage implements Telegraph  {
 	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
 	 */
 	private final LinkedList<RenderCell> dirtyFlags = new LinkedList<>();
-	private int zRenderingLimit;
+	private float zRenderingLimit;
 
 	/**
 	 * Creates a new renderstorage.
@@ -74,7 +74,7 @@ public class RenderStorage implements Telegraph  {
 		this.cameraContainer = new ArrayList<>(1);
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
-		zRenderingLimit = Chunk.getBlocksZ();
+		zRenderingLimit = Chunk.getGameHeight();
 	}
 	
 	public void preUpdate(float dt){
@@ -152,20 +152,20 @@ public class RenderStorage implements Telegraph  {
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(rChunk);
-				hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
+				hiddenSurfaceDetection(rChunk);
 
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+					hiddenSurfaceDetection(neighbor);
 				}
 				neighbor = getChunk(x + 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+					hiddenSurfaceDetection(neighbor);
 				}
 				neighbor = getChunk(x, y - 1);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor, zRenderingLimit - 1);
+					hiddenSurfaceDetection(neighbor);
 				}
 			}
 		} else {
@@ -216,7 +216,7 @@ public class RenderStorage implements Telegraph  {
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
 			AmbientOcclusionCalculator.calcAO(rChunk);
-			hiddenSurfaceDetection(rChunk, zRenderingLimit - 1);
+			hiddenSurfaceDetection(rChunk);
 		});			
 	}
 	
@@ -376,9 +376,8 @@ public class RenderStorage implements Telegraph  {
 	 * performs a simple viewFrustum check by looking at the direct neighbours.
 	 *
 	 * @param chunk
-	 * @param toplimit
 	 */
-	public void hiddenSurfaceDetection(final RenderChunk chunk, final int toplimit) {
+	public void hiddenSurfaceDetection(final RenderChunk chunk) {
 		if (chunk == null) {
 			throw new IllegalArgumentException();
 		}
@@ -403,7 +402,7 @@ public class RenderStorage implements Telegraph  {
 		DataIterator<RenderCell> dataIter = new DataIterator<>(
 			chunkData,
 			0,
-			toplimit
+			(int) (zRenderingLimit/RenderCell.GAME_EDGELENGTH)
 		);
 
 		while (dataIter.hasNext()) {
@@ -495,7 +494,7 @@ public class RenderStorage implements Telegraph  {
 	 * @return
 	 */
 	public boolean isClipped(Coordinate coords) {
-		if (coords.getZ() >= zRenderingLimit) {
+		if (coords.getZ() >= zRenderingLimit*RenderCell.GAME_EDGELENGTH) {
 			return true;
 		}
 		
@@ -509,11 +508,24 @@ public class RenderStorage implements Telegraph  {
 	}
 
 	/**
-	 * 
+	 * renders to this layer not including
+	 *
 	 * @return coordinate
 	 */
-	public int getZRenderingLimit() {
+	public float getZRenderingLimit() {
 		return zRenderingLimit;
+	}
+
+	/**
+	 * renders to this layer not including
+	 *
+	 * @param height game space
+	 */
+	public void setZRenderingLimit(float height) {
+		zRenderingLimit = height;
+		if (zRenderingLimit < 0) {
+			zRenderingLimit = 0;
+		}
 	}
 	
 	@Override

@@ -36,6 +36,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  * A bar which schows the current fitlering level.
@@ -59,31 +60,30 @@ public class Navigation {
 
 		int rightborder = Gdx.graphics.getWidth();
 		int topBorder = Gdx.graphics.getHeight();
-		int steps = topBorder / (Chunk.getBlocksZ() + 1);
+		int stepSize = topBorder / (Chunk.getBlocksZ() + 1);
 
 		for (int i = 1; i < Chunk.getBlocksZ() + 1; i++) {
-			if (view.getRenderStorage().getZRenderingLimit() == i) {
-				sh.setColor(Color.LIGHT_GRAY.cpy().sub(0, 0, 0, 0.1f));
-			} else {
-				sh.setColor(Color.GRAY.cpy().sub(0, 0, 0, 0.5f));
-			}
-			sh.line(
-				rightborder,
-				i * steps,
-				rightborder - 50 - (view.getRenderStorage().getZRenderingLimit() == i ? 40 : 0),
-				i * steps
+			sh.setColor(Color.GRAY.cpy().sub(0, 0, 0, 0.5f));
+			sh.line(rightborder,
+				i * stepSize,
+				rightborder - 50,
+				i * stepSize
 			);
 
 			//"shadow"
 			sh.setColor(Color.DARK_GRAY.cpy().sub(0, 0, 0, 0.5f));
-			sh.line(
-				rightborder,
-				i * steps + 3,
-				rightborder - 50 - (view.getRenderStorage().getZRenderingLimit() == i ? 40 : 0),
-				i * steps + 3
+			sh.line(rightborder,
+				i * stepSize + 3,
+				rightborder - 50,
+				i * stepSize + 3
 			);
 		}
-
+		sh.line(
+			rightborder,
+			view.getRenderStorage().getZRenderingLimit() * stepSize/RenderCell.GAME_EDGELENGTH,
+			rightborder - 50,
+			view.getRenderStorage().getZRenderingLimit() * stepSize/RenderCell.GAME_EDGELENGTH
+		);
 		sh.end();
 		Gdx.gl.glLineWidth(1);
 		Gdx.gl.glDisable(GL20.GL_BLEND);

@@ -651,22 +651,20 @@ public class Camera {
 	 * @return
 	 */
 	public boolean inViewFrustum(Position pos){
-		int proX = pos.getViewSpcX();
-		int proY = pos.getViewSpcY();
 		return
 				(position.y + getHeightInProjSpc() / 2)
 				>
-				(proY - RenderCell.VIEW_HEIGHT * 2)//bottom of sprite
+				(pos.getViewSpcY() - RenderCell.VIEW_HEIGHT * 2)//bottom of sprite
 			&&
-				(proY + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
+				(pos.getViewSpcY() + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
 				>
 				position.y - getHeightInProjSpc() / 2
 			&&
-				(proX + RenderCell.VIEW_WIDTH2)//right side of sprite
+				(pos.getViewSpcX() + RenderCell.VIEW_WIDTH2)//right side of sprite
 				>
 				position.x - getWidthInProjSpc() / 2
 			&&
-				(proX - RenderCell.VIEW_WIDTH2)//left side of sprite
+				(pos.getViewSpcX() - RenderCell.VIEW_WIDTH2)//left side of sprite
 				<
 				position.x + getWidthInProjSpc() / 2
 		;

@@ -566,7 +566,7 @@ public class Coordinate implements Position {
 	 */
 	public void destroy() {
 		int block = getBlock();
-		if ((block&255) != 0&& ((block>>16)&255) > 0) {
+		if ((block & 255) != 0 && ((block >> 16) & 255) > 0) {
 			Controller.getMap().setHealth(this, (byte) 0);
 			setBlock(0);
 			//broadcast event that this block got destroyed

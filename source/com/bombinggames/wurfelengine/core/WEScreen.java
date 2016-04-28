@@ -48,11 +48,10 @@ public abstract class WEScreen implements Screen {
 	private int selection;
 
 	@Override
-	@SuppressWarnings("AssignmentToMethodParameter")
 	public final void render(float delta) {
 		delta *= 1000;//to ms
 		if (delta >= WE.getCVars().getValueF("MaxDelta")) {
-			delta = 1f / 60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
+			delta = 1000f / 60f;//if <1 FPS assume it was stopped and set delta to 16,66ms ^= 60FPS
 		}
 		renderImpl(delta);
 		WE.updateAndRender(delta);
@@ -70,8 +69,6 @@ public abstract class WEScreen implements Screen {
 		buttons.add(button);
 	}
 
-	;
-	
 	public void select(int i) {
 		selection = i;
 	}

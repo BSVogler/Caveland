@@ -44,7 +44,7 @@ import java.util.ArrayList;
  */
 public abstract class WEScreen implements Screen {
 
-	ArrayList<Actor> buttons = new ArrayList<>(5);
+	private final ArrayList<Actor> buttons = new ArrayList<>(5);
 	private int selection;
 
 	@Override

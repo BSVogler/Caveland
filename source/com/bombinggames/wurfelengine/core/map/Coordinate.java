@@ -523,12 +523,12 @@ public class Coordinate implements Position {
 
 	@Override
 	public int getProjectionSpaceX(GameView view, Camera camera) {
-		return (int) (getViewSpcX() - camera.getViewSpaceX() + camera.getWidthInProjSpc() / 2);
+		return (int) (getViewSpcX() - camera.getViewSpaceX() + camera.getWidthInProjSpc()*0.5);
 	}
 
 	@Override
 	public int getProjectionSpaceY(GameView view, Camera camera) {
-		return (int) (getViewSpcY() - camera.getViewSpaceY() + camera.getHeightInProjSpc() / 2);
+		return (int) (getViewSpcY() - camera.getViewSpaceY() + camera.getHeightInProjSpc()*0.5);
 	}
 
 	@Override

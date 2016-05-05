@@ -39,9 +39,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
@@ -63,6 +65,7 @@ public class Toolbar extends Window {
 	private final Image[] items = new Image[Tool.values().length];
 
 	private Tool selectionLeft = Tool.DRAW;
+	private final TextButton aplyValuesButton;
 
 	/**
 	 * creates a new toolbar
@@ -105,10 +108,25 @@ public class Toolbar extends Window {
 		valuesActor = new TextField("1", WE.getEngineView().getSkin());
 		valuesActor.setWidth(30);
 		valuesActor.setPosition(2, 2);
-		valuesActor.setMaxLength(1+RenderCell.VALUESNUM/100);
+		valuesActor.setMaxLength(1 + RenderCell.VALUESNUM / 100);
 		valuesActor.setTextFieldFilter((TextField textField, char c) -> Character.isDigit(c));
 		valuesActor.addListener(new TextFieldChangedListener(this));
 		addActor(valuesActor);
+		
+		aplyValuesButton = new TextButton("Edit Value", WE.getEngineView().getSkin());
+		aplyValuesButton.setPosition(valuesActor.getWidth()+valuesActor.getX()+3, 2);
+		aplyValuesButton.addListener(
+			new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				valuesActor.setDisabled(!valuesActor.isDisabled());
+				valuesActor.setVisible(!valuesActor.isDisabled());
+			}
+		});
+		
+		addActor(aplyValuesButton);
+		
 	}
 	
 	/**

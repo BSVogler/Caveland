@@ -42,6 +42,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.bombinggames.wurfelengine.Command;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -342,6 +343,7 @@ public class EditorView extends GameView implements Telegraph {
 		private int lastY;
 		private boolean symDown;
 		private boolean shiftDown;
+		private Coordinate lastCoord;
 
 		EditorInputListener(Controller controller, EditorView view) {
 			this.controller = controller;
@@ -588,24 +590,39 @@ public class EditorView extends GameView implements Telegraph {
 					(int) screenYtoView(screenY, camera)
 				);
 			}
-
+			
+			Coordinate coords = controller.getCursor().getPosition().toCoord();
+			coords.setZ(dragLayer);
 			//dragging with left and draw tool
-			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Tool.DRAW)
-				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Tool.DRAW)) {
-				Coordinate coords = controller.getCursor().getPosition().toCoord();
-				coords.setZ(dragLayer);
-				if (coords.getZ() >= 0 && coords.getBlockId() == 0 && toolSelection.getActiveTable() instanceof BlockTable) {
-					Controller.getMap().setBlock(coords, ((BlockTable) toolSelection.getActiveTable()).getIdOfSelection(), toolSelection.getActiveTable().getValue());
-				}
-			}
+			if ( buttondown == Buttons.LEFT && 
+				((toolSelection.getLeftTool() == Tool.DRAW && coords.getBlockId() == 0)
+				||
+				( toolSelection.getLeftTool() == Tool.REPLACE && coords.getBlockId() != 0))
+				&& coords.getZ() >= 0
+				&& toolSelection.getActiveTable() instanceof BlockTable
+				&& !coords.equals(lastCoord)//avoid duplicate commands
+			) {
+				lastCoord = coords;
+				getController().executeCommand(
+					new Command() {
+						private int previous;
+						private int block =-1;
 
-			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Tool.REPLACE)
-				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Tool.REPLACE)) {
-				Coordinate coords = controller.getCursor().getPosition().toCoord();
-				coords.setZ(dragLayer);
-				if (coords.getZ() >= 0 && Controller.getMap().getBlockId(coords) != 0 && toolSelection.getActiveTable() instanceof BlockTable) {
-					Controller.getMap().setBlock(coords, ((BlockTable) toolSelection.getActiveTable()).getIdOfSelection(), toolSelection.getActiveTable().getValue());
-				}
+						@Override
+						public void execute() {
+							if (block == -1) {
+								block = ((BlockTable) toolSelection.getActiveTable()).getSelectedBlock();
+								previous = coords.getBlock();
+							}
+							Controller.getMap().setBlock(coords, block);
+						}
+
+						@Override
+						public void undo() {
+							Controller.getMap().setBlock(coords, previous);
+						}
+					}
+				);
 			}
 
 			lastX = screenX;

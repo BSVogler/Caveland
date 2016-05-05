@@ -283,7 +283,7 @@ public class Toolbar extends Window {
 		valuesActor.setPosition(2, 2);
 		valuesActor.setMaxLength(1+RenderCell.VALUESNUM/100);
 		valuesActor.setTextFieldFilter((TextField textField, char c) -> Character.isDigit(c));
-		valuesActor.addListener(new ChangeListenerImpl(this));
+		valuesActor.addListener(new TextFieldChangedListener(this));
 		addActor(valuesActor);
 	}
 	
@@ -406,11 +406,11 @@ public class Toolbar extends Window {
 		}
 	}
 
-	private static class ChangeListenerImpl extends ChangeListener {
+	private static class TextFieldChangedListener extends ChangeListener {
 
 		private final Toolbar parent;
 
-		ChangeListenerImpl(Toolbar parent) {
+		TextFieldChangedListener(Toolbar parent) {
 			this.parent = parent;
 		}
 

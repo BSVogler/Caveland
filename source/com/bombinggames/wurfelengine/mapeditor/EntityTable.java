@@ -41,7 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * A table showing the registered entities.
  * @author Benedikt Vogler
  */
 public class EntityTable extends AbstractPlacableTable {

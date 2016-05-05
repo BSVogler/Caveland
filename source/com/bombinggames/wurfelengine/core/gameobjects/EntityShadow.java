@@ -69,11 +69,13 @@ public class EntityShadow extends AbstractEntity {
 			) {
 				getPoint().add(0, 0, -RenderCell.GAME_EDGELENGTH);
 			}
-			if (character.getPosition().getZ()<RenderCell.GAME_EDGELENGTH) {
+			//last level
+			if (character.getPosition().getZPoint() < RenderCell.GAME_EDGELENGTH) {
 				getPoint().setZ(0);
 			} else {
-				getPoint().setZ((getPoint().getZGrid()+1)*RenderCell.GAME_EDGELENGTH);
+				getPoint().setZ((getPoint().getZGrid() + 1) * RenderCell.GAME_EDGELENGTH);
 			}
+			setHidden(character.getPosition().getZPoint() < getPoint().z);
 		}
 	}
 

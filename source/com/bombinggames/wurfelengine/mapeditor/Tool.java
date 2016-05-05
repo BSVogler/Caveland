@@ -83,9 +83,6 @@ public enum Tool {
 					private int previous;
 					private int block;
 
-					public void init() {
-					}
-
 					@Override
 					public void execute() {
 						if (coord == null) {

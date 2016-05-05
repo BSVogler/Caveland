@@ -483,6 +483,8 @@ public class EditorView extends GameView implements Telegraph {
 				if (toolSelection.getActiveTable() instanceof BlockTable) {
 					((BlockTable) toolSelection.getActiveTable()).select(coords.getBlockId(), coords.getBlockValue());
 				}
+							
+			//other tools used
 			} else {
 				Tool toolUsed;
 
@@ -628,7 +630,8 @@ public class EditorView extends GameView implements Telegraph {
 						&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= (int) screenYtoView(screenY, camera) //top spr. border
 						&& !(ent instanceof EntityShadow)
 						&& !ent.getName().equals("normal")
-						&& !ent.getName().equals("selectionEntity")) {
+						&& !ent.getName().equals("selectionEntity")
+					) {
 						entityUnderMouse = ent;
 					}
 				}

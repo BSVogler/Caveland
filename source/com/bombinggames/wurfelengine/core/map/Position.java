@@ -237,5 +237,9 @@ public interface Position extends Serializable {
 	 */
 	public abstract int getZGrid();
 
+	/**
+	 * Get the z in game world coordinates.
+	 * @return 
+	 */
 	public abstract float getZPoint();
 }

@@ -109,6 +109,9 @@ public class Cursor extends AbstractEntity {
      */
     public void setNormal(Side side){
         normalSide = side;
+		if (getPosition().getZ() < 0) {
+			normal.getPosition().z = 0;
+		}
         if (side == Side.LEFT)
             normal.setRotation(120);
         else if (side == Side.TOP)
@@ -144,6 +147,10 @@ public class Cursor extends AbstractEntity {
 					break;
 			}
 		}
+		if (coords.getZ() < 0) {
+			coords.setZ(0);
+		}
+
 		return coords;
 	}
 	

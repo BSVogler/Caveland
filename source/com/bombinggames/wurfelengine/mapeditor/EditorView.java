@@ -53,7 +53,6 @@ import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
-import com.bombinggames.wurfelengine.mapeditor.Toolbar.Tool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -589,8 +588,8 @@ public class EditorView extends GameView implements Telegraph {
 			}
 
 			//dragging with left and draw tool
-			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.DRAW)
-				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.DRAW)) {
+			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Tool.DRAW)
+				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Tool.DRAW)) {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0 && coords.getBlockId() == 0 && toolSelection.getActiveTable() instanceof BlockTable) {
@@ -598,8 +597,8 @@ public class EditorView extends GameView implements Telegraph {
 				}
 			}
 
-			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Toolbar.Tool.REPLACE)
-				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Toolbar.Tool.REPLACE)) {
+			if ((buttondown == Buttons.LEFT && toolSelection.getLeftTool() == Tool.REPLACE)
+				|| (buttondown == Buttons.RIGHT && toolSelection.getRightTool() == Tool.REPLACE)) {
 				Coordinate coords = controller.getCursor().getPosition().toCoord();
 				coords.setZ(dragLayer);
 				if (coords.getZ() >= 0 && Controller.getMap().getBlockId(coords) != 0 && toolSelection.getActiveTable() instanceof BlockTable) {

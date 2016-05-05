@@ -39,6 +39,7 @@ import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.mapeditor.CursorInfo;
+import com.bombinggames.wurfelengine.mapeditor.Tool;
 
 /**
  *The seletion indicator in the level editor.
@@ -49,10 +50,10 @@ public class Cursor extends AbstractEntity {
     private final SimpleEntity normal;
     private Side normalSide;
 	private CursorInfo selDet;
+	private Tool tool;
     
     /**
      *
-	 * @param selDet
      */
     public Cursor() {
         super((byte) 13);
@@ -87,8 +88,13 @@ public class Cursor extends AbstractEntity {
     @Override
     public void setPosition(Point pos) {
 		Coordinate coord = pos.toCoord();
-        super.setPosition( coord);
-        setHidden(getPosition().getZ() < 0);//hide if is under map
+		super.setPosition(coord);
+		if (tool == Tool.SELECT) {
+			setHidden(true);
+		} else {
+			setHidden(getPosition().getZ() < 0);//hide if is under map
+		}
+        
 		Point isectP = pos.cpy();
 		if (normalSide == Side.TOP) {
 			isectP.setZ((isectP.getZGrid() + 1) * RenderCell.GAME_EDGELENGTH);
@@ -164,16 +170,17 @@ public class Cursor extends AbstractEntity {
 		}
     }
 
-	/**
-	 * 
-	 * @param show 
-	 */
-	public void showNormal(boolean show) {
-		normal.setHidden(!show);
-	}
-
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return true;
+	}
+
+	/**
+	 * tool which is represented
+	 * @param tool 
+	 */
+	public void setTool(Tool tool) {
+		normal.setHidden(!tool.showNormal);
+		this.tool = tool;
 	}
 }

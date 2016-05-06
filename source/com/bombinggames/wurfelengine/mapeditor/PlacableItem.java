@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 
 /**
- * An item for the {@link PlacableTable}
+ * An item for the {@link com.bombinggames.wurfelengine.mapeditor.AbstractPlacableTable}
  *
  * @author Benedikt Vogler
  */

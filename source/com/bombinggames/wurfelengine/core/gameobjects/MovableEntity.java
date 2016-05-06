@@ -668,7 +668,7 @@ public class MovableEntity extends AbstractEntity  {
 	
 	/**
 	 * Sets speed and direction values.
-	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link RenderCell#GAME_EDGELENGTH}</i>.
 	 */
 	public void setMovement(Vector3 movement){
 		this.movement.set(movement);
@@ -677,7 +677,7 @@ public class MovableEntity extends AbstractEntity  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link RenderCell#GAME_EDGELENGTH}</i>.
 	 */
 	public void addMovement(Vector2 movement){
 		this.movement.x += movement.x;
@@ -688,7 +688,7 @@ public class MovableEntity extends AbstractEntity  {
 	
 	/**
 	 * Adds speed and direction.
-	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link Block#GAME_EDGELENGTH}</i>.
+	 * @param movement containing direction and speed in m/s without the unit e.g. for 5m/s use just <i>5</i> and not <i>5*{@link RenderCell#GAME_EDGELENGTH}</i>.
 	 */
 	public void addMovement(Vector3 movement){
 		this.movement.add(movement);
@@ -710,7 +710,7 @@ public class MovableEntity extends AbstractEntity  {
 	 * Adds speed to horizontal moving directio.
 	 *
 	 * @param speed speed in m/s without the unit so no
-	 * "5*{@link #GAME_EDGELENGTH}" for 5 m/s but just "5".
+	 * "5*{@link RenderCell#GAME_EDGELENGTH}" for 5 m/s but just "5".
 	 */
 	public void addToHor(float speed) {
 		this.movement.x += orientation.x * speed;

@@ -50,9 +50,8 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
 /**
- * It is something which can be rendered and therefore render information saved shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the {@link Block} with a position and {@link AbstractGameObject} class methods. The wrapped {@link Block} is not referenced, so changing this {@link RenderCell} changes the data in the map.<br>
+ * It is something which can be rendered and therefore render information saved shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the block with a position and {@link AbstractGameObject} class methods. The wrapped cell is not referenced. It is possible to change there sprite id and value {@link AbstractGameObject#setSpriteId(byte)} but keeping the logic id and value. <br>
  * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
- * @see Block
  * @author Benedikt Vogler
  */
 public class RenderCell extends AbstractGameObject {
@@ -579,6 +578,24 @@ public class RenderCell extends AbstractGameObject {
 		this.value = value;
 	}
 	
+	/**
+	 * game logic value. Sprite Id may differ.
+	 * @return 
+	 * @see #getSpriteId() 
+	 */
+	public byte getId() {
+		return id;
+	}
+
+	/**
+	 * game logic value. Sprite value may differ.
+	 * @return 
+	 * @see #getSpriteValue()
+	 */
+	public byte getValue() {
+		return value;
+	}
+	
 	public boolean isObstacle() {
 		return RenderCell.isObstacle(id, value);
 	}
@@ -962,11 +979,11 @@ public class RenderCell extends AbstractGameObject {
 	 */
 	public boolean isTransparent() {
 		if (id==0) return true;
-		return RenderCell.isTransparent(id,value);
+		return RenderCell.isTransparent(getSpriteId(),getSpriteValue());//sprite id because view related
 	}
 	
 	public boolean isIndestructible() {
-		return RenderCell.isIndestructible(id,value);
+		return RenderCell.isIndestructible(id,value);//game logic related
 	}
 	
 	/**
@@ -1385,24 +1402,6 @@ public class RenderCell extends AbstractGameObject {
 
 	public void clearCoveredEnts() {
 		coveredEnts.clear();
-	}
-
-	/**
-	 * game logic value. Sprite Id may differ.
-	 * @return 
-	 * @see #getSpriteId() 
-	 */
-	public byte getId() {
-		return id;
-	}
-
-	/**
-	 * game logic value. Sprite value may differ.
-	 * @return 
-	 * @see #getSpriteValue()
-	 */
-	public byte getValue() {
-		return value;
 	}
 
 	/**

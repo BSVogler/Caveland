@@ -265,7 +265,7 @@ public abstract class AbstractCVarSystem {
 	 * Registering should only be done by the game or the engine in init phase.
 	 * Also saves as defaultValue. if already registered updates the default and
 	 * current value.<br>
-	 * Uses {@link com.bombinggames.wurfelengine.core.cvar.CVarFlags.CVAR_ARCHIVE}
+	 * Uses {@link com.bombinggames.wurfelengine.core.cvar.CVarFlags#CVAR_ARCHIVE}
 	 *
 	 * @param cvar
 	 * @param name

@@ -60,7 +60,7 @@ public abstract class AbstractPlacableTable extends Table {
 
 	/**
 	 *
-	 * @param view
+	 * @param view used for rendering
 	 */
 	public abstract void show(GameView view);
 

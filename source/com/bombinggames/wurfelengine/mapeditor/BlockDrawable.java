@@ -109,55 +109,26 @@ public class BlockDrawable extends TextureRegionDrawable {
 		draw(batch, x, y, width, height);
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public float getLeftWidth() {
 		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public float getRightWidth() {
 		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public float getTopHeight() {
 		return 0;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public float getBottomHeight() {
 		return 0;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
-	@Override
-	public float getMinHeight() {
-		return (RenderCell.VIEW_HEIGHT + RenderCell.VIEW_DEPTH) * block.getScaling();
-	}
-
-	/**
-	 *
-	 * @return
-	 */
 	@Override
 	public float getMinWidth() {
 		return RenderCell.VIEW_WIDTH * block.getScaling();

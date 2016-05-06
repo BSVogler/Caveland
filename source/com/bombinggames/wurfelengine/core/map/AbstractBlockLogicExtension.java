@@ -8,7 +8,7 @@ package com.bombinggames.wurfelengine.core.map;
  * changes it will be removed via
  * {@link  com.bombinggames.wurfelengine.core.map.Map}. Check if is about to be
  * removed via {@link #isValid() }.<br> If you want to save information in the
- * save file you have to use and spawn an {@link AbstractEntity}.
+ * save file you have to use and spawn an {@link com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity}.
  *
  * @author Benedikt Vogler
  */

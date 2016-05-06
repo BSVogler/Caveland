@@ -49,7 +49,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * The message system can manage&show messages (Line).
+ * The message system can manage &amp; show messages (Line).
  *
  * @author Benedikt
  */

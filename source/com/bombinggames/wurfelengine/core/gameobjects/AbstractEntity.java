@@ -565,7 +565,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * O(n) n:amount of entities. ignores if is obstacle.
 	 *
 	 * @param <type>
-	 * @param filter
+	 * @param filter only where the filter is true is returned
 	 * @return
 	 */
 	public <type extends AbstractEntity> ArrayList<type> getCollidingEntities(final Class<type> filter) {

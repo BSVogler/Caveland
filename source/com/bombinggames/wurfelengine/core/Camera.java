@@ -636,11 +636,11 @@ public class Camera {
 			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
 			if (covered.size() > 0) {
 				n.markPermanentDS(id);
-					for (AbstractGameObject m : covered) {
-						if (inViewFrustum(m.getPosition())) {
-							visit(m);
-						}
+				for (AbstractGameObject m : covered) {
+					if (inViewFrustum(m.getPosition())) {
+						visit(m);
 					}
+				}
 			}
 			if (
 				n.shouldBeRendered(this)

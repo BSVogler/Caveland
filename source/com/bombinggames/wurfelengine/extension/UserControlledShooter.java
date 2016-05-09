@@ -118,7 +118,7 @@ public class UserControlledShooter extends MovableEntity implements Controllable
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (weapon != null) {
+		if (weapon != null && weapon.hasPosition()) {
 			if (hasPosition()) {
 				weapon.getPosition().set(getPosition());
 			}

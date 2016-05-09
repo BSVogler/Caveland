@@ -622,7 +622,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 			//render this ent before blocks below
 			if (coord.getZ()<1){
-				covered.add(rs.getCell(coord));
+				block = rs.getCell(coord);//front
+				if (block != null) {
+					covered.add(block);
+				}
 			} else {
 				if (coord.getZ() > 0) {
 	//				if (block != null) {

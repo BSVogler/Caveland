@@ -236,7 +236,8 @@ public class RenderStorage implements Telegraph  {
 			if (left <= coord.getX()
 				&& coord.getX() < left + Chunk.getBlocksX()
 				&& top <= coord.getY()
-				&& coord.getY() < top + Chunk.getBlocksY()) {
+				&& coord.getY() < top + Chunk.getBlocksY()
+			) {
 				data.addFirst(data.removeLast());
 				return chunk;
 			}

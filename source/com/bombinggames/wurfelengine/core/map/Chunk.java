@@ -201,35 +201,24 @@ public class Chunk implements Telegraph {
     }
 
     /**
-    * Creates a chunk by trying to load and if this fails it generates a new
+	 * Creates a chunk by trying to load and if this fails it generates a new
 	 * one.
 	 *
 	 * @param map
 	 * @param coordX the chunk coordinate
 	 * @param coordY the chunk coordinate
-	 * @param path filename
-	 * @param generator
+	 * @param path filename, can be null to skip file loading
+	 * @param generator used for generating if laoding fails
 	 */
-    public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator){
+    public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator) {
         this(map, coordX,coordY);
-		if (WE.getCVars().getValueB("shouldLoadMap")){
+		if (path != null && WE.getCVars().getValueB("shouldLoadMap")) {
 			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY)) {
 				fill(generator);
 			}
-		} else fill(generator);
-    }
-
-    /**
-    * Creates a chunk by generating a new one.
-	 *
-	 * @param map
-	 * @param coordX the chunk coordinate
-	 * @param coordY the chunk coordinate
-	 * @param generator
-	 */
-	public Chunk(final Map map, final int coordX, final int coordY, final Generator generator) {
-		this(map, coordX, coordY);
-		fill(generator);
+		} else {
+			fill(generator);
+		}
     }
 
 	/**

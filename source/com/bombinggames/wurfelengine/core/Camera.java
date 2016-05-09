@@ -137,6 +137,9 @@ public class Camera {
 	 * The radius which is used for loading the chunks around the center. May be reduced after the first time to a smaller value.
 	 */
 	private int loadingRadius = 10;
+	/**
+	 * identifies the camera
+	 */
 	private int id;
 
 	/**

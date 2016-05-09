@@ -308,7 +308,7 @@ public class RenderStorage implements Telegraph  {
 	 */
 	public RenderCell getCell(final Coordinate coord) {
 		if (coord.getZ() < 0) {
-			return getNewGroundCellInstance();
+			return null;
 		}
 		RenderChunk chunk = getChunk(coord);
 		if (chunk == null) {

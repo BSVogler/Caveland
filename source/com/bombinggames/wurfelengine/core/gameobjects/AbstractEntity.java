@@ -390,7 +390,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	}
 
 	/**
-	 *
+	 * Get the mass of the object.
 	 * @return in kg
 	 */
 	public float getMass() {

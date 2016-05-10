@@ -67,7 +67,7 @@ public class Cursor extends AbstractEntity {
 		normal.setAnimation(anim);
         normal.setLightlevel(10);
 		normal.setSaveToDisk(false);
-		normal.setName("normal");
+		normal.setName("cursor normal");
     }
 	
 	public void setInfo(CursorInfo selDet){
@@ -176,6 +176,12 @@ public class Cursor extends AbstractEntity {
 			setNormal(intersect.getNormal());
 		}
     }
+
+	@Override
+	public void setHidden(boolean hidden) {
+		super.setHidden(hidden);
+		normal.setHidden(hidden);
+	}
 
 	@Override
 	public boolean handleMessage(Telegram msg) {

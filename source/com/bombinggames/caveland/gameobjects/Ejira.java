@@ -736,7 +736,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 						Events.damage.getId(),
 						attackDamage
 					);
-					getCamera().shake(20, 50);
+					if (entity.getMass() > 0.4) {
+						getCamera().shake(20, 50);
+					}
 				
 					if (entity instanceof MovableEntity) {
 						((MovableEntity) entity).setMovement(

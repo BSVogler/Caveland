@@ -241,6 +241,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		
 		if (hasPosition()) {
 			Point pos = getPosition();
+			if (hasPosition())
+				GrassBlock.setMainForce(pos);
 
 			//slow down in air
 			if (!isOnGround()) {

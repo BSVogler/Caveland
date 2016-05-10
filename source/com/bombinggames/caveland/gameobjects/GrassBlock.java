@@ -38,13 +38,6 @@ import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.Random;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
-import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 
 /**
  * Renders a grass block with wind on top.
@@ -54,7 +47,7 @@ import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.
 public class GrassBlock extends RenderCell {
 
 	private static final long serialVersionUID = 1L;
-	public static final float WINDAMPLITUDE = 30f;
+	public static final float WINDAMPLITUDE = 20f;
 	private final static Random RANDOMGENERATOR = new java.util.Random();
 	private static Sprite grasSprite;
 	private static float wind;
@@ -82,7 +75,8 @@ public class GrassBlock extends RenderCell {
 	private static float posXForce;
 	private static float posYForce;
 	private static float posZForce;
-	private static float force = 9000;
+	private static float force = 4000;
+	private static float noisenum = 0.1f;
 
 	public GrassBlock(byte id, byte value) {
 		super(id, value);
@@ -109,13 +103,14 @@ public class GrassBlock extends RenderCell {
 						yPos - yOffset * 0.5f + RenderCell.VIEW_DEPTH2
 					);
 
-					float distanceToForceCenter = (xPos + xOffset - posXForce) * (xPos + xOffset - posXForce)
-						+ (-yPos * 2 + yOffset - posYForce + 800) * (-yPos * 2 + yOffset - posYForce + 800);
+					//wind
+					float distanceToForceCenter = (xPos + xOffset - posXForce+100) * (xPos + xOffset - posXForce+100)
+						+ (-yPos * 2 + yOffset - posYForce + 900) * (-yPos * 2 + yOffset - posYForce + 900);
 					float forceRot;
 					if (distanceToForceCenter > 200000) {
 						forceRot = 0;
 					} else {
-						forceRot = (float) (3000000 * (Math.random() / 2 + 0.5f) / distanceToForceCenter);
+						forceRot = 600000 / (distanceToForceCenter);
 						if (posXForce < xPos) {
 							forceRot *= -1;
 						}
@@ -126,7 +121,7 @@ public class GrassBlock extends RenderCell {
 							forceRot = -90;
 						}
 					}
-					gras.setRotation(i * 0.4f - 10.2f + wind + RANDOMGENERATOR.nextFloat() * 0.1f * WINDAMPLITUDE / 2 + forceRot);
+					gras.setRotation(i * 0.4f - 10.2f + wind + RANDOMGENERATOR.nextFloat() * noisenum * WINDAMPLITUDE / 2+forceRot*0.3f);
 					gras.draw(view.getSpriteBatch());
 				}
 			}

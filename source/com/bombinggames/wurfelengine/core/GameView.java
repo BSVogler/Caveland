@@ -247,7 +247,6 @@ public class GameView implements GameManager {
 			Gdx.app.error(this.getClass().toString(), "Called method enter() before initializing.");
 		}
 		WE.getEngineView().addInputProcessor(stage);//the input processor must be added every time because they are only 
-		controller.hideCursor();
 		
 		//enable cameras
 		for (Camera camera : cameras) {

@@ -32,6 +32,7 @@
 package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
@@ -69,6 +70,12 @@ public class Cursor extends AbstractEntity {
 		normal.setSaveToDisk(false);
 		normal.setName("cursor normal");
     }
+
+	@Override
+	public void update(float dt) {
+		super.update(dt);
+		setHidden(!WE.isInEditor());
+	}
 	
 	public void setInfo(CursorInfo selDet){
 		this.selDet = selDet;
@@ -169,7 +176,7 @@ public class Cursor extends AbstractEntity {
      * @param screenY cursor position from top
      */
     public void update(GameView view, int screenX, int screenY){
-       Intersection intersect = view.screenToGame(screenX, screenY);
+		Intersection intersect = view.screenToGame(screenX, screenY);
 
 		if (intersect != null && intersect.getPoint() != null) {
 			setPosition(intersect.getPoint());

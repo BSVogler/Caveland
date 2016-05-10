@@ -316,11 +316,6 @@ public class Controller implements GameManager {
 				new Point(0, 0, Chunk.getBlocksZ() - 1)
 			);
 		}
-		cursor.setHidden(false);
-	}
-	
-	public void hideCursor(){
-		cursor.setHidden(true);
 	}
 
 	/**

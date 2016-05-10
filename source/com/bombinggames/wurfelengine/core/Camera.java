@@ -108,7 +108,6 @@ public class Camera {
 	 */
 	private float damageoverlay = 0f;
 
-	private final Vector2 screenshake = new Vector2(0, 0);
 	private float shakeAmplitude;
 	private float shakeTime;
 
@@ -301,16 +300,10 @@ public class Camera {
 			
 			//aplly screen shake
 			if (shakeTime > 0) {
-				screenshake.x = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
-				screenshake.y = (float) (Math.random() * shakeAmplitude - shakeAmplitude / 2);
 				shakeTime -= dt;
-			} else {
-				screenshake.x = 0;
-				screenshake.y = 0;
+				position.x += (float) (Math.random() * shakeAmplitude*dt % shakeAmplitude)-shakeAmplitude*0.5;
+				position.y += (float) (Math.random() * shakeAmplitude*dt % shakeAmplitude)-shakeAmplitude*0.5;
 			}
-
-			position.x += screenshake.x;
-			position.y += screenshake.y;
 
 			//move camera to the focus
 			viewMat.setToLookAt(
@@ -981,7 +974,7 @@ public class Camera {
 	 * shakes the screen
 	 *
 	 * @param amplitude
-	 * @param time
+	 * @param time game time
 	 */
 	public void shake(float amplitude, float time) {
 		shakeAmplitude = amplitude;

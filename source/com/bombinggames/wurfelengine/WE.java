@@ -60,6 +60,7 @@ import com.bombinggames.wurfelengine.core.loading.LoadingScreen;
 import com.bombinggames.wurfelengine.extension.basicmainmenu.BasicMainMenu;
 import com.bombinggames.wurfelengine.soundengine.SoundEngine;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -490,9 +491,14 @@ public class WE {
 	 * @param <T>
 	 * @param filename the name of the file
 	 * @return returns the asset
+	 * @throws java.io.FileNotFoundException
 	 */
-	public static <T> T getAsset(String filename) {
-		return ASSETMANAGER.get(filename);
+	public static <T> T getAsset(String filename) throws FileNotFoundException {
+		try {
+			return ASSETMANAGER.get(filename);
+		} catch (com.badlogic.gdx.utils.GdxRuntimeException ex){
+			throw new FileNotFoundException("Asset \"" + filename + "\" could not be retrieved because it is not loaded.");
+		}
 	}
 
 	/**

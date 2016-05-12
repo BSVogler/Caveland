@@ -37,8 +37,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -83,7 +84,12 @@ public class SoundEngine {
 	 */
 	public void register(String identifier, String path) {
 		if (!sounds.containsKey(identifier)) {
-			sounds.put(identifier, (Sound) WE.getAsset(path));
+			try {
+				Sound s = WE.getAsset(path);
+				sounds.put(identifier, s);
+			} catch (FileNotFoundException ex) {
+				Gdx.app.debug("SoundEngine", "Registering of "+ identifier+ " failed. File may not be loaded.");
+			}
 		}
 	}
 

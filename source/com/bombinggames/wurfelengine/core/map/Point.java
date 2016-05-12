@@ -124,7 +124,7 @@ public class Point extends Vector3 implements Position {
 	/**
 	 * returns coordinate aquivalent. Removes floating of block.<br> Copy
 	 * safe.<br>
-	 * Looks complicated but has runtime O(const)
+	 * Looks complicated but has runtime O(const). You should avoid this method because it uses the heap.
 	 *
 	 * @return coordinate aquivalent
 	 */
@@ -307,7 +307,7 @@ public class Point extends Vector3 implements Position {
     /**
      *Add a vector to the position
      * @param vector all values in game world values
-     * @return
+     * @return returns itself
      */
     public Point add(float[] vector) {
         this.x += vector[0];
@@ -319,7 +319,7 @@ public class Point extends Vector3 implements Position {
 	/**
      * Add a vector to the position
      * @param vector all values in game world values
-     * @return
+     * @return returns itself
      */
     public Point add(Vector2 vector) {
         this.x += vector.x;
@@ -330,7 +330,7 @@ public class Point extends Vector3 implements Position {
      /**
      * Add a vector to the position
      * @param vector all values in game world values
-     * @return
+     * @return returns itself
      */
     @Override
     public Point add(Vector3 vector) {
@@ -345,7 +345,7 @@ public class Point extends Vector3 implements Position {
      * @param x x value to add
      * @param y y value to add
      * @param z height to add
-     * @return
+     * @return returns itself
      */
 	@Override
     public Point add(float x, float y, float z) {

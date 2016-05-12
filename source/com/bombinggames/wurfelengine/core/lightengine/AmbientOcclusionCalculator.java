@@ -30,7 +30,6 @@
  */
 package com.bombinggames.wurfelengine.core.lightengine;
 
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;

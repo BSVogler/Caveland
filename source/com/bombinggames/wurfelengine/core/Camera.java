@@ -33,8 +33,6 @@ package com.bombinggames.wurfelengine.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -102,11 +100,6 @@ public class Camera {
 	private AbstractEntity focusEntity;
 
 	private boolean fullWindow = false;
-
-	/**
-	 * the opacity of thedamage overlay
-	 */
-	private float damageoverlay = 0f;
 
 	private float shakeAmplitude;
 	private float shakeTime;
@@ -527,21 +520,6 @@ public class Camera {
 			if (WE.getCVars().getValueB("DevDebugRendering")) {
 				drawDebug(view, camera);
 			}
-			if (damageoverlay > 0.0f) {
-				//WE.getEngineView().getSpriteBatch().setShader(new custom shader);
-				WE.getEngineView().getSpriteBatch().begin();
-				Texture texture = WE.getAsset("com/bombinggames/wurfelengine/core/images/bloodblur.png");
-				Sprite overlay = new Sprite(texture);
-				overlay.setOrigin(0, 0);
-				//somehow reverse the viewport transformation, needed for split-screen
-				overlay.setSize(
-					getWidthInScreenSpc(),
-					getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc()
-				);
-				overlay.setColor(1, 0, 0, damageoverlay);
-				overlay.draw(WE.getEngineView().getSpriteBatch());
-				WE.getEngineView().getSpriteBatch().end();
-			}
 		}
 	}
 
@@ -948,14 +926,6 @@ public class Camera {
 			position.y -= y/2;
 		}
 		updateCenter();
-	}
-
-	/**
-	 *
-	 * @param opacity
-	 */
-	public void setDamageoverlayOpacity(float opacity) {
-		this.damageoverlay = opacity;
 	}
 
 	/**

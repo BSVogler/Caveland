@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.bombinggames.caveland.game.CLCamera;
 import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.game.ChunkGenerator;
@@ -793,8 +794,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		if (!WE.getCVars().getValueB("godmode")) {
 			super.takeDamage(value);
 			WE.SOUND.play("urfHurt");
-			if (getCamera() != null) {
-				getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
+			if (getCamera() != null && getCamera() instanceof CLCamera) {
+				((CLCamera) getCamera()).setDamageoverlayOpacity(1f - getHealth() / 100f);
 			}
 			timeSinceDamage = 0;
 		}
@@ -803,8 +804,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	@Override
 	public void heal(byte value) {
 		super.heal(value);
-		if (getCamera() != null) {
-			getCamera().setDamageoverlayOpacity(1f - getHealth() / 100f);
+		if (getCamera() != null && getCamera() instanceof CLCamera) {
+			((CLCamera) getCamera()).setDamageoverlayOpacity(1f - getHealth() / 100f);
 		}
 	}
 

@@ -109,7 +109,7 @@ public class CLGameView extends GameView {
 		if (coop > -1) {//it is a coop game
 			Camera camera0;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
-				camera0 = new Camera(
+				camera0 = new CLCamera(
 					this,
 					0, //left
 					0, //top
@@ -119,7 +119,7 @@ public class CLGameView extends GameView {
 				);
 				camera0.setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth") / 2);
 			} else {
-				camera0 = new Camera(
+				camera0 = new CLCamera(
 					this,
 					0, //left
 					0, //top
@@ -134,7 +134,7 @@ public class CLGameView extends GameView {
 
 			Camera camera1;
 			if (WE.getCVars().getValueB("coopVerticalSplitScreen")) {
-				camera1 = new Camera(
+				camera1 = new CLCamera(
 					this,
 					Gdx.graphics.getWidth() / 2,
 					0,
@@ -144,7 +144,7 @@ public class CLGameView extends GameView {
 				);
 				camera1.setInternalRenderResolution(WE.getCVars().getValueI("renderResolutionWidth") / 2);
 			} else {
-				camera1 = new Camera(
+				camera1 = new CLCamera(
 					this,
 					0,
 					Gdx.graphics.getHeight() / 2,
@@ -158,7 +158,7 @@ public class CLGameView extends GameView {
 			getPlayer(1).setCamera(camera1);
 		} else {
 			//it's a singleplayer game
-			Camera camera0 = new Camera(
+			Camera camera0 = new CLCamera(
 				this,
 				0, //left
 				0, //top

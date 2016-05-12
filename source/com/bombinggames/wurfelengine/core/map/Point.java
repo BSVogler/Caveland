@@ -356,6 +356,17 @@ public class Point extends Vector3 implements Position {
     }
 	
 	/**
+	 * Add whole cordiante steps.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return returns itself 
+	 */
+	public Point addCoord(float x, float y, float z) {
+		return add(x*RenderCell.GAME_DIAGLENGTH, y*RenderCell.GAME_DIAGLENGTH, z*RenderCell.GAME_EDGELENGTH);
+	}
+	
+	/**
 	 * Relative to the current coordiante field set the offset.
 	 *
 	 * @param x offset from origin

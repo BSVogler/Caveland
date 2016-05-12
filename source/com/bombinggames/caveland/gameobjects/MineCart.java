@@ -118,11 +118,11 @@ public class MineCart extends MovableEntity implements Interactable {
 							).nor()
 						);
 						//move on y=-x
-						float x = pos.getRelToCoordX();
-						pos.setPositionRelativeToCoord(
+						float x = pos.getDistanceToCellCenterX();
+						pos.setToCenterOfCell().add(
 							x,
 							-x,
-							pos.getRelToCoordZ()
+							pos.getDistanceToCellCenterZ()
 						);
 						break;
 					case 1:
@@ -134,12 +134,10 @@ public class MineCart extends MovableEntity implements Interactable {
 							).nor()
 						);
 						//move on y=-x
-						x = pos.getRelToCoordX();
-						pos.setPositionRelativeToCoord(
+						x = pos.getDistanceToCellCenterX();
+						pos.setToCenterOfCell().add(x,
 							x,
-							x,
-							pos.getRelToCoordZ()
-						);
+							pos.getDistanceToCellCenterZ());
 						break;
 						//curve
 					case 3:
@@ -175,14 +173,13 @@ public class MineCart extends MovableEntity implements Interactable {
 getPosition().toCoord().toPoint().add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)//0C
 						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
-						pos.setPositionRelativeToCoord(circularVec.add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)
-						);
+						pos.setToCenterOfCell().add(circularVec.add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0));
 						break;
 					case 2:
 					case 4:
 						setOrientation(
 							new Vector2(
-								getMovement().x > 0 || (getMovement().x == 0 && pos.getRelToCoordX() < 0) ? 1 : -1,//coming from left
+								getMovement().x > 0 || (getMovement().x == 0 && pos.getDistanceToCellCenterX() < 0) ? 1 : -1,//coming from left
 								0
 							).nor()
 						);
@@ -195,8 +192,7 @@ getPosition().toCoord().toPoint().add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)/
 getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)//0C
 						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
 						
-						pos.setPositionRelativeToCoord(circularVec.add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)
-						);
+						pos.setToCenterOfCell().add(circularVec.add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0));
 						break;
 				}
 

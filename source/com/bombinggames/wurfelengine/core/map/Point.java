@@ -178,7 +178,7 @@ public class Point extends Vector3 implements Position {
 	 * Distance to cell center.
 	 * @return the offset to the coordinates center.
 	 */
-	public float getRelToCoordX() {
+	public float getDistanceToCellCenterX() {
 		return x - toCoord().toPoint().x;
 	}
 
@@ -186,7 +186,7 @@ public class Point extends Vector3 implements Position {
 	 * Distance to cell center.
 	 * @return the offset to the coordinates center.
 	 */
-	public float getRelToCoordY() {
+	public float getDistanceToCellCenterY() {
 		return y - toCoord().toPoint().y;
 	}
 
@@ -194,7 +194,7 @@ public class Point extends Vector3 implements Position {
 	 * Distance to cell center.
 	 * @return the offset to the coordinates center.
 	 */
-	public float getRelToCoordZ() {
+	public float getDistanceToCellCenterZ() {
 		return getZ() - getZGrid() * RenderCell.GAME_EDGELENGTH;
 	}
 	
@@ -355,43 +355,157 @@ public class Point extends Vector3 implements Position {
         return this;
     }
 	
-	/**
-	 * Add whole cordiante steps.
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return returns itself 
-	 */
-	public Point addCoord(float x, float y, float z) {
-		return add(x*RenderCell.GAME_DIAGLENGTH, y*RenderCell.GAME_DIAGLENGTH, z*RenderCell.GAME_EDGELENGTH);
+//	/**
+//	 * Add whole coordiante steps.
+//	 * @param x
+//	 * @param y
+//	 * @param z
+//	 * @return returns itself 
+//	 */
+//	public Point addCoord(int x, int y, int z) {
+//		int yCoord = getCoordY();
+//		if ((getCoordY()-y) % 2==1){//if offset changed
+//			if (yCoord%2==1){//to non-shifted
+//				add(-RenderCell.GAME_DIAGLENGTH, 0, 0);
+//			} else {//to shifted
+//				add(RenderCell.GAME_DIAGLENGTH, 0, 0);
+//			}
+//		}
+//		
+//		return add(x*RenderCell.GAME_DIAGLENGTH, y*RenderCell.GAME_DIAGLENGTH2, z*RenderCell.GAME_EDGELENGTH);
+//	}
+	
+	private int getCoordX(){
+		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
+		}
+		
+		return xCoord * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0)+RenderCell.GAME_DIAGLENGTH2;
+	}
+	
+	private int getCoordY(){
+		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
+		}
+		
+		return yCoord * RenderCell.GAME_DIAGLENGTH2+RenderCell.GAME_DIAGLENGTH2;
 	}
 	
 	/**
 	 * Relative to the current coordiante field set the offset.
 	 *
-	 * @param x offset from origin
-	 * @param y offset from origin
-	 * @param z offset from origin
+	 * @return 
 	 */
-	public void setPositionRelativeToCoord(float x, float y, float z) {
-		Point origin = toCoord().toPoint();//todo should be replaced by non-heap method
-		this.x = origin.x + x;
-		this.y = origin.y + y;
-		this.z = origin.z + z;
+	public Point setToCenterOfCell() {
+		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		//find the specific coordinate (detail)
+		switch (Coordinate.getNeighbourSide(
+			x % RenderCell.GAME_DIAGLENGTH,
+			y % RenderCell.GAME_DIAGLENGTH
+		)) {
+			case 0:
+				yCoord -= 2;
+				break;
+			case 1:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord--;
+				break;
+			case 2:
+				xCoord++;
+				break;
+			case 3:
+				xCoord += yCoord % 2 == 0 ? 0 : 1;
+				yCoord++;
+				break;
+			case 4:
+				yCoord += 2;
+				break;
+			case 5:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord++;
+				break;
+			case 6:
+				xCoord--;
+				break;
+			case 7:
+				xCoord -= yCoord % 2 == 0 ? 1 : 0;
+				yCoord--;
+				break;
+		}
+		
+		this.x = xCoord * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0)+RenderCell.GAME_DIAGLENGTH2;
+		this.y = yCoord * RenderCell.GAME_DIAGLENGTH2+RenderCell.GAME_DIAGLENGTH2;
+		this.z = (int) (z / RenderCell.GAME_EDGELENGTH) * RenderCell.GAME_EDGELENGTH;
+		return this;
 	}
 
-	/**
-	 * Set offset relative to the current coordiante.
-	 *
-	 * @param shift offset from origin
-	 */
-	public void setPositionRelativeToCoord(Vector3 shift) {
-		Point origin = toCoord().toPoint();//todo should be replaced by non-heap method
-		this.x = origin.x + shift.x;
-		this.y = origin.y + shift.y;
-		this.z = origin.z + shift.z;
-	}
-    
     /**
      * Trace a ray through the map until ray hits non air block.<br>
      * Does not work properly with the staggered map.
@@ -402,7 +516,7 @@ public class Point extends Vector3 implements Position {
      * @return can return <i>null</i> if not hitting anything. The normal on the back sides may be wrong. The normals are in a turned coordiante system.
      * @since 1.2.29
      */
-		public Intersection raycast(final Vector3 dir, float maxDistance, final GameView view, final Predicate<Byte> hitCondition) {
+	public Intersection raycast(final Vector3 dir, float maxDistance, final GameView view, final Predicate<Byte> hitCondition) {
 		/*  Call the callback with (x,y,z,value,normal) of all blocks along the line
 		segment from point 'origin' in vector dir 'dir' of length
 		'maxDistance'. 'maxDistance' may be infinite.
@@ -631,7 +745,7 @@ public class Point extends Vector3 implements Position {
 	 */
 	@Override
 	public float distanceTo(Position pos) {
-		return distanceTo(pos.toPoint());
+		return distanceTo(pos.getPoint());
 	}
 
 	/**
@@ -664,11 +778,11 @@ public class Point extends Vector3 implements Position {
 
 	@Override
 	public float distanceToSquared(Position pos) {
-		return distanceToSquared(pos.toPoint());
+		return distanceToSquared(pos.getPoint());
 	}
 	
 	/**
-	 *
+	 * The result is squared for fast comparison.
 	 * @param point
 	 * @return the distance from this point to the other point in game
 	 * coordinates squared
@@ -694,7 +808,7 @@ public class Point extends Vector3 implements Position {
 
 	@Override
 	public float distanceToHorizontal(Position pos) {
-		return distanceToHorizontal(pos.toPoint());
+		return distanceToHorizontal(pos.getPoint());
 	}
 
 	/**

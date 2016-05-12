@@ -147,7 +147,7 @@ public interface Position extends Serializable {
 	public abstract float distanceTo(AbstractGameObject object);
 	
 	/**
-	 * Faster but result is squared.
+	 * The result is squared for fast comparison.
 	 * @param object
 	 * @return the distance from this point to the other object squared
 	 * @see #distanceTo(AbstractGameObject) 
@@ -162,7 +162,7 @@ public interface Position extends Serializable {
 	public abstract float distanceTo(Position pos);
 	
 	/**
-	 * Faster but result is squared.
+	 * The result is squared for fast comparison.
 	 * @param pos
 	 * @return the distance from this point to the other object squared
 	 * @see #distanceTo(Position) 

@@ -476,33 +476,21 @@ public class Camera {
 					Controller.getLightEngine().getSun(getCenter()).getLight()
 				);
 				
+				Vector3 moonNormal;
+				Color moonColor;
+				Color ambientColor;
 				if (Controller.getLightEngine().getMoon(getCenter()) == null) {
-					view.getShader().setUniformf(
-						"moonNormal",
-						new Vector3()
-					);
-					view.getShader().setUniformf(
-						"moonColor",
-						new Color()
-					);
-					view.getShader().setUniformf(
-						"ambientColor",
-						new Color()
-					);
+					moonNormal = new Vector3();
+					moonColor = new Color();
+					ambientColor = new Color();
 				} else {
-					view.getShader().setUniformf(
-						"moonNormal",
-						Controller.getLightEngine().getMoon(getCenter()).getNormal()
-					);
-					view.getShader().setUniformf(
-						"moonColor",
-						Controller.getLightEngine().getMoon(getCenter()).getLight()
-					);
-					view.getShader().setUniformf(
-						"ambientColor",
-						Controller.getLightEngine().getAmbient(getCenter())
-					);
+					moonNormal = Controller.getLightEngine().getMoon(getCenter()).getNormal();
+					moonColor = Controller.getLightEngine().getMoon(getCenter()).getLight();
+					ambientColor = Controller.getLightEngine().getAmbient(getCenter());
 				}
+				view.getShader().setUniformf("moonNormal", moonNormal);
+				view.getShader().setUniformf("moonColor", moonColor);
+				view.getShader().setUniformf("ambientColor", ambientColor);
 			}
 
 			//bind normal map to texture unit 1
@@ -510,7 +498,7 @@ public class Camera {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 
-				//bind diffuse color to texture unit 0
+			//bind diffuse color to texture unit 0
 			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 			AbstractGameObject.getTextureDiffuse().bind(0);
 

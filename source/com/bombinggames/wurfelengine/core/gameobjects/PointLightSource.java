@@ -127,6 +127,7 @@ public class PointLightSource extends AbstractEntity {
 						if (inters != null && inters.getPoint() != null) {
 							//get back edge of block
 							Point impactP = getPosition().toCoord().add(x, y, z).toPoint().add(0, -RenderCell.GAME_DIAGLENGTH2, 0);
+							//this should work in the future:getPoint().cpy().setToCenterOfCell().addCoord(x, y, z).add(0, -RenderCell.GAME_DIAGLENGTH2, 0)
 							float pow = origin.distanceTo(impactP) / RenderCell.GAME_EDGELENGTH;
 							float l = (1 + brightness) / (pow * pow);
 

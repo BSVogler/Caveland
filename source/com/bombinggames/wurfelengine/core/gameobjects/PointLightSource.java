@@ -30,7 +30,7 @@ public class PointLightSource extends AbstractEntity {
 	private final transient Color color;
 	private float brightness;
 	private boolean enabled = true;
-	private Point lastPos = new Point(0, 0, 0);
+	private final Point lastPos = new Point(0, 0, 0);
 	private final GameView view;
 
 	/**

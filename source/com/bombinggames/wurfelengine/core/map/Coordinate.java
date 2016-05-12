@@ -318,7 +318,7 @@ public class Coordinate implements Position {
 	 */
 	@Override
 	public boolean isInMemoryAreaHorizontal() {
-		return Controller.getMap().getChunkContaining(this)!=null;
+		return Controller.getMap().getChunkContaining(this) != null;
 	}
 
 	/**

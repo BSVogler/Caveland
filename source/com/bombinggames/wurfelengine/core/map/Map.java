@@ -156,6 +156,9 @@ public class Map implements IndexedGraph<PfNode> {
 	private ArrayList<Chunk> loadedChunks;
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
+	/**
+	 * the amount of chunks in memory in one dimension
+	 */
 	private final int chunkDim;
 
 	/**
@@ -423,7 +426,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkContaining(final Coordinate coord) {
-		return data[Math.floorDiv(coord.getX(), Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(coord.getY(), Chunk.getBlocksY())+chunkDim/4];
+		return data[Math.floorDiv(coord.getX(), Chunk.getBlocksX()) + chunkDim / 2][Math.floorDiv(coord.getY(), Chunk.getBlocksY()) + chunkDim / 4];
 	}
 
 	/**
@@ -434,7 +437,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkContaining(int x, int y) {
-		return data[Math.floorDiv(x, Chunk.getBlocksX())+chunkDim/2][Math.floorDiv(y, Chunk.getBlocksY())+chunkDim/4];
+		return data[Math.floorDiv(x, Chunk.getBlocksX()) + chunkDim / 2][Math.floorDiv(y, Chunk.getBlocksY()) + chunkDim / 4];
 	}
 	
 	/**

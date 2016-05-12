@@ -35,7 +35,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.bombinggames.wurfelengine.WE;
 import static com.bombinggames.wurfelengine.core.Controller.getMap;
-import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.core.loading.LoadingScreen;
 import com.bombinggames.wurfelengine.mapeditor.EditorView;
 
 /**

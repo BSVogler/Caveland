@@ -40,7 +40,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
-import com.bombinggames.wurfelengine.core.Loading.LoadingScreen;
+import com.bombinggames.wurfelengine.core.loading.LoadingScreen;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

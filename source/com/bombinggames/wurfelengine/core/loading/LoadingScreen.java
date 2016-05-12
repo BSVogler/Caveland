@@ -2,7 +2,7 @@
  * This class is public domain.
  */
 
-package com.bombinggames.wurfelengine.core.Loading;
+package com.bombinggames.wurfelengine.core.loading;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -17,8 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.WEScreen;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 
 /**
  * Class under public domain. Modified for own needs. This class renders is the default loading screen of wurfel engine.

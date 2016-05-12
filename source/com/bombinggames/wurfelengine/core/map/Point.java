@@ -457,7 +457,7 @@ public class Point extends Vector3 implements Position {
 				||
 				(curZ*RenderCell.GAME_EDGELENGTH < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
-				byte id = isectC.getBlockId();
+				byte id = (byte) (Controller.getMap().getChunkContaining(isectC).getBlock(isectC.getX(), isectC.getY(), isectC.getZ()) & 255);
 				if (
 					id != 0
 					&& (hitCondition == null || hitCondition.test(id))

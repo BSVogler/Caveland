@@ -38,6 +38,9 @@ import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -78,19 +81,23 @@ public class CLCamera extends Camera {
 	public void render(GameView view, Camera camera) {
 		super.render(view, camera);
 		if (damageoverlay > 0.0f) {
-			//WE.getEngineView().getSpriteBatch().setShader(new custom shader);
-			WE.getEngineView().getSpriteBatch().begin();
-			Texture texture = WE.getAsset("com/bombinggames/caveland/game/bloodblur.png");
-			Sprite overlay = new Sprite(texture);
-			overlay.setOrigin(0, 0);
-			//somehow reverse the viewport transformation, needed for split-screen
-			overlay.setSize(
-				getWidthInScreenSpc(),
-				getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc()
-			);
-			overlay.setColor(1, 0, 0, damageoverlay);
-			overlay.draw(WE.getEngineView().getSpriteBatch());
-			WE.getEngineView().getSpriteBatch().end();
+			try {
+				//WE.getEngineView().getSpriteBatch().setShader(new custom shader);
+				Texture texture = WE.getAsset("com/bombinggames/caveland/game/bloodblur.png");
+				WE.getEngineView().getSpriteBatch().begin();
+				Sprite overlay = new Sprite(texture);
+				overlay.setOrigin(0, 0);
+				//somehow reverse the viewport transformation, needed for split-screen
+				overlay.setSize(
+					getWidthInScreenSpc(),
+					getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc()
+				);
+				overlay.setColor(1, 0, 0, damageoverlay);
+				overlay.draw(WE.getEngineView().getSpriteBatch());
+				WE.getEngineView().getSpriteBatch().end();
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(CLCamera.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 	}
 	

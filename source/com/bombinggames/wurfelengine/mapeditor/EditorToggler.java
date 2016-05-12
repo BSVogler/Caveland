@@ -9,6 +9,9 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.EngineView;
 import com.bombinggames.wurfelengine.core.GameView;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Shows buttons to enter and leave the editor.
@@ -43,13 +46,17 @@ public class EditorToggler {
 	public void update(EngineView view, float dt) {
 		if (WE.isInEditor() && visible) {
 			if (playButton == null && this.gameView != null) {
-				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
-				//add play button
-				playButton = new Image(spritesheet.findRegion("play_button"));
-				playButton.setX(Gdx.graphics.getWidth() - offsetX);
-				playButton.setY(Gdx.graphics.getHeight() - offsetY);
-				playButton.addListener(new PlayButton(this.gameView, false));
-				view.getStage().addActor(playButton);
+				try {
+					TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
+					//add play button
+					playButton = new Image(spritesheet.findRegion("play_button"));
+					playButton.setX(Gdx.graphics.getWidth() - offsetX);
+					playButton.setY(Gdx.graphics.getHeight() - offsetY);
+					playButton.addListener(new PlayButton(this.gameView, false));
+					view.getStage().addActor(playButton);
+				} catch (FileNotFoundException ex) {
+					Logger.getLogger(EditorToggler.class.getName()).log(Level.SEVERE, null, ex);
+				}
 			}
 		} else if (playButton != null) {
 			playButton.remove();
@@ -58,56 +65,60 @@ public class EditorToggler {
 
 		if (WE.isInGameplay() && visible) {
 			if (pauseButton == null || resetButton == null) {
-				TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
-
-				if (pauseButton == null) {
-					//add editor button
-					pauseButton = new Image(spritesheet.findRegion("pause_button"));
-					pauseButton.setX(Gdx.graphics.getWidth() - offsetX);
-					pauseButton.setY(Gdx.graphics.getHeight() - offsetY);
-					pauseButton.addListener(
-						new ClickListener() {
-						@Override
-						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-							WE.startEditor();
-							return true;
-						}
-					}
-					);
-				}
-				view.getStage().addActor(pauseButton);
-
-				if (resetButton == null) {
-					//add reverse editor button
-					resetButton = new Image(spritesheet.findRegion("reset_button"));
-					resetButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
-					resetButton.setY(Gdx.graphics.getHeight() - offsetY);
-					resetButton.addListener(
-						new ClickListener() {
-						@Override
-						public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-							Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
-							if (!WE.isInEditor()) {
-								WE.startEditor();
+				try {
+					TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
+					
+					if (pauseButton == null) {
+						//add editor button
+						pauseButton = new Image(spritesheet.findRegion("pause_button"));
+						pauseButton.setX(Gdx.graphics.getWidth() - offsetX);
+						pauseButton.setY(Gdx.graphics.getHeight() - offsetY);
+						pauseButton.addListener(
+							new ClickListener() {
+								@Override
+								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+									WE.startEditor();
+									return true;
+								}
 							}
-							return true;
-						}
+						);
 					}
-					);
+					view.getStage().addActor(pauseButton);
+					
+					if (resetButton == null) {
+						//add reverse editor button
+						resetButton = new Image(spritesheet.findRegion("reset_button"));
+						resetButton.setX(Gdx.graphics.getWidth() - offsetX * 2);
+						resetButton.setY(Gdx.graphics.getHeight() - offsetY);
+						resetButton.addListener(
+							new ClickListener() {
+								@Override
+								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+									Controller.loadMap(Controller.getMap().getPath(), WE.getGameplay().getController().getSaveSlot());
+									if (!WE.isInEditor()) {
+										WE.startEditor();
+									}
+									return true;
+								}
+							}
+						);
+					}
+					view.getStage().addActor(resetButton);
+					//stop button
+					//if (WE.editorHasMapCopy()) {
+					//				resetButton.addListener(
+					//							new ClickListener() {
+					//								@Override
+					//								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					//									WE.startEditor(true);
+					//									return true;
+					//								}
+					//							}
+					//						);
+					//}
+				} catch (FileNotFoundException ex) {
+					Logger.getLogger(EditorToggler.class.getName()).log(Level.SEVERE, null, ex);
 				}
-				view.getStage().addActor(resetButton);
-				//stop button
-				//if (WE.editorHasMapCopy()) {
-				//				resetButton.addListener(
-				//							new ClickListener() {
-				//								@Override
-				//								public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				//									WE.startEditor(true);
-				//									return true;
-				//								}
-				//							}
-				//						);
-				//}
 			}
 		} else {
 			if (pauseButton != null) {

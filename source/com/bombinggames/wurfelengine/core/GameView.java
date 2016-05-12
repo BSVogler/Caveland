@@ -52,6 +52,7 @@ import com.bombinggames.wurfelengine.core.map.LoadMenu;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,19 +68,23 @@ public class GameView implements GameManager {
 	 */
 	private static int cameraIdCounter = 0;
 
-	    /**
+	/**
      * Shoud be called before the object get initialized.
      * Initializes class fields.
      */
     public static void classInit(){
-        //set up font
-        //font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
-        //font.scale(2);
-
-        //font.scale(-0.5f);
-        
-        //load sprites
-        RenderCell.loadSheet();
+			//set up font
+			//font = WurfelEngine.getInstance().manager.get("com/bombinggames/wurfelengine/EngineCore/arial.fnt"); //load font
+			//font.scale(2);
+			
+			//font.scale(-0.5f);
+			
+			//load sprites
+		try {
+			RenderCell.loadSheet();
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(GameView.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
 	
 	/**

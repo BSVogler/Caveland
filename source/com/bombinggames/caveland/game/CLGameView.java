@@ -22,6 +22,9 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.opengl.Display;
 
 /**
@@ -68,7 +71,11 @@ public class CLGameView extends GameView {
 		Gdx.app.debug("CustomGameView", "Initializing");
 
 		if (!WE.getCVars().getValueB("ignorePlayer")) {
-			Ejira.loadSheet();
+			try {
+				Ejira.loadSheet();
+			} catch (FileNotFoundException ex) {
+				Logger.getLogger(CLGameView.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 
 		GrassBlock.initGrass();

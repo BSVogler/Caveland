@@ -45,6 +45,7 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_DEPTH2;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_HEIGHT2;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_WIDTH2;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 /**
@@ -156,8 +157,9 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 
 	/**
 	 * Load the spritesheet from memory.
+	 * @throws java.io.FileNotFoundException
 	 */
-	public static void loadSheet() {
+	public static void loadSheet() throws FileNotFoundException {
 		//spritesheet = new TextureAtlas(Gdx.files.internal("com/bombinggames/Game/Blockimages/Spritesheet.txt"), true);
 		Gdx.app.log("AGameObject", "getting spritesheet");
 		if (spritesheet == null) {

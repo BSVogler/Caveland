@@ -41,6 +41,7 @@ import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_E
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_HEIGHT2;
 import com.bombinggames.wurfelengine.extension.AimBand;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -63,8 +64,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		
 	/**
 	 * loads the spritesheets for the custom player
+	 * @throws java.io.FileNotFoundException
 	 */
-	public static void loadSheet() {
+	public static void loadSheet() throws FileNotFoundException {
 		if (spritesheet == null) {
 			spritesheet = WE.getAsset("com/bombinggames/caveland/playerSheet.txt");
 		}

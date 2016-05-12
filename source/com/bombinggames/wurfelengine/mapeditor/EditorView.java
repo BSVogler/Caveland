@@ -54,10 +54,13 @@ import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -137,33 +140,39 @@ public class EditorView extends GameView implements Telegraph {
 		getStage().addActor(cursorInfo);
 
 		//setup GUI
-		TextureAtlas spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
+		TextureAtlas spritesheet;
+		try {
+			spritesheet = WE.getAsset("com/bombinggames/wurfelengine/core/skin/gui.txt");
 
-		//add load button
-//        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
-//        loadbutton.setX(Gdx.graphics.getWidth()-80);
-//        loadbutton.setY(Gdx.graphics.getHeight()-40);
-//        loadbutton.addListener(new LoadButton(this,controller));
-//        getStage().addActor(loadbutton);
-		//add save button
-		final Image savebutton = new Image(spritesheet.findRegion("save_button"));
-		savebutton.setX(Gdx.graphics.getWidth() - 150);
-		savebutton.setY(Gdx.graphics.getHeight() - 50);
-		savebutton.addListener(new ClickListener() {
+			//add load button
+	//        final Image loadbutton = new Image(spritesheet.findRegion("load_button"));
+	//        loadbutton.setX(Gdx.graphics.getWidth()-80);
+	//        loadbutton.setY(Gdx.graphics.getHeight()-40);
+	//        loadbutton.addListener(new LoadButton(this,controller));
+	//        getStage().addActor(loadbutton);
+			//add save button
+			final Image savebutton = new Image(spritesheet.findRegion("save_button"));
+			savebutton.setX(Gdx.graphics.getWidth() - 150);
+			savebutton.setY(Gdx.graphics.getHeight() - 50);
+			savebutton.addListener(new ClickListener() {
 
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				controller.save();
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					controller.save();
+				}
+			});
+			getStage().addActor(savebutton);
+
+
+			if (Controller.getLightEngine() != null) {
+				Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
 			}
-		});
-		getStage().addActor(savebutton);
 
-		if (Controller.getLightEngine() != null) {
-			Controller.getLightEngine().setToNoon(getCameras().get(0).getCenter());
+			toolSelection = new Toolbar(this, spritesheet, controller.getCursor(), getStage());
+			getStage().addActor(toolSelection);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(EditorView.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
-		toolSelection = new Toolbar(this, spritesheet, controller.getCursor(), getStage());
-		getStage().addActor(toolSelection);
 	}
 
 	@Override

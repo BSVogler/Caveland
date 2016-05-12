@@ -19,6 +19,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class under public domain. Modified for own needs. This class renders is the default loading screen of wurfel engine.
@@ -80,38 +83,42 @@ public class LoadingScreen extends WEScreen {
     
     @Override
     public void show() {       
-        // Initialize the stage where we will place everything
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());
-
-        // Get our textureatlas from the manager
-        TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/core/Loading/loading.txt");
-        // Grab the regions from the atlas and create some images
-        logo = new Image(GUItexture.findRegion("banner_medium"));
-        loadingFrame = new Image(GUItexture.findRegion("loading-frame"));
-        loadingBarHidden = new Image(GUItexture.findRegion("loading-bar-hidden"));
-        screenBg = new Image(GUItexture.findRegion("screen-bg"));
-        loadingBg = new Image(GUItexture.findRegion("loading-frame-bg"));
-
-      // Add the loading bar animation
-        AtlasRegion[] anitextures = new AtlasRegion[3];
-        anitextures[0] = GUItexture.findRegion("loading_bar1");
-        anitextures[1] = GUItexture.findRegion("loading_bar2");
-        anitextures[2] = GUItexture.findRegion("loading_bar3");
-        
-        Animation anim = new Animation(0.2f, anitextures);
-        anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
-        loadingBar = new LoadingBar(anim);
-
-        // Or if you only need a static bar, you can do
-        // loadingBar = new Image(atlas.findRegion("loading-bar1"));
-
-        // Add all the actors to the stage
-        stage.addActor(screenBg);
-        stage.addActor(loadingBar);
-        stage.addActor(loadingBg);
-        stage.addActor(loadingBarHidden);
-        stage.addActor(loadingFrame);
-        stage.addActor(logo);
+		// Initialize the stage where we will place everything
+		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), WE.getEngineView().getSpriteBatch());
+		try {
+			
+			// Get our textureatlas from the manager
+			TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/core/Loading/loading.txt");
+			// Grab the regions from the atlas and create some images
+			logo = new Image(GUItexture.findRegion("banner_medium"));
+			loadingFrame = new Image(GUItexture.findRegion("loading-frame"));
+			loadingBarHidden = new Image(GUItexture.findRegion("loading-bar-hidden"));
+			screenBg = new Image(GUItexture.findRegion("screen-bg"));
+			loadingBg = new Image(GUItexture.findRegion("loading-frame-bg"));
+			
+			// Add the loading bar animation
+			AtlasRegion[] anitextures = new AtlasRegion[3];
+			anitextures[0] = GUItexture.findRegion("loading_bar1");
+			anitextures[1] = GUItexture.findRegion("loading_bar2");
+			anitextures[2] = GUItexture.findRegion("loading_bar3");
+			
+			Animation anim = new Animation(0.2f, anitextures);
+			anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+			loadingBar = new LoadingBar(anim);
+			
+			// Or if you only need a static bar, you can do
+			// loadingBar = new Image(atlas.findRegion("loading-bar1"));
+			
+			// Add all the actors to the stage
+			stage.addActor(screenBg);
+			stage.addActor(loadingBar);
+			stage.addActor(loadingBg);
+			stage.addActor(loadingBarHidden);
+			stage.addActor(loadingFrame);
+			stage.addActor(logo);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(LoadingScreen.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
 
     @Override

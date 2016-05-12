@@ -248,8 +248,7 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * Add a vector to the coordinates. If you just want the result and don't
-	 * change the coordiantes use addVectorCpy.
+	 * Add a vector to the coordinates.
 	 *
 	 * @param x
 	 * @param y
@@ -463,7 +462,7 @@ public class Coordinate implements Position {
 	/**
 	 * Copy safe. Creates new instance. O(const)
 	 *
-	 * @return the coordiante's origin is the center
+	 * @return the coordiante's origin is the center. You should avoid this method because it uses the heap.
 	 */
 	@Override
 	public Point toPoint() {

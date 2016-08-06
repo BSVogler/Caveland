@@ -775,11 +775,13 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param ent entities should be already spawned
 	 */
 	public void addEntities(Collection<AbstractEntity> ent) {
-		//remove duplicates
-		for (AbstractEntity e : ent) {
-			entityList.remove(e);
+		if (ent != null) {
+			//remove duplicates
+			for (AbstractEntity e : ent) {
+				entityList.remove(e);
+			}
+			entityList.addAll(ent);
 		}
-		entityList.addAll(ent);
 	}
 	
 

@@ -30,12 +30,15 @@
  */
 package com.bombinggames.caveland.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Component;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
@@ -52,8 +55,6 @@ import java.util.ArrayList;
 public class LiftBasket extends MovableEntity {
 
 	private static final long serialVersionUID = 1L;
-	private transient SimpleEntity front;
-	private transient SimpleEntity back;
 	private int movementDir;
 	private MovableEntity passenger;
 	private transient MovableEntity leavingPassenger;
@@ -61,11 +62,13 @@ public class LiftBasket extends MovableEntity {
 	public LiftBasket() {
 		super((byte) 25, (byte) 0);
 		setName("Lift Basket");
-		checkComponents();
+		setHidden(true);
 		setSaveToDisk(false);
 		setFloating(true);
 		setMass(150);
 		enableShadow();
+		addComponent(new BackSprite());
+		addComponent(new FrontSprite());
 	}
 
 	@Override
@@ -129,8 +132,7 @@ public class LiftBasket extends MovableEntity {
 				}
 			}
 
-			//manage sprites
-			checkComponents();
+			setHidden(true);
 		}
 
 //		if (getLiftLogic() == null) {
@@ -186,41 +188,6 @@ public class LiftBasket extends MovableEntity {
 		return false;
 	}
 
-	private void checkComponents() {
-		setHidden(true);
-		if (back == null) {
-			back = new SimpleEntity((byte) 25, (byte) 0);
-			back.setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
-			back.setName("Lift Basket Back");
-			back.setSaveToDisk(false);
-		}
-
-		//front
-		if (front == null) {
-			front = new SimpleEntity((byte) 25, (byte) 1);
-			front.setName("Lift Basket front");
-			front.setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
-			front.setSaveToDisk(false);
-		}
-
-		if (hasPosition()) {
-
-			if (!back.hasPosition()) {
-				back.spawn(getPosition().cpy());
-			}
-
-			back.getPosition().set(getPosition());
-			back.getPosition().y -= RenderCell.GAME_DIAGLENGTH2;
-
-			if (!front.hasPosition()) {
-				front.spawn(getPosition().cpy());
-			}
-
-			front.getPosition().set(getPosition());
-			front.getPosition().y += 20;
-		}
-	}
-
 	private boolean isOnSurface() {
 		Coordinate checkpos = getPosition().toCoord();
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {
@@ -240,11 +207,71 @@ public class LiftBasket extends MovableEntity {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (front != null) {
-			front.dispose();
+	}
+
+	class BackSprite extends SimpleEntity implements Component {
+
+		private LiftBasket body;
+
+		BackSprite() {
+			super((byte) 25, (byte) 0);
+			setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
+			setName("Lift Basket Back");
+			setSaveToDisk(false);
 		}
-		if (back != null) {
-			back.dispose();
+
+		@Override
+		public void update(float dt) {
+			if (body.hasPosition()) {
+				if (!hasPosition()) {
+					spawn(body.getPosition().cpy());
+				}
+
+				getPosition().set(body.getPosition());
+				getPosition().y -= RenderCell.GAME_DIAGLENGTH2;
+			}
+
 		}
+
+		@Override
+		public void setParent(AbstractEntity body) {
+			if (!(body instanceof LiftBasket)){
+				Gdx.app.error("LiftBasket", "Can only be added to Lift Basket");
+			}
+			this.body = (LiftBasket) body;
+		}
+	}
+	
+	class FrontSprite extends SimpleEntity implements Component {
+
+		private LiftBasket body;
+
+		FrontSprite() {
+			super((byte) 25, (byte) 1);
+			setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
+			setName("Lift Basket Front");
+			setSaveToDisk(false);
+		}
+
+		@Override
+		public void update(float dt) {
+			if (body.hasPosition()) {
+				if (!hasPosition()) {
+					spawn(body.getPosition().cpy());
+				}
+
+				getPosition().set(body.getPosition());
+				getPosition().y += 20;
+			}
+		}
+
+		@Override
+		public void setParent(AbstractEntity body) {
+			if (!(body instanceof LiftBasket)){
+				Gdx.app.error("LiftBasket", "Can only be added to Lift Basket");
+			}
+			this.body = (LiftBasket) body;
+		}
+
 	}
 }

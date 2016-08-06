@@ -52,8 +52,9 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 
 	public Flag() {
 		super((byte) 21);
-		setAnimation(new EntityAnimation(new int[]{300, 300}, true, true));
-		getAnimation().setOffset((float) (Math.random()*600f));
+		EntityAnimation anim = new EntityAnimation(new int[]{300, 300}, true, true);
+		anim.setOffset((float) (Math.random()*600f));
+		addComponent(anim);
 	}
 
 	@Override

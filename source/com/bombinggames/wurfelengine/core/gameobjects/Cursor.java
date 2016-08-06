@@ -65,7 +65,7 @@ public class Cursor extends AbstractEntity {
 		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
 		normal.setUseRawDelta(true);
 		//normal.enableShadow();
-		normal.setAnimation(anim);
+		normal.addComponent(anim);
         normal.setLightlevel(10);
 		normal.setSaveToDisk(false);
 		normal.setName("cursor normal");

@@ -42,7 +42,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 			animationsteps[i] = 140;//time in ms for each step
 		}
 
-		setAnimation(
+		addComponent(
 			new EntityAnimation(
 				animationsteps,
 				true,
@@ -61,11 +61,12 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		super(collectible);
 		setFloating(false);
 		setIndestructible(true);
-		setAnimation(
+		addComponent(
 			new EntityAnimation(
 				new int[]{80, 80, 80, 80, 80},
 				true,
-				true)
+				true
+			)
 		);
 	}
 

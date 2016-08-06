@@ -32,7 +32,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
  * An animation interface for entitys.
  * @author Benedikt
  */
-public class EntityAnimation implements Animatable {
+public class EntityAnimation implements Animatable, Component {
 	private static final long serialVersionUID = 1L;
     private final int[] animationsduration;
     private float counter = 0;
@@ -56,6 +56,7 @@ public class EntityAnimation implements Animatable {
      * updates the entity and the animation.
      * @param dt the time wich has passed since last update
      */
+	@Override
     public void update(float dt) {
         if (running && parent != null) {
 			counter += dt;
@@ -68,7 +69,7 @@ public class EntityAnimation implements Animatable {
 			if (value >= animationsduration.length) { //stop the animation if value is suddenly too big
 				running = false;
 			} else if (counter >= animationsduration[value]) {
-				parent.setSpriteValue((byte) (parent.getSpriteValue() + 0b1));
+				parent.setSpriteValue((byte) (parent.getSpriteValue() + 1));
 				counter = 0;
 				if (parent.getSpriteValue() >= animationsduration.length) {//if over animation array
 					if (loop) {
@@ -91,7 +92,8 @@ public class EntityAnimation implements Animatable {
         running = false;
     }
 
-	void setParent(AbstractEntity parent) {
+	@Override
+	public void setParent(AbstractEntity parent) {
 		this.parent = parent;
 	}
 
@@ -102,6 +104,5 @@ public class EntityAnimation implements Animatable {
 	public void setOffset(float time) {
 		counter = time;
 	}
-    
     
 }

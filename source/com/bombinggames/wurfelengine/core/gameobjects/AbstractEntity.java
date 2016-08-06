@@ -87,7 +87,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
 	private boolean obstacle;
-	private transient EntityAnimation animation;
 	private transient EntityShadow shadow;
 	private String name = "undefined";
 	private boolean indestructible = false;
@@ -104,7 +103,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	private char category = 'e';
 	private boolean useRawDelta = false;
 	private float mass = 0.4f;
-	private LinkedList<AbstractGameObject> covered = new LinkedList<>();
+	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
+	private final LinkedList<Component> components = new LinkedList<>();
 	/**
 	 * Create an abstractEntity.
 	 *
@@ -130,10 +130,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * @param dt time since last update in game time
 	 */
 	public void update(float dt) {
-		if (animation != null) {
-			animation.update(dt);
-		}
-
 		if (getHealth() <= 0 && !indestructible) {
 			dispose();
 		}
@@ -141,6 +137,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		if (soundTimeLimit > 0) {
 			soundTimeLimit -= Gdx.graphics.getRawDeltaTime();
 		}
+		
+		//question if traditional fore-loop is faster
+		//http://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
+		components.forEach(t -> { t.update(dt);});
 	}
 
     //AbstractGameObject implementation
@@ -246,26 +246,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public boolean hasPosition() {
 		return position != null;
 	}
-
-	/**
-	 * Animation information.
-	 *
-	 * @return can be null if it has no animation
-	 */
-	public EntityAnimation getAnimation() {
-		return animation;
-	}
-
-	/**
-	 * Give the entity an animation.
-	 *
-	 * @param animation
-	 */
-	public void setAnimation(EntityAnimation animation) {
-		this.animation = animation;
-		animation.setParent(this);
-	}
-	
 
     @Override
     public char getCategory() {
@@ -651,6 +631,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public Coordinate getCoord() {
 		return position.toCoord();
 	}
-	
+
+	public void addComponent(Component component) {
+		this.components.add(component);
+		component.setParent(this);
+	}
 	
 }

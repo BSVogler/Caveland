@@ -86,7 +86,7 @@ public class RenderChunk {
 	}
 
 	/**
-	 * fills every cell with the accoring data
+	 * fills every render cell with the according data from the map
 	 *
 	 * @param rS
 	 */
@@ -105,7 +105,11 @@ public class RenderChunk {
 					int block = chunk.getCellByIndex(xInd, yInd, z);
 					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
 						data[xInd][yInd][z] = RenderCell.getRenderCell((byte) (block & 255), (byte) ((block >> 8) & 255));
+					} else {
+						//update value
+						data[xInd][yInd][z].setSpriteValue((byte) (block >> 8));
 					}
+					
 					data[xInd][yInd][z].getPosition().set(
 						tlX + xInd,
 						tlY + yInd,

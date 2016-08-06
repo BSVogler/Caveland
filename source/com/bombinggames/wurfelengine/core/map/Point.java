@@ -569,7 +569,7 @@ public class Point extends Vector3 implements Position {
 		float tDeltaY = stepY / dir.y;
 		float tDeltaZ = stepZ / dir.z;
 
-		/* while ray has not gone past bounds of world */
+		/* while ray has not gone past bounds of world. can be outside when will enter */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
 			&& isectC.isInMemoryAreaXY()
@@ -582,7 +582,7 @@ public class Point extends Vector3 implements Position {
 				||
 				(curZ*RenderCell.GAME_EDGELENGTH < view.getRenderStorage().getZRenderingLimit() && !view.getRenderStorage().isClipped(isectC))
 			) {
-				byte id = (byte) (Controller.getMap().getChunkContaining(isectC).getBlock(isectC.getX(), isectC.getY(), isectC.getZ()) & 255);
+				byte id = Controller.getMap().getBlockId(isectC);
 				if (
 					id != 0
 					&& (hitCondition == null || hitCondition.test(id))

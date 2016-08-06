@@ -299,30 +299,32 @@ public class GameView implements GameManager {
 		 */
 		//at least one active camera
 		boolean cameraactive = false;
-        for (Camera camera : cameras) {
-            camera.update(dt);
-			if (camera.isEnabled())
+		for (Camera camera : cameras) {
+			camera.update(dt);
+			if (camera.isEnabled()) {
 				cameraactive = true;
-        }
+			}
+		}
 		if (cameraactive) {
 			renderstorage.update(dt);
 		}
-		
-        // toggle the dev menu?
-        if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
-            controller.getDevTools().setVisible(!controller.getDevTools().isVisible());
-            keyF5isUp = false;
-        }
-        keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
-    }
-	    
+
+		// toggle the dev menu?
+		if (keyF5isUp && Gdx.input.isKeyPressed(Keys.F5)) {
+			controller.getDevTools().setVisible(!controller.getDevTools().isVisible());
+			keyF5isUp = false;
+		}
+		keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
+	}
+
 	public RenderStorage getRenderStorage() {
 		return renderstorage;
 	}
 
 	public void setRenderStorage(RenderStorage renderstorage) {
-		if (this.renderstorage != null)
-			MessageManager.getInstance().removeListener(this.renderstorage, Events.mapChanged.getId());	
+		if (this.renderstorage != null) {
+			MessageManager.getInstance().removeListener(this.renderstorage, Events.mapChanged.getId());
+		}
 		this.renderstorage = renderstorage;
 	}
 	

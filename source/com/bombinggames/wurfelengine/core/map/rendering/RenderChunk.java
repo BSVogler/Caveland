@@ -41,11 +41,11 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
  */
 public class RenderChunk {
 
+	/**
+	 * a pool containing chunkdata
+	 */
 	private static final Pool<RenderCell[][][]> DATAPOOL;
-	private final RenderCell data[][][];
-	private Chunk chunk;
-	private boolean cameraAccess;
-
+	
 	static {
 		DATAPOOL = new Pool<RenderCell[][][]>(3) {
 			@Override
@@ -58,6 +58,10 @@ public class RenderChunk {
 	public static void clearPool(){
 		DATAPOOL.clear();
 	}
+	
+	private final RenderCell data[][][];
+	private Chunk chunk;
+	private boolean cameraAccess;
 
 	/**
 	 * With init

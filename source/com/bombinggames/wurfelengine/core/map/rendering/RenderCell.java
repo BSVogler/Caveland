@@ -50,7 +50,7 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
 /**
- * It is something which can be rendered and therefore render information saved shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the block with a position and {@link AbstractGameObject} class methods. The wrapped cell is not referenced. It is possible to change there sprite id and value {@link AbstractGameObject#setSpriteId(byte)} but keeping the logic id and value. <br>
+ * Something which can be rendered and therefore saves render information shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the block with a position and {@link AbstractGameObject} class methods. The wrapped cell is not referenced. It is possible to change there sprite id and value {@link AbstractGameObject#setSpriteId(byte)} but keeping the logic id and value. <br>
  * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
  * @author Benedikt Vogler
  */

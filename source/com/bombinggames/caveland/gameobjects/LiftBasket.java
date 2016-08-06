@@ -39,6 +39,7 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Component;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
@@ -66,7 +67,7 @@ public class LiftBasket extends MovableEntity {
 		setSaveToDisk(false);
 		setFloating(true);
 		setMass(150);
-		enableShadow();
+		addComponent(new EntityShadow());
 		addComponent(new BackSprite());
 		addComponent(new FrontSprite());
 	}

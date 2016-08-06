@@ -48,9 +48,8 @@ public class EntityShadow extends AbstractEntity implements Component {
 	/**
 	 *
 	 */
-	protected EntityShadow() {
+	public EntityShadow() {
 		super((byte) 32);
-		this.disableShadow();
 		this.setName("Shadow");
 	}
 

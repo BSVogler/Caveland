@@ -51,7 +51,6 @@ public class RobotFactoryLinker extends AbstractEntity{
 	public RobotFactoryLinker() {
 		super((byte) 19);
 		setName("Robot Factory Light Indicator");
-		disableShadow();
 	}
 
 	@Override

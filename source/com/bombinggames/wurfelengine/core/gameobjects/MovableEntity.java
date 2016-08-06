@@ -140,7 +140,7 @@ public class MovableEntity extends AbstractEntity  {
 		movement = new Vector3(0,0,0);
 		floating = false;
 		friction = WE.getCVars().getValueF("friction");
-		if (shadow) enableShadow();
+		if (shadow) addComponent(new EntityShadow());;
    }
    
    /**
@@ -155,7 +155,7 @@ public class MovableEntity extends AbstractEntity  {
 		collider = entity.collider;
 		floating = entity.floating;
 		
-		enableShadow();
+		addComponent(new EntityShadow());
 	}
 
 	@Override

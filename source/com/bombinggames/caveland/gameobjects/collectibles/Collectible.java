@@ -5,6 +5,7 @@ import com.bombinggames.caveland.gameobjects.CLMovableEntity;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -33,7 +34,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		super(def.getId(), 0);
 		this.def = def;
 		setFloating(false);
-		enableShadow();
+		addComponent(new EntityShadow());
 		//setSpeed(0.2f);
 		setFriction(WE.getCVars().getValueF("friction"));
 		setIndestructible(true);

@@ -87,8 +87,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
 	private boolean obstacle;
-	/*reference to component shadow*/
-	private transient EntityShadow shadow;
 	private String name = "undefined";
 	private boolean indestructible = false;
 		/**
@@ -214,24 +212,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		return this;
 	}
 	
-	/**
-	 *
-	 */
-	public void enableShadow() {
-		shadow = new EntityShadow();
-		addComponent(shadow);
-	}
-
-	/**
-	 * Disables the shadow.
-	 */
-	public void disableShadow() {
-		if (shadow != null) {
-			shadow.dispose();
-			shadow = null;
-		}
-	}
-    
 	/**
 	 * Is the object active on the map? If you spawn the object it has a
 	 * position afterwards

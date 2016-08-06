@@ -54,7 +54,6 @@ public class Laserdot extends SimpleEntity {
 		setScaling(0.05f);
 		setSaveToDisk(false);
 		setName("Laser dot");
-		disableShadow();
 	}
 
 	

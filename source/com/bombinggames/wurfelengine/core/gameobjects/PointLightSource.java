@@ -44,7 +44,6 @@ public class PointLightSource extends AbstractEntity {
 	public PointLightSource(Color color, float maxRadius, float brightness, GameView view) {
 		super((byte) 0);
 		setName("LightSource");
-		disableShadow();
 		this.floatradius = maxRadius;
 		this.radius = (int) Math.ceil(maxRadius);
 		this.brightness = brightness;

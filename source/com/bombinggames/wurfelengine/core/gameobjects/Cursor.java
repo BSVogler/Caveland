@@ -51,7 +51,7 @@ public class Cursor extends AbstractEntity {
     private final SimpleEntity normal;
     private Side normalSide;
 	private CursorInfo selDet;
-	private Tool tool;
+	private Tool tool = Tool.DRAW;
     
     /**
      *
@@ -74,7 +74,7 @@ public class Cursor extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		setHidden(!WE.isInEditor());
+		setHidden(!WE.isInEditor() || tool == Tool.SELECT);
 	}
 	
 	public void setInfo(CursorInfo selDet){
@@ -187,7 +187,7 @@ public class Cursor extends AbstractEntity {
 	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
-		normal.setHidden(hidden);
+		normal.setHidden(!tool.showNormal);
 	}
 
 	@Override

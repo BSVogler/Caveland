@@ -40,7 +40,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 
 	/**
 	 *
-	 * @return
+	 * @return true if has power
 	 */
 	protected boolean hasPowerPropagate() {
 		//stop recursion to avoid circles
@@ -49,7 +49,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 		}
 
 		lastUpdateFrame = WE.getGameplay().getFrameNum();
-		power = false;
+		power = false;//set back to off
 
 		//neighbor nodes which are without power
 		AbstractPowerBlock a = null;
@@ -99,7 +99,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 			power = false;
 		}
 
-		//got power not push power to neighbor nodes without power
+		//if got power not push power to neighbor nodes without power
 		if (power) {
 			if (a != null) {
 				a.pushPower();
@@ -119,18 +119,20 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	}
 
 	/**
-	 * returns if has power but only reads this.
-	 * @return 
+	 * Returns if has power
+	 * @return true if has power
 	 */
 	public boolean hasPower() {
 		return power;
 	}
 
 	/**
-	 *
+	 * recursive power pushing method. Every connected objects gets power.
 	 */
 	public void pushPower() {
-		power = true;
+		power = true;//give power
+		
+		//pass power
 		AbstractPowerBlock powerBlock = getConnectedNodes(1);
 		if (powerBlock != null) {
 			if (!powerBlock.hasPower()) {

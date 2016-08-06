@@ -54,8 +54,8 @@ public class CableBlock extends AbstractPowerBlock{
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		//turn off by default
 		if (initalized) {
-			//turn off
 			byte value = getPosition().getBlockValue();
 			getPosition().setValue((byte) (value - value % 2));
 			initalized = true;

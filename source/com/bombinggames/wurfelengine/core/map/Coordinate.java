@@ -284,6 +284,10 @@ public class Coordinate implements Position {
 		}
 	}
 	
+	/**
+	 * get the value of the block at this coordinate
+	 * @return 
+	 */
 	public byte getBlockValue() {
 		return (byte) ((getBlock()>>8)&255);
 	}

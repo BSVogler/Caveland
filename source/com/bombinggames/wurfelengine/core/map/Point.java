@@ -569,12 +569,12 @@ public class Point extends Vector3 implements Position {
 		float tDeltaY = stepY / dir.y;
 		float tDeltaZ = stepZ / dir.z;
 
-		/* ray has not gone past bounds of world */
+		/* while ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
 			&& isectC.isInMemoryAreaHorizontal()
 		) {
-
+			//update intersection coordinate
 			isectC.set(curX, curY, curZ);
 			//intersect?
 			if (

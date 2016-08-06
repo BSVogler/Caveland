@@ -216,7 +216,8 @@ public class EditorView extends GameView implements Telegraph {
 					&& ent.getPosition().getViewSpcX() - ent.getSprite().getRegionWidth() / 2 <= x2 //left spr. border
 					&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight() / 2 <= y2 //bottom spr. border
 					&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= y1 //top spr. border
-					) {
+					&& ! (ent instanceof Cursor)
+					&& ! ent.getName().equalsIgnoreCase("cursor normal")) {
 					newSel.add(ent);
 					MessageManager.getInstance().dispatchMessage(
 						this,
@@ -655,8 +656,8 @@ public class EditorView extends GameView implements Telegraph {
 						&& ent.getPosition().getViewSpcY() - ent.getSprite().getRegionHeight() / 2 <= (int) screenYtoView(screenY, camera) //bottom spr. border
 						&& ent.getPosition().getViewSpcY() + ent.getSprite().getRegionHeight() / 2 >= (int) screenYtoView(screenY, camera) //top spr. border
 						&& !(ent instanceof EntityShadow)
-						&& !ent.getName().equals("normal")
-						&& !ent.getName().equals("selectionEntity")
+						&& ! (ent instanceof Cursor)
+						&& !ent.getName().equalsIgnoreCase("cursor normal")
 					) {
 						entityUnderMouse = ent;
 					}

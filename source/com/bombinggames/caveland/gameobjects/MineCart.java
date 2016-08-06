@@ -90,7 +90,7 @@ public class MineCart extends MovableEntity implements Interactable {
 		
 		Point pos = getPosition();
 		
-		if (hasPosition() && pos.isInMemoryAreaHorizontal()) {
+		if (hasPosition() && pos.isInMemoryAreaXY()) {
 			int block = pos.getBlock();
 			byte value = (byte) ((block>>8)&255);
 			

@@ -122,7 +122,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 			playMovementAnimation();
 		}
 		
-		if (hasPosition() && getPosition().isInMemoryAreaHorizontal()) {
+		if (hasPosition() && getPosition().isInMemoryAreaXY()) {
 			//follow the target
 			if (enemyTarget != null && enemyTarget.hasPosition()) {
 				if (getPosition().distanceTo(enemyTarget) > RenderCell.GAME_EDGELENGTH * 1.5f) {

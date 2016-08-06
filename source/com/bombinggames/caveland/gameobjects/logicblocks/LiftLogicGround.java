@@ -58,7 +58,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 		//requested basket and fulfil request
 		if (requestedBasketAt != null
-			&& requestedBasketAt.isInMemoryArea()
+			&& requestedBasketAt.isInMemoryAreaXYZ()
 			&& requestedBasketAt.getLogic() instanceof LiftLogic) {
 			//request basket
 			if (basket == null) {
@@ -93,7 +93,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 		ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
 		if (!possibleExitPortals.isEmpty()) {
 			try {
-				if (!possibleExitPortals.get(0).getTarget().isInMemoryAreaHorizontal()) {
+				if (!possibleExitPortals.get(0).getTarget().isInMemoryAreaXY()) {
 					Controller.getMap().loadChunk(possibleExitPortals.get(0).getTarget());
 				}
 				requestedBasketAt = possibleExitPortals.get(0).getTarget();

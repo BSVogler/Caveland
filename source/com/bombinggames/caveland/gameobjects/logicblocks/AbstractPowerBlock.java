@@ -169,7 +169,7 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	public AbstractPowerBlock getConnectedNodes(int id) {
 		Coordinate neigh = getPosition().cpy().goToNeighbour(id);
 		//load chunk if out of bounds
-		if (!neigh.isInMemoryAreaHorizontal()) {
+		if (!neigh.isInMemoryAreaXY()) {
 			Controller.getMap().loadChunk(neigh);
 		}
 

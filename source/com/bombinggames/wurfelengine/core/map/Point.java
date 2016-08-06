@@ -291,12 +291,12 @@ public class Point extends Vector3 implements Position {
 	
     
 	@Override
-	public boolean isInMemoryAreaHorizontal() {
+	public boolean isInMemoryAreaXY() {
 		return Controller.getMap().getChunkContaining(this) != null;
 	}
 	
 	@Override
-    public boolean isInMemoryArea() {
+    public boolean isInMemoryAreaXYZ() {
 		if (z < 0 || z > Chunk.getGameWidth()){
 			return false;
 		} else {
@@ -572,7 +572,7 @@ public class Point extends Vector3 implements Position {
 		/* while ray has not gone past bounds of world */
 		while (
 			(stepZ > 0 ? curZ < Chunk.getBlocksZ(): curZ >= 0)
-			&& isectC.isInMemoryAreaHorizontal()
+			&& isectC.isInMemoryAreaXY()
 		) {
 			//update intersection coordinate
 			isectC.set(curX, curY, curZ);
@@ -697,7 +697,7 @@ public class Point extends Vector3 implements Position {
 			&& lastCoordZ == isectC.getZ()
 			&& lastCoordZ > 0
 			&& lastCoordZ < Chunk.getBlocksZ()
-			|| isectC.isInMemoryArea())
+			|| isectC.isInMemoryAreaXYZ())
 			&& distanceToSquared(traverseP) < maxDistance*RenderCell.GAME_EDGELENGTH*maxDistance*RenderCell.GAME_EDGELENGTH
 		){
 			//move

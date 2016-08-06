@@ -204,7 +204,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 			Controller.getMap().addEntities(this);
 
 			//request chunk if needed
-			if (!position.isInMemoryAreaHorizontal()) {
+			if (!position.isInMemoryAreaXY()) {
 				this.requestChunk();
 			}
 			//if shadow is set spawn it
@@ -367,13 +367,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * true if on chunk which is in memory
 	 *
 	 * @return
-	 * @see com.bombinggames.wurfelengine.core.map.Coordinate#isInMemoryAreaHorizontal()
+	 * @see com.bombinggames.wurfelengine.core.map.Coordinate#isInMemoryAreaXY()
 	 */
 	public boolean isInMemoryArea() {
 		if (position == null) {
 			return false;
 		}
-		return position.isInMemoryAreaHorizontal();
+		return position.isInMemoryAreaXY();
 	}
 
 	/**

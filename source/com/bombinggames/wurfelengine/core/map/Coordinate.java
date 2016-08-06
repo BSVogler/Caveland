@@ -309,25 +309,13 @@ public class Coordinate implements Position {
 		return new Coordinate(this);
 	}
 
-	/**
-	 * Checks if the coordiantes are accessable with the currently loaded Chunks
-	 * (horizontal only).
-	 *
-	 * @return
-	 */
 	@Override
-	public boolean isInMemoryAreaHorizontal() {
+	public boolean isInMemoryAreaXY() {
 		return Controller.getMap().getChunkContaining(this) != null;
 	}
 
-	/**
-	 * Checks if the coordiantes are accessable with the currently loaded Chunks
-	 * (x,y,z).
-	 *
-	 * @return
-	 */
 	@Override
-	public boolean isInMemoryArea() {
+	public boolean isInMemoryAreaXYZ() {
 		if (getZ() >= 0 && getZ() < Chunk.getBlocksZ()) {
 			return Controller.getMap().getChunkContaining(this) != null;
 		}
@@ -486,7 +474,7 @@ public class Coordinate implements Position {
 	 * @return a list with the entitys
 	 */
 	public ArrayList<AbstractEntity> getEntitiesInside() {
-		if (!isInMemoryAreaHorizontal()) {
+		if (!isInMemoryAreaXY()) {
 			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
 		}
 		return Controller.getMap().getEntitysOnCoord(this);
@@ -502,7 +490,7 @@ public class Coordinate implements Position {
 	 * @return a list with the entitys of the wanted type
 	 */
 	public <type extends AbstractEntity> ArrayList<type> getEntitiesInside(final Class<? extends AbstractEntity> type) {
-		if (!isInMemoryAreaHorizontal()) {
+		if (!isInMemoryAreaXY()) {
 			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
 		}
 		return Controller.getMap().getEntitysOnCoord(this, type);

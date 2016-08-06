@@ -65,7 +65,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 			//update only if time is running
 			if (dt > 0) {
-				if (getPosition().isInMemoryAreaHorizontal() && isOnGround() && !isFloating()) {
+				if (getPosition().isInMemoryAreaXY() && isOnGround() && !isFloating()) {
 					jump();
 				}
 			}

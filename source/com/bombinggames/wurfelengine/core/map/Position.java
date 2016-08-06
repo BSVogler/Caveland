@@ -128,16 +128,18 @@ public interface Position extends Serializable {
     public abstract Position cpy(); 
     
     /**
-     * Checks if the position is on the chunks currently in memory. Horizontal checks only. So the position can be udner or over the map.
-     * @return 
-     */
-    public abstract boolean isInMemoryAreaHorizontal();
+	 * Checks if the coordiantes are accessable with the currently loaded chunks.
+	 * Does not check for z axis (horizontal only). So the position can be udner or over the map.
+	 *
+	 * @return
+	 */
+    public abstract boolean isInMemoryAreaXY();
 	
 	/**
      * Checks if the position is on the chunks currently in memory. Checks all axis'.
-     * @return <i>true</i> if inside a chunk. <i>false</i> if currently not loaded.
+     * @return <i>true</i> if inside a chunk. <i>false</i> if currently not loaded or outside range.
      */
-    public abstract boolean isInMemoryArea();
+    public abstract boolean isInMemoryAreaXYZ();
 	
 	/**
 	 *

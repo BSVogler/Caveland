@@ -170,10 +170,10 @@ public class Chunk implements Telegraph {
 	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;
 
-	private ArrayList<AbstractEntity> entities = new ArrayList<>(15);
 	/**
 	 * contains the entities on this chunk
 	 */
+	private ArrayList<AbstractEntity> entitiesinSaveFile;
 	private int topleftX;
 	private int topleftY;
 
@@ -451,9 +451,10 @@ public class Chunk implements Telegraph {
 
 			if (bChar == SIGN_ENTITIES && WE.getCVars().getValueB("loadEntities")) {
 				try {
-					//loading entities
-					byte length = ois.readByte(); //amount of entities
-					Gdx.app.debug("Chunk", "Loading " + length +" entities.");
+					//loading entitiesinSaveFile
+					byte entCount = ois.readByte(); //amount of entities
+					Gdx.app.debug("Chunk", "Loading " + entCount + " entities.");
+					entitiesinSaveFile = new ArrayList<>(entCount);
 
 					AbstractEntity ent;
 					for (int i = 0; i < entCount; i++) {
@@ -520,7 +521,7 @@ public class Chunk implements Telegraph {
 
 	/**
 	 * Returns entitiesinSaveFile spawned on this chunk. Can only called once.
-	 * @return list of entitiesinSaveFile on this chunk
+	 * @return list of entitiesinSaveFile on this chunk, can be null if empty
 	 */
 	public ArrayList<AbstractEntity> retrieveEntities() {
 		ArrayList<AbstractEntity> tmp = entitiesinSaveFile;

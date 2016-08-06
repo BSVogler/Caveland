@@ -204,11 +204,11 @@ public class RenderStorage implements Telegraph  {
 	
 	
 	/**
-	 * clears the used RenderChunks then resets
+	 * clears the used RenderChunks then resets.
 	 */
 	public void reinitChunks() {
 		RenderStorage rS = this;
-		//loop over clone because may add new chunks to data
+		//loop over clone because may add new chunks to data while looping
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk rChunk) -> {
@@ -374,7 +374,7 @@ public class RenderStorage implements Telegraph  {
 	
 	
 	/**
-	 * performs a simple viewFrustum check by looking at the direct neighbours.
+	 * performs a simple clipping check by looking at the direct neighbours.
 	 *
 	 * @param chunk
 	 */
@@ -532,7 +532,7 @@ public class RenderStorage implements Telegraph  {
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()) {
-			reinitChunks();
+			reinitChunks();//coould be optimized by only updating blocks that changed
 			RenderCell.rebuildCoverList();
 			return true;
 		}

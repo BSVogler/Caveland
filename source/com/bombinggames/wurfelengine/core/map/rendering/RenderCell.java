@@ -436,7 +436,7 @@ public class RenderCell extends AbstractGameObject {
 	}
 	
 	/**
-	 * set the timestamp when the content changed
+	 * set the timestamp when the content changed. This causes every field wich contains the covered neighbors to be rebuild.
 	 */
 	public static void rebuildCoverList() {
 		RenderCell.rebuildCoverList = WE.getGameplay().getFrameNum();

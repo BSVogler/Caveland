@@ -41,5 +41,6 @@ public class Money extends CLMovableEntity {
 	public Money() {
 		super((byte) 20, 0, false);
 		setMass(0.1f);
+		setName("money");
 	}
 }

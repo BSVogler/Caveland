@@ -87,6 +87,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     private int dimensionZ = GAME_EDGELENGTH;  
     private boolean dispose;
 	private boolean obstacle;
+	/*reference to component shadow*/
 	private transient EntityShadow shadow;
 	private String name = "undefined";
 	private boolean indestructible = false;
@@ -140,7 +141,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		
 		//question if traditional fore-loop is faster
 		//http://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
-		components.forEach(t -> { t.update(dt);});
+		components.forEach(t -> { t.update(mass);});
 	}
 
     //AbstractGameObject implementation
@@ -207,10 +208,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 			if (!position.isInMemoryAreaXY()) {
 				this.requestChunk();
 			}
-			//if shadow is set spawn it
-			if (shadow != null && !shadow.hasPosition()) {
-				shadow.spawn(position.cpy());
-			}
 		} else {
 			WE.getConsole().add(getName() + " is already spawned.");
 		}
@@ -221,10 +218,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 *
 	 */
 	public void enableShadow() {
-		shadow = new EntityShadow(this);
-		if (position != null) {
-			shadow.spawn(position.cpy());
-		}
+		shadow = new EntityShadow();
+		addComponent(shadow);
 	}
 
 	/**
@@ -304,7 +299,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	/**
 	 * Deletes the object from the map and every other container. The opposite
-	 * to spawn() but also removes it completely.<br>
+	 * to spawn() but also sets a flag to remove it completely.<br>
 	 *
 	 * @see #shouldBeDisposed()
 	 * @see #removeFromMap()
@@ -635,6 +630,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void addComponent(Component component) {
 		this.components.add(component);
 		component.setParent(this);
+	}
+	
+	public void removeComponent(Component component){
+		this.components.remove(component);
 	}
 	
 }

@@ -255,14 +255,15 @@ public class ActionBox extends WidgetGroup {
 		if (selections != null && !selections.isEmpty())
 			result = selections.get(selectionNum);
 		remove();
+		if (actor instanceof Ejira) {
+			((Ejira) actor).endInteraction();
+		}
 		WE.SOUND.play(confirmSound, actor.getPosition());
 		closed = true;
 		if (confirmAction != null) {
 			confirmAction.confirm(result, actor);
 		}
-		if (actor instanceof Ejira) {
-			((Ejira) actor).endInteraction();
-		}
+
 		return result;
 	}
 

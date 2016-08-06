@@ -73,10 +73,6 @@ public class Portal extends AbstractEntity implements Telegraph {
 	@Override
 	public void update(float dt) {
 		if (hasPosition() && active && getTarget() != null) {
-			if (particleBand != null) {
-				particleBand.update();
-			}
-
 			//move things in the portal
 			getPosition().toCoord().getEntitiesInside(MovableEntity.class)
 				.forEach((AbstractEntity e) -> {
@@ -156,7 +152,8 @@ public class Portal extends AbstractEntity implements Telegraph {
 			}
 		} else if (msg.message == Events.selectInEditor.getId()) {
 			if (particleBand == null) {
-				particleBand = new AimBand(this, target);
+				particleBand = new AimBand(target);
+				addComponent(particleBand);
 			} else {
 				particleBand.setTarget(target);
 			}

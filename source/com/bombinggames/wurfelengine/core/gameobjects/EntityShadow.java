@@ -37,31 +37,33 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
  *
  * @author Benedikt Vogler
  */
-public class EntityShadow extends AbstractEntity {
+public class EntityShadow extends AbstractEntity implements Component {
 
 	private static final long serialVersionUID = 1L;
 	/**
 	 * the parent class. The object where this is the shadow
 	 */
-	private final AbstractEntity character;
+	private AbstractEntity character;
 
 	/**
 	 *
-	 * @param character
 	 */
-	protected EntityShadow(AbstractEntity character) {
+	protected EntityShadow() {
 		super((byte) 32);
 		this.disableShadow();
 		this.setName("Shadow");
-		this.character = character;
 	}
 
 	@Override
 	public void update(float dt) {
 		setSaveToDisk(false);
-		if (character == null || !character.hasPosition() || !hasPosition() || character.isHidden()) {
+		if (character == null || !character.hasPosition() || character.isHidden()) {
 			dispose();
 		} else {
+			//spawn if needed
+			if (!hasPosition()) {
+				spawn(character.getPoint().cpy());
+			}
 			//find height of shadow surface
 			getPoint().set(character.getPosition());//start at character
 			while (getPoint().getZ() > 0
@@ -105,5 +107,10 @@ public class EntityShadow extends AbstractEntity {
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return true;
+	}
+
+	@Override
+	public void setParent(AbstractEntity body) {
+		this.character = body;
 	}
 }

@@ -104,5 +104,10 @@ public class EntityAnimation implements Animatable, Component {
 	public void setOffset(float time) {
 		counter = time;
 	}
+
+	@Override
+	public void dispose() {
+		parent.removeComponent(this);
+	}
     
 }

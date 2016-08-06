@@ -38,6 +38,10 @@ public interface Component {
 	
 	public void update(float dt);
 	public void setParent(AbstractEntity body);
+	/**
+	 * removes itself from parent
+	 */
+	public void dispose();
 	
 	//private AbstractEntity getBody();
 	

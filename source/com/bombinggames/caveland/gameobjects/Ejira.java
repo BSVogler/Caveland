@@ -481,10 +481,6 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 				emitter2.setActive(false);
 			}
 			
-			if (interactionAimband != null) {
-				interactionAimband.update();
-			}
-			
 			float turnSpeed = getSpeedHor()*dt*0.002f;
 			slerp(spriteOrientation,getOrientation(),turnSpeed);
 		}
@@ -607,7 +603,10 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	 * @param ent 
 	 */
 	public void startInteraction(AbstractEntity ent) {
-		interactionAimband = new AimBand(this, ent);
+		if (interactionAimband == null) {
+			interactionAimband = new AimBand(ent);
+			addComponent(interactionAimband);
+		}
 	}
 
 	/**
@@ -615,7 +614,10 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	 * @param coord 
 	 */
 	public void startInteraction(Coordinate coord) {
-		interactionAimband = new AimBand(this, coord);
+		if (interactionAimband == null) {
+			interactionAimband = new AimBand(coord);
+			addComponent(interactionAimband);
+		}
 	}
 
 	/**

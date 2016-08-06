@@ -262,10 +262,6 @@ public class MovableEntity extends AbstractEntity  {
 				}
 			}
 			
-			if (particleBand != null) {
-				particleBand.update();
-			}
-			
 			/*HORIZONTAL MOVEMENT*/
 			//calculate new position
 			Vector3 dMove = new Vector3(
@@ -931,7 +927,8 @@ public class MovableEntity extends AbstractEntity  {
 			}
 		} else if (msg.message == Events.selectInEditor.getId() && getMovementAI() != null) {
 			if (particleBand == null) {
-				particleBand = new AimBand(this, getMovementAI().getGoal());
+				particleBand = new AimBand(getMovementAI().getGoal());
+				addComponent(particleBand);
 			} else {
 				particleBand.setTarget(getMovementAI().getGoal());
 			}

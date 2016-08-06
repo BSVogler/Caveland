@@ -50,7 +50,7 @@ public class PathfindingTest extends SimpleEntity {
 	
 	private SimpleEntity end;
 	private final ArrayList<AimBand> aimBandList = new ArrayList<>(10);
-	private final AimBand directAimBand = new AimBand(this, end);
+	private final AimBand directAimBand = new AimBand(end);
 	
 	/**
 	 *
@@ -58,6 +58,7 @@ public class PathfindingTest extends SimpleEntity {
 	public PathfindingTest() {
 		super((byte) 22);
 		setName("Start pathfinding test");
+		addComponent(directAimBand);
 	}
 
 	@Override
@@ -78,8 +79,6 @@ public class PathfindingTest extends SimpleEntity {
 				directAimBand.setTarget(end);
 			}
 			
-			directAimBand.update();
-			
 			//end.getPosition().setValues(getPosition()).ad
 			
 			//transform to aimbands
@@ -91,10 +90,9 @@ public class PathfindingTest extends SimpleEntity {
 				getPosition().toCoord(), end.getPosition().toCoord()
 			);
 			for (PfNode coord : path) {
-				aimBandList.add(new AimBand(last, coord));
-			}
-			for (AimBand aimBand : aimBandList) {
-				aimBand.update();
+				AimBand newAimband = new AimBand(last, coord);
+				addComponent(newAimband);
+				aimBandList.add(newAimband);
 			}
 		}
 	}

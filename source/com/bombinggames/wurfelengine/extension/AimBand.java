@@ -33,47 +33,47 @@ package com.bombinggames.wurfelengine.extension;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Component;
 import com.bombinggames.wurfelengine.core.gameobjects.Particle;
 import com.bombinggames.wurfelengine.core.map.Point;
-import java.util.ArrayList;
 import com.bombinggames.wurfelengine.core.map.Position;
+import java.util.ArrayList;
 
 /**
- * A band which points to a point or entity. It most only be updated to work. It should eb disposed if not used any more.
+ * A band which points to a point or entity. It most only be updated to work. It
+ * should eb disposed if not used any more.
+ *
  * @author Benedikt Vogler
  */
-public class AimBand {
+public class AimBand implements Component {
+
 	private Point goal;
 	private AbstractEntity target;
 	private Point start;
-	private final AbstractEntity parent;
+	private AbstractEntity parent;
 	private final float timeEachSpawn = 100;
 	private float timeTillNext;
 	private final ArrayList<Particle> list = new ArrayList<>(10);
 
 	/**
 	 *
-	 * @param parent
 	 * @param goal
 	 */
-	public AimBand(AbstractEntity parent, Position goal) {
+	public AimBand(Position goal) {
 		if (goal instanceof Point) {
 			this.goal = (Point) goal;
 		} else {
 			this.goal = goal.toPoint();
 		}
-		this.parent = parent;
 		this.target = null;
 	}
 
 	/**
 	 *
-	 * @param parent
 	 * @param target
 	 */
-	public AimBand(AbstractEntity parent, AbstractEntity target) {
+	public AimBand(AbstractEntity target) {
 		this.target = target;
-		this.parent = parent;
 		goal = null;
 	}
 
@@ -94,20 +94,18 @@ public class AimBand {
 		} else {
 			this.goal = end.toPoint();
 		}
-		
+
 		this.parent = null;
 	}
-	
-	/**
-	 * 
-	 */
-	public void update(){
+
+	@Override
+	public void update(float dt) {
 		if (getStart() == null || getEnd() == null) {
 			dispose();
 			return;
 		}
-		
-		timeTillNext -= Gdx.graphics.getRawDeltaTime()*1000f;
+
+		timeTillNext -= Gdx.graphics.getRawDeltaTime() * 1000f;
 		if (timeTillNext < 0 && (target != null || goal != null)) {
 			timeTillNext += timeEachSpawn;
 			Particle particle = new Particle();
@@ -118,10 +116,10 @@ public class AimBand {
 			particle.spawn(getStart().cpy());
 			list.add(particle);
 		}
-					
+
 		//remove old particles from list
 		list.removeIf(p -> p.shouldBeDisposed());
-			
+
 		if (getEnd() != null) {
 			//move particles
 			for (Particle p : list) {
@@ -135,9 +133,10 @@ public class AimBand {
 
 	/**
 	 * position at the end of the band
-	 * @return 
+	 *
+	 * @return
 	 */
-	private Point getEnd(){
+	private Point getEnd() {
 		if (goal == null) {
 			if (target == null) {
 				return null;
@@ -147,18 +146,18 @@ public class AimBand {
 			return goal;
 		}
 	}
-	
-	private Point getStart(){
-		if (parent==null) {
+
+	private Point getStart() {
+		if (parent == null) {
 			return start;
 		} else {
 			return parent.getPosition();
 		}
 	}
-	
+
 	/**
-	 * 
-	 * @param goal 
+	 *
+	 * @param goal
 	 */
 	public void setTarget(Position goal) {
 		this.goal = goal.toPoint();
@@ -166,8 +165,8 @@ public class AimBand {
 	}
 
 	/**
-	 * 
-	 * @param target 
+	 *
+	 * @param target
 	 */
 	public void setTarget(AbstractEntity target) {
 		this.target = target;
@@ -175,13 +174,19 @@ public class AimBand {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Override
 	public void dispose() {
+		parent.removeComponent(this);
 		for (Particle particle : list) {
 			particle.removeFromMap();
 		}
 		list.clear();
 	}
-	
+
+	@Override
+	public void setParent(AbstractEntity parent) {
+		this.parent = parent;
+	}
 }

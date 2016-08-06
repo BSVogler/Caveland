@@ -126,10 +126,6 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 				}
 			}
 			
-			if (particleBand != null){
-				particleBand.update();
-			}
-
 			//check if players steped on next part of the tutorial
 //			ArrayList<Ejira> players = getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH * 10, Ejira.class);
 //			for (Ejira player : players) {
@@ -402,7 +398,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 			}
 		} else if (msg.message == Events.selectInEditor.getId()){
 			 if (nextWaypoint != null && particleBand == null) {
-				 particleBand = new AimBand(this, nextWaypoint.getPos());
+				 particleBand = new AimBand(nextWaypoint.getPos());
 			 }
 		}
 		return true;

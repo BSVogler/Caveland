@@ -299,10 +299,6 @@ public class Weapon extends AbstractEntity implements Telegraph {
 			firing = false;
 		}
 		
-		if (particleBand != null){
-			particleBand.update();
-		}
-		
 		//move back
 		if (hasPosition() && fixedPos != null) {
 			if (lightSource==null && fixedPos != null){
@@ -511,7 +507,8 @@ public class Weapon extends AbstractEntity implements Telegraph {
 			}
 		} else if (msg.message == Events.selectInEditor.getId()){
 			if (particleBand == null) {
-				particleBand = new AimBand(this, laserdot);
+				particleBand = new AimBand(laserdot);
+				addComponent(particleBand);
 			} else {
 				particleBand.setTarget(laserdot);
 			}

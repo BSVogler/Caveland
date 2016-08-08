@@ -93,16 +93,13 @@ public class Particle extends MovableEntity {
 	}
 
 	/**
-	 * Time to live for each particle.
+	 * Time to live for each particle. Resets timer.
 	 *
 	 * @param time in ms
 	 */
 	public void setTTL(float time) {
 		maxtime = time;
-		//clamp
-		if (timeTillDeath > maxtime) {
-			timeTillDeath = maxtime;
-		}
+		timeTillDeath = time;
 	}
 
 	@Override

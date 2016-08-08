@@ -273,7 +273,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 *
 	 * @return
 	 */
-	public abstract char getCategory();
+	public abstract char getSpriteCategory();
 
 	/**
 	 * The height of the object for depth sorting.
@@ -352,7 +352,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 */
 	public void render(GameView view, int xPos, int yPos, Color color) {
 		if (spriteId > 0 && spriteValue >= 0) {
-			AtlasRegion texture = AbstractGameObject.getSprite(getCategory(), spriteId, spriteValue);
+			AtlasRegion texture = AbstractGameObject.getSprite(getSpriteCategory(), spriteId, spriteValue);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth / 2 - texture.offsetX,
@@ -551,7 +551,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getSprite() {
-		return AbstractGameObject.getSprite(getCategory(), spriteId, spriteValue);
+		return AbstractGameObject.getSprite(getSpriteCategory(), spriteId, spriteValue);
 	}
 
 	/**

@@ -960,7 +960,7 @@ public class RenderCell extends AbstractGameObject {
     }
     
     @Override
-    public char getCategory() {
+    public char getSpriteCategory() {
         return 'b';
     }
 

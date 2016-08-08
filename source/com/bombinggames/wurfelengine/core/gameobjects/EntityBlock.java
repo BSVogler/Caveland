@@ -28,7 +28,7 @@ public class EntityBlock extends AbstractEntity {
 	}
 
 	@Override
-	public char getCategory() {
+	public char getSpriteCategory() {
 		return 'b';
 	}
 

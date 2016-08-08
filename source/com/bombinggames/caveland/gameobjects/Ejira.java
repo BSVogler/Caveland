@@ -1141,7 +1141,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			interactButton = (SimpleEntity) new SimpleEntity((byte) 23, buttonID).spawn(pos.toPoint().add(0, 0, RenderCell.GAME_EDGELENGTH)
 			);
 			interactButton.setName("Interact Button");
-			interactButton.setCategory('i');
+			interactButton.setSpriteCategory('i');
 			interactButton.setLightlevel(1);
 			interactButton.setSaveToDisk(false);
 		} else {

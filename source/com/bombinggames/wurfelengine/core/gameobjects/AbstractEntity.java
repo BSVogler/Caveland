@@ -99,7 +99,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 */
 	private boolean saveToDisk = true;
 	private transient String[] damageSounds;
-	private char category = 'e';
+	private char spriteCategory = 'e';
 	private boolean useRawDelta = false;
 	private float mass = 0.4f;
 	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
@@ -229,17 +229,17 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	}
 
     @Override
-    public char getCategory() {
-        return category;
+    public char getSpriteCategory() {
+        return spriteCategory;
     }
 	
 	/**
-	 * Set the category used for the lookup of the sprite.
+	 * Set the spriteCategory used for the lookup of the sprite.
 	 *
 	 * @param c
 	 */
-	public void setCategory(char c) {
-		category = c;
+	public void setSpriteCategory(char c) {
+		spriteCategory = c;
 	}
     
  @Override
@@ -270,39 +270,6 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	@Override
 	public int getDimensionZ() {
 		return dimensionZ;
-	}
-	
-	/**
-	 * Deletes the object from the map. The opposite to
-	 * {@link #spawn(Point)}<br>
-	 *
-	 * @see #dispose()
-	 * @see #spawn(Point)
-	 */
-	public void removeFromMap() {
-		position = null;
-	}
-
-	/**
-	 * Deletes the object from the map and every other container. The opposite
-	 * to spawn() but also sets a flag to remove it completely.<br>
-	 *
-	 * @see #shouldBeDisposed()
-	 * @see #removeFromMap()
-	 */
-	public void dispose() {
-		dispose = true;
-		removeFromMap();
-	}
-
-	/**
-	 * false if in update list.
-	 *
-	 * @return true if disposing next tick
-	 * @see #dispose()
-	 */
-	public boolean shouldBeDisposed() {
-		return dispose;
 	}
 
 	/**
@@ -643,5 +610,39 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void removeComponent(Component component) {
 		this.components.remove(component);
 	}
+	
+	/**
+	 * false if in update list of map.
+	 *
+	 * @return true if disposing next tick
+	 * @see #dispose()
+	 */
+	public boolean shouldBeDisposed() {
+		return dispose;
+	}
+	
+	/**
+	 * Deletes the object from the map. The opposite to
+	 * {@link #spawn(Point)}<br>
+	 *
+	 * @see #dispose()
+	 * @see #spawn(Point)
+	 */
+	public void removeFromMap() {
+		position = null;
+	}
+
+	/**
+	 * Deletes the object from the map and every other container. The opposite
+	 * to spawn() but also sets a flag to remove it completely.<br>
+	 *
+	 * @see #shouldBeDisposed()
+	 * @see #removeFromMap()
+	 */
+	public void dispose() {
+		dispose = true;
+		removeFromMap();
+	}
+
 
 }

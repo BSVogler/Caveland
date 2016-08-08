@@ -139,7 +139,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		
 		//question if traditional fore-loop is faster
 		//http://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
-		components.forEach(t -> { t.update(mass);});
+		components.forEach(t -> { t.update(dt);});
 	}
 
     //AbstractGameObject implementation

@@ -47,18 +47,17 @@ import java.util.ArrayList;
 public class PathfindingTest extends SimpleEntity {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private SimpleEntity end;
 	private final ArrayList<AimBand> aimBandList = new ArrayList<>(10);
-	private final AimBand directAimBand = new AimBand(end);
-	
+	private AimBand directAimBand;
+
 	/**
 	 *
 	 */
 	public PathfindingTest() {
 		super((byte) 22);
 		setName("Start pathfinding test");
-		addComponent(directAimBand);
 	}
 
 	@Override
@@ -73,31 +72,37 @@ public class PathfindingTest extends SimpleEntity {
 			if (end == null) {
 				end = new SimpleEntity((byte) 22);
 				end.setName("End Pathfinding test");
+				directAimBand = new AimBand(end);
+				addComponent(directAimBand);
 			}
-			if (!end.hasPosition()){
+			if (!end.hasPosition()) {
 				end.spawn(getPosition().toCoord().add(0, 1, 0).toPoint());
 				directAimBand.setTarget(end);
 			}
-			
+
 			//end.getPosition().setValues(getPosition()).ad
-			
 			//transform to aimbands
 			Coordinate last = getPosition().toCoord();
 			aimBandList.forEach(aimBand -> aimBand.dispose());
 			aimBandList.clear();
-			
+
 			DefaultGraphPath<PfNode> path = Controller.getMap().findPath(
 				getPosition().toCoord(), end.getPosition().toCoord()
 			);
 			for (PfNode coord : path) {
 				AimBand newAimband = new AimBand(last, coord);
 				addComponent(newAimband);
+				last = coord;
 				aimBandList.add(newAimband);
 			}
 		}
 	}
-	
-	
+
+	@Override
+	public void dispose() {
+		end.dispose();
+		super.dispose();
+	}
 	
 	
 }

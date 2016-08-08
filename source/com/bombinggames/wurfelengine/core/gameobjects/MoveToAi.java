@@ -30,6 +30,7 @@
  */
 package com.bombinggames.wurfelengine.core.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
@@ -41,11 +42,11 @@ import java.io.Serializable;
  *
  * @author Benedikt Vogler
  */
-public class MoveToAi implements Telegraph, Serializable {
+public class MoveToAi implements Telegraph, Serializable, Component {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final MovableEntity body;
+	private MovableEntity body;
 	/**
 	 * where does it move to?
 	 */
@@ -56,13 +57,13 @@ public class MoveToAi implements Telegraph, Serializable {
 	 */
 	private transient Point lastPos;
 
-	public MoveToAi(MovableEntity body, Point goal) {
-		this.body = body;
+	public MoveToAi(Point goal) {
 		this.movementGoal = goal;
 	}
 
+	@Override
 	public void update(float dt) {
-		if (movementGoal != null) {
+		if (movementGoal != null && body.getPosition() != null) {
 			if (!atGoal()) {
 				//movement logic
 				Vector3 d = movementGoal.cpy().sub(body.getPosition());
@@ -86,6 +87,7 @@ public class MoveToAi implements Telegraph, Serializable {
 				body.setMovement(d);// update the movement vector
 			} else {
 				body.setSpeedHorizontal(0);// update the movement vector
+				dispose();
 			}
 			
 			//Movement AI: if standing on same position as in last update
@@ -128,5 +130,21 @@ public class MoveToAi implements Telegraph, Serializable {
 
 	public Point getGoal() {
 		return movementGoal;
+	}
+
+	@Override
+	public void setParent(AbstractEntity body) {
+		if (!(body instanceof MovableEntity)){
+			Gdx.app.error("MoveToAi", "parent must be movable Entity");
+		} else {
+			this.body = (MovableEntity) body;
+		}
+	}
+
+	@Override
+	public void dispose() {
+		if (body != null) {
+			this.body.removeComponent(this);
+		}
 	}
 }

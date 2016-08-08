@@ -806,6 +806,11 @@ public class Chunk implements Telegraph {
 		}
 	}
 	
+	/**
+	 * Set health of a cell.
+	 * @param coord
+	 * @param health 0-100.
+	 */
 	public void setHealth(Coordinate coord, byte health) {
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;

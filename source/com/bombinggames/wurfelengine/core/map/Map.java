@@ -415,7 +415,12 @@ public class Map implements IndexedGraph<PfNode> {
 		getChunkContaining(coord).setValue(coord, value);
 	}
 	
-	void setHealth(Coordinate coord, byte health) {
+	/**
+	 * Set health of a cell.
+	 * @param coord
+	 * @param health 
+	 */
+	public void setHealth(Coordinate coord, byte health) {
 		getChunkContaining(coord).setHealth(coord, health);
 	}
 

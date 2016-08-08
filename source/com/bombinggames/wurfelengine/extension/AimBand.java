@@ -189,7 +189,9 @@ public class AimBand implements Component {
 	 */
 	@Override
 	public void dispose() {
-		parent.removeComponent(this);
+		if (parent != null) {
+			parent.removeComponent(this);
+		}
 		for (Particle particle : list) {
 			particle.removeFromMap();
 		}

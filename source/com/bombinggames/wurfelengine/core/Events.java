@@ -38,6 +38,8 @@ public enum Events {
 	
 	/**
 	 *an entitiy which will receive this event will be damaged
+	 *//**
+	 *an entitiy which will receive this event will be damaged
 	 */
 	damage(11),
 
@@ -62,35 +64,41 @@ public enum Events {
 	deselectInEditor(15),
 
 	/**
-	 *
+	 * extra info has coordinate
 	 */
-	destroyed(16),
+	blockDestroyed(16),
+	
+	/**
+	 * extra info has coordinate
+	 */
+	blockDamaged(17),
 
 	/**
 	 *
 	 */
-	landed(17),
+	landed(18),
 
 	/**
 	 *moves an object. extra information must contain {@link com.bombinggames.wurfelengine.core.map.Point}
 	 */
-	moveTo(18),
+	moveTo(19),
 
 	/**
 	 *
 	 */
-	standStill(19),
+	standStill(20),
 	
 	/**
 	 * extra information must contain {@link com.bombinggames.wurfelengine.core.map.Point}
 	 */
-	teleport(20),
+	teleport(21),
 	
-	chunkChanged(21),
+	chunkChanged(22),
 	
-	mapChanged(22),
+	mapChanged(23),
 	
-	mapReloaded(23)
+	mapReloaded(24)
+
 	;
 	
 	private final int id;

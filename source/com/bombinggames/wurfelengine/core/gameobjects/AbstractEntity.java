@@ -139,7 +139,13 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		
 		//question if traditional fore-loop is faster
 		//http://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
-		components.forEach(t -> { t.update(dt);});
+		if (components.size() > 0) {
+			@SuppressWarnings("unchecked")
+			LinkedList<Component> cloneList = (LinkedList<Component>) components.clone();
+			for (Component com : cloneList) {
+				com.update(dt);
+			}
+		}
 	}
 
     //AbstractGameObject implementation
@@ -164,8 +170,8 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
     /**
      * Is the entity laying/standing on the ground?
      * @return true when on the ground. False if in air or not in memory.
-     */
-    public boolean isOnGround(){
+	 */
+	public boolean isOnGround() {
 		Point pos = getPosition();
 		if (pos == null) {
 			return false;
@@ -186,7 +192,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 				return false;//return false if over map
 			}
 		}
-    }
+	}
     
 	/**
 	 * Add this entity to the map-&gt; let it spawn
@@ -422,7 +428,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 			setHealth((byte) (getHealth() + value));
 		}
 	}
-	
+
 	@Override
 	public float getLightlevelR() {
 		return lightlevelR;
@@ -446,21 +452,27 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	}
 
 	/**
-     *
-     * @return from maximum 100
-     */
+	 *
+	 * @return from maximum 100
+	 */
 	public float getHealth() {
 		return health;
 	}
 	
 	/**
-	 * clamps to [0..100]. You may prefer damage and {@link #heal(byte) }. Ignores invincibility.
-	 * @param health 
-	 * @see #takeDamage(byte) 
+	 * clamps to [0..100]. You may prefer damage and {@link #heal(byte) }.
+	 * Ignores invincibility.
+	 *
+	 * @param health
+	 * @see #takeDamage(byte)
 	 */
 	public void setHealth(float health) {
-		if (health > 100) health=  100;
-		if (health < 0) health = 0;
+		if (health > 100) {
+			health = 100;
+		}
+		if (health < 0) {
+			health = 0;
+		}
 		this.health = health;
 	}
 
@@ -471,7 +483,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void setUseRawDelta(boolean useRawDelta) {
 		this.useRawDelta = useRawDelta;
 	}
-	
+
 	/**
 	 *
 	 * @return
@@ -529,7 +541,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 		ArrayList<T> ents = Controller.getMap().getEntitys(filter);
 		for (T entity : ents) {
-			if (collidesWith(((AbstractEntity)entity))) {
+			if (collidesWith(((AbstractEntity) entity))) {
 				result.add(entity);
 			}
 		}
@@ -612,14 +624,14 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		this.components.add(component);
 		component.setParent(this);
 	}
-	
+
 	/**
 	 *
 	 * @param <T>
 	 * @param filterType
 	 * @return
 	 */
-	public <T extends Component> Component getComponent(final Class<T> filterType){
+	public <T extends Component> Component getComponent(final Class<T> filterType) {
 		for (Component comp : components) {
 			if (filterType.isInstance(comp)) {
 				return comp;
@@ -627,9 +639,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		}
 		return null;
 	}
-	
-	public void removeComponent(Component component){
+
+	public void removeComponent(Component component) {
 		this.components.remove(component);
 	}
-	
+
 }

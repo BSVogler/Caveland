@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.bombinggames.wurfelengine.core.gameobjects;
+package com.bombinggames.wurfelengine.core.map.rendering;
 
 /**
  *A Sea Block which has a "waves" effect.

@@ -36,6 +36,7 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.collectibles.Collectible;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
@@ -177,7 +178,7 @@ public class SpiderRobot extends Robot{
 				//move carry to storage
 				carry.setPosition(getPosition().cpy());
 				if (storage != null) {
-					if (getMovementAI() == null) {
+					if (getComponent(MoveToAi.class) == null) {
 						MessageManager.getInstance().dispatchMessage(
 							this,
 							this,

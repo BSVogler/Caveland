@@ -888,14 +888,6 @@ public class MovableEntity extends AbstractEntity  {
 		walkingPaused = false;
 	}
 
-	/**
-	 * Get the ai which moves the entity to a goal.
-	 * @return can be null
-	 */
-	public MoveToAi getMovementAI() {
-		return moveToAi;
-	}
-	
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.landed.getId() && msg.sender == this) {
@@ -905,7 +897,8 @@ public class MovableEntity extends AbstractEntity  {
 		}
 		
 		if (msg.message == Events.moveTo.getId() && msg.receiver == this) {
-			moveToAi = new MoveToAi(this, (Point) msg.extraInfo);
+			moveToAi = new MoveToAi((Point) msg.extraInfo);
+			addComponent(moveToAi);
 			return true;
 		}
 		
@@ -920,17 +913,18 @@ public class MovableEntity extends AbstractEntity  {
 			return true;
 		}
 		
+		moveToAi = (MoveToAi) getComponent(MoveToAi.class);
 		if (msg.message == Events.deselectInEditor.getId()) {
 			if (particleBand != null) {
 				particleBand.dispose();
 				particleBand = null;
 			}
-		} else if (msg.message == Events.selectInEditor.getId() && getMovementAI() != null) {
+		} else if (msg.message == Events.selectInEditor.getId() && moveToAi != null) {
 			if (particleBand == null) {
-				particleBand = new AimBand(getMovementAI().getGoal());
+				particleBand = new AimBand(moveToAi.getGoal());
 				addComponent(particleBand);
 			} else {
-				particleBand.setTarget(getMovementAI().getGoal());
+				particleBand.setTarget(moveToAi.getGoal());
 			}
 		}
 		

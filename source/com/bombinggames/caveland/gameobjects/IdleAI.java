@@ -36,7 +36,10 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.Component;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.Serializable;
@@ -45,11 +48,11 @@ import java.io.Serializable;
  * an AI which moves a movable entity around.
  * @author Benedikt Vogler
  */
-public class IdleAI implements Telegraph, Serializable {
+public class IdleAI implements Telegraph, Serializable, Component {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final MovableEntity body;
+	private MovableEntity body;
 	/**
 	 * position where the ai will return
 	 */
@@ -59,16 +62,9 @@ public class IdleAI implements Telegraph, Serializable {
 
 	/**
 	 *
-	 * @param body
-	 */
-	public IdleAI(MovableEntity body) {
-		this.body = body;
-	}
-	
-	/**
-	 *
 	 * @param dt
 	 */
+	@Override
 	public void update(float dt) {
 		if (body.hasPosition()) {
 			if (home == null) {
@@ -80,7 +76,7 @@ public class IdleAI implements Telegraph, Serializable {
 			}
 
 			//generate new movement goal
-			if (timeTillMove <= 0 && body.getMovementAI() == null) {
+			if (timeTillMove <= 0 && body.getComponent(MoveToAi.class) == null) {
 				timeTillMove = 1500;
 
 				Point target;
@@ -125,5 +121,17 @@ public class IdleAI implements Telegraph, Serializable {
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		return false;
+	}
+
+	@Override
+	public void setParent(AbstractEntity body) {
+		this.body = (MovableEntity) body;
+	}
+
+	@Override
+	public void dispose() {
+		if (body != null){
+			body.removeComponent(this);
+		}
 	}
 }

@@ -58,8 +58,6 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	 */
 	private int teamId;
 	
-	private final IdleAI idleaAI = new IdleAI(this);
-
 	/**
 	 *
 	 */
@@ -88,6 +86,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		if (type == 0) {
 			runningSound = WE.SOUND.loop(RUNNINGSOUND, point);
 		}
+		addComponent(new IdleAI());
 		return super.spawn(point);
 	}
 
@@ -106,11 +105,6 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 			runningSound = 0;
 		}
 
-		
-		if (idleaAI != null) {
-			idleaAI.update(dt);
-		}
-		
 		//set attack sprite
 		if (attackInProgess > 0) {
 			attackInProgess -= dt;

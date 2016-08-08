@@ -60,11 +60,6 @@ public class SimpleEntity extends AbstractEntity {
 	}
 
 	@Override
-	public void update(float dt) {
-		super.update(dt);
-	}
-
-	@Override
 	public boolean handleMessage(Telegram msg) {
 		return true;
 	}

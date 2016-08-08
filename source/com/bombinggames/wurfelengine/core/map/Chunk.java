@@ -747,6 +747,14 @@ public class Chunk implements Telegraph {
 		}
 	}
 	
+	/**
+	 * Almost lowest level method to set a block in the map. If the block has
+	 * logic a new logicinstance will be created.
+	 * Sets health to 100.
+	 * @param coord
+	 * @param id
+	 * @param value 
+	 */
 	public void setBlock(Coordinate coord, byte id, byte value) {
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;
@@ -754,6 +762,7 @@ public class Chunk implements Telegraph {
 		if (z >= 0){
 			data[xIndex][yIndex][z] = id;
 			data[xIndex][yIndex][z+1] = value;
+			data[xIndex][yIndex][z+2] = 100;
 			modified = true;
 		}
 		
@@ -766,7 +775,9 @@ public class Chunk implements Telegraph {
 	}
 	
 	/**
-	 * healed and value set to 0
+	 * Almost lowest level method to set a block in the map. If the block has
+	 * logic a new logicinstance will be created.
+	 * Health set to 100 and value set to 0
 	 * @param coord
 	 * @param id 
 	 */
@@ -812,6 +823,7 @@ public class Chunk implements Telegraph {
 	 * @param health 0-100.
 	 */
 	public void setHealth(Coordinate coord, byte health) {
+		MessageManager.getInstance().dispatchMessage(Events.blockDamaged.getId(), coord);
 		int xIndex = coord.getX() - topleftX;
 		int yIndex = coord.getY() - topleftY;
 		int z = coord.getZ()*3;

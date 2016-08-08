@@ -51,8 +51,7 @@ public class AimBand implements Component {
 	private AbstractEntity target;
 	private Point start;
 	private AbstractEntity parent;
-	private final float timeEachSpawn = 100;
-	private float timeTillNext;
+	private float offset = 0;
 	private final ArrayList<Particle> list = new ArrayList<>(10);
 
 	/**
@@ -97,7 +96,7 @@ public class AimBand implements Component {
 
 		this.parent = null;
 	}
-
+	
 	@Override
 	public void update(float dt) {
 		if (getStart() == null || getEnd() == null) {
@@ -105,25 +104,33 @@ public class AimBand implements Component {
 			return;
 		}
 
-		timeTillNext -= Gdx.graphics.getRawDeltaTime() * 1000f;
-		if (timeTillNext < 0 && (target != null || goal != null)) {
-			timeTillNext += timeEachSpawn;
-			Particle particle = new Particle();
-			particle.setTTL(1500);
-			particle.setColor(new Color(0.4f, 0.5f, 1f, 0.3f));
-			particle.setUseRawDelta(true);
-			particle.setColiding(false);
-			particle.spawn(getStart().cpy());
-			list.add(particle);
-		}
-
 		//remove old particles from list
-		list.removeIf(p -> p.shouldBeDisposed());
+		list.removeIf(
+			p -> p.shouldBeDisposed()
+		);
 
+		//show and move only if has end position
 		if (getEnd() != null) {
-			//move particles
-			for (Particle p : list) {
-				p.getPosition().set(getStart()).lerp(getEnd(), 1 - p.getPercentageOfLife());
+			//spawn particles
+			if (list.isEmpty()) {
+				for (int i = 0; i < 10; i++) {
+					Particle particle = new Particle();
+					particle.setTTL(Float.POSITIVE_INFINITY);
+					particle.setColor(new Color(0.4f, 0.5f, 1f, 0.3f));
+					particle.setUseRawDelta(true);
+					particle.setColiding(false);
+					particle.spawn(getStart().cpy());
+					list.add(particle);
+				}
+			}
+		
+			float distance = getStart().distanceTo(getEnd());
+			offset += Gdx.graphics.getRawDeltaTime() * 100;
+			//move every particle
+			for (int i = 0; i < list.size(); i++) {
+				Particle p = list.get(i);
+				p.getPosition().set(getStart()).lerp(getEnd(), (i * distance / (float) list.size() + offset) % distance / distance);
+
 			}
 		} else {
 			list.forEach(p -> p.dispose());
@@ -147,6 +154,10 @@ public class AimBand implements Component {
 		}
 	}
 
+	/**
+	 * starting position of the band
+	 * @return 
+	 */
 	private Point getStart() {
 		if (parent == null) {
 			return start;

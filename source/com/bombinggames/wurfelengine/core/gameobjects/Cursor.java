@@ -57,15 +57,14 @@ public class Cursor extends AbstractEntity {
      *
      */
     public Cursor() {
-        super((byte) 13);
+        super((byte) 8);
 		setSaveToDisk(false);
 		setName("selectionEntity");
 		
-        normal = new SimpleEntity((byte) 14);
-		EntityAnimation anim = new EntityAnimation(new int[]{200,200}, true, true);
+        normal = new SimpleEntity((byte) 9);
 		normal.setUseRawDelta(true);
-		//normal.enableShadow();
-		normal.addComponent(anim);
+		//normal.addComponent( new Shadow());
+		normal.addComponent(new EntityAnimation(new int[]{200,200}, true, true));
         normal.setLightlevel(10);
 		normal.setSaveToDisk(false);
 		normal.setName("cursor normal");

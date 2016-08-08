@@ -16,11 +16,9 @@ import com.bombinggames.caveland.gameobjects.logicblocks.PowerStationLogic;
 import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
-import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.map.CustomBlocks;
-import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.CustomBlocks;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
 
@@ -356,37 +354,6 @@ public class CavelandBlocks implements CustomBlocks {
 	@Override
 	public boolean isIndestructible(byte id, byte value) {
 		return id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id;
-	}
-
-	
-	@Override
-	public void onSetHealth(Coordinate coord, byte health, byte id, byte value) {
-		if (health <= 0) {
-			CollectibleType lootType = getLoot(id);
-			if (lootType != null) {
-				lootType.createInstance().spawn(coord.toPoint());
-			}
-			if (id == CLBlocks.TREE.id) {
-				//destroy other half
-				Coordinate otherHalf;
-				if (value == CustomTree.TREETOPVALUE) {
-					otherHalf = coord.cpy().add(0, 0, -1);
-				} else {
-					otherHalf = coord.cpy().add(0, 0, 1);
-				}
-
-				if (otherHalf.getBlockId() != 0 && otherHalf.getBlockId() == id) {
-					otherHalf.destroy();
-				}
-			}
-			WE.SOUND.play("blockDestroy", coord);//to-do should be a wood chop down sound for tree
-
-			//view only relevant. should only be done if visible
-			//todo, check if visible
-			for (int i = 0; i < 10; i++) {
-				new DestructionParticle((byte) 44).spawn(coord.toPoint());
-			}
-		}
 	}
 
 	@Override

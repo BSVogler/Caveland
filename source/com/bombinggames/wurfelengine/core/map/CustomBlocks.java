@@ -72,17 +72,6 @@ public interface CustomBlocks {
 	public boolean isIndestructible(byte id, byte value);
 
 	/**
-	 * define what should happen if you alter the health. If =0 automatically
-	 * get's destroyed after exiting this method.
-	 *
-	 * @param coord
-	 * @param health the new health
-	 * @param id
-	 * @param value
-	 */
-	public void onSetHealth(Coordinate coord, byte health, byte id, byte value);
-
-	/**
 	 *
 	 * @param id
 	 * @param value

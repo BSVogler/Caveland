@@ -560,8 +560,8 @@ public class Coordinate implements Position {
 		if ((block & 255) != 0 && ((block >> 16) & 255) > 0) {
 			Controller.getMap().setHealth(this, (byte) 0);
 			setBlock(0);
-			//broadcast event that this block got destroyed
-			MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
+			//broadcast event that this block got blockDestroyed
+			MessageManager.getInstance().dispatchMessage(Events.blockDestroyed.getId(), this);
 		}
 	}
 
@@ -580,8 +580,8 @@ public class Coordinate implements Position {
 				Controller.getMap().setHealth(this, (byte) (getHealth() - amount));
 			}
 			if (getHealth() <= 0 && !RenderCell.isIndestructible(block, (byte)0)) {
-				//broadcast event that this block got destroyed
-				MessageManager.getInstance().dispatchMessage(Events.destroyed.getId(), this);
+				//broadcast event that this block got blockDestroyed
+				MessageManager.getInstance().dispatchMessage(Events.blockDestroyed.getId(), this);
 				setBlock(0);
 			}
 			return true;

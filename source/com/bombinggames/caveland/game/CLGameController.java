@@ -5,16 +5,20 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Color;
+import static com.bombinggames.caveland.game.CavelandBlocks.getLoot;
+import com.bombinggames.caveland.gameobjects.CustomTree;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.Robot;
 import com.bombinggames.caveland.gameobjects.Spaceship;
 import com.bombinggames.caveland.gameobjects.Vanya;
+import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.cvar.BooleanCVar;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.cvar.IntCVar;
+import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
@@ -39,6 +43,8 @@ public class CLGameController extends Controller implements Telegraph {
 		super.init();
 		
 		MessageManager.getInstance().addListener(this, Events.mapReloaded.getId());
+		MessageManager.getInstance().addListener(this, Events.blockDestroyed.getId());
+		
 		Gdx.app.log("CustomGameController", "Initializing");
 		
 		setLightEngine(new CustomLightEngine());
@@ -96,8 +102,9 @@ public class CLGameController extends Controller implements Telegraph {
 			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
 			introSpaceship.setIndestructible(true);
 			introSpaceship.addContent(player1);
-			if (player2 != null)
+			if (player2 != null) {
 				introSpaceship.addContent(player2);
+			}
 		}
 	}
 	
@@ -155,10 +162,11 @@ public class CLGameController extends Controller implements Telegraph {
 			for (int i = 0; i < 5; i++) {
 				new Robot().spawn(
 					new Coordinate(
-						(int) (34+Math.random()*5),
-						(int) (4+Math.random()*5),
+						(int) (34 + Math.random() * 5),
+						(int) (4 + Math.random() * 5),
 						5
-				).toPoint());
+					).toPoint()
+				);
 			}
 			
 		}
@@ -208,7 +216,52 @@ public class CLGameController extends Controller implements Telegraph {
 			mapSetup();
 			return true;
 		}
+	
+		if (msg.message == Events.blockDestroyed.getId()) {
+			Coordinate coord = (Coordinate) msg.extraInfo;
+			int block = Controller.getMap().getBlock(coord);
+			if (block >> 16 <= 0) {//health
+				CollectibleType lootType = getLoot((byte) (block & 255));
+				if (lootType != null) {
+					lootType.createInstance().spawn(coord.toPoint());
+				}
+				if ((byte) (block & 255) == CavelandBlocks.CLBlocks.TREE.getId()) {
+					//destroy other half
+					Coordinate otherHalf;
+					if ((byte) (block >> 8 & 255) == CustomTree.TREETOPVALUE) {
+						otherHalf = coord.cpy().add(0, 0, -1);
+					} else {
+						otherHalf = coord.cpy().add(0, 0, 1);
+					}
+
+					if (otherHalf.getBlockId() != 0 && otherHalf.getBlockId() == (byte) (block & 255)) {
+						otherHalf.destroy();
+					}
+				}
+				WE.SOUND.play("blockDestroy", coord);//to-do should be a wood chop down sound for tree
+
+				//view only relevant. should only be done if visible
+				//todo, check if visible
+				for (int i = 0; i < 10; i++) {
+					new DestructionParticle((byte) 44).spawn(coord.toPoint().add(
+						(float) Math.random() * RenderCell.GAME_DIAGLENGTH2,
+						(float) Math.random() * RenderCell.GAME_DIAGLENGTH2,
+						(float) Math.random() * RenderCell.GAME_EDGELENGTH
+					));
+				}
+			}
+			return true;
+		}
 		return false;
 	}
+
+	@Override
+	public void dispose() {
+		MessageManager.getInstance().removeListener(this, Events.mapReloaded.getId());
+		MessageManager.getInstance().removeListener(this, Events.blockDestroyed.getId());
+		super.dispose();
+	}
 	
+	
+
 }

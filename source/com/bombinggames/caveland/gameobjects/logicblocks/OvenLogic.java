@@ -116,9 +116,9 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		if (isValid()) {
 			if (container == null || container.shouldBeDisposed()) {
 				//find existing container
-				ArrayList<AbstractEntity> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+				ArrayList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
 				if (!list.isEmpty()) {
-					container = (CollectibleContainer) list.get(0);
+					container = list.get(0);
 					container.setHidden(true);
 				}
 			}

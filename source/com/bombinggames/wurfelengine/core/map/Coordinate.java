@@ -489,11 +489,11 @@ public class Coordinate implements Position {
 	 * Loads the chunk if not in memory. Should be used with care with generated
 	 * content because new chunks can also trigger this recursively.
 	 *
-	 * @param <type> the class you want to filter.
+	 * @param <T> the class you want to filter.
 	 * @param type the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
-	public <type extends AbstractEntity> ArrayList<type> getEntitiesInside(final Class<? extends AbstractEntity> type) {
+	public <T> ArrayList<T> getEntitiesInside(final Class<T> type) {
 		if (!isInMemoryAreaXY()) {
 			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
 		}
@@ -644,12 +644,12 @@ public class Coordinate implements Position {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
-		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
-		for (AbstractEntity entity : entities) {
-			if (distanceTo(entity.getPosition()) < radius) {
-				result.add((type) entity);
+	public <T> ArrayList<T> getEntitiesNearby(float radius, Class<T> type) {
+		ArrayList<T> result = new ArrayList<>(5);//default size 5
+		ArrayList<T> entities = Controller.getMap().getEntitys(type);
+		for (T entity : entities) {
+			if (distanceTo(((AbstractEntity)entity).getPosition()) < radius) {
+				result.add(entity);
 			}
 		}
 
@@ -677,16 +677,16 @@ public class Coordinate implements Position {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
+	public <T> ArrayList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type) {
+		ArrayList<T> result = new ArrayList<>(5);//default size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 
 		for (AbstractEntity entity : entityList) {//check every entity
 			if (entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
 				&& distanceToHorizontal(entity.getPoint()) < radius//TODO should use squared values for improved speed
-				) {
-				result.add((type) entity);//add it to list
+			) {
+				result.add((T) entity);//add it to list
 			}
 		}
 

@@ -519,16 +519,17 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	/**
 	 * O(n) n:amount of entities. ignores if is obstacle.
 	 *
-	 * @param <type>
+	 * @param <T>
 	 * @param filter only where the filter is true is returned
 	 * @return
 	 */
-	public <type extends AbstractEntity> ArrayList<type> getCollidingEntities(final Class<type> filter) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
+	@SuppressWarnings("unchecked")
+	public <T> ArrayList<T> getCollidingEntities(final Class<T> filter) {
+		ArrayList<T> result = new ArrayList<>(5);//default size 5
 
-		ArrayList<type> ents = Controller.getMap().getEntitys(filter);
-		for (type entity : ents) {
-			if (collidesWith(entity)) {
+		ArrayList<T> ents = Controller.getMap().getEntitys(filter);
+		for (T entity : ents) {
+			if (collidesWith(((AbstractEntity)entity))) {
 				result.add(entity);
 			}
 		}
@@ -610,6 +611,21 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	public void addComponent(Component component) {
 		this.components.add(component);
 		component.setParent(this);
+	}
+	
+	/**
+	 *
+	 * @param <T>
+	 * @param filterType
+	 * @return
+	 */
+	public <T extends Component> Component getComponent(final Class<T> filterType){
+		for (Component comp : components) {
+			if (filterType.isInstance(comp)) {
+				return comp;
+			}
+		}
+		return null;
 	}
 	
 	public void removeComponent(Component component){

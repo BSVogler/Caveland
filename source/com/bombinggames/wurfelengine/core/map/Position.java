@@ -188,21 +188,21 @@ public interface Position extends Serializable {
 	/**
 	 * Get entities in radius.
 	 *
-	 * @param <type> returns only object if type which is the filter
+	 * @param <T> returns only object if type which is the filter
 	 * @param radius in game dimension pixels
 	 * @param type the type you want to filter
 	 * @return every entitie in radius
 	 */
-	public <type> ArrayList<type> getEntitiesNearby(float radius, final Class<? extends AbstractEntity> type);
+	public <T> ArrayList<T> getEntitiesNearby(float radius, final Class<T> type);
 	
 	/**
 	 * get entities in horizontal radius (like a pipe)
-	 * @param <type>
+	 * @param <T>
 	 * @param radius in game dimension pixels
 	 * @param type whitelist
 	 * @return every entitie in radius
 	 */
-	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type);
+	public <T> ArrayList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type);
 	
 	/**
 	 * get entities in radius (horizontal only)

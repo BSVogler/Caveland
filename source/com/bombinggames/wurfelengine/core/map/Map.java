@@ -797,19 +797,19 @@ public class Map implements IndexedGraph<PfNode> {
 	 * Find every instance of a special class. E.g. find every
 	 * <i>AbstractCharacter</i>. They must be spawned to appear in the results.
 	 *
-	 * @param <type> the class you want to filter.
+	 * @param <T> the class you want to filter.
 	 * @param filter the class you want to filter.
 	 * @return a list with the entitys
 	 */
 	@SuppressWarnings(value = {"unchecked"})
-	public <type extends AbstractEntity> ArrayList<type> getEntitys(final Class<type> filter) {
-		ArrayList<type> result = new ArrayList<>(30); //default size 30
+	public <T> ArrayList<T> getEntitys(final Class<T> filter) {
+		ArrayList<T> result = new ArrayList<>(30); //default size 30
 		if (filter == null) {
 			throw new IllegalArgumentException();
 		}
 		for (AbstractEntity entity : entityList) {
 			if (entity.hasPosition() && filter.isInstance(entity)) {
-				result.add((type) entity);
+				result.add((T) entity);
 			}
 		}
 		return result;
@@ -836,21 +836,21 @@ public class Map implements IndexedGraph<PfNode> {
 	/**
 	 * Get every entity on a coord of the wanted type
 	 *
-	 * @param <type> the class you want to filter.
+	 * @param <T> the class you want to filter.
 	 * @param coord the coord where you want to get every entity from
 	 * @param filter the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
 	@SuppressWarnings("unchecked")
-	public <type> ArrayList<type> getEntitysOnCoord(final Coordinate coord, final Class<? extends AbstractEntity> filter) {
-		ArrayList<type> result = new ArrayList<>(5);
+	public <T> ArrayList<T> getEntitysOnCoord(final Coordinate coord, final Class<T> filter) {
+		ArrayList<T> result = new ArrayList<>(5);
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.hasPosition()
 				&& coord.contains(ent.getPosition())//on coordinate?
 				&& filter.isInstance(ent)//of tipe of filter?
-				) {
-				result.add((type) ent);//add it to list
+			) {
+				result.add((T) ent);//add it to list
 			}
 		}
 

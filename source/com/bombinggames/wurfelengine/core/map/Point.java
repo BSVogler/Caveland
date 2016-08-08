@@ -857,8 +857,8 @@ public class Point extends Vector3 implements Position {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <type> ArrayList<type> getEntitiesNearbyHorizontal(float radius, final Class<type> type) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
+	public <T> ArrayList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type) {
+		ArrayList<T> result = new ArrayList<>(5);//default size 5
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 
         for (AbstractEntity entity : entityList) {//check every entity
@@ -867,7 +867,7 @@ public class Point extends Vector3 implements Position {
 				&& type.isInstance(entity) //if the entity is of the wanted type
 				&& distanceToHorizontal(entity.getPoint()) < radius//TODO should use squared values for improved speed
 			) {
-                result.add((type) entity);//add it to list
+                result.add((T) entity);//add it to list
             }
         }
 
@@ -920,12 +920,13 @@ public class Point extends Vector3 implements Position {
 	}
 
 	@Override
-	public <type> ArrayList<type> getEntitiesNearby(float radius, Class<? extends AbstractEntity> type) {
-		ArrayList<type> result = new ArrayList<>(5);//default size 5
-		ArrayList<? extends AbstractEntity> entities = Controller.getMap().getEntitys(type);
-		for (AbstractEntity entity : entities) {
-			if (distanceTo(entity.getPosition()) < radius) {
-				result.add((type) entity);
+	@SuppressWarnings("unchecked")
+	public <T> ArrayList<T> getEntitiesNearby(float radius, Class<T> type) {
+		ArrayList<T> result = new ArrayList<>(5);//default size 5
+		ArrayList<T> entities = Controller.getMap().getEntitys(type);
+		for (T entity : entities) {
+			if (distanceTo(((AbstractEntity)entity).getPosition()) < radius) {
+				result.add(entity);
 			}
 		}
 

@@ -453,18 +453,22 @@ public class Chunk implements Telegraph {
 				try {
 					//loading entitiesinSaveFile
 					byte entCount = ois.readByte(); //amount of entities
-					Gdx.app.debug("Chunk", "Loading " + entCount + " entities.");
-					entitiesinSaveFile = new ArrayList<>(entCount);
+					if (entCount > 0 && entCount < 10000) {//upper limit
+						Gdx.app.debug("Chunk", "Loading " + entCount + " entities.");
+						entitiesinSaveFile = new ArrayList<>(entCount);
 
-					AbstractEntity ent;
-					for (int i = 0; i < entCount; i++) {
-						try {
-							ent = (AbstractEntity) ois.readObject();
-							entitiesinSaveFile.add(ent);
-							Gdx.app.debug("Chunk", "Loaded entity: " + ent.getName());
-						} catch (ClassNotFoundException | InvalidClassException ex) {
-							Gdx.app.error("Chunk", "An entity could not be loaded: " + ex.getMessage());
+						AbstractEntity ent;
+						for (int i = 0; i < entCount; i++) {
+							try {
+								ent = (AbstractEntity) ois.readObject();
+								entitiesinSaveFile.add(ent);
+								Gdx.app.debug("Chunk", "Loaded entity: " + ent.getName());
+							} catch (ClassNotFoundException | InvalidClassException ex) {
+								Gdx.app.error("Chunk", "An entity could not be loaded: " + ex.getMessage());
+							}
 						}
+					} else if (entCount < 0) {
+						Gdx.app.error("Chunk", "Loading of entities in chunk" + path + "/" + chunkX + "," + chunkY + " failed. File is corrupt.");
 					}
 					ois.close();
 				} catch (IOException ex) {

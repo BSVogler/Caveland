@@ -164,6 +164,9 @@ public class UserControlledShooter extends MovableEntity implements Controllable
 			this.weapon.removeFromMap();
 		}
 		this.weapon = weapon;
+		if (!weapon.hasPosition() && this.hasPosition()) {
+			spawn(getPosition().cpy());
+		}
 		if (!weapon.isLoaded()) {
 			weapon.reload();
 		}

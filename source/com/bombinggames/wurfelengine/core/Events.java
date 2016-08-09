@@ -74,7 +74,7 @@ public enum Events {
 	blockDamaged(17),
 
 	/**
-	 *
+	 *when an entity touches the ground
 	 */
 	landed(18),
 

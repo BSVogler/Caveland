@@ -49,6 +49,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 			)
 		);
 		setName("Collectible " + def.name());
+		setMass(1);
 	}
 
 	/**

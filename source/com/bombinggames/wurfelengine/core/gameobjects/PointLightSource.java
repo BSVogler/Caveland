@@ -27,7 +27,6 @@ public class PointLightSource extends AbstractEntity {
 	/**
 	 * color of the light of this source
 	 */
-	private final transient Color color;
 	private float brightness;
 	private boolean enabled = true;
 	private final Point lastPos = new Point(0, 0, 0);
@@ -47,7 +46,7 @@ public class PointLightSource extends AbstractEntity {
 		this.floatradius = maxRadius;
 		this.radius = (int) Math.ceil(maxRadius);
 		this.brightness = brightness;
-		this.color = color;
+		setColor(color);
 		if (radius == 0) {
 			this.lightcache = new float[1][1][1][3];
 		} else {
@@ -174,6 +173,7 @@ public class PointLightSource extends AbstractEntity {
 			//apply cache
 			Coordinate tmpCoord = getPosition().toCoord();
 			Color tmpColor = new Color();
+			Color color = getColor();
 			int xCenter = tmpCoord.getX();
 			int yCenter = tmpCoord.getY();
 			int zCenter = tmpCoord.getZ();

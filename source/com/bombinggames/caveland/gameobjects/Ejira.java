@@ -218,7 +218,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter.spawn(point.cpy());
 		emitter2.spawn(point.cpy());
 		
-		lightsource = new PointLightSource(Color.MAGENTA.cpy(), 2, 10, WE.getGameplay().getView());
+		lightsource = new PointLightSource(Color.BLUE.cpy(), 2, 10, WE.getGameplay().getView());
 		lightsource.setSaveToDisk(false);
 		lightsource.spawn(getPosition().cpy().add(0, 0, RenderCell.GAME_EDGELENGTH2));
 		return this;
@@ -293,6 +293,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			//stop loadAttack if speed it too low
 			if (performingPowerAttack && getSpeedHor() < 0.1) {
 				performingPowerAttack = false;
+				lightsource.getColor().set(Color.BLUE);
 			}
 
 			//detect button hold
@@ -895,6 +896,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			} else {
 				addToHor(40f);
 			}
+			lightsource.getColor().set(0.5f,0.5f,1f,1);
 			attack((byte)100);
 			performingPowerAttack = true;
 			usedLoadAttackInAir = true;

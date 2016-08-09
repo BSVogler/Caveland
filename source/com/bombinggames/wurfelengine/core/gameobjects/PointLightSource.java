@@ -172,21 +172,22 @@ public class PointLightSource extends AbstractEntity {
 			}
 
 			//apply cache
-			Coordinate tmp = getPosition().toCoord();
-			int xCenter = tmp.getX();
-			int yCenter = tmp.getY();
-			int zCenter = tmp.getZ();
+			Coordinate tmpCoord = getPosition().toCoord();
+			Color tmpColor = new Color();
+			int xCenter = tmpCoord.getX();
+			int yCenter = tmpCoord.getY();
+			int zCenter = tmpCoord.getZ();
 			for (int x = -radius; x < radius; x++) {
 				for (int y = -radius * 2; y < radius * 2; y++) {
 					for (int z = -radius; z < radius; z++) {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
-						tmp.set(xCenter + x, yCenter + y, zCenter + z);
-						RenderCell rB = tmp.getRenderBlock(view.getRenderStorage());
+						tmpCoord.set(xCenter + x, yCenter + y, zCenter + z);
+						RenderCell rB = tmpCoord.getRenderBlock(view.getRenderStorage());
 						if (rB != null && !rB.isHidden()) {
-							tmp.addLightToBackEdge(view, Side.LEFT, color.cpy().mul(blocklight[0]));
-							tmp.addLightToBackEdge(view, Side.TOP, color.cpy().mul(blocklight[1]));
-							tmp.addLightToBackEdge(view, Side.RIGHT, color.cpy().mul(blocklight[2]));
+							tmpCoord.addLightToBackEdge(view, Side.LEFT, tmpColor.set(color).mul(blocklight[0]));
+							tmpCoord.addLightToBackEdge(view, Side.TOP, tmpColor.set(color).mul(blocklight[1]));
+							tmpCoord.addLightToBackEdge(view, Side.RIGHT, tmpColor.set(color).mul(blocklight[2]));
 						}
 					}
 				}

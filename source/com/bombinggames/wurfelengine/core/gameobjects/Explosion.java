@@ -3,7 +3,6 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
@@ -109,7 +108,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 						(byte) 22,
 						1700
 					).spawn(point.cpy().add((float) Math.random()*20f, (float) Math.random()*20f, (float) Math.random()*20f));//spawn at center
-					dust.setColor(new Color(0.6f, 0.55f, 0.4f, 1f));
+					dust.getColor().set(0.6f, 0.55f, 0.4f, 1f);
 					dust.setType(ParticleType.FIRE);
 					dust.addMovement(
 						coord.toPoint().sub(point).nor().scl(4f)

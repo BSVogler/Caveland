@@ -63,8 +63,7 @@ public class Particle extends MovableEntity {
 		}
 		setFloating(true);
 		setName("Particle");
-		super.setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
-		startingColor.set(getColor());
+		setColor(new Color(0.5f, 0.5f, 0.5f, 1f));
 		setMass(0.0005f);
 		rotateRight = Math.random() > 0.5f;
 	}

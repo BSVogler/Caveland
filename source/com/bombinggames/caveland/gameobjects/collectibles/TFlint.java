@@ -51,7 +51,7 @@ public class TFlint extends Collectible implements Interactable {
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public TFlint spawn(Point point) {
 		super.spawn(point);
 		sparksGenerator.spawn(point.cpy().add(0, 0, RenderCell.GAME_EDGELENGTH*0.8f));
 		return this;

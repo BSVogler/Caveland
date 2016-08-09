@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.math.Vector2;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.DestructionParticle;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
@@ -82,12 +81,12 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 	}
 
 	@Override
-	public AbstractEntity spawn(final Point point) {
+	public Robot spawn(final Point point) {
 		if (type == 0) {
 			runningSound = WE.SOUND.loop(RUNNINGSOUND, point);
 		}
 		addComponent(new IdleAI());
-		return super.spawn(point);
+		return (Robot) super.spawn(point);
 	}
 
 	@Override

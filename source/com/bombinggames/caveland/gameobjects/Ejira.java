@@ -208,7 +208,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public Ejira spawn(Point point) {
 		super.spawn(point);
 		inventory = (Inventory) new Inventory(this).spawn();
 		

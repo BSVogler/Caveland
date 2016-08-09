@@ -63,7 +63,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public MovableEntity spawn(Point point) {
 		super.spawn(point);
 		createBackAndFront();
 		setHidden(true);

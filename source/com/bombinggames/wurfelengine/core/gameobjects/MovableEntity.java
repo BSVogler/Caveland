@@ -159,7 +159,7 @@ public class MovableEntity extends AbstractEntity  {
 	}
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public MovableEntity spawn(Point point) {
 //		if (!hasPosition())
 //			MessageManager.getInstance().addListener(this, Events.landed.getId());
 		super.spawn(point);

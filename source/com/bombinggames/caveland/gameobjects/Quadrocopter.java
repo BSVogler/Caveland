@@ -31,7 +31,6 @@
 package com.bombinggames.caveland.gameobjects;
 
 import com.bombinggames.wurfelengine.WE;
-import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
 
 /**
@@ -64,7 +63,7 @@ public class Quadrocopter extends Robot {
 	
 
 	@Override
-	public AbstractEntity spawn(Point point) {
+	public Quadrocopter spawn(Point point) {
 		super.spawn(point);
 		movementSoundPlaying = WE.SOUND.loop(RUNNINGSOUND, point);
 		return this;

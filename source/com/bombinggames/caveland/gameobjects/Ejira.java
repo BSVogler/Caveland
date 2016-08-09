@@ -474,8 +474,13 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 				}
 				emitter.setActive(true);
 				emitter2.setActive(true);
-				emitter.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
-				emitter2.setParticleStartMovement(new Vector3(0, 0, -getMovement().z*1.5f));
+				//not physically correct
+				float zSpeed = -getMovement().z * 1.5f;
+				if (zSpeed > 0) {
+					zSpeed = -0.1f;
+				}
+				emitter.setParticleStartMovement(new Vector3(0, 0, zSpeed));
+				emitter2.setParticleStartMovement(new Vector3(0, 0, zSpeed));
 			} else {
 				emitter.setActive(false);
 				emitter2.setActive(false);

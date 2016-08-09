@@ -159,6 +159,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	
 	private transient final ParticleEmitter emitter;
 	private transient final ParticleEmitter emitter2;
+	/**
+	 * the ejira emits light
+	 */
 	private PointLightSource lightsource;
 	private transient AimBand interactionAimband;
 	/**

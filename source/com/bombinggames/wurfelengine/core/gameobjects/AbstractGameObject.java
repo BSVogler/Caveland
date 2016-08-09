@@ -524,10 +524,10 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	/**
-	 * give the object a tint. The default brightness is RGBA 0x808080FF so you
+	 * Give the object a tint. The default brightness is RGBA 0x808080FF so you
 	 * can make it brighter and darker by modifying R, G and B.
 	 *
-	 * @param color
+	 * @param color refence is kept
 	 */
 	public void setColor(Color color) {
 		if (color != null) {

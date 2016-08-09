@@ -136,13 +136,17 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		if (soundTimeLimit > 0) {
 			soundTimeLimit -= Gdx.graphics.getRawDeltaTime();
 		}
-		
+
+		//update the components
 		//question if traditional fore-loop is faster
 		//http://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
 		if (components.size() > 0) {
 			@SuppressWarnings("unchecked")
 			LinkedList<Component> cloneList = (LinkedList<Component>) components.clone();
 			for (Component com : cloneList) {
+				//if already in map don't update here
+				if (!((com instanceof AbstractEntity)
+					&& ((AbstractEntity) com).hasPosition()))
 				com.update(dt);
 			}
 		}

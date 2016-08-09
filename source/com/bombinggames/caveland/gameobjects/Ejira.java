@@ -888,7 +888,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			WE.SOUND.play("release");
 			if (!isOnGround()) {
 				setFriction((float) WE.getCVars().get("playerfriction").getValue()/3f);
-				addMovement(new Vector3(getOrientation().cpy().scl(30),-2f));
+				addMovement(new Vector3(getOrientation().cpy().scl(30),-3f));
 			} else {
 				addToHor(40f);
 			}

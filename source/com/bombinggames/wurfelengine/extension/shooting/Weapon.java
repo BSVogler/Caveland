@@ -91,7 +91,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	 */
 	private boolean firing;
 	private boolean fireSoundBust;
-	private boolean bustSoundReady;
+	private boolean bustSoundReady = true;
 	private Point fixedPos = null;
 	private transient AimBand particleBand;
 	private transient PointLightSource lightSource;
@@ -361,14 +361,12 @@ public class Weapon extends AbstractEntity implements Telegraph {
      */
     public void shoot(){
        if (shotsLoaded > 0 && bulletDelay <= 0 && reloading <= 0 && hasPosition()) {
-			if (fireSound != null) {
-				if (bustSoundReady) {
-					WE.SOUND.play(fireSound, getPosition());
-				}
-				if (fireSoundBust) {
-					bustSoundReady = false;
-				}
-			}
+			if (fireSound != null && bustSoundReady) {
+			   WE.SOUND.play(fireSound, getPosition());
+			   if (fireSoundBust) {
+				   bustSoundReady = false;
+			   }
+		   }
 			
 			bulletDelay += delayBetweenShots;
 			shotsLoaded--;
@@ -427,7 +425,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		bustSoundReady = true;
         reloading = relodingTime;
         if (reload != null) {
-			WE.SOUND.play("reload", getPosition());
+			WE.SOUND.play(reload, getPosition());
 		}
     }
 
@@ -458,7 +456,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 	/**
 	 *
 	 * @param fire
-	 * @param bustSound true if one sound per bust
+	 * @param bustSound true if one sound per bust. false to play sound at every shot.
 	 */
 	public void setFireSound(String fire, boolean bustSound) {
 		this.fireSound = fire;

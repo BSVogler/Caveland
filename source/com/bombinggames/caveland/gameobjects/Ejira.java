@@ -978,7 +978,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			)
 		);
 		dust.setType(ParticleType.SMOKE);
-		dust.setColor(new Color(0.2f, 0.25f, 0.05f, 0.8f));
+		dust.setColor(new Color(0.4f, 0.4f, 0.05f, 0.5f));
 		dust.addMovement(new Vector3(
 				-getMovementHor().x*0.1f,
 				-getMovementHor().y*0.1f,

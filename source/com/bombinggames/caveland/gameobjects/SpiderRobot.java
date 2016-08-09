@@ -295,6 +295,7 @@ public class SpiderRobot extends Robot{
 		WE.SOUND.stop("robot2walk", walkingSound);
 		walkingSound = 0;
 		laserdot.dispose();
+		carry.allowPickup();
 		super.removeFromMap();
 	}
 	

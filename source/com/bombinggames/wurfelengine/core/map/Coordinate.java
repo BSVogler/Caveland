@@ -722,10 +722,10 @@ public class Coordinate implements Position {
 	 *
 	 * @param view
 	 * @param side
-	 * @param color
+	 * @param color only read from
 	 * @param vertex
 	 */
-	public void addLight(GameView view, Side side, int vertex, Color color) {
+	public void addLight(final GameView view, Side side, int vertex, final Color color) {
 		RenderCell rB = getRenderBlock(view.getRenderStorage());
 		if (rB != null && !rB.isHidden()) {
 			view.getRenderStorage().setLightFlag(rB);
@@ -739,10 +739,10 @@ public class Coordinate implements Position {
 	 * Add light to the back edge of a coordinate and it's neighbors-
 	 *
 	 * @param view
-	 * @param color
+	 * @param color only read from
 	 * @param side
 	 */
-	public void addLightToBackEdge(GameView view, Side side, Color color) {
+	public void addLightToBackEdge(final GameView view, final Side side, final Color color) {
 		if (side == Side.TOP) {
 			this.addLight(view, side, 1, color);
 			goToNeighbour(0).addLight(view, side, 3, color);

@@ -155,7 +155,7 @@ public class UserControlledShooter extends MovableEntity implements Controllable
 	}
 
 	/**
-	 * Gives the player a weapon.
+	 * Gives the player a weapon. Reloads if not loaded.
 	 *
 	 * @param weapon
 	 */
@@ -164,6 +164,8 @@ public class UserControlledShooter extends MovableEntity implements Controllable
 			this.weapon.removeFromMap();
 		}
 		this.weapon = weapon;
-		weapon.reload();
+		if (!weapon.isLoaded()) {
+			weapon.reload();
+		}
 	}
 }

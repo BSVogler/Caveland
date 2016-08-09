@@ -332,14 +332,14 @@ public class MovableEntity extends AbstractEntity  {
 			}
 			
 			//if entering water
-			if (!inLiquid && RenderCell.isLiquid(getPosition().getBlockId()) && getMass() > 1f) {
-				if (waterSound != null) {
+			if (!inLiquid && isInLiquid()) {
+				if (waterSound != null && getMass() >= 1f) {
 					WE.SOUND.play(waterSound, getPosition(), getMass() > 5 ? 1 : 0.5f);
 				}
-				inLiquid = RenderCell.isLiquid(getPosition().getBlockId());//save if in water
+				inLiquid = true;//save if in water
 			} else {
-				inLiquid = false;
 			}
+			inLiquid = isInLiquid();
 
 			if (!walkingPaused) {
 				//walking cycle
@@ -841,7 +841,7 @@ public class MovableEntity extends AbstractEntity  {
      * @return 
      */
     public boolean isInLiquid() {
-        return inLiquid;
+        return RenderCell.isLiquid(getPosition().getBlockId());
     }
 
 	/**

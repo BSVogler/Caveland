@@ -46,7 +46,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Waits for a minecart or player to interact with it.
@@ -101,16 +101,16 @@ public class LiftBasket extends MovableEntity {
 				} else if (movementDir < 0//moving down
 					&& !getPosition().isObstacle()//may be a problem if chunk not yet loaded, todo
 					) {
-					ArrayList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, Portal.class);
+					LinkedList<Portal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, Portal.class);
 					if (!possibleExitPortals.isEmpty()) {
-						possibleExitPortals.get(0).teleport(this);
+						possibleExitPortals.getFirst().teleport(this);
 					}
 				}
 			} else //underworld
 			 if (getPosition().z > RenderCell.GAME_EDGELENGTH * 9) {
-					ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
+					LinkedList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
 					if (!possibleExitPortals.isEmpty()) {
-						possibleExitPortals.get(0).teleport(this);
+						possibleExitPortals.getFirst().teleport(this);
 					} else {
 						setMovementDir(-1);//come back
 					}
@@ -127,9 +127,9 @@ public class LiftBasket extends MovableEntity {
 				}
 			} else {
 				//enter with minecart
-				ArrayList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH2, MineCart.class);
+				LinkedList<MineCart> possibleMineCart = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH2, MineCart.class);
 				if (!possibleMineCart.isEmpty()) {
-					setPassenger(possibleMineCart.get(0));
+					setPassenger(possibleMineCart.getFirst());
 				}
 			}
 

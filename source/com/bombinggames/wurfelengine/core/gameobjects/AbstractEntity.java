@@ -487,9 +487,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 *
 	 * @return
 	 */
-	public ArrayList<AbstractEntity> getCollidingEntities() {
+	public LinkedList<AbstractEntity> getCollidingEntities() {
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
-		ArrayList<AbstractEntity> result = new ArrayList<>(5);//default size 5
+		LinkedList<AbstractEntity> result = new LinkedList<>();//default size 5
 		for (AbstractEntity entity : ents) {
 			if (collidesWith(entity)) {
 				result.add(entity);
@@ -507,10 +507,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> ArrayList<T> getCollidingEntities(final Class<T> filter) {
-		ArrayList<T> result = new ArrayList<>(5);//default size 5
+	public <T> LinkedList<T> getCollidingEntities(final Class<T> filter) {
+		LinkedList<T> result = new LinkedList<>();//default size 5
 
-		ArrayList<T> ents = Controller.getMap().getEntitys(filter);
+		LinkedList<T> ents = Controller.getMap().getEntitys(filter);
 		for (T entity : ents) {
 			if (collidesWith(((AbstractEntity) entity))) {
 				result.add(entity);

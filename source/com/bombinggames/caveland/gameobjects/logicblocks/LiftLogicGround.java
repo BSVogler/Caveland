@@ -9,11 +9,11 @@ import com.bombinggames.caveland.gameobjects.LiftBasket;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import java.util.ArrayList;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import java.util.LinkedList;
 
 /**
  *
@@ -41,9 +41,9 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 	@Override
 	public void update(float dt) {
 		//does not create a basket only connects
-		ArrayList<LiftBasket> possibleBaskets = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH, LiftBasket.class);
+		LinkedList<LiftBasket> possibleBaskets = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH, LiftBasket.class);
 		if (!possibleBaskets.isEmpty()) {
-			basket = possibleBaskets.get(0);
+			basket = possibleBaskets.getFirst();
 		}
 
 		//stop at ground
@@ -90,13 +90,13 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 			return;
 		}
 
-		ArrayList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
+		LinkedList<ExitPortal> possibleExitPortals = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_EDGELENGTH * 2, ExitPortal.class);
 		if (!possibleExitPortals.isEmpty()) {
 			try {
-				if (!possibleExitPortals.get(0).getTarget().isInMemoryAreaXY()) {
-					Controller.getMap().loadChunk(possibleExitPortals.get(0).getTarget());
+				if (!possibleExitPortals.getFirst().getTarget().isInMemoryAreaXY()) {
+					Controller.getMap().loadChunk(possibleExitPortals.getFirst().getTarget());
 				}
-				requestedBasketAt = possibleExitPortals.get(0).getTarget();
+				requestedBasketAt = possibleExitPortals.getFirst().getTarget();
 				requestor = actor;
 				return;
 			} catch (NullPointerException ex) {

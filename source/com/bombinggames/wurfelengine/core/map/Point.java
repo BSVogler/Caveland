@@ -41,6 +41,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.function.Predicate;
 
 /**
@@ -843,8 +844,8 @@ public class Point extends Vector3 implements Position {
 	}
 	
 	@Override
-	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
-		ArrayList<AbstractEntity> result = new ArrayList<>(5);//defautl size 5
+	public LinkedList<AbstractEntity> getEntitiesNearbyHorizontal(float radius) {
+		LinkedList<AbstractEntity> result = new LinkedList<>();
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 		for (AbstractEntity entity : entityList) {
 			if (distanceToHorizontal(entity.getPoint()) < radius) {
@@ -857,8 +858,8 @@ public class Point extends Vector3 implements Position {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> ArrayList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type) {
-		ArrayList<T> result = new ArrayList<>(5);//default size 5
+	public <T> LinkedList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type) {
+		LinkedList<T> result = new LinkedList<>();
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 
         for (AbstractEntity entity : entityList) {//check every entity
@@ -921,9 +922,9 @@ public class Point extends Vector3 implements Position {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> ArrayList<T> getEntitiesNearby(float radius, Class<T> type) {
-		ArrayList<T> result = new ArrayList<>(5);//default size 5
-		ArrayList<T> entities = Controller.getMap().getEntitys(type);
+	public <T> LinkedList<T> getEntitiesNearby(float radius, Class<T> type) {
+		LinkedList<T> result = new LinkedList<>();//default size 5
+		LinkedList<T> entities = Controller.getMap().getEntitys(type);
 		for (T entity : entities) {
 			if (distanceTo(((AbstractEntity)entity).getPosition()) < radius) {
 				result.add(entity);

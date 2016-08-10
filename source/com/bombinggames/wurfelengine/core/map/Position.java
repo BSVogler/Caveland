@@ -35,7 +35,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *A
@@ -193,7 +193,7 @@ public interface Position extends Serializable {
 	 * @param type the type you want to filter
 	 * @return every entitie in radius
 	 */
-	public <T> ArrayList<T> getEntitiesNearby(float radius, final Class<T> type);
+	public <T> LinkedList<T> getEntitiesNearby(float radius, final Class<T> type);
 	
 	/**
 	 * get entities in horizontal radius (like a pipe)
@@ -202,7 +202,7 @@ public interface Position extends Serializable {
 	 * @param type whitelist
 	 * @return every entitie in radius
 	 */
-	public <T> ArrayList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type);
+	public <T> LinkedList<T> getEntitiesNearbyHorizontal(float radius, final Class<T> type);
 	
 	/**
 	 * get entities in radius (horizontal only)
@@ -210,7 +210,7 @@ public interface Position extends Serializable {
 	 * @param radius in game dimension pixels
 	 * @return every entitie in radius
 	 */
-	public ArrayList<AbstractEntity> getEntitiesNearbyHorizontal(float radius);
+	public LinkedList<AbstractEntity> getEntitiesNearbyHorizontal(float radius);
 	
 	
 	/**

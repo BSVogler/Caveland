@@ -43,7 +43,9 @@ import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_H
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The Ejira has two particle emitter attached via glue. Itself is not saved but it's position. The content of the backpack is dropped on disposing and saved separately.
@@ -333,7 +335,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 
 			//get nearby mine cart
-			ArrayList<MineCart> nearbyMc = getCollidingEntities(MineCart.class);
+			Collection<MineCart> nearbyMc = getCollidingEntities(MineCart.class);
 
 			if (!nearbyMc.isEmpty()) {
 				Iterator<MineCart> it = nearbyMc.iterator();
@@ -351,7 +353,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			}
 			
 			//collect collectibles
-			ArrayList<Collectible> collectibles = getCollidingEntities(Collectible.class);
+			Collection<Collectible> collectibles = getCollidingEntities(Collectible.class);
 			boolean playCollectSound = false;
 			for (Collectible collectible : collectibles) {
 				if (collectible.canBePickedByParent(this) && inventory.add(collectible)) {
@@ -362,7 +364,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 				WE.SOUND.play("collect");
 			}
 			
-			ArrayList<Money> money = getCollidingEntities(Money.class);
+			Collection<Money> money = getCollidingEntities(Money.class);
 			money.forEach(m -> m.dispose());
 			
 			if (!money.isEmpty()) {
@@ -381,7 +383,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			//update interactable focus
 			//check entitys
-			ArrayList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
+			LinkedList<Interactable> nearbyInteractable = getPosition().getEntitiesNearbyHorizontal(
 				GAME_EDGELENGTH * 2,
 				Interactable.class
 			);

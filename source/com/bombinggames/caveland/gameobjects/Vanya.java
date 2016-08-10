@@ -17,7 +17,6 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -118,7 +117,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 
 			//look at players
 			if (nextWaypoint == null) {
-				ArrayList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * RenderCell.GAME_EDGELENGTH, Ejira.class);
+				LinkedList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * RenderCell.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
 					Vector3 vecToEjira = ejiraList.get(0).getPosition().cpy().sub(getPosition());
 					setSpeedHorizontal(0);

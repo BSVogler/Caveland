@@ -33,12 +33,13 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  *
@@ -117,7 +118,7 @@ public class Turret extends AbstractPowerBlock {
 			
 			//locate target
 			target = null;
-			ArrayList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(RenderCell.GAME_DIAGLENGTH * 4, Robot.class);
+			LinkedList<Robot> nearby = getPosition().toPoint().getEntitiesNearbyHorizontal(RenderCell.GAME_DIAGLENGTH * 4, Robot.class);
 			if (!nearby.isEmpty()) {
 				Iterator<Robot> it = nearby.iterator();
 				while (target == null && it.hasNext()) {

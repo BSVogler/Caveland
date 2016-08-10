@@ -42,7 +42,6 @@ import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 import com.bombinggames.wurfelengine.extension.AimBand;
-import java.util.ArrayList;
 
 /**
  *A clas used mainly for characters or object which can walk around. To control the character you should use a {@link Controllable} or modify the movemnet via {@link #setMovement(com.badlogic.gdx.math.Vector3) }.
@@ -935,7 +934,7 @@ public class MovableEntity extends AbstractEntity  {
 	 * checks the colissions with entities, O(n)
 	 */
 	private void checkEntColl() {
-		ArrayList<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);
+		Iterable<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);
 		for (MovableEntity ent : nearbyEnts) {
 			//if (this.collidesWith(ent))
 			if (ent.isObstacle() && getMass() > 0.5f) {

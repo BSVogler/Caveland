@@ -221,7 +221,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 
 				//jump on ramp
 				if (
-					   value== 6 && getMovementHor().x > 0
+					   value == 6 && getMovementHor().x > 0
 					|| value == 7 && getMovementHor().y < 0
 					|| value == 8 && getMovementHor().x < 0
 					|| value == 9 && getMovementHor().y > 0
@@ -450,7 +450,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 
 	private void checkCollisionInFront() {
 		if (getSpeed() > 0) {
-			ArrayList<MovableEntity> entitiesInFront;
+			Iterable<MovableEntity> entitiesInFront;
 			entitiesInFront = getPosition().cpy().add(getOrientation().scl(80)).getEntitiesNearby(RenderCell.GAME_EDGELENGTH2, MovableEntity.class);
 			for (MovableEntity ent : entitiesInFront) {
 				if (this != ent) {//don't collide with itself
@@ -493,7 +493,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 			}
 		} else {
 			//add objects
-			ArrayList<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
+			Iterable<Collectible> ents = Controller.getMap().getEntitys(Collectible.class);
 			for (Collectible ent : ents) {
 				if (ent.canBePickedByParent(this) && ent.getPosition().distanceTo(pos) < 80 && ent.getMovement().z < 0) {
 					if (add(ent)) {

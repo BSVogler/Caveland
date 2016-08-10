@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -807,8 +808,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return a list with the entitys
 	 */
 	@SuppressWarnings(value = {"unchecked"})
-	public <T> ArrayList<T> getEntitys(final Class<T> filter) {
-		ArrayList<T> result = new ArrayList<>(30); //default size 30
+	public <T> LinkedList<T> getEntitys(final Class<T> filter) {
+		LinkedList<T> result = new LinkedList<>();
 		if (filter == null) {
 			throw new IllegalArgumentException();
 		}
@@ -826,11 +827,11 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param coord
 	 * @return a list with the entitys
 	 */
-	public ArrayList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
-		ArrayList<AbstractEntity> result = new ArrayList<>(5);//default size 5
+	public LinkedList<AbstractEntity> getEntitysOnCoord(final Coordinate coord) {
+		LinkedList<AbstractEntity> result = new LinkedList<>();
 
 		for (AbstractEntity ent : entityList) {
-			if (ent.getPosition() != null && ent.getPosition().toCoord().equals(coord)) {
+			if (ent.getPosition() != null && coord.contains(ent.getPosition())) {
 				result.add(ent);
 			}
 		}
@@ -847,13 +848,13 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return a list with the entitys of the wanted type
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> ArrayList<T> getEntitysOnCoord(final Coordinate coord, final Class<T> filter) {
-		ArrayList<T> result = new ArrayList<>(5);
+	public <T> LinkedList<T> getEntitysOnCoord(final Coordinate coord, final Class<T> filter) {
+		LinkedList<T> result = new LinkedList<>();
 
 		for (AbstractEntity ent : entityList) {
 			if (ent.hasPosition()
 				&& coord.contains(ent.getPosition())//on coordinate?
-				&& filter.isInstance(ent)//of tipe of filter?
+				&& filter.isInstance(ent)//of type of filter?
 			) {
 				result.add((T) ent);//add it to list
 			}

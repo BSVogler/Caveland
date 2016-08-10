@@ -12,7 +12,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -145,7 +145,7 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 
 			//find nearby target if there is none
 			if (enemyTarget == null && getTeamId() != 0) {
-				ArrayList<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_DIAGLENGTH * 4, HasTeam.class);
+				Collection<HasTeam> nearbyWithFaction = getPosition().getEntitiesNearbyHorizontal(RenderCell.GAME_DIAGLENGTH * 4, HasTeam.class);
 				if (!nearbyWithFaction.isEmpty()) {
 					Iterator<HasTeam> it = nearbyWithFaction.iterator();
 					while (it.hasNext()) {

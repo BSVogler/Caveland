@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.shooting.Laserdot;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * A robot can carry one collectible.
@@ -124,9 +125,9 @@ public class SpiderRobot extends Robot{
 				
 				//find storage
 				if (storage == null) {
-					ArrayList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH, DropSpaceFlag.class);
+					LinkedList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH, DropSpaceFlag.class);
 					if (!flagsnearby.isEmpty()) {
-						storage = flagsnearby.get(0).getPosition().toCoord();
+						storage = flagsnearby.getFirst().getPosition().toCoord();
 						WE.SOUND.play("robotWeep", getPosition());
 					}
 				}

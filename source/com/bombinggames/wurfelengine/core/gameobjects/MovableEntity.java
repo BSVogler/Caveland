@@ -935,19 +935,20 @@ public class MovableEntity extends AbstractEntity  {
 	 */
 	private void checkEntColl() {
 		Iterable<MovableEntity> nearbyEnts = getCollidingEntities(MovableEntity.class);
+		Vector2 colVec2 = new Vector2();
 		for (MovableEntity ent : nearbyEnts) {
 			//if (this.collidesWith(ent))
 			if (ent.isObstacle() && getMass() > 0.5f) {
 
 				Vector3 colVec3 = getPosition().sub(ent.getPosition());
-				Vector2 colVec2 = new Vector2(colVec3.x, colVec3.y);
+				colVec2.set(colVec3.x, colVec3.y);
 				float d = colVec2.len();
 
 				// minimum translation distance to push balls apart after intersecting
-				Vector2 mtd = colVec2.scl(((colissionRadius + ent.colissionRadius) - d) / d);
+				colVec2.scl(((colissionRadius + ent.colissionRadius) - d) / d);
 
 				// impact speed
-				float vn = getMovementHor().sub(ent.getMovementHor()).dot(mtd.nor());
+				float vn = getMovementHor().sub(ent.getMovementHor()).dot(colVec2.nor());
 
 				// sphere intersecting but moving away from each other already
 				if (vn <= 0.0f) {
@@ -956,10 +957,10 @@ public class MovableEntity extends AbstractEntity  {
 					float im1 = 1 / getMass();
 					float im2 = 1 / ent.getMass();
 					// collision impulse
-					Vector2 impulse = mtd.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
+					Vector2 impulse = colVec2.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
 
-					//hack to prevent ultra fast speed
-					if (impulse.len2() > 26){
+					//hack to prevent ultra fast speed, clamps
+					if (impulse.len2() > 25){//lenght is >5
 						impulse.nor().scl(5);
 					}
 

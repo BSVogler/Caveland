@@ -71,15 +71,21 @@ public class Bullet extends MovableEntity {
 	 * @see #setSpriteId(byte)
 	 */
 	public Bullet() {
-		super((byte) 22,0,false);
+		super((byte) 22, 0, false);
 		setName("Bullet");
 		setMass(0.002f);
 		setSavePersistent(false);
 		setFriction(0);
 		setColiding(false);
-		MessageManager.getInstance().addListener(this, Events.collided.getId());
 	}
 
+	@Override
+	public MovableEntity spawn(Point point) {
+		super.spawn(point);
+		MessageManager.getInstance().addListener(this, Events.collided.getId());
+		return this;
+	}
+	
 	@Override
 	public void update(float dt) {
 		super.update(dt);

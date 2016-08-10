@@ -35,7 +35,7 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	public void update(float dt) {
 		if (light == null) {
 			light = new PointLightSource(new Color(0.8f, 0.0f, 0.3f, 1f), 1, 12, WE.getGameplay().getView());
-			light.setSaveToDisk(false);
+			light.setSavePersistent(false);
 			light.disable();
 			light.spawn(getPosition().toPoint().add(0, 0, RenderCell.GAME_EDGELENGTH2 * 0.5f));
 		}

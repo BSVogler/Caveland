@@ -43,6 +43,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	 * empirical factor to match the back side with the rear
 	 */
 	private final transient static float FRONTOFFSET = 63;
+	
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private transient float rollingCycle;
@@ -73,13 +74,13 @@ public class MineCart extends MovableEntity implements Interactable {
 	
 	private void createBackAndFront(){
 		back = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 0).spawn(getPosition().cpy());
-		back.setSaveToDisk(false);
+		back.setSavePersistent(false);
 		back.setName("MineCart Back");
 		//back = new SimpleEntity((byte) 42,(byte) 1);
 		//back.spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
-		back.setSaveToDisk(false);
+		back.setSavePersistent(false);
 		front = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 1).spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
-		front.setSaveToDisk(false);
+		front.setSavePersistent(false);
 		front.setName("MineCart Front");
 	}
 
@@ -96,7 +97,7 @@ public class MineCart extends MovableEntity implements Interactable {
 			
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1, WE.getGameplay().getView());
-				lightsource.setSaveToDisk(false);
+				lightsource.setSavePersistent(false);
 				lightsource.setPosition(getPosition().cpy());
 			}
 			

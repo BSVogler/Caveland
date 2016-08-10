@@ -52,7 +52,7 @@ public class Laserdot extends SimpleEntity {
 		super((byte) 22);
 		setColor(new Color(1, 0, 0, 1));
 		setScaling(0.05f);
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		setName("Laser dot");
 	}
 

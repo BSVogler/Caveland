@@ -64,7 +64,7 @@ public class LiftBasket extends MovableEntity {
 		super((byte) 25, (byte) 0);
 		setName("Lift Basket");
 		setHidden(true);
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		setFloating(true);
 		setMass(150);
 		addComponent(new EntityShadow());
@@ -218,7 +218,7 @@ public class LiftBasket extends MovableEntity {
 			super((byte) 25, (byte) 0);
 			setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
 			setName("Lift Basket Back");
-			setSaveToDisk(false);
+			setSavePersistent(false);
 		}
 
 		@Override
@@ -251,7 +251,7 @@ public class LiftBasket extends MovableEntity {
 			super((byte) 25, (byte) 1);
 			setDimensionZ(RenderCell.GAME_EDGELENGTH * 2);
 			setName("Lift Basket Front");
-			setSaveToDisk(false);
+			setSavePersistent(false);
 		}
 
 		@Override

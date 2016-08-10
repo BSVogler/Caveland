@@ -95,7 +95,7 @@ public class ConstructionKit extends Collectible implements Interactable {
 							preview = (EntityBlock) new EntityBlock(result.id,(byte) 0)
 								.spawn(actor1.getPosition().toCoord().toPoint());
 							preview.setName("preview");
-							preview.setSaveToDisk(false);
+							preview.setSavePersistent(false);
 							preview.setColor(new Color(0.8f, 0.8f, 1.0f, 0.3f));
 						} else {
 							preview.setSpriteId(result.id);

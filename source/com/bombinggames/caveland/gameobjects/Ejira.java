@@ -195,7 +195,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		//emitter.setBrightness(3.1f);
 		emitter.setActive(false);
 		emitter.setHidden(true);
-		emitter.setSaveToDisk(false);
+		emitter.setSavePersistent(false);
 		emitter.setParticleSpread(new Vector3(1.6f, 0.6f, 0.5f));
 		
 		emitter2 = new ParticleEmitter(80);
@@ -204,10 +204,10 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter2.setBrightness(10.1f);
 		emitter2.setActive(false);
 		emitter2.setHidden(true);
-		emitter2.setSaveToDisk(false);
+		emitter2.setSavePersistent(false);
 		emitter2.setParticleSpread(new Vector3(0.6f, 0.6f, 0.5f));
 		
-		setSaveToDisk(false);
+		setSavePersistent(false);
 	}
 
 	@Override
@@ -219,7 +219,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter2.spawn(point.cpy());
 		
 		lightsource = new PointLightSource(Color.BLUE.cpy(), 2, 10, WE.getGameplay().getView());
-		lightsource.setSaveToDisk(false);
+		lightsource.setSavePersistent(false);
 		lightsource.spawn(getPosition().cpy().add(0, 0, RenderCell.GAME_EDGELENGTH2));
 		return this;
 	}
@@ -1153,7 +1153,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			interactButton.setName("Interact Button");
 			interactButton.setSpriteCategory('i');
 			interactButton.setLightlevel(1);
-			interactButton.setSaveToDisk(false);
+			interactButton.setSavePersistent(false);
 		} else {
 			interactButton.setPosition(pos.toPoint().add(0, 0, RenderCell.GAME_EDGELENGTH));
 		}

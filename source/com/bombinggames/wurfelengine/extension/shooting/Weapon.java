@@ -308,7 +308,7 @@ public class Weapon extends AbstractEntity implements Telegraph {
 					30f,
 					WE.getGameplay().getView()
 				).spawn(fixedPos.cpy());
-				lightSource.setSaveToDisk(false);
+				lightSource.setSavePersistent(false);
 			}
 			if (firing){
 				lightSource.enable();

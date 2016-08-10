@@ -78,7 +78,7 @@ public class Turret extends AbstractPowerBlock {
 				gun = (Weapon) new Weapon((byte) 4, null).spawn(getPosition().toPoint());
 				gun.ignoreBlock(CavelandBlocks.CLBlocks.TURRET.getId());
 				gun.setFireSound("turret", true);
-				gun.setSaveToDisk(false);
+				gun.setSavePersistent(false);
 			}
 		}
 		

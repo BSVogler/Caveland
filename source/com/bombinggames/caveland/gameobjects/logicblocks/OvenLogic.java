@@ -135,7 +135,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 				fire = (SimpleEntity) new SimpleEntity((byte) 17).spawn(getPosition().toPoint());
 				fire.setName("Oven Fire");
 				fire.setLightlevel(10);
-				fire.setSaveToDisk(false);
+				fire.setSavePersistent(false);
 			}
 			fire.setHidden(false);
 			if (emitter == null || emitter.shouldBeDisposed()) {

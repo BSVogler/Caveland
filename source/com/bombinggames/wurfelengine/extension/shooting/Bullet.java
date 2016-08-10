@@ -74,7 +74,7 @@ public class Bullet extends MovableEntity {
 		super((byte) 22,0,false);
 		setName("Bullet");
 		setMass(0.002f);
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		setFriction(0);
 		setColiding(false);
 		MessageManager.getInstance().addListener(this, Events.collided.getId());

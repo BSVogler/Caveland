@@ -32,7 +32,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 		super((byte) 0);
 		this.radius = 2;
 		damage = 50;
-		setSaveToDisk(false);
+		setSavePersistent(false);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 			explosionsound = "explosion";
 		}
 		this.camera = camera;
-		setSaveToDisk(false);
+		setSavePersistent(false);
 	}
 
 	@Override

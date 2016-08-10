@@ -55,7 +55,7 @@ public class EntityShadow extends AbstractEntity implements Component {
 
 	@Override
 	public void update(float dt) {
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		if (character == null || !character.hasPosition() || character.isHidden()) {
 			dispose();
 		} else {

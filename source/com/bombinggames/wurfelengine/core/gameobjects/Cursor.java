@@ -58,7 +58,7 @@ public class Cursor extends AbstractEntity {
      */
     public Cursor() {
         super((byte) 8);
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		setName("selectionEntity");
 		
         normal = new SimpleEntity((byte) 9);
@@ -66,7 +66,7 @@ public class Cursor extends AbstractEntity {
 		//normal.addComponent( new Shadow());
 		normal.addComponent(new EntityAnimation(new int[]{200,200}, true, true));
         normal.setLightlevel(10);
-		normal.setSaveToDisk(false);
+		normal.setSavePersistent(false);
 		normal.setName("cursor normal");
     }
 

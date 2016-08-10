@@ -97,7 +97,7 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	/**
 	 * flags if should be saved
 	 */
-	private boolean saveToDisk = true;
+	private boolean savePersistent = true;
 	private transient String[] damageSounds;
 	private char spriteCategory = 'e';
 	private boolean useRawDelta = false;
@@ -281,18 +281,18 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 *
 	 * @return true if savedin map file.
 	 */
-	public boolean isGettingSaved() {
-		return saveToDisk;
+	public boolean isSavedPersistent() {
+		return savePersistent;
 	}
 
 	/**
 	 * Mark objects to not be saved in disk. Gets passed to the children. Temp
 	 * objects should not be saved.
 	 *
-	 * @param saveToDisk new value of saveToDisk
+	 * @param persisent new value of persisent
 	 */
-	public void setSaveToDisk(boolean saveToDisk) {
-		this.saveToDisk = saveToDisk;
+	public void setSavePersistent(boolean persisent) {
+		this.savePersistent = persisent;
 	}
 
 	/**

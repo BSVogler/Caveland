@@ -55,7 +55,7 @@ public class Particle extends MovableEntity {
 	public void init(float maxtime){
 		this.maxtime = maxtime;
 		timeTillDeath = maxtime;
-		setSaveToDisk(false);
+		setSavePersistent(false);
 		if (type.isGrowing()) {
 			setScaling(0);
 		} else {

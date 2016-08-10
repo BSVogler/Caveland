@@ -546,7 +546,7 @@ public class Map implements IndexedGraph<PfNode> {
 		//loop over every loaded entity
 		for (AbstractEntity ent : getEntities()) {
             if (
-					ent.isGettingSaved() && ent.hasPosition() //save only entities which are flagged
+					ent.isSavedPersistent() && ent.hasPosition() //save only entities which are flagged
 				&&
 					ent.getPosition().getX() > xChunk*Chunk.getGameWidth()//left chunk border
                 &&

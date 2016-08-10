@@ -494,7 +494,7 @@ public class Coordinate implements Position {
 	 * @param type the class you want to filter.
 	 * @return a list with the entitys of the wanted type
 	 */
-	public <T> ArrayList<T> getEntitiesInside(final Class<T> type) {
+	public <T> LinkedList<T> getEntitiesInside(final Class<T> type) {
 		if (!isInMemoryAreaXY()) {
 			Controller.getMap().loadChunk(toCoord().getChunkX(), toCoord().getChunkY());
 		}

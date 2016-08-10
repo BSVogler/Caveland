@@ -45,7 +45,7 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -70,7 +70,7 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 	@Override
 	public void update(float dt) {
 		if (linkToRobot == null) {
-			ArrayList<RobotFactoryLinker> links = getPosition().getEntitiesInside(RobotFactoryLinker.class);
+			LinkedList<RobotFactoryLinker> links = getPosition().getEntitiesInside(RobotFactoryLinker.class);
 			if (!links.isEmpty()) {
 				linkToRobot = links.get(0);
 			} else {

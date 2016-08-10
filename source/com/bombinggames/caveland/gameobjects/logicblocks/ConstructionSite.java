@@ -45,6 +45,7 @@ import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * The logic for a construciton site
@@ -225,7 +226,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 
 		if (isValid()) {
 			//find existing unclaimed container on map
-			ArrayList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+			LinkedList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
 			Iterator<CollectibleContainer> it = list.iterator();
 			while (it.hasNext()) {
 				CollectibleContainer next = it.next();

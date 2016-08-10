@@ -46,7 +46,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * The manager of the logic of the oven block.
@@ -116,7 +116,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 		if (isValid()) {
 			if (container == null || container.shouldBeDisposed()) {
 				//find existing container
-				ArrayList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
+				LinkedList<CollectibleContainer> list = getPosition().getEntitiesInside(CollectibleContainer.class);
 				if (!list.isEmpty()) {
 					container = list.get(0);
 					container.setHidden(true);

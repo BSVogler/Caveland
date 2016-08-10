@@ -37,7 +37,6 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -72,7 +71,7 @@ public class Turret extends AbstractPowerBlock {
 		///fill gun field
 		if (gun == null) {
 			//restore if possible
-			ArrayList<Weapon> guns = getPosition().getEntitiesInside(Weapon.class);
+			LinkedList<Weapon> guns = getPosition().getEntitiesInside(Weapon.class);
 			if (!guns.isEmpty()) {
 				gun = guns.get(0);
 			} else {

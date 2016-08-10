@@ -8,6 +8,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -35,7 +36,7 @@ public class Machine extends AbstractBlockLogicExtension  {
 	@Override
 	public void update(float dt) {
 		Coordinate coords = getPosition().cpy();
-		ArrayList<MineCart> lorenIncoming = coords.goToNeighbour(1).getEntitiesInside(MineCart.class);
+		LinkedList<MineCart> lorenIncoming = coords.goToNeighbour(1).getEntitiesInside(MineCart.class);
 		if (lorenIncoming.size()>0) {
 			MineCart loreIncoming = lorenIncoming.get(0);
 			ArrayList<MovableEntity> content = loreIncoming.getContent();
@@ -55,7 +56,7 @@ public class Machine extends AbstractBlockLogicExtension  {
 			}
 		}
 
-		ArrayList<MineCart> lorenOutgoing = coords.goToNeighbour(3).getEntitiesInside(MineCart.class);
+		LinkedList<MineCart> lorenOutgoing = coords.goToNeighbour(3).getEntitiesInside(MineCart.class);
 		if (lorenIncoming.size()>0 && flintcount>0){//if loreIncoming davor && produkt im speicher
 			if (lorenOutgoing.get(0).add(new Flint()))
 				flintcount--;

@@ -44,7 +44,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Entry to the caves. Spawns a portal inside the block.
@@ -76,7 +76,7 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 		if (getPosition() != null && isValid()) {
 			//check if portal is inside the block
 			if (portal == null) {
-				ArrayList<Portal> portals = getPosition().getEntitiesInside(Portal.class);
+				LinkedList<Portal> portals = getPosition().getEntitiesInside(Portal.class);
 				if (!portals.isEmpty()) {
 					portal = portals.get(0);
 				} else {

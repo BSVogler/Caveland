@@ -191,7 +191,7 @@ public class SpiderRobot extends Robot{
 					//drop carry
 					if (getPosition().toCoord().equals(storage)) {
 						//verify flags existence
-						ArrayList<DropSpaceFlag> flagsnearby = storage.getEntitiesInside(DropSpaceFlag.class);
+						LinkedList<DropSpaceFlag> flagsnearby = storage.getEntitiesInside(DropSpaceFlag.class);
 						if (flagsnearby.isEmpty()) {
 							storage = null;
 						}

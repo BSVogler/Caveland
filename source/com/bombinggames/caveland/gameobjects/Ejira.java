@@ -429,7 +429,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			}
 
 			//if collecting a backpack
-			ArrayList<CollectibleContainer> backpacksOnCoord = origin.getEntitiesInside(CollectibleContainer.class);
+			LinkedList<CollectibleContainer> backpacksOnCoord = origin.getEntitiesInside(CollectibleContainer.class);
 			CollectibleContainer backpack=null;
 			if (backpacksOnCoord.size()>0)
 				backpack = backpacksOnCoord.get(0);

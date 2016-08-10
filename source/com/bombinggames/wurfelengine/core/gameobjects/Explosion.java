@@ -10,7 +10,7 @@ import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -82,7 +82,7 @@ public class Explosion extends AbstractEntity implements Telegraph {
 					}
 					
 					//get every entity which is attacked
-					ArrayList<MovableEntity> list
+					LinkedList<MovableEntity> list
 						= Controller.getMap().getEntitysOnCoord(
 							coord,
 							MovableEntity.class

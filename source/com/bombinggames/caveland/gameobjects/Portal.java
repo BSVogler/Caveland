@@ -9,7 +9,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.extension.AimBand;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Teleports every object in this cell.
@@ -109,7 +109,7 @@ public class Portal extends AbstractEntity implements Telegraph {
 	 * @return
 	 */
 	public ExitPortal getExitPortal() {
-		ArrayList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
+		LinkedList<ExitPortal> exitPortalList = target.getEntitiesInside(ExitPortal.class);
 		if (exitPortalList.isEmpty()) {
 			//spawn new exitportal if missing
 			exitPortal = (ExitPortal) new ExitPortal().spawn(target.toPoint());

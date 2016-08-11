@@ -186,7 +186,7 @@ public class Cursor extends AbstractEntity {
 	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
-		normal.setHidden(!tool.showNormal);
+		normal.setHidden(!WE.isInEditor() || !tool.showNormal);
 	}
 
 	@Override

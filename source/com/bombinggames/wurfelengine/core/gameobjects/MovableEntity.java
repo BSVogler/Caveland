@@ -957,15 +957,15 @@ public class MovableEntity extends AbstractEntity  {
 					float im1 = 1 / getMass();
 					float im2 = 1 / ent.getMass();
 					// collision impulse
-					Vector2 impulse = colVec2.scl((-(1.0f + 90.1f) * vn) / (im1 + im2));
+					Vector2 impulse = colVec2.scl((-91.1f* vn) / (im1 + im2));
 
+					impulse.scl(im1);
+					// change in momentum
 					//hack to prevent ultra fast speed, clamps
 					if (impulse.len2() > 25){//lenght is >5
 						impulse.nor().scl(5);
 					}
-
-					// change in momentum
-					addMovement(impulse.scl(im1));
+					addMovement(impulse);
 					ent.addMovement(impulse.scl(-im2));
 
 					MessageManager.getInstance().dispatchMessage(this, Events.collided.getId());

@@ -410,30 +410,23 @@ public class Point extends Vector3 implements Position {
 			case 1:
 				yCoord--;
 				break;
-			case 2:
-				xCoord++;
-				break;
 			case 3:
-				xCoord += yCoord % 2 == 0 ? 0 : 1;
 				yCoord++;
 				break;
 			case 4:
 				yCoord += 2;
 				break;
 			case 5:
-				xCoord -= yCoord % 2 == 0 ? 1 : 0;
 				yCoord++;
 				break;
 			case 6:
-				xCoord--;
 				break;
 			case 7:
-				xCoord -= yCoord % 2 == 0 ? 1 : 0;
 				yCoord--;
 				break;
 		}
-		
-		return yCoord * RenderCell.GAME_DIAGLENGTH2+RenderCell.GAME_DIAGLENGTH2;
+
+		return yCoord * RenderCell.GAME_DIAGLENGTH2 + RenderCell.GAME_DIAGLENGTH2;
 	}
 	
 	/**

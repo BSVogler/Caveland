@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.2.0</string>
+        <string>4.2.3</string>
         <key>fileName</key>
         <string>/Users/Benedikt/Wurfel Engine/Caveland/sprites/sprites caveland/Caveland.tps</string>
         <key>autoSDSettings</key>
@@ -193,13 +193,9 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">Normals/entitiesNormal/e13-0.png</key>
-            <key type="filename">Normals/entitiesNormal/e14-0.png</key>
-            <key type="filename">Normals/entitiesNormal/e14-1.png</key>
             <key type="filename">Normals/entitiesNormal/e16-0.png</key>
             <key type="filename">Normals/entitiesNormal/e16-1.png</key>
             <key type="filename">Normals/entitiesNormal/e22-0.png</key>
-            <key type="filename">Normals/entitiesNormal/e32-0.png</key>
             <key type="filename">Normals/entitiesNormal/e34-0.png</key>
             <key type="filename">Normals/entitiesNormal/e34-1.png</key>
             <key type="filename">Normals/entitiesNormal/e34-2.png</key>
@@ -442,8 +438,12 @@
             <key type="filename">Normals/entitiesNormal/e58-7.png</key>
             <key type="filename">Normals/entitiesNormal/e58-8.png</key>
             <key type="filename">Normals/entitiesNormal/e58-9.png</key>
+            <key type="filename">Normals/entitiesNormal/e6-0.png</key>
             <key type="filename">Normals/entitiesNormal/e7-0.png</key>
+            <key type="filename">Normals/entitiesNormal/e8-0.png</key>
             <key type="filename">Normals/entitiesNormal/e80-0.png</key>
+            <key type="filename">Normals/entitiesNormal/e9-0.png</key>
+            <key type="filename">Normals/entitiesNormal/e9-1.png</key>
             <key type="filename">Normals/entitiesNormal/error.png</key>
             <key type="filename">Normals/entitiesNormal/i23-0.png</key>
             <key type="filename">Normals/entitiesNormal/i23-1.png</key>
@@ -553,9 +553,6 @@
             <key type="filename">blocks/b9-3-0.png</key>
             <key type="filename">blocks/b9-3-1.png</key>
             <key type="filename">blocks/b9-3-2.png</key>
-            <key type="filename">entities/e13-0.png</key>
-            <key type="filename">entities/e14-0.png</key>
-            <key type="filename">entities/e14-1.png</key>
             <key type="filename">entities/e15-0.png</key>
             <key type="filename">entities/e15-1.png</key>
             <key type="filename">entities/e16-0.png</key>
@@ -583,7 +580,6 @@
             <key type="filename">entities/e3-6.png</key>
             <key type="filename">entities/e3-7.png</key>
             <key type="filename">entities/e3-8.png</key>
-            <key type="filename">entities/e32-0.png</key>
             <key type="filename">entities/e33-0.png</key>
             <key type="filename">entities/e34-0.png</key>
             <key type="filename">entities/e34-1.png</key>
@@ -832,8 +828,12 @@
             <key type="filename">entities/e58-9.png</key>
             <key type="filename">entities/e59-0.png</key>
             <key type="filename">entities/e59-1.png</key>
+            <key type="filename">entities/e6-0.png</key>
             <key type="filename">entities/e7-0.png</key>
+            <key type="filename">entities/e8-0.png</key>
             <key type="filename">entities/e80-0.png</key>
+            <key type="filename">entities/e9-0.png</key>
+            <key type="filename">entities/e9-1.png</key>
             <key type="filename">entities/error.png</key>
             <key type="filename">interface/i10-0.png</key>
             <key type="filename">interface/i11-0.png</key>

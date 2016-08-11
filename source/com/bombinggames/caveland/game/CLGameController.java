@@ -192,7 +192,7 @@ public class CLGameController extends Controller implements Telegraph {
 	 */
 	public void activatePlayer2() {
 		player2 = new Ejira(2);
-		player2.setColor(new Color(0.4f, 0.55f, 0.55f, 1));
+		player2.setColor(new Color(0.45f, 0.54f, 0.54f, 1));
 	}
 
 	/**

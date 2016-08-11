@@ -66,7 +66,7 @@ public class RenderStorage implements Telegraph  {
 	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
 	 */
 	private final HashSet<Coordinate> dirtyFlags = new HashSet<>(200);
-	private float zRenderingLimit;
+	private float zRenderingLimit = Float.POSITIVE_INFINITY;
 
 	/**
 	 * Creates a new renderstorage.
@@ -75,7 +75,6 @@ public class RenderStorage implements Telegraph  {
 		this.cameraContainer = new ArrayList<>(1);
 		lastCenterX = new ArrayList<>(1);
 		lastCenterY = new ArrayList<>(1);
-		zRenderingLimit = Chunk.getGameHeight();
 	}
 	
 	public void preUpdate(float dt){
@@ -524,6 +523,9 @@ public class RenderStorage implements Telegraph  {
 	 */
 	public void setZRenderingLimit(float height) {
 		zRenderingLimit = height;
+		if (height >= Chunk.getGameHeight()) {
+			zRenderingLimit = Float.POSITIVE_INFINITY;
+		}
 		if (zRenderingLimit < 0) {
 			zRenderingLimit = 0;
 		}

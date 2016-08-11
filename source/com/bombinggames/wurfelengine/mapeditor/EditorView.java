@@ -52,6 +52,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Cursor;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
 import java.io.FileNotFoundException;
@@ -694,7 +695,13 @@ public class EditorView extends GameView implements Telegraph {
 
 		@Override
 		public boolean scrolled(int amount) {
-			view.getRenderStorage().setZRenderingLimit(view.getRenderStorage().getZRenderingLimit() - amount*100);
+			if (amount > 0 && view.getRenderStorage().getZRenderingLimit()==Float.POSITIVE_INFINITY){
+				view.getRenderStorage().setZRenderingLimit(Chunk.getGameHeight() - amount*100);
+			} else {
+				if (view.getRenderStorage().getZRenderingLimit() - amount*100 > Chunk.getGameHeight()) {
+					view.getRenderStorage().setZRenderingLimit(Float.POSITIVE_INFINITY);
+				} else view.getRenderStorage().setZRenderingLimit(view.getRenderStorage().getZRenderingLimit() - amount*100);
+			}
 			return true;
 		}
 

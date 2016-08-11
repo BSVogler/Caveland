@@ -355,30 +355,10 @@ public class Point extends Vector3 implements Position {
         this.z += z;
         return this;
     }
-	
-//	/**
-//	 * Add whole coordiante steps.
-//	 * @param x
-//	 * @param y
-//	 * @param z
-//	 * @return returns itself 
-//	 */
-//	public Point addCoord(int x, int y, int z) {
-//		int yCoord = getCoordY();
-//		if ((getCoordY()-y) % 2==1){//if offset changed
-//			if (yCoord%2==1){//to non-shifted
-//				add(-RenderCell.GAME_DIAGLENGTH, 0, 0);
-//			} else {//to shifted
-//				add(RenderCell.GAME_DIAGLENGTH, 0, 0);
-//			}
-//		}
-//		
-//		return add(x*RenderCell.GAME_DIAGLENGTH, y*RenderCell.GAME_DIAGLENGTH2, z*RenderCell.GAME_EDGELENGTH);
-//	}
-	
+		
 	private int getCoordX(){
 		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1;
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
 			x % RenderCell.GAME_DIAGLENGTH,
@@ -417,9 +397,8 @@ public class Point extends Vector3 implements Position {
 		return xCoord * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0)+RenderCell.GAME_DIAGLENGTH2;
 	}
 	
-	private int getCoordY(){
-		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+	private int getCoordY() {
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1;
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
 			x % RenderCell.GAME_DIAGLENGTH,
@@ -429,7 +408,6 @@ public class Point extends Vector3 implements Position {
 				yCoord -= 2;
 				break;
 			case 1:
-				xCoord += yCoord % 2 == 0 ? 0 : 1;
 				yCoord--;
 				break;
 			case 2:
@@ -464,8 +442,9 @@ public class Point extends Vector3 implements Position {
 	 * @return 
 	 */
 	public Point setToCenterOfCell() {
+		//code belo is optimized version of "return this.toCoord().toPoint()"
 		int xCoord = Math.floorDiv((int) x, RenderCell.GAME_DIAGLENGTH);
-		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1; //maybe dangerous to optimize code here!
+		int yCoord = Math.floorDiv((int) y, RenderCell.GAME_DIAGLENGTH) * 2 + 1;
 		//find the specific coordinate (detail)
 		switch (Coordinate.getNeighbourSide(
 			x % RenderCell.GAME_DIAGLENGTH,
@@ -501,8 +480,8 @@ public class Point extends Vector3 implements Position {
 				break;
 		}
 		
-		this.x = xCoord * RenderCell.GAME_DIAGLENGTH + (y % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0)+RenderCell.GAME_DIAGLENGTH2;
-		this.y = yCoord * RenderCell.GAME_DIAGLENGTH2+RenderCell.GAME_DIAGLENGTH2;
+		this.x = xCoord * RenderCell.GAME_DIAGLENGTH + (yCoord % 2 != 0 ? RenderCell.VIEW_WIDTH2 : 0);
+		this.y = yCoord * RenderCell.GAME_DIAGLENGTH2;
 		this.z = (int) (z / RenderCell.GAME_EDGELENGTH) * RenderCell.GAME_EDGELENGTH;
 		return this;
 	}

@@ -117,7 +117,7 @@ public class ParticleEmitter extends AbstractEntity {
 		super.update(dt);
 
 		if (active && hasPosition()) {
-			setColor(new Color(1, 0, 0, 1));//only important if visible
+			getColor().set(1, 0, 0, 1);//only important if visible
 			if (lightsource != null) {
 				lightsource.setPosition(getPosition());
 				lightsource.update(dt);

@@ -814,6 +814,7 @@ public class Chunk implements Telegraph {
 		int yIndex = coord.getY() - topleftY;
 		int z = coord.getZ()*3;
 		if (z >= 0) {
+			//check if actually changed
 			if (data[xIndex][yIndex][z+1] != value) {
 				data[xIndex][yIndex][z+1] = value;
 				modified = true;

@@ -719,7 +719,7 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 * Add light to the renderblock at this coordiante
+	 * Add light to the RenderStorage at this coordiante
 	 *
 	 * @param view
 	 * @param side

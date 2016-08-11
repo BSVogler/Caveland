@@ -75,7 +75,7 @@ public class FloatCVar extends CVar {
 		} catch (NumberFormatException e) {
 			WE.getConsole().add("Error setting \""+ getName() + "\" to "+value+"\n", "System");
 		}
-		if (flags == CVarFlags.CVAR_ARCHIVE) {
+		if (flags == CVarFlags.ARCHIVE) {
 			parent.save();
 		}
 	}

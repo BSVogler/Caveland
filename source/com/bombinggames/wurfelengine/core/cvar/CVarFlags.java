@@ -5,14 +5,14 @@ package com.bombinggames.wurfelengine.core.cvar;
  */
 public enum CVarFlags {
 	/**
-	 * If changed is saved.
+	 * Saved when cvars are saved.
 	 */
-	CVAR_ARCHIVE, /**
+	ARCHIVE, /**
 	 * never saved to file.
 	 */
-	CVAR_VOLATILE, /**
-	 * Gets in all cases saved.
+	VOlATILE, /**
+	 * Gets saved when changed.
 	 */
-	CVAR_ALWAYSSAVE
+	INSTANTSAVE
 
 }

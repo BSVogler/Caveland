@@ -17,7 +17,7 @@ public class CavelandMapCVars implements CustomMapCVarRegistration{
 	 */
 	@Override
 	public void register(CVarSystemMap system) {
-		system.register( new IntCVar(1), "groundBlockID", CVarFlags.CVAR_ARCHIVE);
+		system.register(new IntCVar(1), "groundBlockID", CVarFlags.ARCHIVE);
 	}
 	
 }

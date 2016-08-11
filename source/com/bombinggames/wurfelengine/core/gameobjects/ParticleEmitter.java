@@ -223,7 +223,7 @@ public class ParticleEmitter extends AbstractEntity {
 			return;
 		}
 		if (lightsource == null) {
-			lightsource = new PointLightSource(Color.YELLOW, 5, 11, WE.getGameplay().getView());
+			lightsource = new PointLightSource(Color.YELLOW.cpy(), 5, 11, WE.getGameplay().getView());
 		}
 		lightsource.setBrightness(brightness);
 		lightsource.enable();

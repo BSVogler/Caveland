@@ -99,7 +99,7 @@ public class CLGameController extends Controller implements Telegraph {
 		
 		if (!WE.getCVarsSave().getValueB("IntroCutsceneCompleted")) {
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
-			introSpaceship.enableCrash(new Coordinate(-5, 4, 7));
+			introSpaceship.enableCrash(new Coordinate(-2, -3, 7));
 			introSpaceship.setIndestructible(true);
 			introSpaceship.addContent(player1);
 			if (player2 != null) {

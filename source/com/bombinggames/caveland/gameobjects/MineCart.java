@@ -13,6 +13,7 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
@@ -58,7 +59,8 @@ public class MineCart extends MovableEntity implements Interactable {
 	 * Has a front and back plate while the main part ist hidden.
 	 */
 	public MineCart() {
-		super((byte) 42, 0);
+		super((byte) 42, 0, false);//add shadow to front because main part is hidden
+		setMass(40);
 		setName("Minecart");
 		setOrientation(new Vector2(1, 1));
 		setObstacle(true);
@@ -77,18 +79,20 @@ public class MineCart extends MovableEntity implements Interactable {
 		back = (SimpleEntity) new SimpleEntity((byte) 42, (byte) 0).spawn(getPosition().cpy());
 		back.setSavePersistent(false);
 		back.setName("MineCart Back");
+		
 		//back = new SimpleEntity((byte) 42,(byte) 1);
 		//back.spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		back.setSavePersistent(false);
 		front = (SimpleEntity) new SimpleEntity((byte) 42, (byte) 1).spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSavePersistent(false);
 		front.setName("MineCart Front");
+		front.addComponent(new EntityShadow());//add shadow to front because main part is hidden
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-
+		
 		Point pos = getPosition();
 
 		if (hasPosition() && pos.isInMemoryAreaXY()) {

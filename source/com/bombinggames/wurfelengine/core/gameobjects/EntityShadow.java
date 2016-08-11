@@ -49,7 +49,7 @@ public class EntityShadow extends AbstractEntity implements Component {
 	 *
 	 */
 	public EntityShadow() {
-		super((byte) 32);
+		super((byte) 6);
 		this.setName("Shadow");
 	}
 

@@ -28,6 +28,7 @@ import java.util.ArrayList;
  * @author Benedikt Vogler
  */
 public class MineCart extends MovableEntity implements Interactable {
+
 	private static final long serialVersionUID = 2L;
 	/**
 	 * in m/s
@@ -37,13 +38,13 @@ public class MineCart extends MovableEntity implements Interactable {
 	/**
 	 * the height of the bottom plate
 	 */
-	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH/3;
+	private static final int BOTTOMHEIGHT = GAME_EDGELENGTH / 3;
 
 	/**
 	 * empirical factor to match the back side with the rear
 	 */
 	private final transient static float FRONTOFFSET = 63;
-	
+
 	private MovableEntity passenger;
 	private ArrayList<MovableEntity> content = new ArrayList<>(5);
 	private transient float rollingCycle;
@@ -52,7 +53,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	private transient SimpleEntity front;
 	private transient PointLightSource lightsource;
 	//private transient boolean passengerTeleported;
-	
+
 	/**
 	 * Has a front and back plate while the main part ist hidden.
 	 */
@@ -71,36 +72,35 @@ public class MineCart extends MovableEntity implements Interactable {
 		//MessageManager.getInstance().addListener(this, Events.teleport.getId());
 		return this;
 	}
-	
-	private void createBackAndFront(){
-		back = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 0).spawn(getPosition().cpy());
+
+	private void createBackAndFront() {
+		back = (SimpleEntity) new SimpleEntity((byte) 42, (byte) 0).spawn(getPosition().cpy());
 		back.setSavePersistent(false);
 		back.setName("MineCart Back");
 		//back = new SimpleEntity((byte) 42,(byte) 1);
 		//back.spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		back.setSavePersistent(false);
-		front = (SimpleEntity) new SimpleEntity((byte) 42,(byte) 1).spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
+		front = (SimpleEntity) new SimpleEntity((byte) 42, (byte) 1).spawn(getPosition().cpy().add(0, RenderCell.GAME_DIAGLENGTH2, 0));//the back is located in back
 		front.setSavePersistent(false);
 		front.setName("MineCart Front");
 	}
 
 	@Override
-	@SuppressWarnings("SuspiciousNameCombination")
 	public void update(float dt) {
 		super.update(dt);
-		
+
 		Point pos = getPosition();
-		
+
 		if (hasPosition() && pos.isInMemoryAreaXY()) {
 			int block = pos.getBlock();
-			byte value = (byte) ((block>>8)&255);
-			
+			byte value = (byte) ((block >> 8) & 255);
+
 			if (lightsource == null) {
 				lightsource = new PointLightSource(Color.WHITE.cpy(), 1.0f, 1, WE.getGameplay().getView());
 				lightsource.setSavePersistent(false);
 				lightsource.setPosition(getPosition().cpy());
 			}
-			
+
 			lightsource.getPosition().set(getPosition()).add(0, 0, RenderCell.GAME_EDGELENGTH2);
 			lightsource.update(dt);
 
@@ -140,14 +140,13 @@ public class MineCart extends MovableEntity implements Interactable {
 							x,
 							pos.getDistanceToCellCenterZ());
 						break;
-						//curve
+					//curve
 					case 3:
 					case 5:
 						int dirY;
 						if (
 							getMovement().y > 0//moving down
-							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0
-						)
+							|| (getMovement().y == 0 && pos.getY() - pos.toCoord().toPoint().getY() < 0)
 						) {//on top and moving down
 							dirY = 1;
 						} else {
@@ -160,21 +159,21 @@ public class MineCart extends MovableEntity implements Interactable {
 								dirY//coming from top right
 							).nor()
 						);
-						
-				//the thing moved now put it back on the track
+
+						//the thing moved now put it back on the track
 //				float percentageOfCurve = 0;
 //				getPosition().y
-				//percentageOfCurve += getMovementHor().len()*RenderCell.GAME_EDGELENGTH/(Math.PI*RenderCell.GAME_EDGELENGTH2);//divide by quaarter of circle outline
-				//left or right side offset
+						//percentageOfCurve += getMovementHor().len()*RenderCell.GAME_EDGELENGTH/(Math.PI*RenderCell.GAME_EDGELENGTH2);//divide by quaarter of circle outline
+						//left or right side offset
 						int offset = -1;
-						if (value== 5) {
+						if (value == 5) {
 							offset = 1;
 						}
 						Vector3 circularVec = getPosition().cpy().sub(//0P
-getPosition().toCoord().toPoint().add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)//0C
+							getPosition().toCoord().toPoint().add(offset * RenderCell.GAME_DIAGLENGTH2, 0, 0)//0C
 						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
-						
-						pos.setToCenterOfCell().add(circularVec.add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0));
+
+						pos.setToCenterOfCell().add(circularVec.add(offset * RenderCell.GAME_DIAGLENGTH2, 0, 0));
 						break;
 					case 2:
 					case 4:
@@ -184,28 +183,28 @@ getPosition().toCoord().toPoint().add(offset*RenderCell.GAME_DIAGLENGTH2, 0, 0)/
 								0
 							).nor()
 						);
-						
+
 						offset = 1;
-						if (value== 4) {
+						if (value == 4) {
 							offset = -1;
 						}
 						circularVec = getPosition().cpy().sub(//0P
-getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)//0C
+							getPosition().toCoord().toPoint().add(0, offset * RenderCell.GAME_DIAGLENGTH2, 0)//0C
 						).nor().scl(RenderCell.GAME_EDGELENGTH2);//movement is on radius of half of the block
-						
-						pos.setToCenterOfCell().add(circularVec.add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0));
+
+						pos.setToCenterOfCell().add(circularVec.add(0, offset * RenderCell.GAME_DIAGLENGTH2, 0));
 						break;
 				}
 
 				//start moving?
 				if (getSpeedHor() > 0) {
 					//move
-					if(getSpeedHor() <= MAXSPEED) {
+					if (getSpeedHor() <= MAXSPEED) {
 						setSpeedHorizontal(MAXSPEED);
 					}
 
 					//booster
-					if ((block&255)== CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
+					if ((block & 255) == CavelandBlocks.CLBlocks.RAILSBOOSTER.getId()) {
 						if (getPosition().toCoord().getLogic() instanceof BoosterLogic
 							&& ((BoosterLogic) getPosition().toCoord().getLogic()).isEnabled()) {
 							setSpeedHorizontal(BOOSTERSPEED);
@@ -253,12 +252,12 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 					isPlayingSound = 0;
 				}
 			}
-			
+
 			updatePassenger(pos);
 
 			//hit objects in front
 			checkCollisionInFront();
-		
+
 			//copy position to back
 			if (back.shouldBeDisposed() || front.shouldBeDisposed()) {
 				dispose();
@@ -270,13 +269,9 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 			//animation
 			//moving down left or up right
 			if (
-				(getOrientation().y > 0
-				&&
-				getOrientation().y > getOrientation().x)
+				(getOrientation().y > 0 && getOrientation().y > getOrientation().x)
 				||
-				(getOrientation().y < 0
-				&&
-				getOrientation().y < getOrientation().x)
+				(getOrientation().y < 0 && getOrientation().y < getOrientation().x)
 			) {
 				if (getMovement().z > 0.1f) {
 					if (getOrientation().y < 0) {
@@ -317,14 +312,15 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 
 	/**
 	 * the passengers must enter by themself
-	 * @param passenger 
+	 *
+	 * @param passenger
 	 */
 	public void setPassanger(MovableEntity passenger) {
 		this.passenger = passenger;
 //		if (passenger.getMovement().z > 0) {
 //			passenger.getMovement().z = 0;//fall into chuchu
 //		}
-		
+
 		centerPassenger(false);
 
 	}
@@ -336,13 +332,14 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 	public MovableEntity getPassenger() {
 		return passenger;
 	}
-	
+
 	/**
 	 * set passenger in the center the mine cart
+	 *
 	 * @param forceHeight
 	 */
-	public void centerPassenger(boolean forceHeight){
-		if (passenger!=null) {
+	public void centerPassenger(boolean forceHeight) {
+		if (passenger != null) {
 			if (forceHeight) {
 				passenger.getPosition().set(getPosition());
 				passenger.getPosition().setZ(getPosition().getZ() + BOTTOMHEIGHT);//a little bit higher then the minecart
@@ -350,7 +347,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 				float oldHeight = passenger.getPosition().getZ();
 				passenger.getPosition().set(getPosition());
 				passenger.getPosition().setZ(oldHeight);
-			}	
+			}
 		}
 	}
 
@@ -392,13 +389,13 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 	@Override
 	public void takeDamage(byte value) {
 		super.takeDamage(value);
-		if (getHealth()<=0) {
+		if (getHealth() <= 0) {
 			WE.SOUND.stop("wagon", isPlayingSound);
 			WE.SOUND.play("robot1destroy", getPosition());
 			((Collectible) CollectibleType.Iron.createInstance().spawn(getPosition())).sparkle();
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -413,7 +410,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {
-		if (actor instanceof MovableEntity){
+		if (actor instanceof MovableEntity) {
 			if (passenger == null) {
 				setPassanger((MovableEntity) actor);
 			} else {
@@ -421,12 +418,12 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 			}
 		}
 	}
-	
-	void passengerLeave(){
+
+	void passengerLeave() {
 		passenger.setFloating(false);
 		passenger = null;
 	}
-	
+
 	/**
 	 * overrides deserialisation
 	 *
@@ -441,8 +438,9 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 
 	@Override
 	public boolean interactable() {
-		return (passenger==null);
+		return (passenger == null);
 	}
+
 	@Override
 	public boolean interactableOnlyWithPickup() {
 		return false;
@@ -466,7 +464,7 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 			}
 		}
 	}
-	
+
 	private void updatePassenger(Point pos) {
 		if (passenger != null) {
 			//give same speed as minecart
@@ -485,10 +483,8 @@ getPosition().toCoord().toPoint().add(0, offset*RenderCell.GAME_DIAGLENGTH2, 0)/
 			}
 
 			//check if passenger exited the cart
-			if (
-				passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
-				|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH
-			) {
+			if (passenger.getPosition().getZ() - pos.getZ() > GAME_EDGELENGTH2
+				|| getPosition().distanceToHorizontal(passenger) > GAME_EDGELENGTH) {
 				passengerLeave();
 			}
 		} else {

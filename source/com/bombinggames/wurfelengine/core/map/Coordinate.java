@@ -636,7 +636,7 @@ public class Coordinate implements Position {
 	}
 
 	/**
-	 *
+	 *A change in the value overwrites the spritevalue.
 	 * @param value
 	 */
 	public void setValue(byte value) {

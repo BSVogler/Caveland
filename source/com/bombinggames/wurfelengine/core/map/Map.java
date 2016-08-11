@@ -414,6 +414,10 @@ public class Map implements IndexedGraph<PfNode> {
 	 */
 	public void setValue(Coordinate coord, byte value) {
 		getChunkContaining(coord).setValue(coord, value);
+		RenderCell renderCell = WE.getGameplay().getView().getRenderStorage().getCell(coord);
+		if (renderCell != null) {
+			renderCell.setSpriteValue(value);
+		}
 	}
 	
 	/**

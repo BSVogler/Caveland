@@ -43,6 +43,7 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class RenderStorage implements Telegraph  {
 	/**
 	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
 	 */
-	private final LinkedList<RenderCell> dirtyFlags = new LinkedList<>();
+	private final HashSet<Coordinate> dirtyFlags = new HashSet<>(200);
 	private float zRenderingLimit;
 
 	/**
@@ -178,8 +179,7 @@ public class RenderStorage implements Telegraph  {
 	 * reset light to normal level for cordinates marked as dirty
 	 */
 	private void resetShadingForDirty() {
-		for (RenderCell rb : dirtyFlags) {
-			Coordinate coord = rb.getPosition();
+		for (Coordinate coord : dirtyFlags) {
 			RenderChunk chunk = getChunk(coord);
 			//should be loaded but check nevertheless
 			if (chunk != null) {
@@ -194,12 +194,12 @@ public class RenderStorage implements Telegraph  {
 	}
 	
 	/**
-	 * Marks this block as "dirty". O(n)
+	 * Marks this block as "dirty".
 	 * @param rB
 	 */
 	public void setLightFlag(RenderCell rB) {
-		if (!dirtyFlags.contains(rB))
-			dirtyFlags.add(rB);
+		if (!dirtyFlags.contains(rB.getPosition()))
+			dirtyFlags.add(rB.getPosition());
 	}
 	
 	

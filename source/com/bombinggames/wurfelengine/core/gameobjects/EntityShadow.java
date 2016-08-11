@@ -112,4 +112,11 @@ public class EntityShadow extends AbstractEntity implements Component {
 	public void setParent(AbstractEntity body) {
 		this.character = body;
 	}
+
+	@Override
+	public void dispose() {
+		character.removeComponent(this);
+		super.dispose();
+	}
+
 }

@@ -2,7 +2,6 @@ package com.bombinggames.caveland.gameobjects.collectibles;
 
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.gameobjects.CLMovableEntity;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
 import java.io.IOException;
@@ -34,7 +33,6 @@ public class Collectible extends CLMovableEntity implements Serializable {
 		this.def = def;
 		setFloating(false);
 		//setSpeed(0.2f);
-		setFriction(WE.getCVars().getValueF("friction"));
 		setIndestructible(true);
 		int[] animationsteps = new int[def.getAnimationSteps()];
 		for (int i = 0; i < animationsteps.length; i++) {

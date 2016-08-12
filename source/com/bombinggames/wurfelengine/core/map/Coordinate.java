@@ -627,7 +627,7 @@ public class Coordinate implements Position {
 
 	@Override
 	public int hashCode() {
-		return 13 * (425 + 37 * x) + 13 * y + 2953 * z;
+		return  20667 * x + 3 * y + 2953 * z;
 	}
 
 	@Override

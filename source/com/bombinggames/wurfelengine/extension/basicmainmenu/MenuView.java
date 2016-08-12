@@ -128,7 +128,7 @@ public class MenuView {
 	 */
 	protected void show() {
 		Cursor cursor = Gdx.graphics.newCursor(
-			new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/Core/images/wecursor.png")),
+			new Pixmap(Gdx.files.internal("com/bombinggames/wurfelengine/core/images/wecursor.png")),
 			0,
 			0
 		);

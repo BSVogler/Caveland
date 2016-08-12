@@ -50,7 +50,7 @@ public class LoadingScreen extends WEScreen {
         AssetManager manager = WE.getAssetManager();
                 
         // Tell the manager to load assets for the loading screen
-        manager.load("com/bombinggames/wurfelengine/core/Loading/loading.txt", TextureAtlas.class);
+        manager.load("com/bombinggames/wurfelengine/core/loading/loading.txt", TextureAtlas.class);
         // Wait until they are finished loading
         manager.finishLoading();
         

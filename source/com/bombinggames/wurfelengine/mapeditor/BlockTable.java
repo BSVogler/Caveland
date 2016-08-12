@@ -44,16 +44,11 @@ import java.util.Iterator;
 public class BlockTable extends AbstractPlacableTable {
 
 	private byte selectionId;
-	private byte value;
 	/**
 	 * stores the block drawables
 	 */
 	private final ArrayList<BlockDrawable> blockDrawables = new ArrayList<>(40);
 	private BlockDrawable selectedDrawable;
-
-	public BlockTable() {
-		super();
-	}
 
 	@Override
 	public void show(GameView view) {
@@ -123,14 +118,22 @@ public class BlockTable extends AbstractPlacableTable {
 		return selectionId;
 	}
 
+	/**
+	 * Returns the data of the selected block.
+	 * @return id, value and 100 health
+	 */
 	public int getSelectedBlock() {
-		return (value << 8) + selectionId;
+		return selectionId+(getValue() << 8)+(100<<16);
 	}
 
+	/**
+	 * Select a block. Will be highlighted in the table.
+	 * @param blockId id of block data
+	 * @param blockValue value of block data
+	 */
 	public void select(byte blockId, byte blockValue) {
 		selectionId = blockId;
-		setValue(blockValue);
-		byte i=0;
+		byte i = 0;
 		Iterator<BlockDrawable> iter = blockDrawables.iterator();
 		while (iter.hasNext()) {
 			if (iter.next().getRenderBlock().getId() == blockId) {
@@ -139,6 +142,7 @@ public class BlockTable extends AbstractPlacableTable {
 			}
 			i++;
 		}
+		setValue(selectedDrawable.getValue());
 	}
 
 	/**

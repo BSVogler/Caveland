@@ -46,6 +46,9 @@ public abstract class AbstractPlacableTable extends Table {
 	 * list position
 	 */
 	private byte selected = 1;
+	/**
+	 * game data
+	 */
 	private byte value;
 
 	/**
@@ -89,6 +92,7 @@ public abstract class AbstractPlacableTable extends Table {
 				c.setScale(0.35f);
 			}
 			getChildren().get(selected).setScale(0.4f);
+			value = 0;
 		}
 	}
 

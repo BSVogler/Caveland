@@ -396,7 +396,7 @@ public class Map implements IndexedGraph<PfNode> {
 	/**
 	 * Set id, value and health at a coordinate in the map.
 	 * @param coord
-	 * @param block
+	 * @param block id, value and health
 	 */
 	public void setBlock(Coordinate coord, int block) {
 		Chunk chunk = getChunkContaining(coord);

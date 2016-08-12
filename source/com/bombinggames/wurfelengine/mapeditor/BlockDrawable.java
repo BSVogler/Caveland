@@ -68,9 +68,17 @@ public class BlockDrawable extends TextureRegionDrawable {
 		block.setPosition(null);
 		block.setScaling(size);
 	}
+
+	/**
+	 * Set game and sprite value of this block.
+	 * @param value 
+	 */
+	protected void setValue(byte value) {
+		this.block.setValue(value);
+	}
 	
-	void setValue(byte value) {
-		this.block.setSpriteValue(value);
+	protected byte getValue(){
+		return this.block.getValue();
 	}
 
 	@Override
@@ -133,9 +141,9 @@ public class BlockDrawable extends TextureRegionDrawable {
 	public float getMinWidth() {
 		return RenderCell.VIEW_WIDTH * block.getScaling();
 	}
-	
-	public RenderCell getRenderBlock(){
+
+	public RenderCell getRenderBlock() {
 		return block;
 	}
-	
+
 }

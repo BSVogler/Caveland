@@ -258,6 +258,11 @@ public class CavelandBlocks implements CustomBlocks {
 		return false;
 	}
 	
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
 	public static CollectibleType getLoot(byte id) {
 		switch (id) {
 			case 3:

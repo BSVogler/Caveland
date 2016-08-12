@@ -52,6 +52,10 @@ public class Particle extends MovableEntity {
 		init(maxtime);
 	}
 	
+	/**
+	 *
+	 * @param maxtime
+	 */
 	public void init(float maxtime){
 		this.maxtime = maxtime;
 		timeTillDeath = maxtime;

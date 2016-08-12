@@ -92,6 +92,10 @@ public class EntityAnimation implements Animatable, Component {
         running = false;
     }
 
+	/**
+	 *
+	 * @param parent
+	 */
 	@Override
 	public void setParent(AbstractEntity parent) {
 		this.parent = parent;

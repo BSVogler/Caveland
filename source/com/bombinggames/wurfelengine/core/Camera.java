@@ -1026,18 +1026,34 @@ public class Camera {
 		sh.end();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getCenterChunkX() {
 		return centerChunkX;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getCenterChunkY() {
 		return centerChunkY;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isEnabled() {
 		return active;
 	}
 
+	/**
+	 *
+	 * @param id
+	 */
 	public void setId(int id){
 		this.id = id;
 	}

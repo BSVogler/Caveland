@@ -921,6 +921,10 @@ public class Point extends Vector3 implements Position {
 		z = coord.getZ() * RenderCell.GAME_EDGELENGTH;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isObstacle() {
 		return RenderCell.isObstacle(getBlockId());
 	}

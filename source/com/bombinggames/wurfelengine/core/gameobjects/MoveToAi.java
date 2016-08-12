@@ -57,10 +57,18 @@ public class MoveToAi implements Telegraph, Serializable, Component {
 	 */
 	private transient Point lastPos;
 
+	/**
+	 *
+	 * @param goal
+	 */
 	public MoveToAi(Point goal) {
 		this.movementGoal = goal;
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (movementGoal != null && body.getPosition() != null) {
@@ -108,6 +116,10 @@ public class MoveToAi implements Telegraph, Serializable, Component {
 		}
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean atGoal() {
 		if (movementGoal == null) {
 			return true;
@@ -128,10 +140,18 @@ public class MoveToAi implements Telegraph, Serializable, Component {
 		return false;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public Point getGoal() {
 		return movementGoal;
 	}
 
+	/**
+	 *
+	 * @param body
+	 */
 	@Override
 	public void setParent(AbstractEntity body) {
 		if (!(body instanceof MovableEntity)){

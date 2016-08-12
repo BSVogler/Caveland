@@ -70,6 +70,10 @@ public class AnimatedBlock extends RenderCell implements Animatable{
 		this.bob = bob;
 	}
 	
+	/**
+	 *
+	 * @param value
+	 */
 	public void setStartSpriteValue(byte value){
 		this.currentSpriteValue = value;
 	}

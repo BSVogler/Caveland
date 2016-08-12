@@ -419,6 +419,10 @@ public class ActionBox extends WidgetGroup {
 		//window.pack();
 	}
 	
+	/**
+	 *
+	 * @param sound
+	 */
 	public void setConfirmSound(String sound) {
 		this.confirmSound = sound;
 	}

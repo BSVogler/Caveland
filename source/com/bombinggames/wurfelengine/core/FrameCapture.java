@@ -29,23 +29,42 @@ public class FrameCapture  {
         this.width = width;
     }
     
-    public int getWidth() {
+	/**
+	 *
+	 * @return
+	 */
+	public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+	/**
+	 *
+	 * @param width
+	 */
+	public void setWidth(int width) {
         this.width = width;
     }
 
-    public int getHeightl() {
+	/**
+	 *
+	 * @return
+	 */
+	public int getHeightl() {
         return heightl;
     }
 
-    public void setHeightl(int heightl) {
+	/**
+	 *
+	 * @param heightl
+	 */
+	public void setHeightl(int heightl) {
         this.heightl = heightl;
     }
     
-    public void capture()
+	/**
+	 *
+	 */
+	public void capture()
     {
         
     }
@@ -55,7 +74,12 @@ public class FrameCapture  {
         
     }
     
-    public void saveCaptureToDisk(String fileName, String path)
+	/**
+	 *
+	 * @param fileName
+	 * @param path
+	 */
+	public void saveCaptureToDisk(String fileName, String path)
     {
         
     }

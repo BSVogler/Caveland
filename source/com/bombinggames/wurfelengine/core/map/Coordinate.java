@@ -129,6 +129,13 @@ public class Coordinate implements Position {
 		return z*RenderCell.GAME_EDGELENGTH;
 	}
 
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public Coordinate set(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -136,6 +143,11 @@ public class Coordinate implements Position {
 		return this;
 	}
 
+	/**
+	 *
+	 * @param coord
+	 * @return
+	 */
 	public Coordinate set(Coordinate coord) {
 		this.x = coord.x;
 		this.y = coord.y;
@@ -263,6 +275,10 @@ public class Coordinate implements Position {
 		return this;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getBlock() {
 		if (z < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
@@ -699,6 +715,11 @@ public class Coordinate implements Position {
 		return Controller.getMap().getChunkContaining(this);
 	}
 
+	/**
+	 *
+	 * @param gameView
+	 * @return
+	 */
 	public RenderChunk getRenderChunk(GameView gameView) {
 		return gameView.getRenderStorage().getChunk(this);
 	}
@@ -813,6 +834,10 @@ public class Coordinate implements Position {
 			|| yCoord != y);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isObstacle(){
 		return false;
 	}

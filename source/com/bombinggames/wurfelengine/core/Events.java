@@ -93,10 +93,19 @@ public enum Events {
 	 */
 	teleport(21),
 	
+	/**
+	 *
+	 */
 	chunkChanged(22),
 	
+	/**
+	 *
+	 */
 	mapChanged(23),
 	
+	/**
+	 *
+	 */
 	mapReloaded(24)
 
 	;

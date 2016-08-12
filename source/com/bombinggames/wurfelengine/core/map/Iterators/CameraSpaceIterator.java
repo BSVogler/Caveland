@@ -147,6 +147,10 @@ public class CameraSpaceIterator {
 		return null;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasNext() {
 		return chunkNum < 9 && ((blockIterator != null && blockIterator.hasNext()) || getNextChunk(chunkNum) != null);
 	}

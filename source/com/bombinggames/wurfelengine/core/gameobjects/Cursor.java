@@ -76,6 +76,10 @@ public class Cursor extends AbstractEntity {
 		setHidden(!WE.isInEditor() || tool == Tool.SELECT);
 	}
 	
+	/**
+	 *
+	 * @param selDet
+	 */
 	public void setInfo(CursorInfo selDet){
 		this.selDet = selDet;
 	}

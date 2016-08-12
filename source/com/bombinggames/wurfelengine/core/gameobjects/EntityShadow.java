@@ -108,6 +108,10 @@ public class EntityShadow extends AbstractEntity implements Component {
 		return true;
 	}
 
+	/**
+	 *
+	 * @param body
+	 */
 	@Override
 	public void setParent(AbstractEntity body) {
 		this.character = body;

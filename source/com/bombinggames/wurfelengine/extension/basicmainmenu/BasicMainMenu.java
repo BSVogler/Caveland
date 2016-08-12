@@ -58,6 +58,9 @@ public class BasicMainMenu extends AbstractMainMenu {
 		this.menuItems = menuItems;
 	}
 
+	/**
+	 *
+	 */
 	public BasicMainMenu() {
 		this.menuItems = new BasicMenuItem[]{
 			new BasicMenuItem(0, "Test Engine", Controller.class, GameView.class),

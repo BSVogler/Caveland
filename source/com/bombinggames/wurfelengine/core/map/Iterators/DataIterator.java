@@ -152,6 +152,9 @@ public class DataIterator<T> implements Iterator<T> {
 		restart();
 	}
 	
+	/**
+	 *
+	 */
 	public void restart() {
 		pos[0] = left;
 		pos[1] = back;

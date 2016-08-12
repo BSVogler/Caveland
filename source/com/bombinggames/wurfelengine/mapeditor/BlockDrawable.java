@@ -77,6 +77,10 @@ public class BlockDrawable extends TextureRegionDrawable {
 		this.block.setValue(value);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	protected byte getValue(){
 		return this.block.getValue();
 	}
@@ -111,37 +115,74 @@ public class BlockDrawable extends TextureRegionDrawable {
 		}
 	}
 
+	/**
+	 *
+	 * @param batch
+	 * @param x
+	 * @param y
+	 * @param originX
+	 * @param originY
+	 * @param width
+	 * @param height
+	 * @param scaleX
+	 * @param scaleY
+	 * @param rotation
+	 */
 	@Override
 	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
 		block.setScaling(scaleY);
 		draw(batch, x, y, width, height);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getLeftWidth() {
 		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getRightWidth() {
 		return RenderCell.VIEW_WIDTH2 * block.getScaling();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getTopHeight() {
 		return 0;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getBottomHeight() {
 		return 0;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Override
 	public float getMinWidth() {
 		return RenderCell.VIEW_WIDTH * block.getScaling();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public RenderCell getRenderBlock() {
 		return block;
 	}

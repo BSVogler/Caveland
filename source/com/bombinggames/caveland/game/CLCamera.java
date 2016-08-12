@@ -53,18 +53,48 @@ public class CLCamera extends Camera {
 	 */
 	private float damageoverlay = 0f;
 
+	/**
+	 *
+	 * @param view
+	 */
 	public CLCamera(GameView view) {
 		super(view);
 	}
 
+	/**
+	 *
+	 * @param view
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
 	public CLCamera(GameView view, int x, int y, int width, int height) {
 		super(view, x, y, width, height);
 	}
 
+	/**
+	 *
+	 * @param view
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param center
+	 */
 	public CLCamera(GameView view, int x, int y, int width, int height, Point center) {
 		super(view, x, y, width, height, center);
 	}
 
+	/**
+	 *
+	 * @param view
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param focusentity
+	 */
 	public CLCamera(GameView view, int x, int y, int width, int height, AbstractEntity focusentity) {
 		super(view, x, y, width, height, focusentity);
 	}

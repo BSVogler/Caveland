@@ -317,10 +317,18 @@ public class GameView implements GameManager {
 		keyF5isUp = !Gdx.input.isKeyPressed(Keys.F5);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public RenderStorage getRenderStorage() {
 		return renderstorage;
 	}
 
+	/**
+	 *
+	 * @param renderstorage
+	 */
 	public void setRenderStorage(RenderStorage renderstorage) {
 		if (this.renderstorage != null) {
 			MessageManager.getInstance().removeListener(this.renderstorage, Events.mapChanged.getId());

@@ -38,6 +38,15 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Moon extends GlobalLightSource {
 	
+	/**
+	 *
+	 * @param azimuth
+	 * @param height
+	 * @param tone
+	 * @param ambient
+	 * @param brghtFac
+	 * @param amplitudeHeight
+	 */
 	public Moon(float azimuth, float height, Color tone, Color ambient, float brghtFac, int amplitudeHeight) {
 		super(azimuth, height, tone, ambient, brghtFac, amplitudeHeight);
 	}

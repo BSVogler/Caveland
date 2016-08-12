@@ -97,6 +97,10 @@ public class AimBand implements Component {
 		this.parent = null;
 	}
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	@Override
 	public void update(float dt) {
 		if (getStart() == null || getEnd() == null) {
@@ -198,6 +202,10 @@ public class AimBand implements Component {
 		list.clear();
 	}
 
+	/**
+	 *
+	 * @param parent
+	 */
 	@Override
 	public void setParent(AbstractEntity parent) {
 		this.parent = parent;

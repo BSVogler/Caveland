@@ -47,6 +47,9 @@ import java.util.logging.Logger;
 public class EntityTable extends AbstractPlacableTable {
 	private Class<? extends AbstractEntity> entityClass;
 	
+	/**
+	 *
+	 */
 	public EntityTable() {
 		super();
 	}

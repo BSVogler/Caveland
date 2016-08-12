@@ -888,6 +888,11 @@ public class Chunk implements Telegraph {
 		}
 	}
 
+	/**
+	 *
+	 * @param storage
+	 * @return
+	 */
 	public RenderChunk getRenderChunk(RenderStorage storage) {
 		return storage.getChunk(chunkX, chunkY);
 	}
@@ -903,6 +908,15 @@ public class Chunk implements Telegraph {
 	 * @param z coordinate
 	 * @return can be null
 	 */
+
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+
 	public byte getBlockId(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) {
 			return 0;
@@ -912,6 +926,13 @@ public class Chunk implements Telegraph {
 		return data[xIndex][yIndex][z * 3];
 	}
 
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public byte getBlockValue(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) {
 			return 0;
@@ -921,6 +942,13 @@ public class Chunk implements Telegraph {
 		return data[xIndex][yIndex][z * 3 + 1];
 	}
 
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public byte getHealth(int x, int y, int z) {
 		if (z >= Chunk.blocksZ) {
 			return 0;

@@ -523,6 +523,10 @@ public class Weapon extends AbstractEntity implements Telegraph {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isLoaded() {
 		return shotsLoaded >= shots;
 	}

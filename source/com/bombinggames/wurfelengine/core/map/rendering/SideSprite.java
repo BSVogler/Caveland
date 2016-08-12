@@ -72,6 +72,10 @@ public class SideSprite extends TextureRegion {
 	 */
 	private static float ambientOcclusion;
 
+	/**
+	 *
+	 * @param brightness
+	 */
 	public static void setAO(float brightness) {
 		ambientOcclusion = brightness;
 	}
@@ -1043,6 +1047,10 @@ public class SideSprite extends TextureRegion {
 		}
 	}
 
+	/**
+	 *
+	 * @param aoFlags
+	 */
 	public void setAoFlags(int aoFlags) {
 		this.aoFlags = aoFlags;
 	}

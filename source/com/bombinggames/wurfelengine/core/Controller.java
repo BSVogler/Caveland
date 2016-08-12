@@ -310,6 +310,9 @@ public class Controller implements GameManager {
 		
 	}
 	
+	/**
+	 *
+	 */
 	public void showCursor(){
 		if (!cursor.hasPosition()) {
 			cursor.spawn(

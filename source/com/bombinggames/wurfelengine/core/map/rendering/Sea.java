@@ -35,6 +35,11 @@ package com.bombinggames.wurfelengine.core.map.rendering;
 public class Sea extends AnimatedBlock {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 */
 	public Sea(final byte id, byte value) {
 		super(id, value,new int[]{400,400,400,400}, true, true);
 		setBounce(true);

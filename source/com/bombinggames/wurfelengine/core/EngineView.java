@@ -111,6 +111,10 @@ public class EngineView {//is GameView so it can render in game space
 		return stage;
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt) {
 		editorToggler.setVisible(WE.getCVars().getValueB("editorVisible"));
 		editorToggler.update(this, dt);

@@ -52,6 +52,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 
 	private static final long serialVersionUID = 2L;
 	private static java.util.HashMap<String, Class<? extends AbstractEntity>> entityMap = new java.util.HashMap<>(10);//map string to class
+
+	/**
+	 *
+	 */
 	public final int colissionRadius = GAME_DIAGLENGTH2/2;
 
 	/**
@@ -322,6 +326,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		this.obstacle = obstacle;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isObstacle() {
 		return obstacle;
 	}
@@ -596,6 +604,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		return position.toCoord();
 	}
 
+	/**
+	 *
+	 * @param component
+	 */
 	public void addComponent(Component component) {
 		this.components.add(component);
 		component.setParent(this);
@@ -616,6 +628,10 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		return null;
 	}
 
+	/**
+	 *
+	 * @param component
+	 */
 	public void removeComponent(Component component) {
 		this.components.remove(component);
 	}
@@ -663,10 +679,18 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		return value;
 	}
 	
+	/**
+	 *
+	 * @param id
+	 */
 	public void setSpriteId(byte id){
 		this.id = id;
 	}
 	
+	/**
+	 *
+	 * @param value
+	 */
 	public void setSpriteValue(byte value){
 		this.value = value;
 	}

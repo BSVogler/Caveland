@@ -65,22 +65,41 @@ public abstract class WEScreen implements Screen {
 	 */
 	public abstract void renderImpl(float dt);
 
+	/**
+	 *
+	 * @param button
+	 */
 	public void addButton(Actor button) {
 		buttons.add(button);
 	}
 
+	/**
+	 *
+	 * @param i
+	 */
 	public void select(int i) {
 		selection = i;
 	}
 
+	/**
+	 *
+	 */
 	public void enterSelection() {
 		buttons.get(selection).fire(new ChangeListener.ChangeEvent());
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getSelection() {
 		return selection;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getButtonAmount() {
 		return buttons.size();
 	}

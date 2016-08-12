@@ -42,13 +42,20 @@ public class CVarSystemMap extends AbstractCVarSystem {
 	
 	private static CustomMapCVarRegistration customRegistration;
 
+	/**
+	 *
+	 * @param customMapRegistration
+	 */
 	public static void setCustomMapCVarRegistration(CustomMapCVarRegistration customMapRegistration) {
 		customRegistration = customMapRegistration;
 	}
 
 	private CVarSystemSave saveSystem;
 	
-	
+	/**
+	 *
+	 * @param path
+	 */
 	public CVarSystemMap(File path) {
 		super(path);
 		register(new IntCVar(Map.MAPVERSION), "MapVersion", CVarFlags.INSTANTSAVE);
@@ -65,6 +72,10 @@ public class CVarSystemMap extends AbstractCVarSystem {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public CVarSystemSave getSaveCVars() {
 		return saveSystem;
 	}

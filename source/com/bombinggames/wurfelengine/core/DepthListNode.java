@@ -43,18 +43,34 @@ public class DepthListNode implements Iterable<AbstractGameObject>{
 	private DepthListNode prev = null;
 	final AbstractGameObject content;
 
+	/**
+	 *
+	 * @param content
+	 */
 	public DepthListNode(AbstractGameObject content) {
 		this.content = content;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public DepthListNode getNext() {
 		return next;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public AbstractGameObject getContent() {
 		return content;
 	}
 	
+	/**
+	 *
+	 * @param content
+	 */
 	public void add(AbstractGameObject content){
 		next = new DepthListNode(content);
 		next.prev = this;
@@ -65,6 +81,10 @@ public class DepthListNode implements Iterable<AbstractGameObject>{
 		return new DepthListIterator(this);
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public ReverseDepthListIterator iteratorReverse() {
 		return new ReverseDepthListIterator(this);
 	}
@@ -77,9 +97,16 @@ public class DepthListNode implements Iterable<AbstractGameObject>{
 		last.add(content);
 	}
 	
+	/**
+	 *
+	 */
 	public class DepthListIterator implements Iterator<AbstractGameObject>{
 		DepthListNode current;
 
+		/**
+		 *
+		 * @param start
+		 */
 		public DepthListIterator(DepthListNode start) {
 			this.current = start;
 		}
@@ -111,17 +138,32 @@ public class DepthListNode implements Iterable<AbstractGameObject>{
 		}
 	};
 	
+	/**
+	 *
+	 */
 	public class ReverseDepthListIterator{
 		DepthListNode current;
 
+		/**
+		 *
+		 * @param start
+		 */
 		public ReverseDepthListIterator(DepthListNode start) {
 			this.current = start;
 		}
 		
+		/**
+		 *
+		 * @return
+		 */
 		public boolean hasPrev() {
 			return current.prev != null;
 		}
 
+		/**
+		 *
+		 * @return
+		 */
 		public AbstractGameObject prev() {
 			current = current.prev;
 			return current.getContent();

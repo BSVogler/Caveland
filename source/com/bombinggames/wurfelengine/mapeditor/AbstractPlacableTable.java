@@ -105,6 +105,10 @@ public abstract class AbstractPlacableTable extends Table {
 		this.value = value;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public byte getValue() {
 		return value;
 	}

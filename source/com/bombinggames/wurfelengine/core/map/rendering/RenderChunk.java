@@ -55,6 +55,9 @@ public class RenderChunk {
 		};
 	}
 	
+	/**
+	 *
+	 */
 	public static void clearPool(){
 		DATAPOOL.clear();
 	}
@@ -195,10 +198,18 @@ public class RenderChunk {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getTopLeftCoordinateX() {
 		return chunk.getTopLeftCoordinateX();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getTopLeftCoordinateY() {
 		return chunk.getTopLeftCoordinateY();
 	}
@@ -218,14 +229,29 @@ public class RenderChunk {
 		);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getChunkX() {
 		return chunk.getChunkX();
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getChunkY() {
 		return chunk.getChunkY();
 	}
 
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	protected RenderCell getCellByIndex(int x, int y, int z) {
 		return data[x][y][z];
 	}
@@ -247,6 +273,9 @@ public class RenderChunk {
 		cameraAccess = b;
 	}
 
+	/**
+	 *
+	 */
 	protected void dispose() {
 		DATAPOOL.free(data);
 	}

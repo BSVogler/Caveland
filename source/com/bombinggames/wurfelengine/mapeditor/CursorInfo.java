@@ -66,6 +66,11 @@ public class CursorInfo extends WidgetGroup {
 		setPosition(stage.getWidth() * 0.8f, stage.getHeight() * 0.02f);
 	}
 
+	/**
+	 *
+	 * @param block
+	 * @param coord
+	 */
 	public void updateFrom(int block, Coordinate coord) {
 		byte id = (byte) (block & 255);
 		byte value = (byte) ((block >> 8) & 255);

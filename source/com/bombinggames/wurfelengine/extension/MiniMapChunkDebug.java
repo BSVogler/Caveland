@@ -54,6 +54,11 @@ public class MiniMapChunkDebug {
 	 */
 	private final int posY;
 
+	/**
+	 *
+	 * @param posX
+	 * @param posY
+	 */
 	public MiniMapChunkDebug(int posX, int posY) {
 		this.posX = posX;
 		this.posY = posY;

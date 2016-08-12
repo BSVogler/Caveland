@@ -85,6 +85,19 @@ public class EntityDrawable extends TextureRegionDrawable {
 		}
     }
 	
+	/**
+	 *
+	 * @param batch
+	 * @param x
+	 * @param y
+	 * @param originX
+	 * @param originY
+	 * @param width
+	 * @param height
+	 * @param scaleX
+	 * @param scaleY
+	 * @param rotation
+	 */
 	@Override
 	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
 		instance.setScaling(scaling*scaleY);

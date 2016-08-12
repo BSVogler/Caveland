@@ -36,7 +36,16 @@ package com.bombinggames.wurfelengine.core.gameobjects;
  */
 public interface Component {
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt);
+
+	/**
+	 *
+	 * @param body
+	 */
 	public void setParent(AbstractEntity body);
 	/**
 	 * removes itself from parent

@@ -77,10 +77,18 @@ public class RenderStorage implements Telegraph  {
 		lastCenterY = new ArrayList<>(1);
 	}
 	
+	/**
+	 *
+	 * @param dt
+	 */
 	public void preUpdate(float dt){
 		resetShadingForDirty();
 	}
 
+	/**
+	 *
+	 * @param dt
+	 */
 	public void update(float dt){
 		checkNeededChunks();
 		//update rendderblocks
@@ -471,6 +479,10 @@ public class RenderStorage implements Telegraph  {
 		return RenderCell.getRenderCell((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public LinkedList<RenderChunk> getData() {
 		return data;
 	}
@@ -542,6 +554,9 @@ public class RenderStorage implements Telegraph  {
 		return false;
 	}
 
+	/**
+	 *
+	 */
 	public void dispose() {
 		RenderChunk.clearPool();
 		MessageManager.getInstance().removeListener(this, Events.mapChanged.getId());

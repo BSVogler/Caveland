@@ -190,7 +190,12 @@ public class RenderCell extends AbstractGameObject {
 		return customBlocks.newLogicInstance(id, value, coord);
 	}
 	
-	
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	public static boolean hasLogic(byte id, byte value) {
 		if (customBlocks == null) {
 			return false;
@@ -326,6 +331,12 @@ public class RenderCell extends AbstractGameObject {
 		return isLiquid((byte)(block&255), (byte)((block>>8)&255));
 	}
 	
+	/**
+	 *
+	 * @param id
+	 * @param value
+	 * @return
+	 */
 	public static boolean isIndestructible(byte id, byte value) {
 		if (customBlocks != null) {
 			return customBlocks.isIndestructible(id, value);
@@ -369,6 +380,12 @@ public class RenderCell extends AbstractGameObject {
 		}
 	}
 
+	/**
+	 *
+	 * @param spriteId
+	 * @param spriteValue
+	 * @return
+	 */
 	public static boolean hasSides(byte spriteId, byte spriteValue) {
 		if (spriteId == 0 || spriteId == 4) {
 			return false;
@@ -595,6 +612,10 @@ public class RenderCell extends AbstractGameObject {
 		return value;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isObstacle() {
 		return RenderCell.isObstacle(id, value);
 	}
@@ -982,6 +1003,10 @@ public class RenderCell extends AbstractGameObject {
 		return RenderCell.isTransparent(getSpriteId(),getSpriteValue());//sprite id because view related
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isIndestructible() {
 		return RenderCell.isIndestructible(id,value);//game logic related
 	}
@@ -1002,6 +1027,10 @@ public class RenderCell extends AbstractGameObject {
 		return RenderCell.hasSides(getSpriteId(),getSpriteValue());
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isLiquid() {
 		if (id == 0) {
 			return false;
@@ -1400,6 +1429,9 @@ public class RenderCell extends AbstractGameObject {
 		lastRebuild = WE.getGameplay().getFrameNum();
 	}
 
+	/**
+	 *
+	 */
 	public void clearCoveredEnts() {
 		coveredEnts.clear();
 	}

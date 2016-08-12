@@ -304,6 +304,10 @@ public class Map implements IndexedGraph<PfNode> {
 		return data;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public ArrayList<Chunk> getLoadedChunks(){
 		return loadedChunks;
 	}
@@ -349,6 +353,13 @@ public class Map implements IndexedGraph<PfNode> {
 		}
 	}
 
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public int getBlock(int x, int y, int z) {
 		if (z < 0) {
 			return (byte) WE.getCVars().getValueI("groundBlockID");
@@ -361,6 +372,11 @@ public class Map implements IndexedGraph<PfNode> {
 		}
 	}
 
+	/**
+	 *
+	 * @param coord
+	 * @return
+	 */
 	public byte getHealth(Coordinate coord) {
 		return (byte) ((getBlock(coord) >> 16) & 255);
 	}

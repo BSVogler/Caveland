@@ -256,6 +256,10 @@ public class LightEngine {
 		return moon;
 	}
 
+	/**
+	 *
+	 * @param moon
+	 */
 	public void setMoon(GlobalLightSource moon) {
 		this.moon = moon;
 	}

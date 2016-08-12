@@ -137,10 +137,18 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new BooleanCVar(false), "showMiniMapChunk");
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public CVarSystemMap getMapCVars() {
 		return mapSystem;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public CVarSystemSave getSaveCVars() {
 		if (mapSystem == null) {
 			return null;
@@ -148,6 +156,10 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		return mapSystem.getSaveCVars();
 	}
 	
+	/**
+	 *
+	 * @param mapSystem
+	 */
 	public void setMapCVars(CVarSystemMap mapSystem){
 		this.mapSystem = mapSystem;
 	}

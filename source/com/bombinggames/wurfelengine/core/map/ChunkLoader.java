@@ -44,6 +44,14 @@ public class ChunkLoader implements Runnable{
 	private final int coordX;
 	private final Map map;
 
+	/**
+	 *
+	 * @param map
+	 * @param path
+	 * @param coordX
+	 * @param coordY
+	 * @param generator
+	 */
 	public ChunkLoader(final Map map, final File path, final int coordX, final int coordY, final Generator generator) {
 		this.map = map;
 		this.coordX = coordX;
@@ -66,10 +74,18 @@ public class ChunkLoader implements Runnable{
 		return chunk;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
 	public int getCoordX() {
 		return coordX;
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public int getCoordY() {
 		return coordY;
 	}

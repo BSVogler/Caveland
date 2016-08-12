@@ -34,6 +34,10 @@ public enum Tool {
 	final String name;
 	final boolean selectFromBlocks;
 	final boolean selectFromEntities;
+
+	/**
+	 *
+	 */
 	public final boolean showNormal;
 
 	private Tool(int id, String name, boolean worksOnBlocks, boolean worksOnEntities, boolean showNormal) {

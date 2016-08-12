@@ -41,6 +41,7 @@ public class AnimatedBlock extends RenderCell implements Animatable{
     private boolean running;
     private final boolean loop;
 	private boolean bob;
+	byte currentSpriteValue;
 	/**
 	 * true if running forth, false if back
 	 */
@@ -69,6 +70,10 @@ public class AnimatedBlock extends RenderCell implements Animatable{
 		this.bob = bob;
 	}
 	
+	public void setStartSpriteValue(byte value){
+		this.currentSpriteValue = value;
+	}
+	
     
    /**
      * updates the block and the animation.
@@ -78,41 +83,46 @@ public class AnimatedBlock extends RenderCell implements Animatable{
     public void update(float dt) {
         if (running) {
             counter += dt;
-            if (counter >= animationsduration[getSpriteValue()]){
-                counter %= animationsduration[getSpriteValue()];//stay in circle
+            if (counter >= animationsduration[currentSpriteValue]){
+                counter %= animationsduration[currentSpriteValue];//stay in circle
 				if (runningForth)
-					setSpriteValue((byte) (getSpriteValue()+1));
+					currentSpriteValue = ((byte) (currentSpriteValue+1));
 				else
-					setSpriteValue((byte) (getSpriteValue()-1));
+					currentSpriteValue = ((byte) (currentSpriteValue-1));
 				
-                if (getSpriteValue() >= animationsduration.length) {//if over animation array
+                if (currentSpriteValue >= animationsduration.length) {//if over animation array
                     if (loop) {
 						if (bob && runningForth) {
 							runningForth=false;//go back
-							setSpriteValue((byte) (animationsduration.length-2));//reverse step and go in different direction
+							currentSpriteValue =((byte) (animationsduration.length-2));//reverse step and go in different direction
 						} else
-							setSpriteValue((byte) 0);
+							currentSpriteValue =((byte) 0);
 					} else {
 						//stop animation
                         running = false;
-                        setSpriteValue((byte) (animationsduration.length-1));
+                        currentSpriteValue=((byte) (animationsduration.length-1));
                     }
-				} else if (getSpriteValue() < 0) {
+				} else if (currentSpriteValue < 0) {
 					if (loop) {
 						if (bob && !runningForth) {
 							runningForth=true;//go forth
-							setSpriteValue((byte) 1);
+							currentSpriteValue=((byte) 1);
 						} else
-							setSpriteValue((byte) (animationsduration.length-1));
+							currentSpriteValue=((byte) (animationsduration.length-1));
 					} else {
 						//stop animation
 						running = false;
-						setSpriteValue((byte) 0);
+						currentSpriteValue=((byte) 0);
 					}
 				}
             }
         }
     }
+
+	@Override
+	public byte getSpriteValue() {
+		return currentSpriteValue;
+	}
 
     /**
      * Starts the animation.

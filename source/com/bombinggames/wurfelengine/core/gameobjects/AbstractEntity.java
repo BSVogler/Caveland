@@ -104,13 +104,16 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	private float mass = 0.4f;
 	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
 	private final LinkedList<Component> components = new LinkedList<>();
+	private byte value;
+	private byte id;
 	/**
 	 * Create an abstractEntity.
 	 *
 	 * @param id objects with id = -1 will be deleted. 0 are invisible objects
 	 */
 	public AbstractEntity(byte id) {
-		super(id);
+		super();
+		this.id = id;
 	}
 
 	/**
@@ -120,7 +123,9 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 	 * @param value
 	 */
 	public AbstractEntity(byte id, byte value) {
-		super(id, value);
+		super();
+		this.id = id;
+		this.value = value;
 	}
 
 	/**
@@ -648,5 +653,21 @@ public abstract class AbstractEntity extends AbstractGameObject implements Teleg
 		removeFromMap();
 	}
 
+	@Override
+	public byte getSpriteId() {
+		return id;
+	}
 
+	@Override
+	public byte getSpriteValue() {
+		return value;
+	}
+	
+	public void setSpriteId(byte id){
+		this.id = id;
+	}
+	
+	public void setSpriteValue(byte value){
+		this.value = value;
+	}
 }

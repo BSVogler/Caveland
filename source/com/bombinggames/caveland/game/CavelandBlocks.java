@@ -283,10 +283,15 @@ public class CavelandBlocks implements CustomBlocks {
 			GrassBlock grass = new GrassBlock(id, value);
 			return grass;
 		} else if (id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id) {
-			RenderCell iO = new RenderCell(id, value);
-			if (value> 0){
-				iO.setSpriteId((byte) 3);
-			}
+			RenderCell iO = new RenderCell(id, value) {
+				private static final long serialVersionUID = -4260228293280367069L;
+				@Override
+				public byte getSpriteId() {
+					if (getValue() > 0) {
+						return 3;
+					}else return super.getSpriteId();
+				}
+			};
 			return iO;
 		} else if (id == CLBlocks.TREE.id) {
 			return new CustomTree(id, value);

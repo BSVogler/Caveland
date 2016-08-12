@@ -235,8 +235,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	private boolean hidden;
 	private float rotation;
 	private float scaling = 1;
-	private byte spriteId;
-	private byte spriteValue = 0;
 
 	/**
 	 * default is RGBA 0x808080FF.
@@ -247,27 +245,11 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	/**
 	 * Creates an object.
 	 *
-	 * @param id the id of the object which is used for rendering
 	 */
-	protected AbstractGameObject(byte id) {
-		this.spriteId = id;
-		if (id == 0) {
-			setHidden(true);
-		}
+	protected AbstractGameObject() {
 		//markPermanent();//create as marked
 	}
 
-	/**
-	 * Creates an object.
-	 *
-	 * @param id the id of the object which is used for rendering
-	 * @param value used for rendering
-	 */
-	protected AbstractGameObject(byte id, byte value) {
-		this(id);
-		this.spriteValue = value;
-	}
-	
 	/**
 	 * Get the category letter for accessing sprites.
 	 *
@@ -351,8 +333,10 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * multiply with 1) is when passed RGBA 0x80808080.
 	 */
 	public void render(GameView view, int xPos, int yPos, Color color) {
-		if (spriteId > 0 && spriteValue >= 0) {
-			AtlasRegion texture = AbstractGameObject.getSprite(getSpriteCategory(), spriteId, spriteValue);
+		byte id = getSpriteId();
+		byte value = getSpriteValue();
+		if (id > 0 && value >= 0) {
+			AtlasRegion texture = AbstractGameObject.getSprite(getSpriteCategory(), id, value);
 			Sprite sprite = new Sprite(texture);
 			sprite.setOrigin(
 				texture.originalWidth / 2 - texture.offsetX,
@@ -430,18 +414,14 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 *
 	 * @return if spritevalue is not custom set uses value.
 	 */
-	public byte getSpriteId() {
-		return spriteId;
-	}
+	public abstract byte getSpriteId();
 
 
 	/**
      * Get the value. It is like a sub-id and can identify the status.
      * @return in range [0;{@link RenderCell#VALUESNUM}]. Is -1 if about to destroyed.
      */
-	public byte getSpriteValue() {
-		return spriteValue;
-	}
+	public abstract byte getSpriteValue();
 
 	/**
 	 * Returns the name of the object
@@ -504,26 +484,6 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	}
 
 	/**
-	 * The id of the sprite. Default is the same as the id but in some cases
-	 * some objects share their sprites.
-	 *
-	 * @param id
-	 */
-	public void setSpriteId(byte id) {
-		spriteId = id;
-	}
-
-	/**
-     * Set the value.
-     * @param value in range [0;{@link RenderCell#VALUESNUM}]. Is -1 if about to destroyed.
-     */
-	public void setSpriteValue(byte value) {
-		if (value < RenderCell.VALUESNUM) {
-			spriteValue = value;
-		}
-	}
-
-	/**
 	 * Give the object a tint. The default brightness is RGBA 0x808080FF so you
 	 * can make it brighter and darker by modifying R, G and B.
 	 *
@@ -551,7 +511,7 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	 * @return the sprite used for rendering
 	 */
 	public AtlasRegion getSprite() {
-		return AbstractGameObject.getSprite(getSpriteCategory(), spriteId, spriteValue);
+		return AbstractGameObject.getSprite(getSpriteCategory(), getSpriteId(), getSpriteValue());
 	}
 
 	/**

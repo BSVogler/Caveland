@@ -42,6 +42,7 @@ import com.badlogic.gdx.utils.Array;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
+import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
@@ -413,10 +414,14 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param value
 	 */
 	public void setValue(Coordinate coord, byte value) {
-		getChunkContaining(coord).setValue(coord, value);
-		RenderCell renderCell = WE.getGameplay().getView().getRenderStorage().getCell(coord);
-		if (renderCell != null) {
-			renderCell.setSpriteValue(value);
+		getChunkContaining(coord).setValue(coord, value);//call to map
+		//call to update RenderStorage
+		GameView view = WE.getGameplay().getView();
+		if (view != null) {//only update RS if can access it
+			RenderCell renderCell = view.getRenderStorage().getCell(coord);
+			if (renderCell != null) {
+				renderCell.setValue(value);
+			}
 		}
 	}
 	

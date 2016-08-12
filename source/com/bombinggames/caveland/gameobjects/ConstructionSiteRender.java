@@ -16,14 +16,17 @@ public class ConstructionSiteRender extends RenderCell {
 	 */
 	public ConstructionSiteRender(byte id, byte value) {
 		super(id, value);
-		setSpriteValue((byte) 0);
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (getSpriteValue() != 0)
-			setSpriteValue((byte) 0);
 	}
+
+	@Override
+	public byte getSpriteValue() {
+		return 0;
+	}
+	
 	
 }

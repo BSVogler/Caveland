@@ -24,11 +24,9 @@ public class CustomTree extends RenderCell {
 	 *
 	 * @param id
 	 * @param value
-	 * @param health
 	 */
 	public CustomTree(byte id, byte value) {
 		super(id, value);
-		setSpriteValue(value);
 		
 		if (getSpriteValue() == TREETOPVALUE)
 			setHidden(true);

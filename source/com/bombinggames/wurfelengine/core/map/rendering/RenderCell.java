@@ -561,7 +561,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @see #getRenderCell(byte, byte) 
 	 */
     public RenderCell(byte id){
-        super(id);
+        super();
 		this.id = id;
 	}
 	
@@ -572,7 +572,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @see #getRenderCell(byte, byte) 
 	 */
 	public RenderCell(byte id, byte value){
-		super(id, value);
+		super();
 		this.id = id;
 		this.value = value;
 	}
@@ -906,6 +906,7 @@ public class RenderCell extends AbstractGameObject {
 				sprite = site3;
 				break;
 		}
+		sprite.setRegion(getBlockSprite(id, value, side));
 		sprite.setPosition(xPos, yPos);
 		if (getScaling() != 1) {
 			sprite.setOrigin(0, 0);
@@ -1418,6 +1419,24 @@ public class RenderCell extends AbstractGameObject {
 	@Override
 	public String toString() {
 		return Integer.toHexString(hashCode())+" @"+getPosition().toString()+" id: "+ id+" value: "+value;
+	}
+
+	@Override
+	public byte getSpriteId() {
+		return id;
+	}
+
+	@Override
+	public byte getSpriteValue() {
+		return value;
+	}
+
+	/**
+	 * should only be changed when the copy of the data in the map has also changed
+	 * @param value 
+	 */
+	public void setValue(byte value) {
+		this.value = value;
 	}
 
 }

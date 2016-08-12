@@ -393,14 +393,24 @@ public class Map implements IndexedGraph<PfNode> {
 		}
 	}
 	
+	/**
+	 * Set id, value and health at a coordinate in the map.
+	 * @param coord
+	 * @param block
+	 */
 	public void setBlock(Coordinate coord, int block) {
 		Chunk chunk = getChunkContaining(coord);
 		if (chunk != null) {
-			chunk.setBlock(coord, (byte)(block&255), (byte)((block>>8)&255));
+			chunk.setBlock(coord, (byte) (block & 255), (byte) ((block >> 8) & 255), (byte) ((block >> 16) & 255));
 		}
 	}
 
-	
+	/**
+	 * Set id and value at a coordinate in the map.
+	 * @param coord
+	 * @param id
+	 * @param value
+	 */
 	public void setBlock(Coordinate coord, byte id, byte value) {
 		Chunk chunk = getChunkContaining(coord);
 		if (chunk != null) {
@@ -424,11 +434,12 @@ public class Map implements IndexedGraph<PfNode> {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set health of a cell.
+	 *
 	 * @param coord
-	 * @param health 
+	 * @param health
 	 */
 	public void setHealth(Coordinate coord, byte health) {
 		getChunkContaining(coord).setHealth(coord, health);

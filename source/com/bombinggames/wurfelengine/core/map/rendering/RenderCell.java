@@ -540,7 +540,7 @@ public class RenderCell extends AbstractGameObject {
 	 */
 	private byte clipping;
 	/**
-	 * stores references to neighbor blocks which are covered.
+	 * Stores references to neighbor blocks which are covered. For topological sort.
 	 */
 	private final LinkedList<AbstractGameObject> covered = new LinkedList<>();
 	/**
@@ -1433,7 +1433,7 @@ public class RenderCell extends AbstractGameObject {
 
 	/**
 	 * should only be changed when the copy of the data in the map has also changed
-	 * @param value 
+	 * @param value game data value.
 	 */
 	public void setValue(byte value) {
 		this.value = value;

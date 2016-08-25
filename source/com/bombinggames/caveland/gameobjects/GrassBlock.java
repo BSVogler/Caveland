@@ -94,9 +94,9 @@ public class GrassBlock extends RenderCell {
 				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2 + 15);
 				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.VIEW_WIDTH2 - 10) {
 					gras.setColor(
-						getLightlevel(side, 1, 0) / 2f,
-						getLightlevel(side, 1, 1) / 2f - (xOffset + i) % 7 * 0.005f,
-						getLightlevel(side, 1, 2) / 2f,
+						getLightlevel(side, (byte) 1, Channel.Red) / 2f,
+						getLightlevel(side, (byte) 1, Channel.Green) / 2f - (xOffset + i) % 7 * 0.005f,
+						getLightlevel(side, (byte) 1, Channel.Blue) / 2f,
 						1
 					);
 					gras.setPosition(xPos + xOffset + RenderCell.VIEW_WIDTH2,

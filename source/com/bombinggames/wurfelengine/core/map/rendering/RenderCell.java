@@ -955,18 +955,18 @@ public class RenderCell extends AbstractGameObject {
 	//				color.b = 1;
 	//			}
 			sprite.setColor(
-				getLightlevel(side, 0, 0) / 2f,
-				getLightlevel(side, 0, 1) / 2f,
-				getLightlevel(side, 0, 2) / 2f,
-				getLightlevel(side, 1, 0) / 2f,
-				getLightlevel(side, 1, 1) / 2f,
-				getLightlevel(side, 1, 2) / 2f,
-				getLightlevel(side, 2, 0) / 2f,
-				getLightlevel(side, 2, 1) / 2f,
-				getLightlevel(side, 2, 2) / 2f,
-				getLightlevel(side, 3, 0) / 2f,
-				getLightlevel(side, 3, 1) / 2f,
-				getLightlevel(side, 3, 2) / 2f
+				getLightlevel(side, (byte) 0, Channel.Red) / 2f,
+				getLightlevel(side, (byte) 0, Channel.Green) / 2f,
+				getLightlevel(side, (byte) 0, Channel.Blue) / 2f,
+				getLightlevel(side, (byte) 1, Channel.Red)  / 2f,
+				getLightlevel(side, (byte) 1, Channel.Green) / 2f,
+				getLightlevel(side, (byte) 1, Channel.Blue) / 2f,
+				getLightlevel(side, (byte) 2, Channel.Red)  / 2f,
+				getLightlevel(side, (byte) 2, Channel.Green) / 2f,
+				getLightlevel(side, (byte) 2, Channel.Blue) / 2f,
+				getLightlevel(side, (byte) 3, Channel.Red)  / 2f,
+				getLightlevel(side, (byte) 3, Channel.Green) / 2f,
+				getLightlevel(side, (byte) 3, Channel.Blue) / 2f
 			);
 			//}
 			sprite.draw(view.getSpriteBatch());
@@ -1040,34 +1040,40 @@ public class RenderCell extends AbstractGameObject {
 
 	@Override
 	public float getLightlevelR() {
-		return (getLightlevel(Side.LEFT, 0,0) + getLightlevel(Side.TOP, 0,0) + getLightlevel(Side.RIGHT, 0,0)) / 3f;
+		return (getLightlevel(Side.LEFT, (byte) 0, Channel.Red)
+			+ getLightlevel(Side.TOP, (byte) 0, Channel.Red)
+			+ getLightlevel(Side.RIGHT, (byte) 0, Channel.Red)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelG() {
-		return (getLightlevel(Side.LEFT, 0,1) + getLightlevel(Side.TOP, 0,1) + getLightlevel(Side.RIGHT, 0,1)) / 3f;
+		return (getLightlevel(Side.LEFT, (byte) 0, Channel.Green)
+			+ getLightlevel(Side.TOP, (byte) 0, Channel.Green)
+			+ getLightlevel(Side.RIGHT, (byte) 0, Channel.Green)) / 3f;
 	}
 
 	@Override
 	public float getLightlevelB() {
-		return (getLightlevel(Side.LEFT, 0, 2) + getLightlevel(Side.TOP, 0,2) + getLightlevel(Side.RIGHT, 0,2)) / 3f;
+		return (getLightlevel(Side.LEFT, (byte) 0, Channel.Blue)
+			+ getLightlevel(Side.TOP, (byte) 0, Channel.Blue)
+			+ getLightlevel(Side.RIGHT, (byte) 0, Channel.Blue)) / 3f;
 	}
 
 	/**
 	 *
 	 * @param side
-	 * @param vert
+	 * @param vertex 0-3
 	 * @param channel
 	 * @return range 0-2.
 	 */
-	public float getLightlevel(Side side, int vert, int channel) {
-		byte colorBitShift = (byte) (20 - 10 * channel);
+	public float getLightlevel(Side side, byte vertex, Channel channel) {
+		byte colorBitShift = (byte) (20 - 10 * channel.id);
 		if (side == Side.LEFT) {
-			return ((colorLeft[vert]  >> colorBitShift) & 0x3FF) / 511f;
+			return ((colorLeft[vertex]  >> colorBitShift) & 0x3FF) / 511f;
 		} else if (side == Side.TOP) {
-			return ((colorTop[vert]  >> colorBitShift) & 0x3FF) / 511f;
+			return ((colorTop[vertex]  >> colorBitShift) & 0x3FF) / 511f;
 		}
-		return ((colorRight[vert]  >> colorBitShift) & 0x3FF) / 511f;
+		return ((colorRight[vertex]  >> colorBitShift) & 0x3FF) / 511f;
 	}
 
 	/**
@@ -1146,10 +1152,10 @@ public class RenderCell extends AbstractGameObject {
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
-	 * @param channel r g oder b,
+	 * @param channel 0 = Red, 1 = Green, 2 = Blue
 	 * @param vertex
 	 */
-	public void setLightlevel(float lightlevel, Side side, int channel, int vertex) {
+	public void setLightlevel(float lightlevel, Side side, byte channel, byte vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
@@ -1178,15 +1184,15 @@ public class RenderCell extends AbstractGameObject {
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
-	 * @param channel 0 = R, 1 =G, 2=B
+	 * @param channel 0 = Red, 1 = Green, 2 = Blue
 	 * @param vertex
 	 */
-	public void addLightlevel(float lightlevel, Side side, int channel, int vertex) {
+	public void addLightlevel(float lightlevel, Side side, Channel channel, byte vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
 
-		byte colorBitShift = (byte) (20 - 10 * channel);
+		byte colorBitShift = (byte) (20 - 10 * channel.id);
 
 		float l = lightlevel * 512;
 		if (l > 1023) {
@@ -1469,6 +1475,19 @@ public class RenderCell extends AbstractGameObject {
 	 */
 	public void setValue(byte value) {
 		this.value = value;
+	}
+
+	public static enum Channel {
+
+		Red((byte) 0),
+		Green((byte) 1),
+		Blue((byte) 2);
+
+		final byte id;
+
+		Channel(byte id) {
+			this.id = id;
+		}
 	}
 
 }

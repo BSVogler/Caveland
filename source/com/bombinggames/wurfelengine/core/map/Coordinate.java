@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderCell.Channel;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 import java.util.ArrayList;
@@ -747,13 +748,13 @@ public class Coordinate implements Position {
 	 * @param color only read from
 	 * @param vertex
 	 */
-	public void addLight(final GameView view, Side side, int vertex, final Color color) {
+	public void addLight(final GameView view, Side side, byte vertex, final Color color) {
 		RenderCell rB = getRenderBlock(view.getRenderStorage());
 		if (rB != null && !rB.isHidden()) {
 			view.getRenderStorage().setLightFlag(rB);
-			rB.addLightlevel(color.r, side, 0, vertex);
-			rB.addLightlevel(color.g, side, 1, vertex);
-			rB.addLightlevel(color.b, side, 2, vertex);
+			rB.addLightlevel(color.r, side, Channel.Red, vertex);
+			rB.addLightlevel(color.g, side, Channel.Green, vertex);
+			rB.addLightlevel(color.b, side, Channel.Blue, vertex);
 		}
 	}
 
@@ -766,27 +767,27 @@ public class Coordinate implements Position {
 	 */
 	public void addLightToBackEdge(final GameView view, final Side side, final Color color) {
 		if (side == Side.TOP) {
-			this.addLight(view, side, 1, color);
-			goToNeighbour(0).addLight(view, side, 3, color);
-			goToNeighbour(3).addLight(view, side, 0, color);
-			goToNeighbour(6).addLight(view, side, 2, color);
+			this.addLight(view, side, (byte) 1, color);
+			goToNeighbour(0).addLight(view, side, (byte) 3, color);
+			goToNeighbour(3).addLight(view, side, (byte) 0, color);
+			goToNeighbour(6).addLight(view, side, (byte) 2, color);
 			goToNeighbour(3);//go back
 		} else {
 			RenderCell neighb = getRenderBlock(view.getRenderStorage());
 			if (neighb != null && !neighb.isHidden()) {
 				//view.getRenderStorage().setLightFlag(rB); //in the way this algorthm is used this line is not needed
-				neighb.addLightlevel(color.r, side, 0, 0);
-				neighb.addLightlevel(color.g, side, 1, 0);
-				neighb.addLightlevel(color.b, side, 2, 0);
-				neighb.addLightlevel(color.r, side, 0, 1);
-				neighb.addLightlevel(color.g, side, 1, 1);
-				neighb.addLightlevel(color.b, side, 2, 1);
-				neighb.addLightlevel(color.r, side, 0, 2);
-				neighb.addLightlevel(color.g, side, 1, 2);
-				neighb.addLightlevel(color.b, side, 2, 2);
-				neighb.addLightlevel(color.r, side, 0, 3);
-				neighb.addLightlevel(color.g, side, 1, 3);
-				neighb.addLightlevel(color.b, side, 2, 3);
+				neighb.addLightlevel(color.r, side, Channel.Red, (byte) 0);
+				neighb.addLightlevel(color.g, side, Channel.Green, (byte) 0);
+				neighb.addLightlevel(color.b, side, Channel.Blue, (byte) 0);
+				neighb.addLightlevel(color.r, side, Channel.Red, (byte) 1);
+				neighb.addLightlevel(color.g, side, Channel.Green, (byte) 1);
+				neighb.addLightlevel(color.b, side, Channel.Blue, (byte) 1);
+				neighb.addLightlevel(color.r, side, Channel.Red, (byte) 2);
+				neighb.addLightlevel(color.g, side, Channel.Green, (byte) 2);
+				neighb.addLightlevel(color.b, side, Channel.Blue, (byte) 2);
+				neighb.addLightlevel(color.r, side, Channel.Red, (byte) 3);
+				neighb.addLightlevel(color.g, side, Channel.Green, (byte) 3);
+				neighb.addLightlevel(color.b, side, Channel.Blue, (byte) 3);
 			}
 		}
 	}

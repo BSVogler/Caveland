@@ -1191,12 +1191,12 @@ public class RenderCell extends AbstractGameObject {
 	 * @param channel 0 = Red, 1 = Green, 2 = Blue
 	 * @param vertex
 	 */
-	public void setLightlevel(float lightlevel, Side side, byte channel, byte vertex) {
+	public void setLightlevel(float lightlevel, Side side, Channel channel, byte vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}
 		
-		byte colorBitShift = (byte) (20 - 10 * channel);
+		byte colorBitShift = (byte) (20 - 10 * channel.id);
 		
 		int l = (int) (lightlevel * 512);
 		if (l > 1023) {

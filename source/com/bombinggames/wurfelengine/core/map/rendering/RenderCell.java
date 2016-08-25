@@ -516,9 +516,9 @@ public class RenderCell extends AbstractGameObject {
 	
 	//view data
 	/**
-	 * each side has RGB color stored as 10bit float. Obtained by dividing bits
-	 * by fraction /2^10-1 = 1023.
-	 * each field is vertex 0-3
+	 * Each side has four RGB101010 colors with a 10bit float precision per
+	 * channel. channel brightness obtained by dividing bits by fraction /2^10-1
+	 * = 1023. each field is vertex 0-3
 	 */
 	private final int[] colorLeft = new int[]{
 		(55 << 16) + (55 << 8) + 55,
@@ -1124,9 +1124,45 @@ public class RenderCell extends AbstractGameObject {
 	 *
 	 * @param lightlevel a factor in range [0-2]
 	 * @param side
-	 * @param vertex
 	 */
-	public void setLightlevel(float lightlevel, Side side, int vertex) {
+	public void setLightlevel(float lightlevel, Side side) {
+		if (lightlevel < 0) {
+			lightlevel = 0;
+		}
+		int l = (int) (lightlevel * 512);
+		if (l > 1023) {
+			l = 1023;
+		}
+
+		switch (side) {
+			case LEFT:
+				colorLeft[0] = (l << 20) + (l << 10) + l;//RGB
+				colorLeft[1] = (l << 20) + (l << 10) + l;//RGB
+				colorLeft[2] = (l << 20) + (l << 10) + l;//RGB
+				colorLeft[3] = (l << 20) + (l << 10) + l;//RGB
+				break;
+			case TOP:
+				colorTop[0] = (l << 20) + (l << 10) + l;//RGB
+				colorTop[1] = (l << 20) + (l << 10) + l;//RGB
+				colorTop[2] = (l << 20) + (l << 10) + l;//RGB
+				colorTop[3] = (l << 20) + (l << 10) + l;//RGB
+				break;
+			default:
+				colorRight[0] = (l << 20) + (l << 10) + l;//RGB
+				colorRight[1] = (l << 20) + (l << 10) + l;//RGB
+				colorRight[2] = (l << 20) + (l << 10) + l;//RGB
+				colorRight[3] = (l << 20) + (l << 10) + l;//RGB
+				break;
+		}
+	}
+	
+	/**
+	 *
+	 * @param lightlevel a factor in range [0-2]
+	 * @param side
+	 * @param vertex id [0-3]
+	 */
+	public void setLightlevel(float lightlevel, Side side, byte vertex) {
 		if (lightlevel < 0) {
 			lightlevel = 0;
 		}

@@ -173,25 +173,24 @@ public class RenderChunk {
 			if (block != null) {
 				data[idexX][idexY][idexZ].setLightlevel(1);
 
+				//check if block above is transparent
 				if (idexZ < blocksZ - 2
 					&& (data[idexX][idexY][idexZ + 1] == null
-					|| data[idexX][idexY][idexZ + 1].isTransparent())) {
-					//two block above is a block casting shadows
+					|| data[idexX][idexY][idexZ + 1].isTransparent())
+				) {
+					//two cells above is a block casting shadows
 					if (data[idexX][idexY][idexZ + 2] != null
-						&& !data[idexX][idexY][idexZ + 2].isTransparent()) {
-						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP, 0);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 1);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 2);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 3);//todo every vertex
+						&& !data[idexX][idexY][idexZ + 2].isTransparent()
+					) {
+						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP);
+					//three block above is one
 					} else if (idexZ < blocksZ - 3
 						&& (data[idexX][idexY][idexZ + 2] == null
 						|| data[idexX][idexY][idexZ + 2].isTransparent())
 						&& data[idexX][idexY][idexZ + 3] != null
-						&& !data[idexX][idexY][idexZ + 3].isTransparent()) {
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 0);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 1);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 2);//todo every vertex
-						data[idexX][idexY][idexZ].setLightlevel(0.9f, Side.TOP, 3);//todo every vertex
+						&& !data[idexX][idexY][idexZ + 3].isTransparent()
+					) {
+						data[idexX][idexY][idexZ].setLightlevel(0.92f, Side.TOP);
 					}
 				}
 			}

@@ -88,7 +88,7 @@ public class LoadingScreen extends WEScreen {
 		try {
 			
 			// Get our textureatlas from the manager
-			TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/core/Loading/loading.txt");
+			TextureAtlas GUItexture = WE.getAsset("com/bombinggames/wurfelengine/core/loading/loading.txt");
 			// Grab the regions from the atlas and create some images
 			logo = new Image(GUItexture.findRegion("banner_medium"));
 			loadingFrame = new Image(GUItexture.findRegion("loading-frame"));

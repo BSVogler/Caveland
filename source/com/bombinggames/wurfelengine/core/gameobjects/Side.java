@@ -28,7 +28,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.bombinggames.wurfelengine.core.gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
@@ -36,79 +35,77 @@ import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
+ * A Block is made of six surfaces.
  *
  * @author Benedikt Vogler
  */
 public enum Side {
-    /**The id of the left side of a block.*/
-    LEFT(0),
-
-    /**
-     *
-     */
-    TOP(1),
-
-    /**
-     *
-     */
-    RIGHT(2),
-	
+	/**
+	 * The left side of a block.
+	 */
+	LEFT((byte) 0),
 	/**
 	 *
 	 */
-	BACKLEFT(3),
-	
+	TOP((byte) 1),
 	/**
 	 *
 	 */
-	BACKRIGHT(4),
+	RIGHT((byte) 2),
+	/**
+	 * rarely used because does not face user
+	 */
+	BACKLEFT((byte) 3),
+	/**
+	 * rarely used because does not face user
+	 */
+	BACKRIGHT((byte) 4),
+	/**
+	 * rarely used because does not face user
+	 */
+	BOTTOM((byte) 5);
+
+	private final byte code;
+
+	private Side(byte c) {
+		code = c;
+	}
 
 	/**
+	 * The side as integer.
 	 *
+	 * @return
 	 */
-	BOTTOM(5);
-    private int code;
+	public byte getCode() {
+		return code;
+	}
 
-    private Side(int c) {
-        code = c;
-    }
-
-    /**
-     * The side as integer.
-     * @return 
-     */
-    public int getCode() {
-        return code;
-    }
-    
-    /**
-     *Get the side belonging to a vector
-     * @param normal
-     * @return
-     */
-    public static Side normalToSide(Vector3 normal){
-        if (normal.z > 0) {
-            return TOP;
-		} else {
-			if (normal.x < 0) {
-				if (normal.y > 0) {
-					return LEFT;
-				} else {
-					return BACKLEFT;
-				}
+	/**
+	 * Get the side belonging to a vector
+	 *
+	 * @param normal
+	 * @return
+	 */
+	public static Side normalToSide(Vector3 normal) {
+		if (normal.z > 0) {
+			return TOP;
+		} else if (normal.x < 0) {
+			if (normal.y > 0) {
+				return LEFT;
 			} else {
-				if (normal.y > 0) {
-					return RIGHT;
-				} else {
-					return BACKRIGHT;
-				}
+				return BACKLEFT;
 			}
+		} else if (normal.y > 0) {
+			return RIGHT;
+		} else {
+			return BACKRIGHT;
 		}
 	}
 
 	/**
 	 * copy safe
-	 * @return 
+	 *
+	 * @return
 	 */
 	public Vector3 toVector() {
 		switch (this) {
@@ -126,13 +123,13 @@ public enum Side {
 				return new Vector3(0, 0, -1);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param point
-	 * @return 
+	 * @return
 	 */
-	public static Side calculateNormal(Point point){
+	public static Side calculateNormal(Point point) {
 		Point coordPoint = point.toCoord().toPoint();
 		if (point.getZ() <= coordPoint.getZ()) {
 			return Side.BOTTOM;

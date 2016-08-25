@@ -569,6 +569,16 @@ public class Coordinate implements Position {
 	public float distanceToHorizontal(Position point) {
 		return toPoint().distanceToHorizontal(point);
 	}
+	
+	@Override
+	public float distanceToHorizontalSquared(AbstractGameObject object) {
+		return toPoint().distanceToHorizontalSquared(object);
+	}
+
+	@Override
+	public float distanceToHorizontalSquared(Position point) {
+		return toPoint().distanceToHorizontalSquared(point);
+	}
 
 	/**
 	 * destroys the block at the current position, replacing by air.
@@ -666,7 +676,7 @@ public class Coordinate implements Position {
 		LinkedList<T> result = new LinkedList<>();
 		LinkedList<T> entities = Controller.getMap().getEntitys(type);
 		for (T entity : entities) {
-			if (distanceTo(((AbstractEntity)entity).getPosition()) < radius) {
+			if (getPoint().distanceToSquared(((AbstractEntity)entity).getPosition()) < radius*radius) {
 				result.add(entity);
 			}
 		}
@@ -685,7 +695,7 @@ public class Coordinate implements Position {
 		LinkedList<AbstractEntity> result = new LinkedList<>();
 		ArrayList<AbstractEntity> entityList = Controller.getMap().getEntities();
 		for (AbstractEntity entity : entityList) {
-			if (distanceToHorizontal(entity.getPoint()) < radius) {
+			if (getPoint().distanceToHorizontalSquared(entity.getPoint()) < radius*radius) {
 				result.add(entity);
 			}
 		}
@@ -702,7 +712,7 @@ public class Coordinate implements Position {
 		for (AbstractEntity entity : entityList) {//check every entity
 			if (entity.hasPosition()
 				&& type.isInstance(entity) //if the entity is of the wanted type
-				&& distanceToHorizontal(entity.getPoint()) < radius//TODO should use squared values for improved speed
+				&& getPoint().distanceToHorizontalSquared(entity.getPoint()) < radius*radius
 			) {
 				result.add((T) entity);//add it to list
 			}

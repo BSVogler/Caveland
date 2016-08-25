@@ -186,6 +186,20 @@ public interface Position extends Serializable {
 	public abstract float distanceToHorizontal(Position pos);
 	
 	/**
+	 *  checks only x and y.
+	 * @param object
+	 * @return the distance from this point to the other point squared only regarding horizontal components.
+	 */
+	public abstract float distanceToHorizontalSquared(AbstractGameObject object);
+
+	/**
+	 * checks only x and y.
+	 * @param pos
+	 * @return the distance from this pos to the other pos squared only regarding horizontal components.
+	 */
+	public abstract float distanceToHorizontalSquared(Position pos);
+	
+	/**
 	 * Get entities in radius.
 	 *
 	 * @param <T> returns only object if type which is the filter

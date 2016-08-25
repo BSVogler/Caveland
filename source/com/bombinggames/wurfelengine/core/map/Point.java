@@ -766,6 +766,32 @@ public class Point extends Vector3 implements Position {
 		float dZ = z - point.z;
 		return dX * dX + dY * dY + dZ * dZ;
 	}
+	
+	/**
+	 * checks only x and y.
+	 *
+	 * @param point
+	 * @return the distance from this point to the other point only regarding
+	 * horizontal components.
+	 */
+	public float distanceToHorizontal(Point point) {
+		float dX = x - point.x;
+		float dY = y - point.y;
+		return (float) Math.sqrt(dX * dX + dY * dY);
+	}
+	
+	/**
+	 * checks only x and y.
+	 *
+	 * @param point
+	 * @return the distance from this point to the other point only regarding
+	 * horizontal components.
+	 */
+	public float distanceToHorizontalSquared(Point point) {
+		float dX = x - point.x;
+		float dY = y - point.y;
+		return dX * dX + dY * dY;
+	}
 
 	/**
 	 * checks only x and y.
@@ -783,18 +809,22 @@ public class Point extends Vector3 implements Position {
 	public float distanceToHorizontal(Position pos) {
 		return distanceToHorizontal(pos.getPoint());
 	}
-
-	/**
+	
+		/**
 	 * checks only x and y.
 	 *
-	 * @param point
+	 * @param object
 	 * @return the distance from this point to the other point only regarding
 	 * horizontal components.
 	 */
-	public float distanceToHorizontal(Point point) {
-		float dX = x - point.x;
-		float dY = y - point.y;
-		return (float) Math.sqrt(dX * dX + dY * dY);
+	@Override
+	public float distanceToHorizontalSquared(AbstractGameObject object) {
+		return distanceToHorizontalSquared(object.getPoint());
+	}
+
+	@Override
+	public float distanceToHorizontalSquared(Position pos) {
+		return distanceToHorizontalSquared(pos.getPoint());
 	}
 
 	/**

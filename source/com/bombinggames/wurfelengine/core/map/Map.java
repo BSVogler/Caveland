@@ -155,13 +155,14 @@ public class Map implements IndexedGraph<PfNode> {
 	/**
 	 * contains evey chunk which was loaded
 	 */
-	private ArrayList<Chunk> loadedChunks;
+	private LinkedList<Chunk> loadedChunks;
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 	/**
 	 * the amount of chunks in memory in one dimension
 	 */
 	private final int chunkDim;
+	private final int maxChunks;
 
 	/**
 	 * Loads a map using the default generator.
@@ -192,8 +193,8 @@ public class Map implements IndexedGraph<PfNode> {
 		for (int i = 0; i < data.length; i++) {
 			data[i] = new Chunk[chunkDim / 2];//to have a quadratic map
 		}
-		int maxChunks = WE.getCVars().getValueI("mapMaxMemoryUse") / (Chunk.getBlocksX()*Chunk.getBlocksY()*Chunk.getBlocksZ()*3); //
-		loadedChunks = new ArrayList<>(maxChunks);
+		maxChunks = WE.getCVars().getValueI("mapMaxMemoryUse") / (Chunk.getBlocksX()*Chunk.getBlocksY()*Chunk.getBlocksZ()*3); //
+		loadedChunks = new LinkedList<>();
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		
 		//load map cvars
@@ -220,11 +221,13 @@ public class Map implements IndexedGraph<PfNode> {
 		//add parralell loaded chunks serial to avoid conflicts
 		for (int i = 0; i < loadingRunnables.size(); i++) {
 			ChunkLoader runnable = loadingRunnables.get(i);
-			if (runnable.getChunk() != null) {
-				loadedChunks.add(runnable.getChunk());
-				data[runnable.getCoordX()+chunkDim/2][runnable.getCoordY()+chunkDim/4] = runnable.getChunk();
-				addEntities(runnable.getChunk().retrieveEntities());
-				setModified();
+			if (runnable.getChunk() != null) {//loaded
+				if (loadedChunks.size() < maxChunks ) {
+					loadedChunks.add(runnable.getChunk());
+					data[runnable.getCoordX()+chunkDim/2][runnable.getCoordY()+chunkDim/4] = runnable.getChunk();
+					addEntities(runnable.getChunk().retrieveEntities());
+					setModified();
+				}
 				loadingRunnables.remove(i);
 			}
 		}
@@ -277,7 +280,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @param chunkY
 	 */
 	public void loadChunk(int chunkX, int chunkY) {
-		if (Map.this.getChunk(chunkX, chunkY) == null) {
+		if (loadedChunks.size() < maxChunks && Map.this.getChunk(chunkX, chunkY) == null) {
 			if (!isLoading(chunkX, chunkY)) {
 				ChunkLoader cl = new ChunkLoader(this, getPath(), chunkX, chunkY, getGenerator());
 				loadingRunnables.add(cl);
@@ -308,7 +311,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 *
 	 * @return
 	 */
-	public ArrayList<Chunk> getLoadedChunks(){
+	public LinkedList<Chunk> getLoadedChunks(){
 		return loadedChunks;
 	}
 

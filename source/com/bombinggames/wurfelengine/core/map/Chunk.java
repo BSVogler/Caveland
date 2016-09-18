@@ -150,11 +150,6 @@ public class Chunk implements Telegraph {
     }
 
 	/**
-	 * the map in which the chunks are used
-	 */
-	private final Map map;
-
-	/**
 	 * chunk coordinate
 	 */
 	private final int chunkX, chunkY;
@@ -179,14 +174,12 @@ public class Chunk implements Telegraph {
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
-	 * @param map
 	 * @param coordX
 	 * @param coordY
      */
-    public Chunk(final Map map, final int coordX, final int coordY) {
+    public Chunk(final int coordX, final int coordY) {
         this.chunkX = coordX;
 		this.chunkY = coordY;
-		this.map = map;
 
 		//set chunk dimensions
 		blocksX = WE.getCVarsMap().getValueI("chunkBlocksX");
@@ -216,16 +209,16 @@ public class Chunk implements Telegraph {
 	 * Creates a chunk by trying to load and if this fails it generates a new
 	 * one.
 	 *
-	 * @param map
 	 * @param coordX the chunk coordinate
+	 * @param saveslot
 	 * @param coordY the chunk coordinate
 	 * @param path filename, can be null to skip file loading
 	 * @param generator used for generating if laoding fails
 	 */
-	public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator) {
-		this(map, coordX, coordY);
+	public Chunk(final File path, int saveslot, final int coordX, final int coordY, final Generator generator) {
+		this(coordX, coordY);
 		if (path != null && WE.getCVars().getValueB("shouldLoadMap")) {
-			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY)) {
+			if (!load(path, saveslot, coordX, coordY)) {
 				fill(generator);
 			}
 		} else {
@@ -536,13 +529,14 @@ public class Chunk implements Telegraph {
 
     /**
      * Save this chunk on storage.
+	 * @param map the map of which this chunk is a part of
      * @param path the map name on storage
 	 * @param saveSlot
 
      * @return
      * @throws java.io.IOException
      */
-    public boolean save(File path, int saveSlot) throws IOException {
+    public boolean save(Map map, File path, int saveSlot) throws IOException {
         if (path == null) return false;
         Gdx.app.log("Chunk","Saving "+chunkX + ","+ chunkY +".");
 		File savepath = new File(path + "/save" + saveSlot + "/chunk" + chunkX + "," + chunkY + "." + CHUNKFILESUFFIX);
@@ -869,13 +863,14 @@ public class Chunk implements Telegraph {
 	/**
 	 * disposes the chunk
 	 *
+	 * @param map
 	 * @param path if null, does not save the file
 	 */
-	public void dispose(File path) {
+	public void dispose(Map map, File path) {
 		//try saving
 		if (path != null) {
 			try {
-				save(path, map.getCurrentSaveSlot());
+				save(map, path, map.getCurrentSaveSlot());
 			} catch (IOException ex) {
 				Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 			}

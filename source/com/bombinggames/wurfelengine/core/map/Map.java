@@ -613,6 +613,7 @@ public class Map implements IndexedGraph<PfNode> {
 		for (Chunk chunk : loadedChunks) {
 			try {
 				chunk.save(
+					this,
 					getPath(),
 					saveSlot
 				);
@@ -969,9 +970,9 @@ public class Map implements IndexedGraph<PfNode> {
 	public void dispose(boolean save) {
 		for (Chunk chunk : loadedChunks) {
 			if (save) {
-				chunk.dispose(getPath());
+				chunk.dispose(this, getPath());
 			} else {
-				chunk.dispose(null);
+				chunk.dispose(this, null);
 			}
 		}
 		disposeEntities();

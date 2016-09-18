@@ -69,31 +69,28 @@ public class RenderChunk {
 	/**
 	 * With init
 	 *
-	 * @param rS
-	 * @param chunk linked chunk
+	 * @param chunk linked chunk which is then rendered
 	 */
-	public RenderChunk(RenderStorage rS, Chunk chunk) {
+	public RenderChunk(Chunk chunk) {
 		data = DATAPOOL.obtain();
-		init(rS, chunk);
+		init(chunk);
 	}
 
 	/**
 	 * update the content
 	 *
-	 * @param rS
 	 * @param chunk
 	 */
-	public void init(RenderStorage rS, Chunk chunk) {
+	public void init(Chunk chunk) {
 		this.chunk = chunk;
-		initData(rS);
+		initData();
 	}
 
 	/**
 	 * fills every render cell with the according data from the map
 	 *
-	 * @param rS
 	 */
-	public void initData(RenderStorage rS) {
+	public void initData() {
 		int tlX = chunk.getTopLeftCoordinateX();
 		int tlY = chunk.getTopLeftCoordinateY();
 

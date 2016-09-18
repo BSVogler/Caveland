@@ -156,7 +156,7 @@ public class RenderStorage implements Telegraph  {
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
 				//get chunk from pool if possible
-				rChunk = new RenderChunk(this, mapChunk);
+				rChunk = new RenderChunk(mapChunk);
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(rChunk);
@@ -219,7 +219,7 @@ public class RenderStorage implements Telegraph  {
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk rChunk) -> {
-			rChunk.initData(rS);
+			rChunk.initData();
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
 			AmbientOcclusionCalculator.calcAO(rChunk);

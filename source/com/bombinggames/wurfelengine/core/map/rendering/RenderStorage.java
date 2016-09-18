@@ -96,7 +96,7 @@ public class RenderStorage implements Telegraph  {
 			for (RenderCell[][] x : renderChunk.getData()) {
 				for (RenderCell[] y : x) {
 					for (RenderCell z : y) {
-						if (z != null) {
+						if (z != RenderChunk.NULLPOINTEROBJECT) {
 							z.update(dt);
 						}
 					}
@@ -301,7 +301,7 @@ public class RenderStorage implements Telegraph  {
 			}
 		}
 		if (chunkWithBlock == null) {
-			return null;
+			return RenderChunk.NULLPOINTEROBJECT;
 		} else {
 			return chunkWithBlock.getCell(x, y, z);//find chunk in x coord
 		}
@@ -389,7 +389,7 @@ public class RenderStorage implements Telegraph  {
 		if (chunk == null) {
 			throw new IllegalArgumentException();
 		}
-		RenderCell[][][] chunkData = chunk.getData();
+
 
 		chunk.resetClipping();
 
@@ -406,6 +406,8 @@ public class RenderStorage implements Telegraph  {
 //					-1
 //				);
 //		}
+
+		RenderCell[][][] chunkData = chunk.getData();
 		//iterate over chunk
 		DataIterator<RenderCell> dataIter = new DataIterator<>(
 			chunkData,
@@ -416,7 +418,7 @@ public class RenderStorage implements Telegraph  {
 		while (dataIter.hasNext()) {
 			RenderCell current = dataIter.next();//next is the current block
 
-			if (current != null) {
+			if (current != RenderChunk.NULLPOINTEROBJECT) {
 				//calculate index position relative to camera border
 				final int x = dataIter.getCurrentIndex()[0];
 				final int y = dataIter.getCurrentIndex()[1];
@@ -426,7 +428,7 @@ public class RenderStorage implements Telegraph  {
 				//get neighbour block
 				RenderCell neighbour = getCellByIndex(chunk, x - ((y % 2 == 0) ? 1 : 0), y + 1, z);//next row can be shifted right(?)
 
-				if (neighbour != null
+				if (neighbour != RenderChunk.NULLPOINTEROBJECT
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
 					current.setClippedLeft();
 				}
@@ -435,18 +437,21 @@ public class RenderStorage implements Telegraph  {
 				//get neighbour block
 				neighbour = getCellByIndex(chunk, x + ((y % 2 == 0) ? 0 : 1), y + 1, z);//next row is shifted right
 
-				if (neighbour != null
+				if (neighbour != RenderChunk.NULLPOINTEROBJECT
 					&& (neighbour.hidingPastBlock() || (neighbour.isLiquid() && current.isLiquid()))) {
 					current.setClippedRight();
 				}
 
-				//check top
+				//check if hidden from top
 				if (z < Chunk.getBlocksZ() - 1) {
-					neighbour = getCellByIndex(chunk, x, y + 2, z + 1);
-					if ((chunkData[x][y][z + 1] != null
+					neighbour = getCellByIndex(chunk, x, y + 2, z + 1);//block in top front
+					if (
+						neighbour.hidingPastBlock()
+						||
+						(chunkData[x][y][z + 1] != RenderChunk.NULLPOINTEROBJECT
 						&& (chunkData[x][y][z + 1].hidingPastBlock()
 						|| chunkData[x][y][z + 1].isLiquid() && current.isLiquid()))
-						|| (neighbour != null && neighbour.hidingPastBlock())) {
+					) {
 						current.setClippedTop();
 					}
 				}

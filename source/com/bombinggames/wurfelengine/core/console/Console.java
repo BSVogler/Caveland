@@ -256,7 +256,7 @@ public class Console {
 		}
 		
 		if (!textinput.getText().startsWith(path+" $ "))
-			setText(path+" $ "+ textinput.getText());
+			setText(path+" $ ");
     }
     
     /**

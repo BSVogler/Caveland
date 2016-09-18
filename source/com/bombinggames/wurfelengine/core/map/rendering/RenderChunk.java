@@ -62,8 +62,14 @@ public class RenderChunk {
 		DATAPOOL.clear();
 	}
 	
+	/**
+	 * chunk used for rendering with this object
+	 */
+	private final Chunk chunk;
+	/**
+	 * the actual data stored in this renderchunk
+	 */
 	private final RenderCell data[][][];
-	private Chunk chunk;
 	private boolean cameraAccess;
 
 	/**
@@ -73,15 +79,6 @@ public class RenderChunk {
 	 */
 	public RenderChunk(Chunk chunk) {
 		data = DATAPOOL.obtain();
-		init(chunk);
-	}
-
-	/**
-	 * update the content
-	 *
-	 * @param chunk
-	 */
-	public void init(Chunk chunk) {
 		this.chunk = chunk;
 		initData();
 	}

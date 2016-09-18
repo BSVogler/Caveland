@@ -63,7 +63,7 @@ public class ChunkLoader implements Runnable{
 	
 	@Override
 	public void run() {
-		chunk = new Chunk(path, map.getCurrentSaveSlot(), coordX, coordY, generator);
+		chunk = new Chunk(map, path, coordX, coordY, generator);
 	}
 
 	/**

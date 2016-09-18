@@ -59,21 +59,22 @@ public class CLGameController extends Controller implements Telegraph {
 	 * verify that players exist
 	 */
 	private void spawnPlayers(){
+		CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
 		if (!player1.hasPosition()) {
 			player1.spawn(
 				new Coordinate(
-					WE.getCVarsSave().getValueI("PlayerLastSaveX"),
-					WE.getCVarsSave().getValueI("PlayerLastSaveY"),
-					WE.getCVarsSave().getValueI("PlayerLastSaveZ")
+					saveCvars.getValueI("PlayerLastSaveX"),
+					saveCvars.getValueI("PlayerLastSaveY"),
+					saveCvars.getValueI("PlayerLastSaveZ")
 				).toPoint()
 			);
 		}
 		if (player2 != null && !player2.hasPosition()) {
 			player2.spawn(
 				new Coordinate(
-					WE.getCVarsSave().getValueI("PlayerLastSaveX"),
-					WE.getCVarsSave().getValueI("PlayerLastSaveY"),
-					WE.getCVarsSave().getValueI("PlayerLastSaveZ")
+					saveCvars.getValueI("PlayerLastSaveX"),
+					saveCvars.getValueI("PlayerLastSaveY"),
+					saveCvars.getValueI("PlayerLastSaveZ")
 				).toPoint()
 			);
 		}
@@ -84,7 +85,7 @@ public class CLGameController extends Controller implements Telegraph {
 	 */
 	private void mapSetup() {
 		// register save cvars
-		CVarSystemSave saveCvars = WE.getCVarsSave();
+		CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveX");
 		saveCvars.register(new IntCVar(0), "PlayerLastSaveY");
 		saveCvars.register(new IntCVar(10), "PlayerLastSaveZ");
@@ -97,7 +98,7 @@ public class CLGameController extends Controller implements Telegraph {
 		
 		spawnPlayers();
 		
-		if (!WE.getCVarsSave().getValueB("IntroCutsceneCompleted")) {
+		if (!saveCvars.getValueB("IntroCutsceneCompleted")) {
 			introSpaceship = (Spaceship) new Spaceship().spawn(new Coordinate(-30, -80, 30).toPoint());
 			introSpaceship.enableCrash(new Coordinate(-2, -3, 7));
 			introSpaceship.setIndestructible(true);
@@ -201,11 +202,12 @@ public class CLGameController extends Controller implements Telegraph {
 	 */
 	@Override
 	public boolean save() {
+		CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
 		if (player1.hasPosition()) {
 			Coordinate coord = player1.getPosition().toCoord();
-			WE.getCVarsSave().get("PlayerLastSaveX").setValue(coord.getX());
-			WE.getCVarsSave().get("PlayerLastSaveY").setValue(coord.getY());
-			WE.getCVarsSave().get("PlayerLastSaveZ").setValue(coord.getZ());
+			saveCvars.get("PlayerLastSaveX").setValue(coord.getX());
+			saveCvars.get("PlayerLastSaveY").setValue(coord.getY());
+			saveCvars.get("PlayerLastSaveZ").setValue(coord.getZ());
 		}
 		return super.save();
 	}

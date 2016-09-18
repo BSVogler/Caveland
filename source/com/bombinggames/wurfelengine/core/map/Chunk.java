@@ -174,17 +174,18 @@ public class Chunk implements Telegraph {
 
     /**
      * Creates a Chunk filled with empty cells (likely air).
+	 * @param map
 	 * @param coordX
 	 * @param coordY
      */
-    public Chunk(final int coordX, final int coordY) {
+    public Chunk(final Map map, final int coordX, final int coordY) {
         this.chunkX = coordX;
 		this.chunkY = coordY;
 
 		//set chunk dimensions
-		blocksX = WE.getCVarsMap().getValueI("chunkBlocksX");
-		blocksY = WE.getCVarsMap().getValueI("chunkBlocksY");
-		blocksZ = WE.getCVarsMap().getValueI("chunkBlocksZ");
+		blocksX = Controller.getMap().getCVars().getValueI("chunkBlocksX");
+		blocksY = Controller.getMap().getCVars().getValueI("chunkBlocksY");
+		blocksZ = Controller.getMap().getCVars().getValueI("chunkBlocksZ");
 
 		topleftX = coordX*blocksX;
 		topleftY = coordY*blocksY;
@@ -209,16 +210,17 @@ public class Chunk implements Telegraph {
 	 * Creates a chunk by trying to load and if this fails it generates a new
 	 * one.
 	 *
+	 * @param map
 	 * @param coordX the chunk coordinate
 	 * @param saveslot
 	 * @param coordY the chunk coordinate
 	 * @param path filename, can be null to skip file loading
 	 * @param generator used for generating if laoding fails
 	 */
-	public Chunk(final File path, int saveslot, final int coordX, final int coordY, final Generator generator) {
-		this(coordX, coordY);
+	public Chunk(final Map map, final File path, final int coordX, final int coordY, final Generator generator) {
+		this(map, coordX, coordY);
 		if (path != null && WE.getCVars().getValueB("shouldLoadMap")) {
-			if (!load(path, saveslot, coordX, coordY)) {
+			if (!load(path, map.getCurrentSaveSlot(), coordX, coordY)) {
 				fill(generator);
 			}
 		} else {

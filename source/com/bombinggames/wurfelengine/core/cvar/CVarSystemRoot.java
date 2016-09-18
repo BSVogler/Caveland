@@ -39,8 +39,6 @@ import java.io.File;
  */
 public class CVarSystemRoot extends AbstractCVarSystem {
 
-	private CVarSystemMap mapSystem;
-
 	/**
 	 *
 	 * @param path
@@ -136,32 +134,4 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new IntCVar(536870912), "mapMaxMemoryUse");//bytes, 512MB->17,9km^2
 		register(new BooleanCVar(false), "showMiniMapChunk");
 	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public CVarSystemMap getMapCVars() {
-		return mapSystem;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public CVarSystemSave getSaveCVars() {
-		if (mapSystem == null) {
-			return null;
-		}
-		return mapSystem.getSaveCVars();
-	}
-	
-	/**
-	 *
-	 * @param mapSystem
-	 */
-	public void setMapCVars(CVarSystemMap mapSystem){
-		this.mapSystem = mapSystem;
-	}
-
 }

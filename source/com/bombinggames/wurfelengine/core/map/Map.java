@@ -163,6 +163,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 */
 	private final int chunkDim;
 	private final int maxChunks;
+	private final CVarSystemMap cVars;
 
 	/**
 	 * Loads a map using the default generator.
@@ -176,7 +177,7 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Loads a map. Loads map and save cvars.
+	 * Loads a map. Loads map and save cVars.
 	 *
 	 * @param name if available on disk it will load the meta file
 	 * @param generator the generator used for generating new chunks
@@ -197,10 +198,9 @@ public class Map implements IndexedGraph<PfNode> {
 		loadedChunks = new LinkedList<>();
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		
-		//load map cvars
-		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
-		WE.getCVars().setMapCVars(mapCVars);
-		mapCVars.load();
+		//load map cVars
+		cVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
+		cVars.load();
 
 		if (!hasSaveSlot(saveSlot)) {
 			createSaveSlot(saveSlot);
@@ -208,6 +208,26 @@ public class Map implements IndexedGraph<PfNode> {
 		useSaveSlot(saveSlot);
 
 		Gdx.app.debug("Map", "Map named \"" + name + "\", saveslot " + saveSlot + " should be loaded");
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public CVarSystemMap getCVars() {
+		return cVars;
+	}
+	
+	
+	/**
+	 *
+	 * @return
+	 */
+	public CVarSystemSave getSaveCVars() {
+		if (cVars == null) {
+			return null;
+		}
+		return cVars.getSaveCVars();
 	}
 
 	/**
@@ -632,8 +652,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public boolean save() {
-		WE.getCVarsSave().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
-		WE.getCVarsSave().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
+		getSaveCVars().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
+		getSaveCVars().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
 		return save(activeSaveSlot);
 	}
 
@@ -663,20 +683,20 @@ public class Map implements IndexedGraph<PfNode> {
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Loads the save
-	 * cvars.
+ cVars.
 	 *
 	 * @param slot slot number
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		WE.getCVarsMap().get("currentSaveSlot").setValue(slot);
-		//load save cvars
-		WE.getCVarsMap().setSaveCVars(
+		cVars.get("currentSaveSlot").setValue(slot);
+		//load save cVars
+		cVars.setSaveCVars(
 			new CVarSystemSave(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
-		WE.getCVarsSave().load();
+		cVars.load();
 	}
 
 	/**

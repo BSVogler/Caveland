@@ -183,9 +183,9 @@ public class Chunk implements Telegraph {
 		this.chunkY = coordY;
 
 		//set chunk dimensions
-		blocksX = Controller.getMap().getCVars().getValueI("chunkBlocksX");
-		blocksY = Controller.getMap().getCVars().getValueI("chunkBlocksY");
-		blocksZ = Controller.getMap().getCVars().getValueI("chunkBlocksZ");
+		blocksX = map.getCVars().getValueI("chunkBlocksX");
+		blocksY = map.getCVars().getValueI("chunkBlocksY");
+		blocksZ = map.getCVars().getValueI("chunkBlocksZ");
 
 		topleftX = coordX*blocksX;
 		topleftY = coordY*blocksY;
@@ -212,7 +212,6 @@ public class Chunk implements Telegraph {
 	 *
 	 * @param map
 	 * @param coordX the chunk coordinate
-	 * @param saveslot
 	 * @param coordY the chunk coordinate
 	 * @param path filename, can be null to skip file loading
 	 * @param generator used for generating if laoding fails

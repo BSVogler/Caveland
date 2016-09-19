@@ -135,11 +135,11 @@ public class RenderStorage implements Telegraph  {
 		
 		//remove chunks which are not used
 		data.forEach(chunk -> {
-			if (!chunk.cameraAccess()) {
+			if (!chunk.getCameraAccess()) {
 				chunk.dispose();
 			}
 		});
-		data.removeIf(chunk -> !chunk.cameraAccess());
+		data.removeIf(chunk -> !chunk.getCameraAccess());
 	}
 	
 	/**

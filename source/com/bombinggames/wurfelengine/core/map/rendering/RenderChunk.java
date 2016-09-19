@@ -56,7 +56,7 @@ public class RenderChunk {
 	}
 	
 	/**
-	 *
+	 *clears the pool to free memory
 	 */
 	public static void clearPool(){
 		DATAPOOL.clear();
@@ -123,14 +123,14 @@ public class RenderChunk {
 	 * @param z coordinate
 	 * @return
 	 */
-	RenderCell getCell(int x, int y, int z) {
+	public RenderCell getCell(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) {
 			return null;
 		}
 		return data[x - chunk.getTopLeftCoordinateX()][y - chunk.getTopLeftCoordinateY()][z];
 	}
 
-	RenderCell[][][] getData() {
+	public RenderCell[][][] getData() {
 		return data;
 	}
 
@@ -253,7 +253,7 @@ public class RenderChunk {
 	 * If not used can be removed.
 	 * @return true if a camera rendered this chunk this frame. 
 	 */
-	protected boolean cameraAccess() {
+	protected boolean getCameraAccess() {
 		return cameraAccess;
 	}
 

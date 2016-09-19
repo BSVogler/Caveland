@@ -249,7 +249,7 @@ public class Controller implements GameManager {
 	/**
 	 * This method works like a constructor. Everything is loaded here. You must
 	 * set your custom map generator, if you want one, before calling this
-	 * method, because chunk loading is started here.
+	 * method, because chunk loading is started by calling this method.
 	 */
 	public void init() {
 		init(saveSlot, mapName);

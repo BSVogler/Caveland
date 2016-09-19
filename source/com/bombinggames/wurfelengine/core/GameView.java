@@ -129,10 +129,10 @@ public class GameView implements GameManager {
 	private RenderStorage renderstorage;
     
 	/**
-	 * Loades some files and set up everything. This should be done after
-	 * creating and linking the view. After this has been inactive use {@link #onEnter() }
+	 * Loades some files and set up everything. After this has been inactive use {@link #onEnter() }
+	 * This method is a an implementation of the <a href="https://de.wikipedia.org/wiki/Dependency_Injection">Setter Inejction</a> pattern.
 	 *
-	 * @param controller The data sources used for the view. Can be null but
+	 * @param controller The dependent data controller used for the view. Can be null but
 	 * should not.
 	 * @param oldView The view used before. Can be null.
 	 * @see #onEnter() 

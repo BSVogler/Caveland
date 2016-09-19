@@ -33,6 +33,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -103,8 +104,8 @@ public class LightEngine {
 		
 		pixelBasedShading = WE.getCVars().getValueB("LEnormalMapRendering");
 		//restore light engine setting position
-		getSun(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEsunAzimuth"));
-		getMoon(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEmoonAzimuth"));
+		getSun(new Coordinate(0, 0, 0)).setAzimuth(Controller.getMap().getSaveCVars().getValueF("LEsunAzimuth"));
+		getMoon(new Coordinate(0, 0, 0)).setAzimuth(Controller.getMap().getSaveCVars().getValueF("LEmoonAzimuth"));
     }
 	
     /**
@@ -270,7 +271,7 @@ public class LightEngine {
 	 */
 	public void setSun(GlobalLightSource sun) {
 		this.sun = sun;
-		getSun(new Coordinate(0, 0, 0)).setAzimuth(WE.getCVarsSave().getValueF("LEsunAzimuth"));
+		getSun(new Coordinate(0, 0, 0)).setAzimuth(Controller.getMap().getSaveCVars().getValueF("LEsunAzimuth"));
 	}
 
 	/**

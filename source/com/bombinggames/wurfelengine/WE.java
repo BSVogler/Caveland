@@ -52,9 +52,7 @@ import com.bombinggames.wurfelengine.core.GameplayScreen;
 import com.bombinggames.wurfelengine.core.WEScreen;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.console.Console;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemMap;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemRoot;
-import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.loading.LoadingScreen;
 import com.bombinggames.wurfelengine.extension.basicmainmenu.BasicMainMenu;
@@ -165,7 +163,7 @@ public class WE {
 		CONFIG.height = dpms.height;
 		
 		//arguments
-		if (args.length > 0) {
+		if (args != null && args.length > 0) {
 			//look if contains launch parameters
 			for (int i = 0; i < args.length; i++) {
 				switch (args[i]) {
@@ -179,14 +177,22 @@ public class WE {
 						CONFIG.fullscreen = false;
 						break;
 					case "-w":
-						//set the width
-						CONFIG.width = Integer.parseInt(args[i + 1]);
 						i++;
+						if (i < args.length){
+							//set the width
+							CONFIG.width = Integer.parseInt(args[i]);
+						} else {
+							System.err.println("missing width after launch parameter");
+						}
 						break;
 					case "-h":
-						//set the height
-						CONFIG.height = Integer.parseInt(args[i + 1]);
 						i++;
+						if (i < args.length){
+							//set the height
+							CONFIG.height = Integer.parseInt(args[i]);
+						} else {
+							System.err.println("missing height after launch parameter");
+						}
 						break;
 					case "-skipintro":
 						skipintro = true;
@@ -565,25 +571,6 @@ public class WE {
 	 */
 	public static CVarSystemRoot getCVars() {
 		return CVARS;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public static CVarSystemMap getCVarsMap() {
-		return CVARS.getMapCVars();
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	public static CVarSystemSave getCVarsSave() {
-		if (CVARS.getSaveCVars() != null) {
-			return CVARS.getSaveCVars();
-		}
-		return null;
 	}
 
 	private static class WurfelEngineIntro extends WEScreen {

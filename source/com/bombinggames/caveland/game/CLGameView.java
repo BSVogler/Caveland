@@ -19,6 +19,7 @@ import com.bombinggames.wurfelengine.core.Controller;
 import static com.bombinggames.wurfelengine.core.Controller.getLightEngine;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
@@ -428,8 +429,9 @@ public class CLGameView extends GameView {
 			PlayerCompass pC2 = new PlayerCompass();
 			pC2.drawHUD(getPlayer(0), this, getCameras().get(1));
 		}
+		CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
 		drawString(
-			"Money: " + WE.getCVarsSave().getValueI("money"),
+			"Money: " + saveCvars.getValueI("money"),
 			Gdx.graphics.getWidth() / 2 - 50,
 			Gdx.graphics.getHeight() - 100,
 			Color.WHITE.cpy()

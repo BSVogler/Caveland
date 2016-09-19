@@ -163,20 +163,22 @@ public class Map implements IndexedGraph<PfNode> {
 	 */
 	private final int chunkDim;
 	private final int maxChunks;
+	private final CVarSystemMap cVars;
 
 	/**
 	 * Loads a map using the default generator.
 	 *
 	 * @param name if available on disk it will be load
 	 * @param saveslot
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException thrown if there is no full read/write access
+	 * to the map file
 	 */
 	public Map(final File name, int saveslot) throws IOException {
 		this(name, getDefaultGenerator(), saveslot);
 	}
 
 	/**
-	 * Loads a map. Loads map and save cvars.
+	 * Loads a map. Loads map and save cVars.
 	 *
 	 * @param name if available on disk it will load the meta file
 	 * @param generator the generator used for generating new chunks
@@ -197,10 +199,9 @@ public class Map implements IndexedGraph<PfNode> {
 		loadedChunks = new LinkedList<>();
 		WE.getCVars().get("loadedMap").setValue(name.getName());
 		
-		//load map cvars
-		CVarSystemMap mapCVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
-		WE.getCVars().setMapCVars(mapCVars);
-		mapCVars.load();
+		//load map cVars
+		cVars = new CVarSystemMap(new File(directory + "/meta.wecvar"));
+		cVars.load();
 
 		if (!hasSaveSlot(saveSlot)) {
 			createSaveSlot(saveSlot);
@@ -208,6 +209,26 @@ public class Map implements IndexedGraph<PfNode> {
 		useSaveSlot(saveSlot);
 
 		Gdx.app.debug("Map", "Map named \"" + name + "\", saveslot " + saveSlot + " should be loaded");
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public CVarSystemMap getCVars() {
+		return cVars;
+	}
+	
+	
+	/**
+	 *
+	 * @return
+	 */
+	public CVarSystemSave getSaveCVars() {
+		if (cVars == null) {
+			return null;
+		}
+		return cVars.getSaveCVars();
 	}
 
 	/**
@@ -613,6 +634,7 @@ public class Map implements IndexedGraph<PfNode> {
 		for (Chunk chunk : loadedChunks) {
 			try {
 				chunk.save(
+					this,
 					getPath(),
 					saveSlot
 				);
@@ -631,8 +653,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return
 	 */
 	public boolean save() {
-		WE.getCVarsSave().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
-		WE.getCVarsSave().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
+		getSaveCVars().get("LEsunAzimuth").setValue(Controller.getLightEngine().getSun(new Coordinate(0, 0, 0)).getAzimuth());
+		getSaveCVars().get("LEmoonAzimuth").setValue(Controller.getLightEngine().getMoon(new Coordinate(0, 0, 0)).getAzimuth());
 		return save(activeSaveSlot);
 	}
 
@@ -662,20 +684,20 @@ public class Map implements IndexedGraph<PfNode> {
 
 	/**
 	 * uses a specific save slot for loading and saving the map. Loads the save
-	 * cvars.
+ cVars.
 	 *
 	 * @param slot slot number
 	 */
 	public void useSaveSlot(int slot) {
 		this.activeSaveSlot = slot;
-		WE.getCVarsMap().get("currentSaveSlot").setValue(slot);
-		//load save cvars
-		WE.getCVarsMap().setSaveCVars(
+		cVars.get("currentSaveSlot").setValue(slot);
+		//load save cVars
+		cVars.setSaveCVars(
 			new CVarSystemSave(
 				new File(directory + "/save" + activeSaveSlot + "/meta.wecvar")
 			)
 		);
-		WE.getCVarsSave().load();
+		cVars.load();
 	}
 
 	/**
@@ -690,14 +712,13 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Check if a save slot exists.
+	 * Check if the save slot exists.
 	 *
 	 * @param saveSlot
 	 * @return
 	 */
 	public boolean hasSaveSlot(int saveSlot) {
-		FileHandle path = Gdx.files.absolute(directory + "/save" + saveSlot);
-		return path.exists();
+		return Gdx.files.absolute(directory + "/save" + saveSlot).exists();
 	}
 
 	/**
@@ -969,9 +990,9 @@ public class Map implements IndexedGraph<PfNode> {
 	public void dispose(boolean save) {
 		for (Chunk chunk : loadedChunks) {
 			if (save) {
-				chunk.dispose(getPath());
+				chunk.dispose(this, getPath());
 			} else {
-				chunk.dispose(null);
+				chunk.dispose(this, null);
 			}
 		}
 		disposeEntities();

@@ -33,7 +33,8 @@ package com.bombinggames.caveland.gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.caveland.game.CLGameView;
-import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -73,10 +74,11 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 				setColor(Color.WHITE.cpy());
 				break;
 		}
+		CVarSystemSave saveCvars = Controller.getMap().getCVars().getSaveCVars();
 		Coordinate respawn = new Coordinate(
-			WE.getCVarsSave().getValueI("respawnX"),
-			WE.getCVarsSave().getValueI("respawnY"),
-			WE.getCVarsSave().getValueI("respawnZ")+1
+			saveCvars.getValueI("respawnX"),
+			saveCvars.getValueI("respawnY"),
+			saveCvars.getValueI("respawnZ")+1
 		);
 		if (respawn.equals(getPosition().toCoord())){
 			setColor(HasTeam.COLORTEAM.cpy().sub(0.1f, 0.1f, 0.1f, 0f));
@@ -95,9 +97,10 @@ public class Flag extends AbstractEntity implements Interactable, HasTeam {
 				teamId = ((HasTeam) actor).getTeamId();
 			}
 			if (teamId == ((HasTeam) actor).getTeamId()) {
-				WE.getCVarsSave().get("respawnX").setValue(getPosition().toCoord().getX());
-				WE.getCVarsSave().get("respawnY").setValue(getPosition().toCoord().getY());
-				WE.getCVarsSave().get("respawnZ").setValue(getPosition().toCoord().getZ() - 1);
+				CVarSystemSave saveCvars = Controller.getMap().getCVars().getSaveCVars();
+				saveCvars.get("respawnX").setValue(getPosition().toCoord().getX());
+				saveCvars.get("respawnY").setValue(getPosition().toCoord().getY());
+				saveCvars.get("respawnZ").setValue(getPosition().toCoord().getZ() - 1);
 			}
 		}
 	}

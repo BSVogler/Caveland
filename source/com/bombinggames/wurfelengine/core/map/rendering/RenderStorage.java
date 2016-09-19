@@ -135,11 +135,11 @@ public class RenderStorage implements Telegraph  {
 		
 		//remove chunks which are not used
 		data.forEach(chunk -> {
-			if (!chunk.cameraAccess()) {
+			if (!chunk.getCameraAccess()) {
 				chunk.dispose();
 			}
 		});
-		data.removeIf(chunk -> !chunk.cameraAccess());
+		data.removeIf(chunk -> !chunk.getCameraAccess());
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class RenderStorage implements Telegraph  {
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
 			if (mapChunk != null) {
 				//get chunk from pool if possible
-				rChunk = new RenderChunk(this, mapChunk);
+				rChunk = new RenderChunk(mapChunk);
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(rChunk);
@@ -219,7 +219,7 @@ public class RenderStorage implements Telegraph  {
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk rChunk) -> {
-			rChunk.initData(rS);
+			rChunk.initData();
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
 			AmbientOcclusionCalculator.calcAO(rChunk);

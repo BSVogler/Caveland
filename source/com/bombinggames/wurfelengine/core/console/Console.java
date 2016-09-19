@@ -76,6 +76,7 @@ public class Console {
 	 * current path where the console is in
 	 */
 	private String path = "";
+	private CVarSystemMap currentMapCVarSystem;
 
 	/**
 	 *
@@ -255,7 +256,7 @@ public class Console {
 		}
 		
 		if (!textinput.getText().startsWith(path+" $ "))
-			setText(path+" $ "+ textinput.getText());
+			setText(path+" $ ");
     }
     
     /**
@@ -405,9 +406,9 @@ public class Console {
 					suggestions.addAll(WE.getCVars().getSuggestions(commandTillCursor));
 				} else {
 					if (path.contains(":"))
-						suggestions = WE.getCVarsSave().getSuggestions(commandTillCursor);
+						suggestions = currentMapCVarSystem.getSaveCVars().getSuggestions(commandTillCursor);
 					else
-						suggestions = WE.getCVarsMap().getSuggestions(commandTillCursor);
+ 						suggestions = currentMapCVarSystem.getSuggestions(commandTillCursor);
 				}
 			}
 		}
@@ -499,7 +500,7 @@ public class Console {
     /**
      * Tries executing a command. If that fails trys to set cvar. if that fails trys to execute external commands.
      * @param command
-     * @return 
+     * @return false if command or cvar not found 
      */
     public boolean executeCommand(String command){
         if (command.length() <= 0) return false;
@@ -508,21 +509,27 @@ public class Console {
 		String first = st.nextToken().toLowerCase();
 		
 		//first check if it a command
-		for (ConsoleCommand comm : registeredCommands) {
-			if (comm.getCommandName().equals(first)) {
-				return comm.perform(st, gameplayRef);
+		try {
+			for (ConsoleCommand comm : registeredCommands) {
+				if (comm.getCommandName().equals(first)) {
+					return comm.perform(st, gameplayRef);
+				}
 			}
+		} catch (Exception e){
+			add("Command crashed: "+e.getLocalizedMessage()+"\n", "System");
+			e.printStackTrace();
+			return true;
 		}
 		
 		//if not a command try setting a cvar
 		CVar cvar;
-		if ("".equals(path)) {
+		if ("".equals(path)) {//if not in a map or save file
 			cvar = WE.getCVars().get(first);
 		} else {
 			if (!path.contains(":"))
-				cvar = WE.getCVarsMap().get(first);
+				cvar = currentMapCVarSystem.get(first);
 			else 
-				cvar = WE.getCVarsSave().get(first);
+				cvar = currentMapCVarSystem.getSaveCVars().get(first);
 		}
 		
 		if (cvar != null) {//if registered
@@ -625,25 +632,24 @@ public class Console {
 			//check that map cvars are loaded
 			String mapName = getMapNameFromPath();
 			if (mapName.length() > 0) { //load map cvar
-				if (WE.getCVarsMap() == null) {
-					WE.getCVars().setMapCVars(new CVarSystemMap(
+				if (currentMapCVarSystem == null) {
+					currentMapCVarSystem = new CVarSystemMap(
 						new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/meta.wecvar")
-					));
-					WE.getCVarsMap().load();
+					);
+					currentMapCVarSystem.load();
 				}
 
 				//access save
 				if (path.contains(":")) {
-					WE.getCVarsMap().setSaveCVars(new CVarSystemSave(
+					currentMapCVarSystem.setSaveCVars(new CVarSystemSave(
 						new File(WorkingDirectory.getMapsFolder() + "/" + mapName + "/save" + path.substring(path.indexOf(':') + 1) + "/meta.wecvar")
 					));
 					//todo overwrites currently loaded cvars
-					WE.getCVarsSave().load();
+					currentMapCVarSystem.getSaveCVars().load();
 				}
 			}
 		}  else {
 			WE.getConsole().add("not a valid path");
 		}
 	}
-	
 }

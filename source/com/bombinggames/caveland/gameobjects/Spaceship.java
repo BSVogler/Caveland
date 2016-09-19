@@ -1,7 +1,8 @@
 package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.math.Vector3;
-import com.bombinggames.wurfelengine.WE;
+import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.Explosion;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
@@ -120,7 +121,8 @@ public class Spaceship extends MovableEntity {
 			ejectContent();
 			crashed = true;
 			//save that already crashed
-			WE.getCVarsSave().get("IntroCutsceneCompleted").setValue(true);
+			CVarSystemSave saveCvars = Controller.getMap().getCVars().getSaveCVars();
+			saveCvars.get("IntroCutsceneCompleted").setValue(true);
 		}
 	}
 }

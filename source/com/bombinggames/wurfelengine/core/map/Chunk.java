@@ -150,11 +150,6 @@ public class Chunk implements Telegraph {
     }
 
 	/**
-	 * the map in which the chunks are used
-	 */
-	private final Map map;
-
-	/**
 	 * chunk coordinate
 	 */
 	private final int chunkX, chunkY;
@@ -186,12 +181,11 @@ public class Chunk implements Telegraph {
     public Chunk(final Map map, final int coordX, final int coordY) {
         this.chunkX = coordX;
 		this.chunkY = coordY;
-		this.map = map;
 
 		//set chunk dimensions
-		blocksX = WE.getCVarsMap().getValueI("chunkBlocksX");
-		blocksY = WE.getCVarsMap().getValueI("chunkBlocksY");
-		blocksZ = WE.getCVarsMap().getValueI("chunkBlocksZ");
+		blocksX = map.getCVars().getValueI("chunkBlocksX");
+		blocksY = map.getCVars().getValueI("chunkBlocksY");
+		blocksZ = map.getCVars().getValueI("chunkBlocksZ");
 
 		topleftX = coordX*blocksX;
 		topleftY = coordY*blocksY;
@@ -536,13 +530,14 @@ public class Chunk implements Telegraph {
 
     /**
      * Save this chunk on storage.
+	 * @param map the map of which this chunk is a part of
      * @param path the map name on storage
 	 * @param saveSlot
 
      * @return
      * @throws java.io.IOException
      */
-    public boolean save(File path, int saveSlot) throws IOException {
+    public boolean save(Map map, File path, int saveSlot) throws IOException {
         if (path == null) return false;
         Gdx.app.log("Chunk","Saving "+chunkX + ","+ chunkY +".");
 		File savepath = new File(path + "/save" + saveSlot + "/chunk" + chunkX + "," + chunkY + "." + CHUNKFILESUFFIX);
@@ -869,13 +864,14 @@ public class Chunk implements Telegraph {
 	/**
 	 * disposes the chunk
 	 *
+	 * @param map
 	 * @param path if null, does not save the file
 	 */
-	public void dispose(File path) {
+	public void dispose(Map map, File path) {
 		//try saving
 		if (path != null) {
 			try {
-				save(path, map.getCurrentSaveSlot());
+				save(map, path, map.getCurrentSaveSlot());
 			} catch (IOException ex) {
 				Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE, null, ex);
 			}

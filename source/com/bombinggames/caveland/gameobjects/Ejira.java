@@ -19,8 +19,10 @@ import com.bombinggames.caveland.gameobjects.collectibles.CollectibleContainer;
 import com.bombinggames.caveland.gameobjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Controllable;
@@ -372,7 +374,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			}
 			
 			//increase money
-			WE.getCVarsSave().get("money").setValue(WE.getCVarsSave().getValueI("money")+money.size());
+			CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
+			saveCvars.get("money").setValue(saveCvars.getValueI("money")+money.size());
 
 			//auto heal
 			if (timeSinceDamage > 4000) {
@@ -1204,10 +1207,11 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	private void die() {
 		//respawn
 		heal((byte) 100);
+		CVarSystemSave saveCvars = Controller.getMap().getSaveCVars();
 		Coordinate respawn = new Coordinate(
-			WE.getCVarsSave().getValueI("respawnX"),
-			WE.getCVarsSave().getValueI("respawnY"),
-			WE.getCVarsSave().getValueI("respawnZ")
+			saveCvars.getValueI("respawnX"),
+			saveCvars.getValueI("respawnY"),
+			saveCvars.getValueI("respawnZ")
 		);
 		respawn.add(0, 1, 0);
 		

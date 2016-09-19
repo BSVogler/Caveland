@@ -56,45 +56,40 @@ public class RenderChunk {
 	}
 	
 	/**
-	 *
+	 *clears the pool to free memory
 	 */
 	public static void clearPool(){
 		DATAPOOL.clear();
 	}
 	
+	/**
+	 * chunk used for rendering with this object
+	 */
+	private final Chunk chunk;
+	
 	public static final RenderCell NULLPOINTEROBJECT = RenderCell.getRenderCell((byte) 0, (byte) 0);
+	/**
+	 * the actual data stored in this renderchunk
+	 */
 	private final RenderCell data[][][];
-	private Chunk chunk;
 	private boolean cameraAccess;
 
 	/**
 	 * With init
 	 *
-	 * @param rS
-	 * @param chunk linked chunk
+	 * @param chunk linked chunk which is then rendered
 	 */
-	public RenderChunk(RenderStorage rS, Chunk chunk) {
+	public RenderChunk(Chunk chunk) {
 		data = DATAPOOL.obtain();
-		init(rS, chunk);
-	}
-
-	/**
-	 * update the content
-	 *
-	 * @param rS
-	 * @param chunk
-	 */
-	public void init(RenderStorage rS, Chunk chunk) {
 		this.chunk = chunk;
-		initData(rS);
+		initData();
 	}
 
 	/**
-	 * Initializes data by filling every render cell with the according data from the map.
-	 * 
-	 * @param rS
+	 * fills every render cell with the according data from the map
+	 *
 	 */
-	public void initData(RenderStorage rS) {
+	public void initData() {
 		int tlX = chunk.getTopLeftCoordinateX();
 		int tlY = chunk.getTopLeftCoordinateY();
 
@@ -264,7 +259,7 @@ public class RenderChunk {
 	 * If not used can be removed.
 	 * @return true if a camera rendered this chunk this frame. 
 	 */
-	protected boolean cameraAccess() {
+	protected boolean getCameraAccess() {
 		return cameraAccess;
 	}
 

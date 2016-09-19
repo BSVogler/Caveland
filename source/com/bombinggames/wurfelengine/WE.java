@@ -163,7 +163,7 @@ public class WE {
 		CONFIG.height = dpms.height;
 		
 		//arguments
-		if (args.length > 0) {
+		if (args != null && args.length > 0) {
 			//look if contains launch parameters
 			for (int i = 0; i < args.length; i++) {
 				switch (args[i]) {

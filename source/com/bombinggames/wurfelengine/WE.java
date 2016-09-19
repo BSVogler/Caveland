@@ -177,14 +177,22 @@ public class WE {
 						CONFIG.fullscreen = false;
 						break;
 					case "-w":
-						//set the width
-						CONFIG.width = Integer.parseInt(args[i + 1]);
 						i++;
+						if (i < args.length){
+							//set the width
+							CONFIG.width = Integer.parseInt(args[i]);
+						} else {
+							System.err.println("missing width after launch parameter");
+						}
 						break;
 					case "-h":
-						//set the height
-						CONFIG.height = Integer.parseInt(args[i + 1]);
 						i++;
+						if (i < args.length){
+							//set the height
+							CONFIG.height = Integer.parseInt(args[i]);
+						} else {
+							System.err.println("missing height after launch parameter");
+						}
 						break;
 					case "-skipintro":
 						skipintro = true;

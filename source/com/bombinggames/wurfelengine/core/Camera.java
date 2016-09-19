@@ -48,6 +48,7 @@ import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import com.bombinggames.wurfelengine.core.map.rendering.RenderChunk;
 import com.bombinggames.wurfelengine.core.map.rendering.SideSprite;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -555,7 +556,7 @@ public class Camera {
 			) {
 				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
 				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change from line above
-				if (cell != null) {
+				if (cell != RenderChunk.NULLPOINTEROBJECT) {
 					cell.addCoveredEnts(ent);
 					modifiedCells.add(cell);
 				} else {
@@ -578,7 +579,7 @@ public class Camera {
 		while (iterator.hasNext()) {
 			RenderCell cell = iterator.next();
 
-			if (cell != null && inViewFrustum(cell.getPosition())) {
+			if (cell != RenderChunk.NULLPOINTEROBJECT && inViewFrustum(cell.getPosition())) {
 				visit(cell);
 			}
 		}

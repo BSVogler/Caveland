@@ -66,6 +66,8 @@ public class RenderChunk {
 	 * chunk used for rendering with this object
 	 */
 	private final Chunk chunk;
+	
+	public static final RenderCell NULLPOINTEROBJECT = RenderCell.getRenderCell((byte) 0, (byte) 0);
 	/**
 	 * the actual data stored in this renderchunk
 	 */
@@ -99,9 +101,9 @@ public class RenderChunk {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
 					//update only if cell changed
-					int block = chunk.getCellByIndex(xInd, yInd, z);
-					if (data[xInd][yInd][z] == null || (block & 255) != data[xInd][yInd][z].getId()) {
-						data[xInd][yInd][z] = RenderCell.getRenderCell((byte) (block & 255), (byte) ((block >> 8) & 255));
+					int blockAtPos = chunk.getCellByIndex(xInd, yInd, z);
+					if (data[xInd][yInd][z] == null || (blockAtPos & 255) != data[xInd][yInd][z].getId()) {//here null can be value of cell if not yet initialized
+						data[xInd][yInd][z] = RenderCell.getRenderCell((byte) (blockAtPos & 255), (byte) ((blockAtPos >> 8) & 255));
 					}
 					
 					data[xInd][yInd][z].getPosition().set(
@@ -125,11 +127,15 @@ public class RenderChunk {
 	 */
 	public RenderCell getCell(int x, int y, int z) {
 		if (z >= Chunk.getBlocksZ()) {
-			return null;
+			return NULLPOINTEROBJECT;
 		}
 		return data[x - chunk.getTopLeftCoordinateX()][y - chunk.getTopLeftCoordinateY()][z];
 	}
 
+	/**
+	 * get the pointer to the data
+	 * @return 
+	 */
 	public RenderCell[][][] getData() {
 		return data;
 	}
@@ -144,7 +150,7 @@ public class RenderChunk {
 		for (int x = 0; x < blocksX; x++) {
 			for (int y = 0; y < blocksY; y++) {
 				for (int z = 0; z < blocksZ; z++) {
-					if (data[x][y][z] != null) {
+					if (data[x][y][z] != NULLPOINTEROBJECT) {
 						data[x][y][z].setUnclipped();
 					}
 				}
@@ -164,7 +170,7 @@ public class RenderChunk {
 		int blocksZ = Chunk.getBlocksZ();
 		if (idexZ < Chunk.getBlocksZ() && idexZ >= 0) {
 			RenderCell block = data[idexX][idexY][idexZ];
-			if (block != null) {
+			if (block != null && block != NULLPOINTEROBJECT) {
 				data[idexX][idexY][idexZ].setLightlevel(1);
 
 				//check if block above is transparent
@@ -177,7 +183,7 @@ public class RenderChunk {
 						&& !data[idexX][idexY][idexZ + 2].isTransparent()
 					) {
 						data[idexX][idexY][idexZ].setLightlevel(0.8f, Side.TOP);
-					//three block above is one
+					//three blocks above is one
 					} else if (idexZ < blocksZ - 3
 						&& (data[idexX][idexY][idexZ + 2] == null
 						|| data[idexX][idexY][idexZ + 2].isTransparent())

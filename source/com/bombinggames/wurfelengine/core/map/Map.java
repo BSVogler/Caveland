@@ -170,7 +170,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 *
 	 * @param name if available on disk it will be load
 	 * @param saveslot
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException thrown if there is no full read/write access
+	 * to the map file
 	 */
 	public Map(final File name, int saveslot) throws IOException {
 		this(name, getDefaultGenerator(), saveslot);
@@ -711,14 +712,13 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * Check if a save slot exists.
+	 * Check if the save slot exists.
 	 *
 	 * @param saveSlot
 	 * @return
 	 */
 	public boolean hasSaveSlot(int saveSlot) {
-		FileHandle path = Gdx.files.absolute(directory + "/save" + saveSlot);
-		return path.exists();
+		return Gdx.files.absolute(directory + "/save" + saveSlot).exists();
 	}
 
 	/**

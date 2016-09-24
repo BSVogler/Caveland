@@ -885,7 +885,7 @@ public class RenderCell extends AbstractGameObject {
 		);
 	}
   /**
-	 * Draws a side of a block at a custom position. Apllies color before
+	 * Draws a side of a cell at a custom position. Apllies color before
 	 * rendering and takes the lightlevel into account.
 	 *
 	 * @param view the view using this render method
@@ -1419,50 +1419,50 @@ public class RenderCell extends AbstractGameObject {
 		LinkedList<AbstractGameObject> covered = this.covered;
 		covered.clear();
 		Coordinate nghb = getPosition();
-		RenderCell block;
+		RenderCell cell;
 		if (nghb.getZ() > 0) {
-			block = rs.getCell(nghb.add(0, 0, -1));//go down
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.add(0, 0, -1));//go down
+			if (cell != null) {
+				covered.add(cell);
 			}
 			//back right
-			block = rs.getCell(nghb.goToNeighbour(1));
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.goToNeighbour(1));
+			if (cell != null) {
+				covered.add(cell);
 			}
 			//back left
-			block = rs.getCell(nghb.goToNeighbour(6));
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.goToNeighbour(6));
+			if (cell != null) {
+				covered.add(cell);
 			}
 			//back
-			block = rs.getCell(nghb.goToNeighbour(1));
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.goToNeighbour(1));
+			if (cell != null) {
+				covered.add(cell);
 			}
 			nghb.add(0, 2, 1);//go back to origin
 		}
-		block = rs.getCell(nghb.goToNeighbour(0));//back
-		if (block != null) {
-			covered.add(block);
+		cell = rs.getCell(nghb.goToNeighbour(0));//back
+		if (cell != null) {
+			covered.add(cell);
 		}
-		block = rs.getCell(nghb.goToNeighbour(3));//back right
-		if (block != null) {
-			covered.add(block);
+		cell = rs.getCell(nghb.goToNeighbour(3));//back right
+		if (cell != null) {
+			covered.add(cell);
 		}
 
-		block = rs.getCell(nghb.goToNeighbour(6));//back left
-		if (block != null) {
-			covered.add(block);
+		cell = rs.getCell(nghb.goToNeighbour(6));//back left
+		if (cell != null) {
+			covered.add(cell);
 		}
 		if (nghb.getZ() < Chunk.getBlocksZ() - 1) {
-			block = rs.getCell(nghb.add(0, 0, 1));//back left above
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.add(0, 0, 1));//back left above
+			if (cell != null) {
+				covered.add(cell);
 			}
-			block = rs.getCell(nghb.goToNeighbour(2));//back right above
-			if (block != null) {
-				covered.add(block);
+			cell = rs.getCell(nghb.goToNeighbour(2));//back right above
+			if (cell != null) {
+				covered.add(cell);
 			}
 			nghb.add(-1, 0, -1);//back to back left
 		}

@@ -54,7 +54,7 @@ import java.util.List;
 public class RenderStorage implements Telegraph  {
 
 	/**
-	 * Stores the data of the map.
+	 * Stores the render data of the map.
 	 */
 	private final LinkedList<RenderChunk> data = new LinkedList<>();
 	private final List<Camera> cameraContainer;
@@ -150,12 +150,13 @@ public class RenderStorage implements Telegraph  {
 	 * @return true if created a new renderchunk in the check
 	 */
 	private void checkChunk(int x, int y) {
+		//check if in render storage
 		RenderChunk rChunk = getChunk(x, y);
-		//check if in storage
 		if (rChunk == null) {
 			Chunk mapChunk = Controller.getMap().getChunk(x, y);
+			//is chunk data in RAM?
 			if (mapChunk != null) {
-				//get chunk from pool if possible
+				//create new renderchunk and put in renderStorage
 				rChunk = new RenderChunk(mapChunk);
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);

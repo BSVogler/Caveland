@@ -592,13 +592,13 @@ public class Camera {
 	
 	/**
 	 * topological sort
-	 * @param n root node
+	 * @param o root node
 	 */
-	private void visit(AbstractGameObject n) {
-		if (!n.isMarkedDS(id)) {
-			LinkedList<AbstractGameObject> covered = n.getCovered(gameView.getRenderStorage());
-			n.markPermanentDS(id);
-			if (covered.size() > 0) {
+	private void visit(AbstractGameObject o) {
+		if (!o.isMarkedDS(id)) {
+			LinkedList<AbstractGameObject> covered = o.getCovered(gameView.getRenderStorage());
+			o.markPermanentDS(id);
+			if (!covered.isEmpty()) {
 				for (AbstractGameObject m : covered) {
 					if (inViewFrustum(m.getPosition())) {
 						visit(m);
@@ -606,12 +606,12 @@ public class Camera {
 				}
 			}
 			if (
-				n.shouldBeRendered(this)
-				&& n.getPosition().getZPoint() < gameView.getRenderStorage().getZRenderingLimit()
+				o.shouldBeRendered(this)
+				&& o.getPosition().getZPoint() < gameView.getRenderStorage().getZRenderingLimit()
 				&& objectsToBeRendered < maxsprites
 			) {
 				//fill only up to available size
-				depthlist.add(n);
+				depthlist.add(o);
 				objectsToBeRendered++;
 			}
 		}

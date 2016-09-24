@@ -67,6 +67,9 @@ public class RenderChunk {
 	 */
 	private final Chunk chunk;
 	
+	/**
+	 * if in a cell is no data available use this block. Uses air internally.
+	 */
 	public static final RenderCell NULLPOINTEROBJECT = RenderCell.getRenderCell((byte) 0, (byte) 0);
 	/**
 	 * the actual data stored in this renderchunk

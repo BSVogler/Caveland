@@ -41,7 +41,7 @@ import java.util.NoSuchElementException;
  *
  * @author Benedikt Vogler
  */
-public class CameraSpaceIterator {
+public class CoveredByCameraIterator {
 
 	/**
 	 * Always points to a block. Iterates over a chunk.
@@ -65,7 +65,7 @@ public class CameraSpaceIterator {
 	 * @param startingZ to loop over ground level pass -1
 	 * @param topLevel the top limit of the z axis, last level is included
 	 */
-	public CameraSpaceIterator(RenderStorage renderStorage, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
+	public CoveredByCameraIterator(RenderStorage renderStorage, int centerCoordX, int centerCoordY, int startingZ, int topLevel) {
 		this.renderStorage = renderStorage;
 		this.topLevel = topLevel;
 		this.startingZ = startingZ;

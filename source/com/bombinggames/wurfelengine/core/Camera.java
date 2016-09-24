@@ -43,7 +43,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.Renderable;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.map.Iterators.CameraSpaceIterator;
+import com.bombinggames.wurfelengine.core.map.Iterators.CoveredByCameraIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
@@ -540,7 +540,7 @@ public class Camera {
 		//add entitys which should be rendered
 		ArrayList<AbstractEntity> ents = Controller.getMap().getEntities();
 				
-		//add entities to renderstorage
+		//add entities by inserting them into the render store
 		ArrayList<RenderCell> modifiedCells = this.modifiedCells;
 		modifiedCells.clear();
 		modifiedCells.ensureCapacity(ents.size());
@@ -568,7 +568,7 @@ public class Camera {
 		
 		//iterate over every block in renderstorage
 		objectsToBeRendered = 0;
-		CameraSpaceIterator iterator = new CameraSpaceIterator(
+		CoveredByCameraIterator iterator = new CoveredByCameraIterator(
 			gameView.getRenderStorage(),
 			centerChunkX,
 			centerChunkY,

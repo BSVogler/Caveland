@@ -183,7 +183,7 @@ public class PointLightSource extends AbstractEntity {
 						//get the light in the cache
 						float[] blocklight = lightcache[x + radius][y + radius * 2][z + radius];
 						tmpCoord.set(xCenter + x, yCenter + y, zCenter + z);
-						RenderCell rB = tmpCoord.getRenderBlock(view.getRenderStorage());
+						RenderCell rB = tmpCoord.getRenderCell(view.getRenderStorage());
 						if (rB != null && !rB.isHidden()) {
 							tmpCoord.addLightToBackEdge(view, Side.LEFT, tmpColor.set(color).mul(blocklight[0]));
 							tmpCoord.addLightToBackEdge(view, Side.TOP, tmpColor.set(color).mul(blocklight[1]));

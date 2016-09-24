@@ -740,7 +740,7 @@ public class Coordinate implements Position {
 	 * @param rs
 	 * @return can return null
 	 */
-	public RenderCell getRenderBlock(RenderStorage rs) {
+	public RenderCell getRenderCell(RenderStorage rs) {
 		if (z < 0) {
 			return RenderChunk.NULLPOINTEROBJECT;
 		} else if (z >= Chunk.getBlocksZ()) {
@@ -759,7 +759,7 @@ public class Coordinate implements Position {
 	 * @param vertex
 	 */
 	public void addLight(final GameView view, Side side, byte vertex, final Color color) {
-		RenderCell rB = getRenderBlock(view.getRenderStorage());
+		RenderCell rB = getRenderCell(view.getRenderStorage());
 		if (rB != null && !rB.isHidden()) {
 			view.getRenderStorage().setLightFlag(rB);
 			rB.addLightlevel(color.r, side, Channel.Red, vertex);
@@ -783,7 +783,7 @@ public class Coordinate implements Position {
 			goToNeighbour(6).addLight(view, side, (byte) 2, color);
 			goToNeighbour(3);//go back
 		} else {
-			RenderCell neighb = getRenderBlock(view.getRenderStorage());
+			RenderCell neighb = getRenderCell(view.getRenderStorage());
 			if (neighb != null && !neighb.isHidden()) {
 				//view.getRenderStorage().setLightFlag(rB); //in the way this algorthm is used this line is not needed
 				neighb.addLightlevel(color.r, side, Channel.Red, (byte) 0);

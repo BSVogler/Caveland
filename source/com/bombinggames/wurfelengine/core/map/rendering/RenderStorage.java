@@ -315,11 +315,11 @@ public class RenderStorage implements Telegraph  {
 	 */
 	public RenderCell getCell(final Coordinate coord) {
 		if (coord.getZ() < 0) {
-			return null;
+			return RenderChunk.NULLPOINTEROBJECT;
 		}
 		RenderChunk chunk = getChunk(coord);
 		if (chunk == null) {
-			return null;
+			return RenderChunk.NULLPOINTEROBJECT;
 		} else {
 			return chunk.getCell(coord.getX(), coord.getY(), coord.getZ());//find chunk in x coord
 		}

@@ -237,16 +237,13 @@ public class GameView implements GameManager {
 		}
 	}
 
-	/**
-	 * Override to specify what should happen when the mangager becomes active. You can ignore the super call.
-	 */
 	@Override
 	public void onEnter() {
-		//no code here so missing super call has code executed in enter()
+		//no code here intentionally, use enter() instead
 	}
 
 	@Override
-	public final void enter() {
+	public final void enter() {//by using final this can not be overwritten
 		Gdx.app.debug("GameView", "Entering");
 		if (!isInitalized()) {
 			Gdx.app.error(this.getClass().toString(), "Called method enter() before initializing.");
@@ -271,7 +268,7 @@ public class GameView implements GameManager {
 		//restore gameSpeed
 		WE.getCVars().get("timespeed").setValue(gameSpeed);
 		
-		onEnter();
+		onEnter();//some pattern to call onEnter() and deny overrides to enter
 	}
 	
 	/**

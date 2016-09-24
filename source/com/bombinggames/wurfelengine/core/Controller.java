@@ -340,11 +340,12 @@ public class Controller implements GameManager {
 
 	@Override
 	public void onEnter() {
-		WE.getCVars().get("timespeed").setValue(1f);
+		//no code here intentionally, use enter() instead
 	}
 
 	@Override
 	public final void enter() {
+		WE.getCVars().get("timespeed").setValue(1f);
 		onEnter();
 	}
 

@@ -205,8 +205,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param rB
 	 */
 	public void setLightFlag(RenderCell rB) {
-		if (!dirtyFlags.contains(rB.getPosition()))
-			dirtyFlags.add(rB.getPosition());
+		dirtyFlags.add(rB.getPosition());
 	}
 	
 	

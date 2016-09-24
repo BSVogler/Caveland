@@ -55,7 +55,7 @@ public class AmbientOcclusionCalculator {
 		while (iterator.hasNext()) {
 			RenderCell next = iterator.next();
 			//skip air and blocks without sides
-			if (next != null && next.hasSides()) {
+			if (next != RenderChunk.NULLPOINTEROBJECT && next.hasSides()) {
 				//analyze top side
 				coord = coord.set(
 					chunk.getTopLeftCoordinateX() + iterator.getCurrentIndex()[0],

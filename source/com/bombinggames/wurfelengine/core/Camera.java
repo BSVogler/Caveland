@@ -626,13 +626,13 @@ public class Camera {
 	public boolean inViewFrustum(Position pos){
 		int vspY = pos.getViewSpcY();
 		if (!(
-				(position.y + (heightProj>>1))
+				(position.y + (heightProj>>1))//fast division by two
 				>
 				(vspY - (RenderCell.VIEW_HEIGHT<<1))//bottom of sprite
 			&&
 				(vspY + RenderCell.VIEW_HEIGHT2 + RenderCell.VIEW_DEPTH)//top of sprite
 				>
-				position.y - (heightProj>>1))
+				position.y - (heightProj>>1))//fast division by two
 		)
 			return false;
 		int dist = (int) (pos.getViewSpcX()-position.x); //left side of sprite

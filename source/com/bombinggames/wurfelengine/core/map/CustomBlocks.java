@@ -18,11 +18,11 @@ public interface CustomBlocks {
 
 	/**
 	 *
-	 * @param id
-	 * @param value
+	 * @param spriteId
+	 * @param spriteValue
 	 * @return
 	 */
-	public boolean isTransparent(byte id, byte value);
+	public boolean isTransparent(byte spriteId, byte spriteValue);
 
 	/**
 	 * Check if the block is liquid.

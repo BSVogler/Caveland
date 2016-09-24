@@ -283,28 +283,28 @@ public class RenderCell extends AbstractGameObject {
 	
 	/**
 	 * 
-	 * @param id
-	 * @param value
+	 * @param spriteId
+	 * @param spriteValue
 	 * @return 
 	 */
-	public static boolean isTransparent(byte id, byte value) {
-		if (id==0 || id == 9 || id == 4) {
+	public static boolean isTransparent(byte spriteId, byte spriteValue) {
+		if (spriteId==0 || spriteId == 9 || spriteId == 4) {
 			return true;
 		}
 		
-		if (id > 9 && customBlocks != null) {
-			return customBlocks.isTransparent(id, value);
+		if (spriteId > 9 && customBlocks != null) {
+			return customBlocks.isTransparent(spriteId, spriteValue);
 		}
 		return false;
 	}
 	
 	/**
 	 * 
-	 * @param block
+	 * @param spriteIdValue id and value in one int
 	 * @return 
 	 */
-	public static boolean isTransparent(int block) {
-		return isTransparent((byte)(block&255), (byte)((block>>8)&255));
+	public static boolean isTransparent(int spriteIdValue) {
+		return isTransparent((byte)(spriteIdValue&255), (byte)((spriteIdValue>>8)&255));
 	}
 
 	/**

@@ -160,7 +160,7 @@ public class RenderStorage implements Telegraph  {
 				rChunk = new RenderChunk(mapChunk);
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);
-				AmbientOcclusionCalculator.calcAO(rChunk);
+				AmbientOcclusionCalculator.calcAO(this, rChunk);
 				hiddenSurfaceDetection(rChunk);
 
 				//update neighbors
@@ -222,7 +222,7 @@ public class RenderStorage implements Telegraph  {
 			rChunk.initData();
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
-			AmbientOcclusionCalculator.calcAO(rChunk);
+			AmbientOcclusionCalculator.calcAO(this, rChunk);
 			hiddenSurfaceDetection(rChunk);
 		});			
 	}

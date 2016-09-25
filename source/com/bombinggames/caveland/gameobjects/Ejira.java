@@ -190,11 +190,11 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		setMass(60f);
 		
 		Particle particle = new Particle((byte) 22, 800);
-		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 1f));
+		particle.setColor(new Color(1.0f, 0.8f, 0.2f, 0.7f));
 		particle.setType(ParticleType.FIRE);
 		particle.setTTL(1800f);
 		emitter = new ParticleEmitter(80);
-		emitter.setParticleDelay(7);
+		emitter.setParticleDelay(3);
 		emitter.setPrototype(particle);
 		//emitter.setBrightness(3.1f);
 		emitter.setActive(false);
@@ -203,7 +203,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter.setParticleSpread(new Vector3(1.6f, 0.6f, 0.5f));
 		
 		emitter2 = new ParticleEmitter(80);
-		emitter2.setParticleDelay(7);
+		emitter2.setParticleDelay(3);
 		emitter2.setPrototype(particle);
 		emitter2.setBrightness(10.1f);
 		emitter2.setActive(false);

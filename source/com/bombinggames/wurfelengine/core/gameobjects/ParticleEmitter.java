@@ -124,6 +124,7 @@ public class ParticleEmitter extends AbstractEntity {
 			}
 
 			timer += dt;
+			//loop to allow more then one spawn each frame
 			while (timer >= timeEachSpawn) {
 				timer -= timeEachSpawn;
 				Particle particle = pool.obtain();

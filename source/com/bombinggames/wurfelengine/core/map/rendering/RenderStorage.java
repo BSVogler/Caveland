@@ -160,20 +160,20 @@ public class RenderStorage implements Telegraph  {
 				data.add(rChunk);
 				rChunk.setCameraAccess(true);
 				AmbientOcclusionCalculator.calcAO(this, rChunk);
-				hiddenSurfaceDetection(rChunk);
+				occlusionCulling(rChunk);
 
 				//update neighbors
 				RenderChunk neighbor = getChunk(x - 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor);
+					occlusionCulling(neighbor);
 				}
 				neighbor = getChunk(x + 1, y);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor);
+					occlusionCulling(neighbor);
 				}
 				neighbor = getChunk(x, y - 1);
 				if (neighbor != null) {
-					hiddenSurfaceDetection(neighbor);
+					occlusionCulling(neighbor);
 				}
 			}
 		} else {
@@ -210,9 +210,9 @@ public class RenderStorage implements Telegraph  {
 	
 	
 	/**
-	 * clears the used RenderChunks then resets.
+	 * Clears the used RenderChunks then rebuilds them (shadows, AO,  occlusion culling).
 	 */
-	public void reinitChunks() {
+	public void bakeChunks() {
 		//loop over clone because may add new chunks in different thread to data while looping
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
@@ -221,7 +221,7 @@ public class RenderStorage implements Telegraph  {
 		});
 		dataclone.forEach((RenderChunk rChunk) -> {
 			AmbientOcclusionCalculator.calcAO(this, rChunk);
-			hiddenSurfaceDetection(rChunk);
+			occlusionCulling(rChunk);
 		});			
 	}
 	
@@ -383,7 +383,7 @@ public class RenderStorage implements Telegraph  {
 	 *
 	 * @param chunk
 	 */
-	public void hiddenSurfaceDetection(final RenderChunk chunk) {
+	public void occlusionCulling(final RenderChunk chunk) {
 		if (chunk == null) {
 			throw new IllegalArgumentException();
 		}
@@ -549,7 +549,7 @@ public class RenderStorage implements Telegraph  {
 	@Override
 	public boolean handleMessage(Telegram msg) {
 		if (msg.message == Events.mapChanged.getId()) {
-			reinitChunks();//coould be optimized by only updating blocks that changed
+			bakeChunks();//coould be optimized by only updating blocks that changed
 			RenderCell.rebuildCoverList();
 			return true;
 		}

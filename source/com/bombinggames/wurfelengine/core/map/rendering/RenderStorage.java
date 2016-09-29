@@ -147,7 +147,6 @@ public class RenderStorage implements Telegraph  {
 	 *
 	 * @param x
 	 * @param y
-	 * @return true if created a new renderchunk in the check
 	 */
 	private void checkChunk(int x, int y) {
 		//check if in render storage
@@ -214,8 +213,7 @@ public class RenderStorage implements Telegraph  {
 	 * clears the used RenderChunks then resets.
 	 */
 	public void reinitChunks() {
-		RenderStorage rS = this;
-		//loop over clone because may add new chunks to data while looping
+		//loop over clone because may add new chunks in different thread to data while looping
 		@SuppressWarnings("unchecked")
 		LinkedList<RenderChunk> dataclone = (LinkedList<RenderChunk>) data.clone();
 		dataclone.forEach((RenderChunk rChunk) -> {

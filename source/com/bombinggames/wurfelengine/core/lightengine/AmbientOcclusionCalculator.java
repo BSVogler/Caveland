@@ -44,7 +44,7 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderStorage;
 public class AmbientOcclusionCalculator {
 
 	/**
-	 * calcualtes the ambient occlusion for a chunk
+	 * calcualtes the ambient occlusion for a chunk.
 	 *
 	 * @param rS the renderStorage where this calculation is performed
 	 * @param chunk
@@ -54,6 +54,7 @@ public class AmbientOcclusionCalculator {
 		//iterate over every block in chunk
 		Coordinate coord = new Coordinate(0, 0, 0);
 		DataIterator<RenderCell> iterator = chunk.getIterator(0, Chunk.getBlocksZ() - 1);
+		//Algorithm runs similar to marching cubes, could be optimized to cache neighbor row at the side and below todo
 		while (iterator.hasNext()) {
 			RenderCell next = iterator.next();
 			//skip air and blocks without sides

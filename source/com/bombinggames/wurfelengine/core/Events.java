@@ -94,7 +94,7 @@ public enum Events {
 	teleport(21),
 	
 	/**
-	 *
+	 *extra info contains changed chunk
 	 */
 	chunkChanged(22),
 	

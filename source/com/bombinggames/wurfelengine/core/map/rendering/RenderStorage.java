@@ -479,7 +479,7 @@ public class RenderStorage implements Telegraph  {
 	}
 
 	private RenderCell getNewGroundCellInstance() {
-		return RenderCell.getRenderCell((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
+		return RenderCell.newRenderCell((byte) WE.getCVars().getValueI("groundBlockID"), (byte) 0); //the representative of the bottom layer (ground) block
 	}
 
 	/**

@@ -237,7 +237,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @param value
 	 * @return
 	 */
-	public static RenderCell getRenderCell(byte id, byte value) {
+	public static RenderCell newRenderCell(byte id, byte value) {
 		if (id == 0 || id == 4) {//air and invisible wall
 			RenderCell a = new RenderCell(id, value);
 			a.setHidden(true);
@@ -575,7 +575,7 @@ public class RenderCell extends AbstractGameObject {
 	/**
 	 * For direct creation. You should use the factory method instead.
 	 * @param id 
-	 * @see #getRenderCell(byte, byte) 
+	 * @see #newRenderCell(byte, byte) 
 	 */
     public RenderCell(byte id){
         super();
@@ -586,7 +586,7 @@ public class RenderCell extends AbstractGameObject {
 	 * For direct creation. You should use the factory method instead.
 	 * @param id
 	 * @param value 
-	 * @see #getRenderCell(byte, byte) 
+	 * @see #newRenderCell(byte, byte) 
 	 */
 	public RenderCell(byte id, byte value){
 		super();

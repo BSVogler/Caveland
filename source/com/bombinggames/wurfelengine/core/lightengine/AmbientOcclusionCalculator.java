@@ -75,7 +75,7 @@ public class AmbientOcclusionCalculator {
 					}
 					RenderCell neighBlock = coord.goToNeighbour(side).getRenderCell(rS);
 					byte neighborId = neighBlock.getSpriteId();
-				byte neighborValue = neighBlock.getSpriteValue();
+					byte neighborValue = neighBlock.getSpriteValue();
 					if (neighborId != 0 && !RenderCell.isTransparent(neighborId, neighborValue) && RenderCell.hasSides(neighborId, neighborValue)) {
 						aoFlags |= 1 << (side + 8);
 						//don't double draw the sides in between
@@ -88,8 +88,8 @@ public class AmbientOcclusionCalculator {
 					}
 					coord.goToNeighbour((side+4) % 8);//go back to center
 				}
-
-				//right side, side 2
+				
+				//analyze right side of block, side id 2
 				//check right half, which is equivalent to top right at pos 1
 				coord = coord.set(
 					chunk.getTopLeftCoordinateX() + iterator.getCurrentIndex()[0],
@@ -128,7 +128,7 @@ public class AmbientOcclusionCalculator {
 				coord.add(1, 0, 0);//revert
 
 				//check bottom side, which is equivalent ot top right at pos 5
-				neighBlock =coord.add(0, 0, -1).goToNeighbour(5).getRenderCell(rS);//revert changes and go to neighbor
+				neighBlock = coord.add(0, 0, -1).goToNeighbour(5).getRenderCell(rS);//revert changes and go to neighbor
 				neighborId = neighBlock.getSpriteId();
 				neighborValue = neighBlock.getSpriteValue();
 				if (neighborId != 0 && !RenderCell.isTransparent(neighborId, neighborValue) && RenderCell.hasSides(neighborId, neighborValue)) {

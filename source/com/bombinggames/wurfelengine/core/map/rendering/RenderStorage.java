@@ -63,7 +63,7 @@ public class RenderStorage implements Telegraph  {
 	 */
 	private final ArrayList<Integer> lastCenterX, lastCenterY;
 	/**
-	 * a list of Blocks marked as dirty. Dirty blocks are reshaded.
+	 * a list of cells marked as dirty. Dirty cells are reshaded.
 	 */
 	private final HashSet<Coordinate> dirtyFlags = new HashSet<>(200);
 	private float zRenderingLimit = Float.POSITIVE_INFINITY;
@@ -380,7 +380,7 @@ public class RenderStorage implements Telegraph  {
 	
 	
 	/**
-	 * performs a simple clipping check by looking at the direct neighbours.
+	 * performs a simple clipping check by looking at the direct neighbours. O(n) where n is blocks in chunk
 	 *
 	 * @param chunk
 	 */

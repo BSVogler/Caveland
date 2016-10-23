@@ -48,7 +48,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A RenderStorage is container which saves {@link RenderChunk}s used for rendering data only chunks. It manages which {@link Chunk}s must be transformed to {@link RenderChunk}s.
+ * A RenderStorage is container which saves {@link RenderChunk}s used for chunks storing rendering-data. It manages which {@link Chunk}s must be transformed to {@link RenderChunk}s.
  * @author Benedikt Vogler
  */
 public class RenderStorage implements Telegraph  {
@@ -205,7 +205,8 @@ public class RenderStorage implements Telegraph  {
 	 * @param rB
 	 */
 	public void setLightFlag(RenderCell rB) {
-		dirtyFlags.add(rB.getPosition());
+		dirtyFlagsShading.add(rB.getPosition());//passing coordinates makes using the same coordiante for more then one illegal, therefore read coord from rendercell
+	}
 	}
 	
 	

@@ -123,6 +123,18 @@ public class RenderChunk {
 
 	/**
 	 *
+	 * @param coord
+	 * @return
+	 */
+	public RenderCell getCell(Coordinate coord) {
+		if (coord.getZ() >= Chunk.getBlocksZ()) {
+			return NULLPOINTEROBJECT;
+		}
+		return data[coord.getX() - chunk.getTopLeftCoordinateX()][coord.getY() - chunk.getTopLeftCoordinateY()][coord.getZ()];
+	}
+	
+	/**
+	 *
 	 * @param x coordinate
 	 * @param y coordinate
 	 * @param z coordinate

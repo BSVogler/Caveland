@@ -104,9 +104,9 @@ public class RenderChunk {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
 					//update only if cell changed
-					int blockAtPos = chunk.getCellByIndex(xInd, yInd, z);
+					int blockAtPos = chunk.getBlockByIndex(xInd, yInd, z);
 					if (data[xInd][yInd][z] == null || (blockAtPos & 255) != data[xInd][yInd][z].getId()) {//here null can be value of cell if not yet initialized
-						data[xInd][yInd][z] = RenderCell.getRenderCell((byte) (blockAtPos & 255), (byte) ((blockAtPos >> 8) & 255));
+						data[xInd][yInd][z] = RenderCell.newRenderCell((byte) (blockAtPos & 255), (byte) ((blockAtPos >> 8) & 255));
 					}
 					
 					data[xInd][yInd][z].getPosition().set(

@@ -40,7 +40,11 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
  * @author Benedikt Vogler
  */
 public class RenderChunk {
-
+	
+	/**
+	 * if in a cell is no data available use this block. Uses air internally.
+	 */
+	public static final RenderCell NULLPOINTEROBJECT = RenderCell.newRenderCell((byte) 0, (byte) 0);
 	/**
 	 * a pool containing chunkdata
 	 */
@@ -67,10 +71,6 @@ public class RenderChunk {
 	 */
 	private final Chunk chunk;
 	
-	/**
-	 * if in a cell is no data available use this block. Uses air internally.
-	 */
-	public static final RenderCell NULLPOINTEROBJECT = RenderCell.getRenderCell((byte) 0, (byte) 0);
 	/**
 	 * the actual data stored in this renderchunk
 	 */

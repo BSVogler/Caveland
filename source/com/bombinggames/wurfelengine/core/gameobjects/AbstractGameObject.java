@@ -273,7 +273,9 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	public abstract void setPosition(Position pos);
 
 	/**
-	 * Returns the depth of the object. Nearer objects have a bigger depth.
+	 * Returns the depth of the object. The depth is the game world space
+	 * projected on one axis orthogonal to the camera's angle.
+	 * Objects nearer to camera have a bigger value.
 	 *
 	 * @return distance from zero level
 	 */

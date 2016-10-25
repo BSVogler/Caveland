@@ -156,7 +156,7 @@ public class RenderChunk {
 	}
 
 	/**
-	 *
+	 * Resets the clipping for every block.
 	 */
 	protected void resetClipping() {
 		int blocksZ = Chunk.getBlocksZ();

@@ -205,8 +205,7 @@ public class RenderStorage implements Telegraph  {
 	 * @param rB
 	 */
 	public void setLightFlag(RenderCell rB) {
-		dirtyFlagsShading.add(rB.getPosition());//passing coordinates makes using the same coordiante for more then one illegal, therefore read coord from rendercell
-	}
+		dirtyFlags.add(rB.getPosition());//passing coordinates makes using the same coordiante for more then one illegal, therefore read coord from rendercell
 	}
 	
 	

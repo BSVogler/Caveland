@@ -106,9 +106,12 @@ public enum Events {
 	/**
 	 *
 	 */
-	mapReloaded(24)
+	mapReloaded(24),
 
-	;
+	/**
+	 * if a cell is changed
+	 */
+	cellChanged(25);
 	
 	private final int id;
 

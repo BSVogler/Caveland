@@ -589,6 +589,20 @@ public class Camera {
 		for (RenderCell modifiedCell : modifiedCells) {
 			modifiedCell.clearCoveredEnts();
 		}
+		
+		//sort by depth
+		renderAppendix.sort((AbstractGameObject o1, AbstractGameObject o2) -> {
+			float d1 = o1.getDepth();
+			float d2 = o2.getDepth();
+			if (d1 > d2) {
+				return 1;
+			} else {
+				if (d1 == d2) {
+					return 0;
+				}
+				return -1;
+			}
+		});
 		depthlist.addAll(renderAppendix);//render every entity which has no parent block at the end of the list
 	}
 	

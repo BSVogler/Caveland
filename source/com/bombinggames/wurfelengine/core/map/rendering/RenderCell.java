@@ -1370,7 +1370,7 @@ public class RenderCell extends AbstractGameObject {
 	}
 
 	/**
-	 * adds the entitiy into a cell
+	 * adds the entity into a cell for depth sorting
 	 *
 	 * @param ent
 	 */

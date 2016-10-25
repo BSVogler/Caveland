@@ -97,18 +97,20 @@ public class RenderChunk {
 		int tlY = chunk.getTopLeftCoordinateY();
 
 		//fill every data cell
-		int blocksZ = Chunk.getBlocksZ();
 		int blocksX = Chunk.getBlocksX();
 		int blocksY = Chunk.getBlocksY();
+		int blocksZ = Chunk.getBlocksZ();
 		for (int xInd = 0; xInd < blocksX; xInd++) {
 			for (int yInd = 0; yInd < blocksY; yInd++) {
 				for (int z = 0; z < blocksZ; z++) {
 					//update only if cell changed
-					int blockAtPos = chunk.getBlockByIndex(xInd, yInd, z);
-					if (data[xInd][yInd][z] == null || (blockAtPos & 255) != data[xInd][yInd][z].getId()) {//here null can be value of cell if not yet initialized
+					int blockAtPos = chunk.getBlockByIndex(xInd, yInd, z);//get block from map
+					//here 'null' can be value of cell if not yet initialized
+					if (data[xInd][yInd][z] == null || (blockAtPos & 255) != data[xInd][yInd][z].getId()) {
 						data[xInd][yInd][z] = RenderCell.newRenderCell((byte) (blockAtPos & 255), (byte) ((blockAtPos >> 8) & 255));
 					}
 					
+					//set the coordinate
 					data[xInd][yInd][z].getPosition().set(
 						tlX + xInd,
 						tlY + yInd,
@@ -123,8 +125,8 @@ public class RenderChunk {
 
 	/**
 	 *
-	 * @param coord
-	 * @return
+	 * @param coord only coordinates which are in this chunk
+	 * @return 
 	 */
 	public RenderCell getCell(Coordinate coord) {
 		if (coord.getZ() >= Chunk.getBlocksZ()) {
@@ -135,9 +137,9 @@ public class RenderChunk {
 	
 	/**
 	 *
-	 * @param x coordinate
-	 * @param y coordinate
-	 * @param z coordinate
+	 * @param x coordinate, must be contained in this chunk
+	 * @param y coordinate, must be contained in this chunk
+	 * @param z coordinate, must be contained in this chunk
 	 * @return
 	 */
 	public RenderCell getCell(int x, int y, int z) {

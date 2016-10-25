@@ -125,6 +125,9 @@ public class Camera {
 	private int maxsprites;
 	private final Point center = new Point(0, 0, 0);
 	private final ArrayList<RenderCell> modifiedCells = new ArrayList<>(30);
+	/**
+	 * is rendered at the end
+	 */
 	private final LinkedList<AbstractEntity> renderAppendix = new LinkedList<>();
 	/**
 	 * The radius which is used for loading the chunks around the center. May be reduced after the first time to a smaller value.
@@ -554,14 +557,13 @@ public class Camera {
 				&& inViewFrustum(ent.getPosition())
 				&& ent.getPosition().getZ() < gameView.getRenderStorage().getZRenderingLimit()
 			) {
-				RenderCell cell = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
+				RenderCell cellAbove = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
 				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change from line above
-				if (cell != RenderChunk.NULLPOINTEROBJECT) {
-					cell.addCoveredEnts(ent);
-					modifiedCells.add(cell);
+				if (cellAbove == RenderChunk.NULLPOINTEROBJECT) {
+					renderAppendix.add(ent);//render at the end
 				} else {
-					//add at end of renderList
-					renderAppendix.add(ent);
+					cellAbove.addCoveredEnts(ent);//cell covers entities inside
+					modifiedCells.add(cellAbove);
 				}
 			}
 		}

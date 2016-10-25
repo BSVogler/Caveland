@@ -33,6 +33,7 @@ package com.bombinggames.wurfelengine.core.map.rendering;
 import com.badlogic.gdx.utils.Pool;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 
 /**
@@ -42,7 +43,7 @@ import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 public class RenderChunk {
 	
 	/**
-	 * if in a cell is no data available use this block. Uses air internally.
+	 * if in a cell is no data available use this block. Uses air internally. Per-block differences should not be used when using this object.
 	 */
 	public static final RenderCell NULLPOINTEROBJECT = RenderCell.newRenderCell((byte) 0, (byte) 0);
 	/**
@@ -54,7 +55,16 @@ public class RenderChunk {
 		DATAPOOL = new Pool<RenderCell[][][]>(3) {
 			@Override
 			protected RenderCell[][][] newObject() {
-				return new RenderCell[Chunk.getBlocksX()][Chunk.getBlocksY()][Chunk.getBlocksZ()];
+				//bigger by two because overlap
+				RenderCell[][][] arr = new RenderCell[Chunk.getBlocksX()+2][Chunk.getBlocksY()+4][Chunk.getBlocksZ()];
+				for (RenderCell[][] x : arr) {
+					for (RenderCell[] y : x) {
+						for (int z = 0; z < y.length; z++) {
+							y[z] = NULLPOINTEROBJECT;
+						}
+					}
+				}
+				return arr;
 			}
 		};
 	}

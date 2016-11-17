@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,19 +150,22 @@ public class Map implements IndexedGraph<PfNode> {
 	private int activeSaveSlot;
 
 	/**
-	 * Stores the data of the map.
+	 * Stores the data of the map. Hash function is chunkX*chunkDim + chunkY. This means that there are only collision once you are outside the possible range specified in chunkDim. Was a 2d array before with same functionality but limited to dimensions of the array. HashMap now allows (slower) access to out-of-scope areas. TODO: Collisions can be avoided if areas, which are not active are pruned.
 	 */
-	private Chunk[][] data;
+	private HashMap<Integer, Chunk> data;
 	/**
-	 * contains evey chunk which was loaded
+	 * contains evey loaded chunk for fast iteration
 	 */
 	private LinkedList<Chunk> loadedChunks;
 	
 	private final ArrayList<ChunkLoader> loadingRunnables = new ArrayList<>(9);
 	/**
-	 * the amount of chunks in memory in one dimension
+	 * The amount of chunks in memory in one dimension.
 	 */
 	private final int chunkDim;
+	/**
+	 * Limits the amount of chunks which can be loaded into memory.
+	 */
 	private final int maxChunks;
 	private final CVarSystemMap cVars;
 
@@ -189,12 +193,11 @@ public class Map implements IndexedGraph<PfNode> {
 	public Map(final File name, Generator generator, int saveSlot) throws IOException {
 		this.directory = name;
 		this.generator = generator;
+		
 		//init data array
 		chunkDim = WE.getCVars().getValueI("mapIndexSpaceSize");
-		data = new Chunk[chunkDim][];
-		for (int i = 0; i < data.length; i++) {
-			data[i] = new Chunk[chunkDim / 2];//to have a quadratic map
-		}
+		data = new HashMap<>(chunkDim*chunkDim, 0.5f);
+		
 		maxChunks = WE.getCVars().getValueI("mapMaxMemoryUse") / (Chunk.getBlocksX()*Chunk.getBlocksY()*Chunk.getBlocksZ()*3); //
 		loadedChunks = new LinkedList<>();
 		WE.getCVars().get("loadedMap").setValue(name.getName());
@@ -245,7 +248,7 @@ public class Map implements IndexedGraph<PfNode> {
 			if (runnable.getChunk() != null) {//loaded
 				if (loadedChunks.size() < maxChunks ) {
 					loadedChunks.add(runnable.getChunk());
-					data[runnable.getCoordX()+chunkDim/2][runnable.getCoordY()+chunkDim/4] = runnable.getChunk();
+					data.put(runnable.getCoordX()*chunkDim+runnable.getCoordY(), runnable.getChunk());
 					addEntities(runnable.getChunk().retrieveEntities());
 					setModified();
 				}
@@ -324,7 +327,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * From range in X [-chunkDim/2,chunkDim/2]
 	 * @return
 	 */
-	public Chunk[][] getData() {
+	public HashMap<Integer, Chunk> getData() {
 		return data;
 	}
 	
@@ -492,7 +495,8 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkContaining(final Coordinate coord) {
-		return data[Math.floorDiv(coord.getX(), Chunk.getBlocksX()) + chunkDim / 2][Math.floorDiv(coord.getY(), Chunk.getBlocksY()) + chunkDim / 4];
+		return data.get(Math.floorDiv(coord.getX(), Chunk.getBlocksX())*chunkDim + Math.floorDiv(coord.getY(), Chunk.getBlocksY()));
+	
 	}
 
 	/**
@@ -503,7 +507,7 @@ public class Map implements IndexedGraph<PfNode> {
 	 * @return can return null if not loaded
 	 */
 	public Chunk getChunkContaining(int x, int y) {
-		return data[Math.floorDiv(x, Chunk.getBlocksX()) + chunkDim / 2][Math.floorDiv(y, Chunk.getBlocksY()) + chunkDim / 4];
+		return data.get(Math.floorDiv(x, Chunk.getBlocksX())*chunkDim + Math.floorDiv(y, Chunk.getBlocksY()));
 	}
 	
 	/**
@@ -553,15 +557,14 @@ public class Map implements IndexedGraph<PfNode> {
 	}
 
 	/**
-	 * get the chunk with the given chunk coords. <br>Runtime: O(c) c: amount of
-	 * chunks -&gt; O(1)
+	 * get the chunk with the given chunk coords.<br><br> Runtime: O(1)
 	 *
-	 * @param chunkX
-	 * @param chunkY
-	 * @return if not in memory return null
+	 * @param chunkX chunk coordinate
+	 * @param chunkY chunk coordinate
+	 * @return if not in memory returns null
 	 */
 	public Chunk getChunk(int chunkX, int chunkY) {
-		return data[chunkX+chunkDim/2][chunkY+chunkDim/4];
+		return data.get(chunkX*chunkDim + chunkY);//this is the hash function
 	}
 
 	/**

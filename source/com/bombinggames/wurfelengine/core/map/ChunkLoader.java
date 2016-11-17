@@ -75,7 +75,7 @@ public class ChunkLoader implements Runnable{
 	}
 	
 	/**
-	 *
+	 * Get the chunk coordinate.
 	 * @return
 	 */
 	public int getCoordX() {
@@ -83,7 +83,7 @@ public class ChunkLoader implements Runnable{
 	}
 
 	/**
-	 *
+	 * Get the chunk coordinate.
 	 * @return
 	 */
 	public int getCoordY() {

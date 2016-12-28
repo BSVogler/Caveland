@@ -189,6 +189,10 @@ public class LiftBasket extends MovableEntity {
 		return false;
 	}
 
+	/**
+	 * If basket is below or on top lift block in game logic.
+	 * @return 
+	 */
 	private boolean isOnSurface() {
 		Coordinate checkpos = getPosition().toCoord();
 		for (int z = 0; z < Chunk.getBlocksZ(); z++) {

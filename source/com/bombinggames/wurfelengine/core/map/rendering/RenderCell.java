@@ -49,8 +49,14 @@ import com.bombinggames.wurfelengine.core.map.Position;
 import java.util.LinkedList;
 
 /**
- * Something which can be rendered and therefore saves render information shared across cameras. A RenderCell should not use the event system. The class extends (wraps) the plain data of the block with a position and {@link AbstractGameObject} class methods. The wrapped cell is not referenced. It is possible to change there sprite id and value {@link AbstractGameObject#setSpriteId(byte)} but keeping the logic id and value. <br>
- * The internal wrapped block can have different id then used for rendering. The rendering sprite id's are set in the constructor or later manualy.<br>
+ * Something which can be rendered and therefore saves render information shared
+ * across cameras. A RenderCell should not use the event system. The class
+ * extends/wraps the plain data of the block with a position and
+ * {@link AbstractGameObject} class methods. The wrapped cell is not
+ * referenced.<br>
+ * The block id in teh map can have different id then used for rendering. The
+ * rendering sprite id's are set in the constructor or later manualy.<br>
+ *
  * @author Benedikt Vogler
  */
 public class RenderCell extends AbstractGameObject {
@@ -1492,7 +1498,7 @@ public class RenderCell extends AbstractGameObject {
 
 	@Override
 	public String toString() {
-		return Integer.toHexString(hashCode())+" @"+getPosition().toString()+" id: "+ id+" value: "+value;
+		return Integer.toHexString(hashCode()) + " @" + getPosition().toString() + " id: " + id + " value: " + value;
 	}
 
 	@Override
@@ -1506,7 +1512,9 @@ public class RenderCell extends AbstractGameObject {
 	}
 
 	/**
-	 * should only be changed when the copy of the data in the map has also changed
+	 * It is advised to only change this value if the data stored in the map
+	 * also changes.
+	 *
 	 * @param value game data value.
 	 */
 	public void setValue(byte value) {

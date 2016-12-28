@@ -167,37 +167,39 @@ public class WE {
 			//look if contains launch parameters
 			for (int i = 0; i < args.length; i++) {
 				switch (args[i]) {
-					case "-fullscreen":
+					case "--fullscreen":
 					case "-f":
 						//start in fullscreen
 						CONFIG.fullscreen = true;
 						break;
-					case "-windowed":
+					case "--windowed":
 						//start in windowed mode
 						CONFIG.fullscreen = false;
 						break;
-					case "-w":
+					case "--width":
 						i++;
 						if (i < args.length){
 							//set the width
 							CONFIG.width = Integer.parseInt(args[i]);
 						} else {
-							System.err.println("missing width after launch parameter");
+							System.err.println("missing width value after launch parameter");
 						}
 						break;
+					case "--height":
 					case "-h":
 						i++;
 						if (i < args.length){
 							//set the height
 							CONFIG.height = Integer.parseInt(args[i]);
 						} else {
-							System.err.println("missing height after launch parameter");
+							System.err.println("missing height value after launch parameter");
 						}
 						break;
-					case "-skipintro":
+					case "--skipintro":
 						skipintro = true;
 						break;
 					case "-v":
+					case "-version":
 						System.out.println(WE.VERSION);
 						System.exit(0);
 						return;

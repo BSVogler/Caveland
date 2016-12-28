@@ -98,7 +98,8 @@ public class Caveland {
 			//look if contains launch parameters
 			for (String arg : args) {
 				switch (arg) {
-					case "-quickstart":
+					case "--quickstart":
+					case "-q":
 						WE.addPostLaunchCommands(() -> {
 							CLGameController controller = new CLGameController();
 							controller.useSaveSlot(0);

@@ -519,7 +519,7 @@ public class RenderStorage implements Telegraph  {
 		RenderCell block = getCell(coords);
 		if (block==null)
 			return false;
-		return block.isClipped();
+		return block.isFullyClipped();
 	}
 
 	/**

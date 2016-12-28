@@ -1343,7 +1343,7 @@ public class RenderCell extends AbstractGameObject {
 	 *
 	 * @return
 	 */
-	public boolean isClipped() {
+	public boolean isFullyClipped() {
 		return clipping == 0b111;
 	}
 
@@ -1387,7 +1387,7 @@ public class RenderCell extends AbstractGameObject {
 	@Override
 	public boolean shouldBeRendered(Camera camera) {
 		return id != 0
-				&& !isClipped()
+				&& !isFullyClipped()
 				&& !isHidden()
 				&& camera.inViewFrustum(coord);
 	}

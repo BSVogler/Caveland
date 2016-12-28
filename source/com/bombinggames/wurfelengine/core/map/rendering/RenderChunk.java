@@ -37,13 +37,13 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 
 /**
- *
+ * Stores display data for a {@link Chunk}. If no block/air is stored by using the shared {@link #NULLPOINTEROBJECT}.
  * @author Benedikt Vogler
  */
 public class RenderChunk {
 	
 	/**
-	 * if in a cell is no data available use this block. Uses air internally. Per-block differences should not be used when using this object.
+	 * if in a cell is no data available use this block. Uses air internally. block-by-block differences must not used when using this shared object.
 	 */
 	public static final RenderCell NULLPOINTEROBJECT = RenderCell.newRenderCell((byte) 0, (byte) 0);
 	/**

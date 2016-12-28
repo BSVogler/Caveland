@@ -110,10 +110,10 @@ public class RobotFactory extends AbstractBlockLogicExtension implements Interac
 						Robot robot = null;
 						switch (result.id) {
 							case 0:
-								robot = (Robot) new Robot().spawn(getPosition().toPoint());
+								robot = new Robot().spawn(getPosition().toPoint());
 								break;
 							case 1:
-								robot = (Robot) new SpiderRobot().spawn(getPosition().toPoint());
+								robot = new SpiderRobot().spawn(getPosition().toPoint());
 								break;
 							case 2:
 								robot = (Robot) new Quadrocopter().spawn(getPosition().toPoint());

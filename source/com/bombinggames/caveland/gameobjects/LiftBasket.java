@@ -212,6 +212,8 @@ public class LiftBasket extends MovableEntity {
 
 	class BackSprite extends SimpleEntity implements Component {
 
+		private static final long serialVersionUID = 1L;
+
 		private LiftBasket body;
 
 		BackSprite() {
@@ -244,6 +246,8 @@ public class LiftBasket extends MovableEntity {
 	}
 	
 	class FrontSprite extends SimpleEntity implements Component {
+
+		private static final long serialVersionUID = 1L;
 
 		private LiftBasket body;
 

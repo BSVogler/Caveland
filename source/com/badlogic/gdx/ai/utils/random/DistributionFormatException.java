@@ -22,6 +22,8 @@ package com.badlogic.gdx.ai.utils.random;
  * @author davebaol */
 public class DistributionFormatException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	/** Constructs an <code>IllegalArgumentException</code> with no detail message. */
 	public DistributionFormatException () {
 		super();

@@ -153,6 +153,7 @@ public class RenderChunk {
 	 * @return
 	 */
 	public RenderCell getCell(int x, int y, int z) {
+		//if is above (outside) container
 		if (z >= Chunk.getBlocksZ()) {
 			return NULLPOINTEROBJECT;
 		}

@@ -559,6 +559,7 @@ public class Camera {
 			) {
 				RenderCell cellAbove = gameView.getRenderStorage().getCell(ent.getPosition().add(0, 0, RenderCell.GAME_EDGELENGTH));//add in cell above
 				ent.getPosition().add(0, 0, -RenderCell.GAME_EDGELENGTH);//reverse change from line above
+				//in the renderstorage no nullpointer should exists, escept object is outside the array
 				if (cellAbove == RenderChunk.NULLPOINTEROBJECT) {
 					renderAppendix.add(ent);//render at the end
 				} else {

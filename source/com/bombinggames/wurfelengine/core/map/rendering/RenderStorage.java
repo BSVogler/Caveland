@@ -281,7 +281,6 @@ public class RenderStorage implements Telegraph  {
 		if (z < 0) {
 			return getNewGroundCellInstance();
 		}
-		RenderChunk chunkWithBlock = null;
 		int left, top;
 		//loop over storage
 		for (RenderChunk chunk : data) {
@@ -294,15 +293,10 @@ public class RenderStorage implements Telegraph  {
 				&& y < top + Chunk.getBlocksY()
 			) {
 				data.addFirst(data.removeLast());//move in front to speed up lookup
-				chunkWithBlock = chunk;
-				break;
+				return chunk.getCell(x, y, z);//find chunk in x coord
 			}
 		}
-		if (chunkWithBlock == null) {
-			return RenderChunk.NULLPOINTEROBJECT;
-		} else {
-			return chunkWithBlock.getCell(x, y, z);//find chunk in x coord
-		}
+		return RenderChunk.NULLPOINTEROBJECT;
 	}
 
 	/**

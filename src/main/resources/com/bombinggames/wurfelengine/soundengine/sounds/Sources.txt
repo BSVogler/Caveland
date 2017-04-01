@@ -1,0 +1,14 @@
+Sources of the sounds:
+
+edited file "wind-loud.wav"->converted to .ogg
+http://soundbible.com/1810-Wind.html
+
+"explosion2.wav" by steveygos93
+http://freesound.org/people/steveygos93/sounds/80401/
+
+„landing.wav" by Benedikt S. Vogler
+
+„startup.wav“ by Felix von Dohlen
+
+„splash“ by „soundscalpel.com“
+http://freesound.org/people/soundscalpel.com/sounds/110393/

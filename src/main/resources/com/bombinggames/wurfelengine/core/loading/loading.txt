@@ -1,0 +1,60 @@
+loading.png
+format: RGBA4444
+filter: Linear,Linear
+repeat: none
+banner_medium
+  rotate: false
+  xy: 2, 2
+  size: 1115, 190
+  orig: 1115, 190
+  offset: 0, 0
+  index: -1
+loading-bar-hidden
+  rotate: false
+  xy: 2, 195
+  size: 35, 56
+  orig: 35, 56
+  offset: 0, 0
+  index: -1
+loading-frame-bg
+  rotate: false
+  xy: 40, 248
+  size: 5, 5
+  orig: 5, 5
+  offset: 0, 0
+  index: -1
+loading-frame
+  rotate: false
+  xy: 1120, 2
+  size: 542, 62
+  orig: 542, 62
+  offset: 0, 0
+  index: -1
+loading_bar1
+  rotate: false
+  xy: 40, 195
+  size: 503, 50
+  orig: 503, 50
+  offset: 0, 0
+  index: -1
+loading_bar2
+  rotate: false
+  xy: 546, 195
+  size: 503, 50
+  orig: 503, 50
+  offset: 0, 0
+  index: -1
+loading_bar3
+  rotate: false
+  xy: 1052, 195
+  size: 503, 50
+  orig: 503, 50
+  offset: 0, 0
+  index: -1
+screen-bg
+  rotate: false
+  xy: 40, 248
+  size: 5, 5
+  orig: 5, 5
+  offset: 0, 0
+  index: -1

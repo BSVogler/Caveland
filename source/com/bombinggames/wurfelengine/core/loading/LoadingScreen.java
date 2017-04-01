@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -102,7 +103,7 @@ public class LoadingScreen extends WEScreen {
 			anitextures[1] = GUItexture.findRegion("loading_bar2");
 			anitextures[2] = GUItexture.findRegion("loading_bar3");
 			
-			Animation anim = new Animation(0.2f, anitextures);
+			Animation<TextureRegion> anim = new Animation<>(0.2f, anitextures);
 			anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
 			loadingBar = new LoadingBar(anim);
 			

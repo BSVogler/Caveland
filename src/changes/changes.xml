@@ -1,0 +1,35 @@
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+	<properties>
+		<title>Wurfel Engine</title>
+		<author email="e-mail@benediktvogler.de">Benedikt S. Vogler</author>
+	</properties>
+	<body>
+		<release version="1.7.6" date="2007-03-15" description="Added Maven Integration">
+			<action dev="galegofer" type="add">
+				Added Maven support.
+			</action>
+			<action dev="galegofer" type="update">
+				Changed project structure to make it Maven compliant source code was moved
+				to src/main/java.
+			</action>
+			<action dev="galegofer" type="update">
+				Moved game resources to src/main/resources as needed for Maven.
+			</action>
+			<action dev="galegofer" type="remove">
+				Deleted packages that belongs to libraries.
+			</action>
+			<action dev="galegofer" type="update">
+				Changed project name to separate in Wurfengine core and the demo
+				application.
+			</action>
+			<action dev="galegofer" type="add">
+				Added support for changes Maven plugin.
+			</action>
+			<action dev="galegofer" type="add">
+				Added dependencies resolve for Maven.
+			</action>
+		</release>
+	</body>
+</document>

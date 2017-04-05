@@ -18,10 +18,6 @@ public class ConstructionSiteRender extends RenderCell {
 		super(id, value);
 	}
 
-	@Override
-	public void update(float dt) {
-		super.update(dt);
-	}
 
 	@Override
 	public byte getSpriteValue() {

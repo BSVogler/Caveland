@@ -405,7 +405,8 @@ public class Chunk implements Telegraph {
 											z
 										)
 									);
-									logicBlocks.add(logic);
+									if (logic!=null)
+										logicBlocks.add(logic);
 								}
 							}
 							x++;

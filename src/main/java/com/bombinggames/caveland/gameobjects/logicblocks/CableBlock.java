@@ -30,8 +30,6 @@
  */
 package com.bombinggames.caveland.gameobjects.logicblocks;
 
-import com.bombinggames.wurfelengine.core.map.Coordinate;
-
 /**
  *
  * @author Benedikt Vogler
@@ -39,15 +37,10 @@ import com.bombinggames.wurfelengine.core.map.Coordinate;
 public class CableBlock extends AbstractPowerBlock{
 	private boolean initalized = false;
 	private int type = 0;
-	
-	/**
-	 *
-	 * @param id
-	 * @param value
-	 * @param coord
-	 */
-	public CableBlock(byte id, byte value, Coordinate coord) {
-		super(id, coord);
+
+	@Override
+	public void setValue(byte value) {
+		super.setValue(value);
 		type = value/2;
 	}
 	

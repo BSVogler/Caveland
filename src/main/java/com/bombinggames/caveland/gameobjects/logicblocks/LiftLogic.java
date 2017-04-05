@@ -23,15 +23,6 @@ public class LiftLogic extends AbstractBlockLogicExtension implements Interactab
 
 	/**
 	 *
-	 * @param block
-	 * @param coord
-	 */
-	public LiftLogic(byte block, Coordinate coord) {
-		super(block, coord);
-	}
-
-	/**
-	 *
 	 * @param dt
 	 */
 	@Override

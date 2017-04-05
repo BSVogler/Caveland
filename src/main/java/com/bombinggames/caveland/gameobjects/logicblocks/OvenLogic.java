@@ -45,7 +45,6 @@ import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleType;
 import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.LinkedList;
 
 /**
@@ -62,15 +61,6 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	private float productionCountDown;
 	private float burntime;
 	private CollectibleContainer container;
-
-	/**
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public OvenLogic(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 
 	@Override
 	public void interact(CLGameView view, AbstractEntity actor) {

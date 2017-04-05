@@ -1,5 +1,9 @@
 package com.bombinggames.wurfelengine.core.map;
 
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Manages the game logic for a block. The instances are not saved in the map
  * save file; therfore, every data saved in the fields are lost after
@@ -15,28 +19,54 @@ package com.bombinggames.wurfelengine.core.map;
 public abstract class AbstractBlockLogicExtension {
 
 	private static final long serialVersionUID = 2L;
+	private static final HashMap<Byte, Class<? extends AbstractBlockLogicExtension>> classRegister = new HashMap<>(20);
+
+	public static void registerClass(byte id, Class<? extends AbstractBlockLogicExtension> aClass){
+		classRegister.put(id, aClass);
+}
+	/**
+	 * 
+	 * @param blockId the block at the position
+	 * @param value
+	 * @param coord the position where the logic block is placed
+	 * @return 
+	 */
+	public static AbstractBlockLogicExtension newLogicInstance(byte blockId, byte value, Coordinate coord) {
+		if (coord == null) {
+			throw new NullPointerException();
+		}
+		try {
+			Class<? extends AbstractBlockLogicExtension> aClass = classRegister.get(blockId);
+			if (aClass!=null) {
+				AbstractBlockLogicExtension instance = aClass.newInstance();
+				instance.id = blockId;
+				instance.coord = coord;
+				instance.setValue(value);
+				instance.setCoord(coord);
+				return instance;
+			}
+		} catch (InstantiationException | IllegalAccessException ex) {
+			Logger.getLogger(AbstractBlockLogicExtension.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
+	
 	/**
 	 * pointer to the according coordinate
 	 */
-	private final Coordinate coord;
+	private Coordinate coord;
 	/**
 	 * Is only used for validity check.
 	 */
-	private final byte id;
+	private byte id;
 
 	/**
 	 * Called when spawned. Should not access the map because during map
 	 * creating this method is called and the map still empty. Also entities can not be spawned here.
 	 *
-	 * @param blockId the block at the position
-	 * @param coord the position where the logic block is placed
+
 	 */
-	public AbstractBlockLogicExtension(byte blockId, Coordinate coord) {
-		this.id = blockId;
-		if (coord == null) {
-			throw new NullPointerException();
-		}
-		this.coord = coord;
+	public AbstractBlockLogicExtension() {
 	}
 
 	/**
@@ -69,5 +99,16 @@ public abstract class AbstractBlockLogicExtension {
 	 * called when removed
 	 */
 	public abstract void dispose();
+
+	/**
+	 * 
+	 * @param value 
+	 */
+	public void setValue(byte value) {
+	}
+
+	private void setCoord(Coordinate coord) {
+		this.coord = coord;
+	}
 
 }

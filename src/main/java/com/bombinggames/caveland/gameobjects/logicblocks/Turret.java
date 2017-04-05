@@ -33,7 +33,6 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Intersection;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
@@ -54,15 +53,6 @@ public class Turret extends AbstractPowerBlock {
 	 */
 	public final float MAXDISTANCE = 20;
 	private int teamId = 1;
-	
-	/**
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public Turret(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 	
 	@Override
 	public void update(float dt) {

@@ -34,7 +34,6 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 import com.badlogic.gdx.graphics.Color;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
@@ -50,15 +49,6 @@ public class PowerTorch extends AbstractPowerBlock {
 	 */
 	public final static float POINTRADIUS = 3 * RenderCell.GAME_EDGELENGTH;
 	private PointLightSource lightsource;
-
-	/**
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public PowerTorch(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 
 	@Override
 	public void update(float dt) {

@@ -18,16 +18,6 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 
 	/**
 	 *
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public AbstractPowerBlock(byte block, Coordinate coord) {
-		super(block, coord);
-	}
-
-	/**
-	 *
 	 * @param dt
 	 */
 	@Override

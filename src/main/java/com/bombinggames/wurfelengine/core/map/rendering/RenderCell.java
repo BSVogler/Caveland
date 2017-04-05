@@ -181,7 +181,7 @@ public class RenderCell extends AbstractGameObject {
 	}
 
 	/**
-	 * Creates a new logic instance. This can happen before the chunk is filled
+	 * Creates a new logic instance if registered. This can happen before the chunk is filled
 	 * at this position.
 	 *
 	 * @param id
@@ -193,7 +193,7 @@ public class RenderCell extends AbstractGameObject {
 		if (customBlocks == null) {
 			return null;
 		}
-		return customBlocks.newLogicInstance(id, value, coord);
+		return AbstractBlockLogicExtension.newLogicInstance(id, value, coord);
 	}
 	
 	/**

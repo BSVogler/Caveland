@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- *
+ * Can produce flitns from sulfur and coal whne delivered.
  * @author Benedikt Vogler
  */
 public class Machine extends AbstractBlockLogicExtension  {

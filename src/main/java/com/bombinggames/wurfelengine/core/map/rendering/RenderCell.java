@@ -190,9 +190,6 @@ public class RenderCell extends AbstractGameObject {
 	 * @return null if has no logic
 	 */
 	public static AbstractBlockLogicExtension createLogicInstance(byte id, byte value, Coordinate coord) {
-		if (customBlocks == null) {
-			return null;
-		}
 		return AbstractBlockLogicExtension.newLogicInstance(id, value, coord);
 	}
 	
@@ -203,10 +200,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @return
 	 */
 	public static boolean hasLogic(byte id, byte value) {
-		if (customBlocks == null) {
-			return false;
-		}
-		return customBlocks.hasLogic(id, value);
+		return AbstractBlockLogicExtension.isRegistered(id);
 	}
 
 	/**

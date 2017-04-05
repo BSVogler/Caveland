@@ -17,7 +17,6 @@ import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.CustomBlocks;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.ArrayList;
@@ -28,10 +27,32 @@ import java.util.ArrayList;
  */
 public class CavelandBlocks implements CustomBlocks {
 
+	static {
+		registerLogicBlocks();
+	}
+	
+	public static void registerLogicBlocks(){
+		AbstractBlockLogicExtension.registerClass(CLBlocks.ENTRY.id, CaveEntryBlockLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.CONSTRUCTIONSITE.id,  ConstructionSite.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.OVEN.id, OvenLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.POWERSTATION.id, PowerStationLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.LIFT.id, LiftLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.LIFT_Ground.id, LiftLogicGround.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.ROBOTFACTORY.id, RobotFactory.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.POWERCABLE.id, CableBlock.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.RAILSBOOSTER.id, BoosterLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.TURRET.id, Turret.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.TORCH.id, PowerTorch.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.FLAGPOLE.id, Flagpole.class);
+			
+		AbstractBlockLogicExtension.registerClass(CLBlocks.ENTRY.id, CaveEntryBlockLogic.class);
+		AbstractBlockLogicExtension.registerClass(CLBlocks.CONSTRUCTIONSITE.id, ConstructionSite.class);	
+	}	
+	
 	/**
 	 *
 	 */
-	public enum CLBlocks {
+	public static enum CLBlocks {
 
 		/**
 		 *
@@ -364,45 +385,5 @@ public class CavelandBlocks implements CustomBlocks {
 	@Override
 	public boolean isIndestructible(byte id, byte value) {
 		return id == CLBlocks.INDESTRUCTIBLEOBSTACLE.id;
-	}
-
-	@Override
-	public boolean hasLogic(byte id, byte value) {
-		for (CLBlocks e : CLBlocks.typesWithLogic) {
-			if (e.hasLogic && id == e.id) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public AbstractBlockLogicExtension newLogicInstance(byte id, byte value, Coordinate coord) {
-		if (id == CLBlocks.ENTRY.id) {
-			return new CaveEntryBlockLogic(id, coord);
-		}else if (id == CLBlocks.CONSTRUCTIONSITE.id) {
-			return new ConstructionSite(id, coord);
-		}else if (id == CLBlocks.OVEN.id) {
-			return new OvenLogic(id, coord);
-		}else if (id == CLBlocks.POWERSTATION.id) {
-			return new PowerStationLogic(id, coord);
-		} else if (id == CLBlocks.LIFT.id) {
-			return new LiftLogic(id, coord);
-		} else if (id == CLBlocks.LIFT_Ground.id) {
-			return new LiftLogicGround(id, coord);
-		} else if (id == CLBlocks.ROBOTFACTORY.id) {
-			return new RobotFactory(id, coord);
-		} else if (id == CLBlocks.POWERCABLE.id) {
-			return new CableBlock(id, value, coord);
-		} else if (id == CLBlocks.RAILSBOOSTER.id) {
-			return new BoosterLogic(id, coord);
-		} else if (id == CLBlocks.TURRET.id) {
-			return new Turret(id, coord);
-		} else if (id == CLBlocks.TORCH.id) {
-			return new PowerTorch(id, coord);
-		} else if (id == CLBlocks.FLAGPOLE.id) {
-			return new Flagpole(id, coord);
-		}
-		return null;
 	}
 }

@@ -19,10 +19,10 @@ import java.util.logging.Logger;
 public abstract class AbstractBlockLogicExtension {
 
 	private static final long serialVersionUID = 2L;
-	private static final HashMap<Byte, Class<? extends AbstractBlockLogicExtension>> classRegister = new HashMap<>(20);
+	private static final HashMap<Byte, Class<? extends AbstractBlockLogicExtension>> LOGICREGISTER = new HashMap<>(20);
 
 	public static void registerClass(byte id, Class<? extends AbstractBlockLogicExtension> aClass){
-		classRegister.put(id, aClass);
+		LOGICREGISTER.put(id, aClass);
 }
 	/**
 	 * 
@@ -31,12 +31,12 @@ public abstract class AbstractBlockLogicExtension {
 	 * @param coord the position where the logic block is placed
 	 * @return 
 	 */
-	public static AbstractBlockLogicExtension newLogicInstance(byte blockId, byte value, Coordinate coord) {
+ 	public static AbstractBlockLogicExtension newLogicInstance(byte blockId, byte value, Coordinate coord) {
 		if (coord == null) {
 			throw new NullPointerException();
 		}
 		try {
-			Class<? extends AbstractBlockLogicExtension> aClass = classRegister.get(blockId);
+			Class<? extends AbstractBlockLogicExtension> aClass = LOGICREGISTER.get(blockId);
 			if (aClass!=null) {
 				AbstractBlockLogicExtension instance = aClass.newInstance();
 				instance.id = blockId;
@@ -49,6 +49,10 @@ public abstract class AbstractBlockLogicExtension {
 			Logger.getLogger(AbstractBlockLogicExtension.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
+	}
+
+	public static boolean isRegistered(byte blockId) {
+		return LOGICREGISTER.containsKey(blockId);
 	}
 	
 	/**

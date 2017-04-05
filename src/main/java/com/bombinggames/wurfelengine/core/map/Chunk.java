@@ -160,7 +160,7 @@ public class Chunk implements Telegraph {
     private final byte data[][][];
 	
 	/**
-	 * A list containing the logic blocks. Each logic block points to some block in this chunk.
+	 * A list containing the logic blocks to be updated. Each logic block object points to some block inside this chunk.
 	 */
 	private final ArrayList<AbstractBlockLogicExtension> logicBlocks = new ArrayList<>(4);
 	private boolean modified;

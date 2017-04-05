@@ -3,7 +3,7 @@ package com.bombinggames.wurfelengine.core.gameobjects;
 import com.badlogic.gdx.ai.msg.Telegram;
 
 /**
- * An entity which is rendered using the block spirtes without sides.
+ * An entity which is rendered using the block sprites without sides.
  * @author Benedikt Vogler
  */
 public class EntityBlock extends AbstractEntity {

@@ -411,10 +411,10 @@ public abstract class AbstractGameObject implements Serializable, Renderable {
 	//getter & setter
 	/**
 	 * the id of the sprite using for rendering.<br>
-	 * By default is the same as the object id but in some cases some
-	 * objects share one sprite so they can have the same.
+	 * By default is the same as the block id but in some cases some
+	 * objects share one sprite so they can have the same id.
 	 *
-	 * @return if spritevalue is not custom set uses value.
+	 * @return in range [0;{@link RenderCell#OBJECTTYPESNUM}].
 	 */
 	public abstract byte getSpriteId();
 

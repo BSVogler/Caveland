@@ -2,7 +2,7 @@ package com.bombinggames.wurfelengine.core.map;
 
 /**
  * Manages the game logic for a block. The instances are not saved in the map
- * save file therfore every data saved in the fields are lost after
+ * save file; therfore, every data saved in the fields are lost after
  * quitting.<br>
  * Points to a {@link Coordinate} in the map. If the content of the coordinate
  * changes it will be removed via

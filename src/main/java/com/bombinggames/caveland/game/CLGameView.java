@@ -212,7 +212,7 @@ public class CLGameView extends GameView {
 	public void onEnter() {
 		WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
 		//is there a controller?
-		if (Display.isActive() && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
+		if (WE.getCVars().getValueB("enableControllers") && Display.isActive() && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
 			//if there is second controller use it for second player
 			controllerListenerA = new XboxListener(this, getPlayer(0), 0);
 			Controllers.getControllers().get(0).addListener(controllerListenerA);

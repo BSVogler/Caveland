@@ -85,6 +85,7 @@ public class CVarSystemRoot extends AbstractCVarSystem {
 		register(new FloatCVar(0.001f), "friction");
 		register(new FloatCVar(0.03f), "playerfriction");
 		register(new IntCVar(6000), "soundDecay");
+		register(new BooleanCVar(false), "enableControllers");
 		register(new IntCVar(4), "controllermacButtonStart");
 		register(new IntCVar(5), "controllermacButtonSelect");
 		register(new IntCVar(8), "controllermacButtonLB");

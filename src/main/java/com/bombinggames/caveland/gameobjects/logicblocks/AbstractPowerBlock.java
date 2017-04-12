@@ -1,6 +1,6 @@
 package com.bombinggames.caveland.gameobjects.logicblocks;
 
-import com.bombinggames.wurfelengine.WE;
+import com.badlogic.gdx.Gdx;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
@@ -34,11 +34,11 @@ public abstract class AbstractPowerBlock extends AbstractBlockLogicExtension {
 	 */
 	protected boolean hasPowerPropagate() {
 		//stop recursion to avoid circles
-		if (lastUpdateFrame == WE.getGameplay().getFrameNum()) {
+		if (lastUpdateFrame == Gdx.graphics.getFrameId()) {
 			return power;
 		}
 
-		lastUpdateFrame = WE.getGameplay().getFrameNum();
+		lastUpdateFrame = Gdx.graphics.getFrameId();
 		power = false;//set back to off
 
 		//neighbor nodes which are without power

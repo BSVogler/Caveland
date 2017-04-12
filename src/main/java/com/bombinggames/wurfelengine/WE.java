@@ -197,6 +197,14 @@ public class WE {
 						System.out.println(WE.VERSION);
 						System.exit(0);
 						return;
+					case "--help":
+						System.out.println("available commands in WE "+ WE.VERSION);
+						System.out.println("--fullscreen");
+						System.out.println("--windowed");
+						System.out.println("--width");
+						System.out.println("--height");
+						System.out.println("--skipintro");
+						break;
 					default:
 						System.out.println("Unknown launch parameter " + args[i]);
 				}

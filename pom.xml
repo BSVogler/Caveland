@@ -43,8 +43,10 @@
 
 	<properties>
 		<libGdxVersion>1.9.6</libGdxVersion>
+		<gdxControllerNativesUrl>http://libgdx.badlogicgames.com/nightlies/dist/extensions/gdx-controllers</gdxControllerNativesUrl>
+		<gdxNativesUrl>http://libgdx.badlogicgames.com/nightlies/dist</gdxNativesUrl>
 	</properties>
-
+	
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx -->
 		<dependency>
@@ -109,6 +111,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<!-- get all project dependencies -->
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- MainClass in mainfest make a executable jar -->
+					<archive>
+						<manifest>
+							<mainClass>com.bombinggames.caveland.Caveland</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 				<executions>
 					<execution>
 						<id>create-my-bundle</id>
@@ -148,7 +163,62 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<!-- first download an unpack the native libraries -->
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>maven-download-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>natives</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<cacheDirectory>${project.build.directory}/download-cache</cacheDirectory>
+							<url>${gdxNativesUrl}/gdx-natives.jar</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/natives</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>controller-natives</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<cacheDirectory>${project.build.directory}/download-cache</cacheDirectory>
+							<url>${gdxControllerNativesUrl}/gdx-controllers-desktop-natives.jar</url>
+							<unpack>true</unpack>
+							<outputDirectory>${project.build.directory}/controller-natives</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/natives</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${project.build.directory}/controller-natives</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<reporting>

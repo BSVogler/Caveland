@@ -42,13 +42,12 @@ import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * The logic for a construciton site
+ * The logic for a construcion site
  *
  * @author Benedikt Vogler
  */
@@ -60,16 +59,6 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 	private int[] neededAmount;
 	private byte result = -1;
 	private byte resultValue;
-
-	/**
-	 * the resulting block
-	 *
-	 * @param block the block where this logic is performed
-	 * @param coord
-	 */
-	public ConstructionSite(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 
 	/**
 	 * The result if you finish the construction.

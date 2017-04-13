@@ -32,7 +32,6 @@ package com.bombinggames.caveland.gameobjects.logicblocks;
 
 import com.bombinggames.caveland.gameobjects.Flag;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
@@ -42,10 +41,6 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 public class Flagpole extends AbstractBlockLogicExtension {
 
 	private Flag flag;
-
-	public Flagpole(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 
 	@Override
 	public void update(float dt) {

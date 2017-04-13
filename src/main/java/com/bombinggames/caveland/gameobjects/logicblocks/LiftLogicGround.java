@@ -27,15 +27,6 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 	/**
 	 *
-	 * @param block
-	 * @param coord
-	 */
-	public LiftLogicGround(byte block, Coordinate coord) {
-		super(block, coord);
-	}
-
-	/**
-	 *
 	 * @param dt
 	 */
 	@Override

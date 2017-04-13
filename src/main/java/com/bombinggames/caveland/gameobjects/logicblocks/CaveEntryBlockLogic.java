@@ -47,7 +47,7 @@ import com.bombinggames.wurfelengine.core.map.Point;
 import java.util.LinkedList;
 
 /**
- * Entry to the caves. Spawns a portal inside the block.
+ * Entry to the caves. Spawns a portal inside the block.teleports to level 1 by default
  *
  * @author Benedikt Vogler
  */
@@ -56,16 +56,6 @@ public class CaveEntryBlockLogic extends AbstractBlockLogicExtension implements 
 	private static final long serialVersionUID = 2L;
 	private Portal portal = null;
 	private transient Point point = null;
-
-	/**
-	 * teleports to level 1 by default
-	 *
-	 * @param id
-	 * @param coord
-	 */
-	public CaveEntryBlockLogic(byte id, Coordinate coord) {
-		super(id, coord);
-	}
 
 	/**
 	 *

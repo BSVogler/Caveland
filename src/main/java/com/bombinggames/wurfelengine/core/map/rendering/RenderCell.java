@@ -32,7 +32,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
@@ -181,7 +180,7 @@ public class RenderCell extends AbstractGameObject {
 	}
 
 	/**
-	 * Creates a new logic instance. This can happen before the chunk is filled
+	 * Creates a new logic instance if registered. This can happen before the chunk is filled
 	 * at this position.
 	 *
 	 * @param id
@@ -190,10 +189,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @return null if has no logic
 	 */
 	public static AbstractBlockLogicExtension createLogicInstance(byte id, byte value, Coordinate coord) {
-		if (customBlocks == null) {
-			return null;
-		}
-		return customBlocks.newLogicInstance(id, value, coord);
+		return AbstractBlockLogicExtension.newLogicInstance(id, value, coord);
 	}
 	
 	/**
@@ -203,10 +199,7 @@ public class RenderCell extends AbstractGameObject {
 	 * @return
 	 */
 	public static boolean hasLogic(byte id, byte value) {
-		if (customBlocks == null) {
-			return false;
-		}
-		return customBlocks.hasLogic(id, value);
+		return AbstractBlockLogicExtension.isRegistered(id);
 	}
 
 	/**
@@ -461,7 +454,7 @@ public class RenderCell extends AbstractGameObject {
 	 * set the timestamp when the content changed. This causes every field wich contains the covered neighbors to be rebuild.
 	 */
 	public static void rebuildCoverList() {
-		RenderCell.rebuildCoverList = WE.getGameplay().getFrameNum();
+		RenderCell.rebuildCoverList = Gdx.graphics.getFrameId();
 	}
 
    /**
@@ -1474,7 +1467,7 @@ public class RenderCell extends AbstractGameObject {
 		}
 
 		nghb.goToNeighbour(3);//return to origin
-		lastRebuild = WE.getGameplay().getFrameNum();
+		lastRebuild = Gdx.graphics.getFrameId();
 	}
 
 	/**

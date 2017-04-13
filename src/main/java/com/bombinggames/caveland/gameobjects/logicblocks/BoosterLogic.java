@@ -5,7 +5,6 @@ import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.PointLightSource;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
@@ -16,16 +15,6 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 
 	private boolean power = false;
 	private PointLightSource light;
-
-	/**
-	 *
-	 *
-	 * @param id
-	 * @param coord
-	 */
-	public BoosterLogic(byte id, Coordinate coord) {
-		super(id, coord);
-	}
 
 	/**
 	 *

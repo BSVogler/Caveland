@@ -44,7 +44,6 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Events;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.util.LinkedList;
 
 /**
@@ -54,15 +53,6 @@ import java.util.LinkedList;
 public class RobotFactory extends AbstractBlockLogicExtension implements Interactable, Telegraph  {
 	private RobotFactoryLinker linkToRobot;
 	
-	/**
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public RobotFactory(byte block, Coordinate coord) {
-		super(block, coord);
-	}
-
 	/**
 	 *
 	 * @param dt

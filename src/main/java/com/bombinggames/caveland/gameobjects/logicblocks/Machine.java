@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- *
+ * Can produce flitns from sulfur and coal whne delivered.
  * @author Benedikt Vogler
  */
 public class Machine extends AbstractBlockLogicExtension  {
@@ -19,15 +19,6 @@ public class Machine extends AbstractBlockLogicExtension  {
 	private int sulfurcount;
 	private int coalcount;
 	private int flintcount;
-
-	/**
-	 *
-	 * @param block
-	 * @param coord
-	 */
-	public Machine(byte block, Coordinate coord) {
-		super(block, coord);
-	}
 
 	/**
 	 *

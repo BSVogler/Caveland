@@ -3,3 +3,5 @@
 *.class
 *.DS_Store
 target/*
+
+nbactions-development.xml

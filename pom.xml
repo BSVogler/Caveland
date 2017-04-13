@@ -95,6 +95,11 @@
 			<artifactId>gdx-ai</artifactId>
 			<version>1.6.0</version>
 		</dependency>
+	 <dependency>
+	  <groupId>com.bombinggames.wurfelengine</groupId>
+	  <artifactId>wurfelengine-core</artifactId>
+	  <version>1.7.7-SNAPSHOT</version>
+	 </dependency>
 	</dependencies>
 
 	<build>

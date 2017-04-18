@@ -57,7 +57,7 @@
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-backend-lwjgl -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-backend-lwjgl</artifactId>
+			<artifactId>gdx-backend-lwjgl3</artifactId>
 			<version>${libGdxVersion}</version>
 		</dependency>
 
@@ -68,17 +68,10 @@
 			<version>${libGdxVersion}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-controllers -->
-		<dependency>
-			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-controllers</artifactId>
-			<version>${libGdxVersion}</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-controllers-desktop -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx-controllers-desktop</artifactId>
+			<artifactId>gdx-controllers-lwjgl3</artifactId>
 			<version>${libGdxVersion}</version>
 		</dependency>
 

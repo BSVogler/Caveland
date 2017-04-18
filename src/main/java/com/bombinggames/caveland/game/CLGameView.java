@@ -26,7 +26,6 @@ import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -212,7 +211,7 @@ public class CLGameView extends GameView {
 	public void onEnter() {
 		WE.getEngineView().addInputProcessor(new MouseKeyboardListener(this)); //alwys listen for keyboard for one player
 		//is there a controller?
-		if (WE.getCVars().getValueB("enableControllers") && Display.isActive() && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
+		if (WE.getCVars().getValueB("enableControllers") && Controllers.getControllers().size > 0) {//checks if active because if not will crash because of a bug in the backend
 			//if there is second controller use it for second player
 			controllerListenerA = new XboxListener(this, getPlayer(0), 0);
 			Controllers.getControllers().get(0).addListener(controllerListenerA);

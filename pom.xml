@@ -92,6 +92,11 @@
 	  <groupId>com.bombinggames.wurfelengine</groupId>
 	  <artifactId>wurfelengine-core</artifactId>
 	  <version>1.7.7-SNAPSHOT</version>
+	  <groupId>junit</groupId>
+	  <artifactId>junit</artifactId>
+	  <version>4.10</version>
+	  <scope>test</scope>
+	  <type>jar</type>
 	 </dependency>
 	</dependencies>
 

@@ -95,6 +95,11 @@
 			<scope>test</scope>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>com.bombinggames.wurfelengine</groupId>
+			<artifactId>wurfelengine-core</artifactId>
+			<version>1.7.7-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

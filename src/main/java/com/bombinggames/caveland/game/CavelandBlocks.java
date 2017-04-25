@@ -27,28 +27,6 @@ import java.util.ArrayList;
  */
 public class CavelandBlocks implements CustomBlocks {
 
-	static {
-		registerLogicBlocks();
-	}
-	
-	public static void registerLogicBlocks(){
-		AbstractBlockLogicExtension.registerClass(CLBlocks.ENTRY.id, CaveEntryBlockLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.CONSTRUCTIONSITE.id,  ConstructionSite.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.OVEN.id, OvenLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.POWERSTATION.id, PowerStationLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.LIFT.id, LiftLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.LIFT_Ground.id, LiftLogicGround.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.ROBOTFACTORY.id, RobotFactory.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.POWERCABLE.id, CableBlock.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.RAILSBOOSTER.id, BoosterLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.TURRET.id, Turret.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.TORCH.id, PowerTorch.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.FLAGPOLE.id, Flagpole.class);
-			
-		AbstractBlockLogicExtension.registerClass(CLBlocks.ENTRY.id, CaveEntryBlockLogic.class);
-		AbstractBlockLogicExtension.registerClass(CLBlocks.CONSTRUCTIONSITE.id, ConstructionSite.class);	
-	}	
-	
 	/**
 	 *
 	 */
@@ -57,102 +35,102 @@ public class CavelandBlocks implements CustomBlocks {
 		/**
 		 *
 		 */
-		CONSTRUCTIONSITE((byte) 11, "Construction Site", false, true),
+		CONSTRUCTIONSITE((byte) 11, "Construction Site", false, ConstructionSite.class),
 
 		/**
 		 *
 		 */
-		OVEN((byte) 12, "Oven", false, true),
+		OVEN((byte) 12, "Oven", false, OvenLogic.class),
 
 		/**
 		 *
 		 */
-		TORCH((byte) 13, "Torch", false, true),
+		TORCH((byte) 13, "Torch", false, PowerTorch.class),
 
 		/**
 		 *
 		 */
-		POWERSTATION((byte) 14, "Power Station", false, false),
+		POWERSTATION((byte) 14, "Power Station", false, PowerStationLogic.class),
 
 		/**
 		 *
 		 */
-		LIFT((byte) 15, "Lift", false, true),
+		LIFT((byte) 15, "Lift", false, LiftLogic.class),
 
 		/**
 		 *
 		 */
-		ENTRY((byte) 16, "Cave Entry", true, true),
+		ENTRY((byte) 16, "Cave Entry", true, CaveEntryBlockLogic.class),
 
 		/**
 		 *
 		 */
-		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false, false),
+		INDESTRUCTIBLEOBSTACLE((byte) 17, "Indestructible Obstacle", false, null),
 		
 		/**
 		 *
 		 */
-		LIFT_Ground((byte) 18, "Lift (Ground)", true, false),
+		LIFT_Ground((byte) 18, "Lift (Ground)", true, LiftLogicGround.class),
 
 		/**
 		 *
 		 */
-		CRYSTAL((byte) 41, "Crystal Block", true, false),
+		CRYSTAL((byte) 41, "Crystal Block", true, null),
 
 		/**
 		 *
 		 */
-		SULFUR((byte) 42, "Sulfur Block", true, false),
+		SULFUR((byte) 42, "Sulfur Block", true, null),
 
 		/**
 		 *
 		 */
-		IRONORE((byte) 43, "Iron Ore Block", true, false),
+		IRONORE((byte) 43, "Iron Ore Block", true, null),
 
 		/**
 		 *
 		 */
-		COAL((byte) 44, "Coal Block", true, false),
+		COAL((byte) 44, "Coal Block", true, null),
 
 		/**
 		 *
 		 */
-		TURRET((byte) 52, "Turret", false, true),
+		TURRET((byte) 52, "Turret", false, Turret.class),
 
 		/**
 		 *
 		 */
-		ROBOTFACTORY((byte) 53, "robot factory", false, true),
+		ROBOTFACTORY((byte) 53, "robot factory", false, RobotFactory.class),
 
 		/**
 		 *
 		 */
-		POWERCABLE((byte) 54, "power cable", false, true),
+		POWERCABLE((byte) 54, "power cable", false, CableBlock.class),
 
 		/**
 		 *
 		 */
-		RAILS((byte) 55, "rails", false, false),
+		RAILS((byte) 55, "rails", false, null),
 
 		/**
 		 *
 		 */
-		RAILSBOOSTER((byte) 56, "booster rails", false, true),
+		RAILSBOOSTER((byte) 56, "booster rails", false, BoosterLogic.class),
 		
 		/**
 		 *
 		 */
-		FLAGPOLE((byte) 60, "flag pole", false, true),
+		FLAGPOLE((byte) 60, "flag pole", false, Flagpole.class),
 
 		/**
 		 *
 		 */
-		TREE((byte) 72, "tree", false, false),
+		TREE((byte) 72, "tree", false, null),
 
 		/**
 		 *
 		 */
-		UNDEFINED((byte) -1, "undefined", true, false);
+		UNDEFINED((byte) -1, "undefined", true, null);
 		
 		/**
 		 * reverse loookup
@@ -207,28 +185,31 @@ public class CavelandBlocks implements CustomBlocks {
 		private final byte id;
 		private final String name;
 		private final boolean hasSides;
-		private final boolean hasLogic;
 		private final static ArrayList<CLBlocks> typesWithLogic = new ArrayList<>();
 		
 		static {
 			for (CLBlocks e : CLBlocks.values()) {
-				if (e.hasLogic) {
+				if (e.logicClass != null) {
 					typesWithLogic.add(e);
 				}
 			}
 		}
+		private Class<? extends AbstractBlockLogicExtension> logicClass;
 		/**
 		 * 
 		 * @param id
 		 * @param name
 		 * @param hasSides rendered with sides or without
 		 */
-		private CLBlocks(byte id, String name, boolean hasSides, boolean hasLogic) {
+		private CLBlocks(byte id, String name, boolean hasSides, Class<? extends AbstractBlockLogicExtension> logic) {
 			this.id = id;
 			this.name = name;
 			this.hasSides = hasSides;
-			this.hasLogic = hasLogic;
-		}
+			this.logicClass = logic;
+			if (logic!=null){
+				AbstractBlockLogicExtension.registerClass(id, logic);	
+			}
+		}	
 
 		@Override
 		public String toString(){
@@ -302,7 +283,6 @@ public class CavelandBlocks implements CustomBlocks {
 		return null;
 	}
 	
-	//overwrites
 	@Override
 	public RenderCell toRenderBlock(byte id, byte value) {
 		if (id == 1) {

@@ -19,14 +19,23 @@ import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
 import com.bombinggames.wurfelengine.core.map.CustomBlocks;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import java.util.ArrayList;
 
 /**
- *
+ * Using this class registers the logicblocks.
+ * @see RenderCell#setCustomBlockFactory(com.bombinggames.wurfelengine.core.map.CustomBlocks) 
  * @author Benedikt Vogler
  */
 public class CavelandBlocks implements CustomBlocks {
 
+	static {
+		//this could be refacoted to ClBlocks constructor but then here a simple call to CLBlocks.values() is needed so the enums are initialized
+		for (CLBlocks blockdef : CLBlocks.values()) {
+			if (blockdef.logicClass != null){
+				AbstractBlockLogicExtension.registerClass(blockdef.id, blockdef.logicClass);	
+			}
+		}
+
+	}
 	/**
 	 *
 	 */
@@ -185,16 +194,8 @@ public class CavelandBlocks implements CustomBlocks {
 		private final byte id;
 		private final String name;
 		private final boolean hasSides;
-		private final static ArrayList<CLBlocks> typesWithLogic = new ArrayList<>();
-		
-		static {
-			for (CLBlocks e : CLBlocks.values()) {
-				if (e.logicClass != null) {
-					typesWithLogic.add(e);
-				}
-			}
-		}
 		private Class<? extends AbstractBlockLogicExtension> logicClass;
+		
 		/**
 		 * 
 		 * @param id
@@ -206,9 +207,6 @@ public class CavelandBlocks implements CustomBlocks {
 			this.name = name;
 			this.hasSides = hasSides;
 			this.logicClass = logic;
-			if (logic!=null){
-				AbstractBlockLogicExtension.registerClass(id, logic);	
-			}
 		}	
 
 		@Override

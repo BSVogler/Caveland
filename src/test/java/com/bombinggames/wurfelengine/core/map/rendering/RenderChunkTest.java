@@ -33,6 +33,8 @@ package com.bombinggames.wurfelengine.core.map.rendering;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.map.Chunk;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
+import com.bombinggames.wurfelengine.core.map.Generators.BlockTestGenerator;
 import com.bombinggames.wurfelengine.core.map.Generators.FullMapGenerator;
 import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
 import com.bombinggames.wurfelengine.core.map.Map;
@@ -54,6 +56,7 @@ import org.junit.Test;
 public class RenderChunkTest {
 
 	private static RenderChunk instance;
+	private static Chunk dataChunk;
 	
 	public RenderChunkTest() {
 	}
@@ -62,8 +65,9 @@ public class RenderChunkTest {
 	public static void setUpClass() {
 		try {
 			WE.launch("test", new String[]{"--windowed"});
-			Map map = new Map(new File(WorkingDirectory.getMapsFolder()+"/"+"test"), 0);
-			instance = new RenderChunk(new Chunk(map,0, 0));
+			Map map = new Map(new File(WorkingDirectory.getMapsFolder()+"/"+"test"), 0, new BlockTestGenerator());
+			dataChunk = new Chunk(map,0, 0);
+			instance = new RenderChunk(dataChunk);
 		} catch (IOException ex) {
 			fail("Map could not be loaded.");
 		}
@@ -98,10 +102,12 @@ public class RenderChunkTest {
 	@Test
 	public void testInitData() {
 		System.out.println("initData");
-		RenderChunk instance = RenderChunkTest.instance;
 		instance.initData();
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		Coordinate sampleCoord = new Coordinate(Chunk.getBlocksX()/2, Chunk.getBlocksY()/2, 0);
+		byte result = instance.getCell(sampleCoord).getId();
+		byte expResult = dataChunk.getBlockId(sampleCoord.getX(),sampleCoord.getY(),sampleCoord.getZ());
+		assertEquals((byte) (sampleCoord.getY() % RenderCell.OBJECTTYPESNUM), expResult);
+		assertEquals(expResult, result);
 	}
 
 	/**
@@ -110,11 +116,13 @@ public class RenderChunkTest {
 	@Test
 	public void testGetCell() {
 		System.out.println("getCell");
-		int x = 0;
-		int y = 0;
+		int x = Chunk.getBlocksX()/2;
+		int y = Chunk.getBlocksY()/2;
 		int z = 0;
-		RenderCell expResult = RenderChunk.NULLPOINTEROBJECT;
-		RenderCell result = instance.getCell(x, y, z);
+		byte expResult = (byte) (y % RenderCell.OBJECTTYPESNUM);
+		
+		byte result = instance.getCell(x, y, z).getId();
+		Assert.assertNotNull(result);
 		assertEquals(expResult, result);
 	}
 
@@ -126,7 +134,7 @@ public class RenderChunkTest {
 		System.out.println("getData");
 		RenderCell[][][] result = instance.getData();
 		Assert.assertNotNull(result);
-		Assert.assertEquals(RenderChunk.NULLPOINTEROBJECT, result[0][0][0]);
+		Assert.assertNotNull(result[0][0][0]);
 	}
 
 	/**
@@ -171,8 +179,6 @@ public class RenderChunkTest {
 		int expResult = 0;
 		int result = instance.getTopLeftCoordinateX();
 		assertEquals(expResult, result);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
 	}
 
 	/**
@@ -184,8 +190,6 @@ public class RenderChunkTest {
 		int expResult = 0;
 		int result = instance.getTopLeftCoordinateY();
 		assertEquals(expResult, result);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
 	}
 
 	/**
@@ -212,8 +216,6 @@ public class RenderChunkTest {
 		int expResult = 0;
 		int result = instance.getChunkX();
 		assertEquals(expResult, result);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
 	}
 
 	/**
@@ -225,8 +227,6 @@ public class RenderChunkTest {
 		int expResult = 0;
 		int result = instance.getChunkY();
 		assertEquals(expResult, result);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
 	}
 
 	/**
@@ -237,9 +237,8 @@ public class RenderChunkTest {
 		System.out.println("getCellByIndex");
 		int x = 0;
 		int y = 0;
-		int z = 0;
-		RenderCell expResult = RenderChunk.NULLPOINTEROBJECT;
-		RenderCell result = instance.getCellByIndex(x, y, z);
+		byte expResult = (byte) (y % RenderCell.OBJECTTYPESNUM);
+		RenderCell result = instance.getCellByIndex(x, y, Chunk.getBlocksZ()+1);
 		assertEquals(expResult, result);
 	}
 

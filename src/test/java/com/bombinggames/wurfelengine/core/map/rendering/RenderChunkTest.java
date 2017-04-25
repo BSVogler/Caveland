@@ -238,8 +238,8 @@ public class RenderChunkTest {
 		int x = 0;
 		int y = 0;
 		byte expResult = (byte) (y % RenderCell.OBJECTTYPESNUM);
-		RenderCell result = instance.getCellByIndex(x, y, Chunk.getBlocksZ()+1);
-		assertEquals(expResult, result);
+		byte result = instance.getCellByIndex(x, y, Chunk.getBlocksZ()-1).getId();
+		assertEquals(0, result);
 	}
 
 	/**

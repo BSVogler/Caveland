@@ -16,10 +16,6 @@ public class BoosterLogic extends AbstractBlockLogicExtension {
 	private boolean power = false;
 	private PointLightSource light;
 
-	/**
-	 *
-	 * @param dt
-	 */
 	@Override
 	public void update(float dt) {
 		if (light == null) {

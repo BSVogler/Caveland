@@ -32,6 +32,7 @@ package com.bombinggames.wurfelengine.core.map.rendering;
 
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.WorkingDirectory;
+import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Generators.BlockTestGenerator;
@@ -64,7 +65,8 @@ public class RenderChunkTest {
 	@BeforeClass
 	public static void setUpClass() {
 		try {
-			WE.launch("test", new String[]{"--windowed"});
+			WE.launch("test", new String[]{"--windowed", "--width", "100", "--height","10"});
+			Map.setDefaultGenerator(new BlockTestGenerator());
 			Map map = new Map(new File(WorkingDirectory.getMapsFolder()+"/"+"test"), 0, new BlockTestGenerator());
 			dataChunk = new Chunk(map,0, 0);
 			instance = new RenderChunk(dataChunk);
@@ -166,8 +168,14 @@ public class RenderChunkTest {
 		int idexY = 0;
 		int idexZ = 0;
 		instance.resetShadingFor(idexX, idexY, idexZ);
-		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		float lightlevel = instance.getCell(idexZ, idexY, idexZ).getLightlevel(Side.LEFT, (byte) 0, RenderCell.Channel.Red);
+		assertEquals(1, lightlevel,0.01);
+		dataChunk.setBlock(idexX, idexY, idexZ+2, (byte) 1);
+		instance.initData();
+		lightlevel = instance.getCell(idexZ, idexY, idexZ).getLightlevel(Side.LEFT, (byte) 0, RenderCell.Channel.Red);
+		Assert.assertEquals(1, lightlevel,0.01);
+		lightlevel = instance.getCell(idexZ, idexY, idexZ).getLightlevel(Side.TOP, (byte) 0, RenderCell.Channel.Red);
+		Assert.assertEquals(0.82, lightlevel,0.01);
 	}
 
 	/**

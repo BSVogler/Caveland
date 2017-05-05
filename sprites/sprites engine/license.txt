@@ -1,8 +1,0 @@
-Author of sprites and copyright (2014), if not stated otherwise, by Benedikt Vogler.
-
-The 3D-player-model used for the player sprites is by Pia Lenßen.
-
-The photorealistic barrel is by Jan-Niklas Rösch.
-
-You have the right to share and use the images only in source form.
-Contact bombing-games@benediktvogler.de for acquiring more rights (e.g. for sharing screenshots, videos, games).

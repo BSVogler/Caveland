@@ -5,7 +5,6 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -38,6 +37,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.Position;
+import com.bombinggames.wurfelengine.core.map.rendering.GameSpaceSprite;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH2;
@@ -222,7 +222,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter.spawn(point.cpy());
 		emitter2.spawn(point.cpy());
 		
-		lightsource = new PointLightSource(Color.BLUE.cpy(), 2, 10, WE.getGameplay().getView());
+		lightsource = new PointLightSource(Color.BLUE.cpy(), 3, 20, WE.getGameplay().getView());
 		lightsource.setSavePersistent(false);
 		lightsource.spawn(getPosition().cpy().add(0, 0, RenderCell.GAME_EDGELENGTH2));
 		return this;
@@ -450,8 +450,8 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	//		}
 
 			//update attached objects position
-			if (lightsource.hasPosition())
-				lightsource.getPosition().set(getPosition()).add(0, 0, RenderCell.GAME_EDGELENGTH2);
+			//if (lightsource.hasPosition())
+			//	lightsource.getPosition().set(getPosition()).add(0, 0, RenderCell.GAME_EDGELENGTH2);
 			
 			Vector3 vecToJetpack = new Vector3(getOrientation().scl(-20), 0);
 			float angleOrient = (float) Math.acos(getOrientation().y);
@@ -544,7 +544,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			view.getSpriteBatch().begin();
 				AtlasRegion texture = getSprite(action, spriteNum);
-				Sprite sprite = new Sprite(texture);
+				GameSpaceSprite sprite = new GameSpaceSprite(texture);
 				sprite.setOrigin(
 					texture.originalWidth/2 - texture.offsetX,
 					VIEW_HEIGHT2 - texture.offsetY
@@ -553,10 +553,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 				sprite.setColor(getColor());
 
 				sprite.setPosition(
-					getPosition().getViewSpcX() + texture.offsetX - texture.originalWidth / 2,
-					getPosition().getViewSpcY()//center
-					- VIEW_HEIGHT2
-					+ texture.offsetY
+					getPoint().getX(),
+					getPoint().getY()+ RenderCell.GAME_DIAGLENGTH2,//at front of grid cell
+					getPoint().getZ()
 					- 50 //only this player sprite has an offset because it has overize
 				);
 				sprite.draw(view.getSpriteBatch());
@@ -570,20 +569,14 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 						overlayTexture = getSprite('s', spriteNumOverlay);
 					}
 
-					Sprite overlaySprite = new Sprite(overlayTexture);
-					sprite.setOrigin(
-						overlayTexture.originalWidth/2 - overlayTexture.offsetX,
-						VIEW_HEIGHT2 - overlayTexture.offsetY
-					);
+					GameSpaceSprite overlaySprite = new GameSpaceSprite(overlayTexture);
 					overlaySprite.scale(1f);//saved at half size, so must scale by 2 to fit
 					overlaySprite.setColor(new Color(0.8f, 0.8f, 0.8f, 1f));//a bit brigher then default
 
 					overlaySprite.setPosition(
-						getPosition().getViewSpcX() + overlayTexture.offsetX - overlayTexture.originalWidth / 2,
-						getPosition().getViewSpcY()//center
-						- VIEW_HEIGHT2
-						+ overlayTexture.offsetY
-						+100 //offset for overlay
+						getPosition().getX(),
+						getPosition().getY()+ RenderCell.GAME_DIAGLENGTH2,//center
+						getPoint().getZ()+100
 					);
 					overlaySprite.draw(view.getSpriteBatch());
 				}

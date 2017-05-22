@@ -31,11 +31,11 @@
 package com.bombinggames.caveland.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bombinggames.wurfelengine.core.GameView;
 import static com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject.getSprite;
 import com.bombinggames.wurfelengine.core.gameobjects.Side;
 import com.bombinggames.wurfelengine.core.map.Point;
+import com.bombinggames.wurfelengine.core.map.rendering.GameSpaceSprite;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.util.Random;
 
@@ -49,7 +49,7 @@ public class GrassBlock extends RenderCell {
 	private static final long serialVersionUID = 1L;
 	public static final float WINDAMPLITUDE = 20f;
 	private final static Random RANDOMGENERATOR = new java.util.Random();
-	private static Sprite grasSprite;
+	private static GameSpaceSprite grasSprite;
 	private static float wind;
 	private static float windWholeCircle;
 
@@ -60,7 +60,7 @@ public class GrassBlock extends RenderCell {
 	}
 
 	public static void initGrass() {
-		grasSprite = new Sprite(getSprite('e', (byte) 7, (byte) 0));
+		grasSprite = new GameSpaceSprite(getSprite('e', (byte) 7, (byte) 0));
 		grasSprite.setOrigin(grasSprite.getWidth() / 2f, 0);
 	}
 
@@ -84,23 +84,25 @@ public class GrassBlock extends RenderCell {
 	}
 
 	@Override
-	public void renderSide(GameView view, int xPos, int yPos, Side side, Color color) {
-		super.renderSide(view, xPos, yPos, side, color);
-		if (side == Side.TOP) {
-			Sprite gras = grasSprite;
+	public void renderSide(GameView view, float xPos, float yPos, float zPos, Side side, Color color) {
+		super.renderSide(view, xPos, yPos, zPos, side, color);
+		if (side == Side.TOP && getCoord()!=null) {
+			GameSpaceSprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
 				int xOffset = (int) (Math.abs((xPos - seed * 17) * i * (yPos)) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
-				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2 + 15);
-				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.VIEW_WIDTH2 - 10) {
+				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
+				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.GAME_DIAGLENGTH2) {
 					gras.setColor(
 						getLightlevel(side, (byte) 1, Channel.Red) / 2f,
 						getLightlevel(side, (byte) 1, Channel.Green) / 2f - (xOffset + i) % 7 * 0.005f,
 						getLightlevel(side, (byte) 1, Channel.Blue) / 2f,
 						1
-					);
-					gras.setPosition(xPos + xOffset + RenderCell.VIEW_WIDTH2,
-						yPos - yOffset * 0.5f + RenderCell.VIEW_DEPTH2
+					);	
+					gras.setPosition(
+						xPos + xOffset,
+						yPos + RenderCell.GAME_DIAGLENGTH2+yOffset,//there is something wrong with the rendering, so set center to the front
+						zPos+RenderCell.GAME_EDGELENGTH
 					);
 
 					//wind

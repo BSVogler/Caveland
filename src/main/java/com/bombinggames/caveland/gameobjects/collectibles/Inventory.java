@@ -205,13 +205,13 @@ public class Inventory extends CollectibleContainer {
 		float leftbgSprite = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale();
 		// / view.getEqualizationScale()
 		bgSprite.setPosition(leftbgSprite, y);
-		bgSprite.draw(view.getSpriteBatch());
+		bgSprite.draw(view.getProjectionSpaceSpriteBatch());
 		bgSprite.setX(leftbgSprite + 80);
 		bgSprite.setScale(0.5f);
 		bgSprite.setY(bgSprite.getY() - 20);
-		bgSprite.draw(view.getSpriteBatch());
+		bgSprite.draw(view.getProjectionSpaceSpriteBatch());
 		bgSprite.setX(leftbgSprite + 140);
-		bgSprite.draw(view.getSpriteBatch());
+		bgSprite.draw(view.getProjectionSpaceSpriteBatch());
 
 		Collectible ent = get(0);
 		if (ent != null) {
@@ -220,7 +220,7 @@ public class Inventory extends CollectibleContainer {
 				Sprite button = new Sprite(AbstractGameObject.getSprite('i', (byte) 23, Interactable.YUp));
 				button.setPosition(left-90, y-30);
 				button.setScale(0.4f);
-				button.draw(view.getSpriteBatch());
+				button.draw(view.getProjectionSpaceSpriteBatch());
 			}
 		}
 		ent = get(1);

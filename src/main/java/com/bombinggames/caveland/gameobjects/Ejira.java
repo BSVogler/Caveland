@@ -533,7 +533,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	@Override
 	public void render(GameView view, Camera camera) {
 		if (!WE.getCVars().getValueB("ignorePlayer") && textureNormal != null) {
-			view.getSpriteBatch().end();//inject new batch here
+			view.getGameSpaceSpriteBatch().end();//inject new batch here
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
@@ -542,7 +542,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			textureDiff.bind(0);
 
-			view.getSpriteBatch().begin();
+			view.getGameSpaceSpriteBatch().begin();
 				AtlasRegion texture = getSprite(action, spriteNum);
 				GameSpaceSprite sprite = new GameSpaceSprite(texture);
 				sprite.setOrigin(
@@ -558,7 +558,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 					getPoint().getZ()
 					- 50 //only this player sprite has an offset because it has overize
 				);
-				sprite.draw(view.getSpriteBatch());
+				sprite.draw(view.getGameSpaceSpriteBatch());
 
 				//overlay
 				if (loadAttack > LOAD_THRESHOLD || performingPowerAttack) {//loading or perfomring loadattack
@@ -578,9 +578,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 						getPosition().getY()+ RenderCell.GAME_DIAGLENGTH2,//center
 						getPoint().getZ()+100
 					);
-					overlaySprite.draw(view.getSpriteBatch());
+					overlaySprite.draw(view.getGameSpaceSpriteBatch());
 				}
-			view.getSpriteBatch().end();
+			view.getGameSpaceSpriteBatch().end();
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
@@ -590,7 +590,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			//bind diffuse color to texture unit 0
 			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 			AbstractGameObject.getTextureDiffuse().bind(0);
-			view.getSpriteBatch().begin();
+			view.getGameSpaceSpriteBatch().begin();
 		}
 	}
 

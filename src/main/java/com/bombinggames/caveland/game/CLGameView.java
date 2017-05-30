@@ -412,16 +412,16 @@ public class CLGameView extends GameView {
 		super.render();
 		//Draw HUD
 		setShader(getShader());
-		getSpriteBatch().begin();
+		getProjectionSpaceSpriteBatch().begin();
 		getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
 		if (coop > -1) {
 			getPlayer(1).getInventory().drawHUD(this, getCameras().get(1));
 		}
-		getSpriteBatch().end();
+		getProjectionSpaceSpriteBatch().end();
 
 		useDefaultShader();
 		//getSpriteBatch().setColor(Color.WHITE.cpy());
-		getSpriteBatch().begin();
+		getProjectionSpaceSpriteBatch().begin();
 		if (coop > -1) {
 			PlayerCompass pC = new PlayerCompass();
 			pC.drawHUD(getPlayer(1), this, getCameras().get(0));
@@ -444,7 +444,7 @@ public class CLGameView extends GameView {
 				Color.WHITE.cpy()
 			);
 		}
-		getSpriteBatch().end();
+		getProjectionSpaceSpriteBatch().end();
 		if (WE.getCVars().getValueB("showMiniMapChunk")) {
 			if (minimap == null) {
 				minimap = new MiniMapChunkDebug(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);

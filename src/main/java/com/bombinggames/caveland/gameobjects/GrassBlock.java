@@ -84,12 +84,14 @@ public class GrassBlock extends RenderCell {
 	}
 
 	@Override
-	public void renderSide(GameView view, float xPos, float yPos, float zPos, Side side, Color color) {
-		super.renderSide(view, xPos, yPos, zPos, side, color);
+	public void renderSide(GameView view, Point pos, Side side, Color color) {
+		super.renderSide(view, pos, side, color);
 		if (side == Side.TOP && getCoord()!=null) {
 			GameSpaceSprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
+				float xPos = pos.getX();
+				float yPos = pos.getY();
 				int xOffset = (int) (Math.abs((xPos - seed * 17) * i * (yPos)) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
 				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
 				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.GAME_DIAGLENGTH2) {
@@ -102,7 +104,7 @@ public class GrassBlock extends RenderCell {
 					gras.setPosition(
 						xPos + xOffset,
 						yPos + RenderCell.GAME_DIAGLENGTH2+yOffset,//there is something wrong with the rendering, so set center to the front
-						zPos+RenderCell.GAME_EDGELENGTH
+						pos.getZ()+RenderCell.GAME_EDGELENGTH
 					);
 
 					//wind
@@ -124,7 +126,7 @@ public class GrassBlock extends RenderCell {
 						}
 					}
 					gras.setRotation(i * 0.4f - 10.2f + wind + RANDOMGENERATOR.nextFloat() * noisenum * WINDAMPLITUDE / 2+forceRot*0.3f);
-					gras.draw(view.getSpriteBatch());
+					gras.draw(view.getGameSpaceSpriteBatch());
 				}
 			}
 		}

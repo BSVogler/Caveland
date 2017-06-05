@@ -119,8 +119,8 @@ public class CLCamera extends Camera {
 				overlay.setOrigin(0, 0);
 				//somehow reverse the viewport transformation, needed for split-screen
 				overlay.setSize(
-					getWidthInScreenSpc(),
-					getHeightInScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightInScreenSpc()
+					getWidthScreenSpc(),
+					getHeightScreenSpc() * (float) Gdx.graphics.getHeight() / getHeightScreenSpc()
 				);
 				overlay.setColor(1, 0, 0, damageoverlay);
 				overlay.draw(WE.getEngineView().getSpriteBatch());

@@ -199,10 +199,10 @@ public class Inventory extends CollectibleContainer {
 		//draw background for highlit sprite
 		Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 10, (byte) 0));
 
-		float left = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale() + bgSprite.getWidth() / 2;
-		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightInScreenSpc() + 10) / view.getEqualizationScale());
+		float left = (camera.getScreenPosX() + camera.getWidthScreenSpc() * 0.75f)+ bgSprite.getWidth() / 2;
+		int y = (int) ((view.getStage().getHeight() - camera.getScreenPosY() - camera.getHeightScreenSpc() + 10));
 
-		float leftbgSprite = (camera.getScreenPosX() + camera.getWidthInScreenSpc() * 0.75f) / view.getEqualizationScale();
+		float leftbgSprite = (camera.getScreenPosX() + camera.getWidthScreenSpc() * 0.75f);
 		// / view.getEqualizationScale()
 		bgSprite.setPosition(leftbgSprite, y);
 		bgSprite.draw(view.getProjectionSpaceSpriteBatch());
@@ -215,7 +215,7 @@ public class Inventory extends CollectibleContainer {
 
 		Collectible ent = get(0);
 		if (ent != null) {
-			ent.render(view, (int) left, y);
+			ent.render(view, (int) leftbgSprite, y);
 			if (ent instanceof Interactable) {
 				Sprite button = new Sprite(AbstractGameObject.getSprite('i', (byte) 23, Interactable.YUp));
 				button.setPosition(left-90, y-30);

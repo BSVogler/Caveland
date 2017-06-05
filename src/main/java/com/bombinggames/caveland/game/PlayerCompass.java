@@ -52,8 +52,8 @@ public class PlayerCompass {
 	public void drawHUD(MovableEntity player, GameView view, Camera camera){
 		if (player != null && player.hasPosition()) {
 			Vector2 cent = new Vector2(
-				camera.getScreenPosX() + camera.getWidthInScreenSpc() / 2f,//center
-				camera.getScreenPosY() + camera.getHeightInScreenSpc() / 2f//center
+				camera.getScreenPosX() + camera.getWidthScreenSpc() / 2f,//center
+				camera.getScreenPosY() + camera.getHeightScreenSpc() / 2f//center
 			);
 			Vector2 to = new Vector2(
 				player.getPosition().getProjectionSpaceX(view, camera),
@@ -61,7 +61,7 @@ public class PlayerCompass {
 			);
 			Vector2 vecTo = to.cpy().sub(cent);
 			if (vecTo.len2() > 200000) {
-				cent.add(vecTo.nor().scl(camera.getWidthInScreenSpc()/2*0.9f));//300px in direction of player
+				cent.add(vecTo.nor().scl(camera.getWidthScreenSpc()/2*0.9f));//300px in direction of player
 				Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 1));
 				bgSprite.setScale(player.getHealth()/100f);
 				bgSprite.setPosition(cent.x, cent.y);

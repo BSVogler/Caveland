@@ -42,6 +42,7 @@ import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_HEIGHT2;
+import com.bombinggames.wurfelengine.core.map.rendering.SpriteBatchWithZAxis;
 import com.bombinggames.wurfelengine.extension.AimBand;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -531,9 +532,10 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	}
 
 	@Override
-	public void render(GameView view, Camera camera) {
+	public void render(GameView view) {
 		if (!WE.getCVars().getValueB("ignorePlayer") && textureNormal != null) {
-			view.getGameSpaceSpriteBatch().end();//inject new batch here
+			SpriteBatchWithZAxis batch = view.getGameSpaceSpriteBatch();
+			batch.end();//inject new batch here
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
@@ -542,7 +544,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 			textureDiff.bind(0);
 
-			view.getGameSpaceSpriteBatch().begin();
+			batch.begin();
 				AtlasRegion texture = getSprite(action, spriteNum);
 				GameSpaceSprite sprite = new GameSpaceSprite(texture);
 				sprite.setOrigin(
@@ -558,7 +560,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 					getPoint().getZ()
 					- 50 //only this player sprite has an offset because it has overize
 				);
-				sprite.draw(view.getGameSpaceSpriteBatch());
+				sprite.draw(batch);
 
 				//overlay
 				if (loadAttack > LOAD_THRESHOLD || performingPowerAttack) {//loading or perfomring loadattack
@@ -578,9 +580,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 						getPosition().getY()+ RenderCell.GAME_DIAGLENGTH2,//center
 						getPoint().getZ()+100
 					);
-					overlaySprite.draw(view.getGameSpaceSpriteBatch());
+					overlaySprite.draw(batch);
 				}
-			view.getGameSpaceSpriteBatch().end();
+			batch.end();
 
 			//bind normal map to texture unit 1
 			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
@@ -590,7 +592,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			//bind diffuse color to texture unit 0
 			//important that we specify 0 otherwise we'll still be bound to glActiveTexture(GL_TEXTURE1)
 			AbstractGameObject.getTextureDiffuse().bind(0);
-			view.getGameSpaceSpriteBatch().begin();
+			batch.begin();
 		}
 	}
 

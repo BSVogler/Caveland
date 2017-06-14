@@ -86,7 +86,7 @@ public class GrassBlock extends RenderCell {
 	@Override
 	public void renderSide(GameView view, Point pos, Side side, Color color) {
 		super.renderSide(view, pos, side, color);
-		if (side == Side.TOP && getCoord()!=null) {
+		if (false && side == Side.TOP && getCoord()!=null) {
 			GameSpaceSprite gras = grasSprite;
 			for (int i = 0; i < 10; i++) {
 				//game space
@@ -96,9 +96,9 @@ public class GrassBlock extends RenderCell {
 				int yOffset = (int) (Math.abs(((xPos - i) * 3 * (yPos * seed * 11 - i))) % RenderCell.GAME_EDGELENGTH - RenderCell.GAME_EDGELENGTH2);
 				if (Math.abs(xOffset) + Math.abs(yOffset) < RenderCell.GAME_DIAGLENGTH2) {
 					gras.setColor(
-						getLightlevel(side, (byte) 1, Channel.Red) / 2f,
-						getLightlevel(side, (byte) 1, Channel.Green) / 2f - (xOffset + i) % 7 * 0.005f,
-						getLightlevel(side, (byte) 1, Channel.Blue) / 2f,
+						getLightlevel(Side.TOP, (byte) 1, Channel.Red) / 2f,
+						getLightlevel(Side.TOP, (byte) 1, Channel.Green) / 2f - (xOffset + i) % 7 * 0.005f,
+						getLightlevel(Side.TOP, (byte) 1, Channel.Blue) / 2f,
 						1
 					);	
 					gras.setPosition(

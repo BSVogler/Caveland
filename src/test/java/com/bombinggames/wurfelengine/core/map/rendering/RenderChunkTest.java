@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Generators.BlockTestGenerator;
 import com.bombinggames.wurfelengine.core.map.Generators.FullMapGenerator;
-import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator;
+import com.bombinggames.wurfelengine.core.map.Iterators.DataIterator3D;
 import com.bombinggames.wurfelengine.core.map.Map;
 import java.io.File;
 import java.io.IOException;
@@ -208,8 +208,8 @@ public class RenderChunkTest {
 		System.out.println("getIterator");
 		int startingZ = 0;
 		int limitZ = 0;
-		DataIterator<RenderCell> result = instance.getIterator(startingZ, limitZ);
-		if (!(result instanceof DataIterator))
+		DataIterator3D<RenderCell> result = instance.getIterator(startingZ, limitZ);
+		if (!(result instanceof DataIterator3D))
 			fail("Iterator is not an iterator");
 		if (!result.hasNext())
 			fail("Iterator not ready");

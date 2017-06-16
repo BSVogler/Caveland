@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.3.1</string>
         <key>fileName</key>
-        <string>/Users/Benedikt/Wurfel Engine/Caveland/sprites/sprites caveland/Caveland.tps</string>
+        <string>/Users/Benedikt/Wurfel Engine/Caveland/sprites/Caveland.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -36,7 +36,7 @@
         <key>dataFormat</key>
         <string>libgdx</string>
         <key>textureFileName</key>
-        <filename>../../source/com/bombinggames/Caveland/Spritesheet.png</filename>
+        <filename>../src/main/resources/com/bombinggames/caveland/Spritesheet.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -150,7 +150,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../source/com/bombinggames/Caveland/Spritesheet.txt</filename>
+                <filename>../src/main/resources/com/bombinggames/caveland/Spritesheet.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">
@@ -295,25 +295,7 @@
             <key type="filename">Normals/entitiesNormal/e56-6.png</key>
             <key type="filename">Normals/entitiesNormal/e56-7.png</key>
             <key type="filename">Normals/entitiesNormal/e7-0.png</key>
-            <key type="filename">Normals/entitiesNormal/e8-0.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-0.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-1.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-10.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-11.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-12.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-13.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-14.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-15.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-16.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-17.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-2.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-3.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-4.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-5.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-6.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-7.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-8.png</key>
-            <key type="filename">Normals/entitiesNormal/i23-9.png</key>
+            <key type="filename">Normals/entitiesNormal/e7-1.png</key>
             <key type="filename">blocks/b11-0.png</key>
             <key type="filename">blocks/b12-0.png</key>
             <key type="filename">blocks/b12-1.png</key>
@@ -451,6 +433,7 @@
             <key type="filename">entities/e57-0.png</key>
             <key type="filename">entities/e57-1.png</key>
             <key type="filename">entities/e7-0.png</key>
+            <key type="filename">entities/e7-1.png</key>
             <key type="filename">entities/e8-0.png</key>
             <key type="filename">interface/i10-0.png</key>
             <key type="filename">interface/i11-0.png</key>
@@ -659,7 +642,6 @@
             <key type="filename">Normals/entitiesNormal/e58-9.png</key>
             <key type="filename">Normals/entitiesNormal/e9-0.png</key>
             <key type="filename">Normals/entitiesNormal/e9-1.png</key>
-            <key type="filename">Normals/entitiesNormal/error.png</key>
             <key type="filename">entities/e40-0.png</key>
             <key type="filename">entities/e40-1.png</key>
             <key type="filename">entities/e40-10.png</key>
@@ -830,7 +812,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">Normals/entitiesNormal/e43-0.png</key>
             <key type="filename">Normals/entitiesNormal/e6-0.png</key>
             <key type="filename">entities/e43-0.png</key>
             <key type="filename">entities/e6-0.png</key>

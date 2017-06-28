@@ -108,8 +108,8 @@ public class CLCamera extends Camera {
 	}
 
 	@Override
-	public void render(GameView view, Camera camera) {
-		super.render(view, camera);
+	public void render(GameView view) {
+		super.render(view);
 		if (damageoverlay > 0.0f) {
 			try {
 				//WE.getEngineView().getSpriteBatch().setShader(new custom shader);

@@ -538,7 +538,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			batch.end();//inject new batch here
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
+			if (WE.getCVars().getValueB("LEnormalMapRendering")) {
 				textureNormal.bind(1);
 			}
 
@@ -585,7 +585,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 			batch.end();
 
 			//bind normal map to texture unit 1
-			if ((boolean) WE.getCVars().get("LEnormalMapRendering").getValue()) {
+			if (WE.getCVars().getValueB("LEnormalMapRendering")) {
 				AbstractGameObject.getTextureNormal().bind(1);
 			}
 

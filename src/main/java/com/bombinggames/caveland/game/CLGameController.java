@@ -45,7 +45,7 @@ public class CLGameController extends Controller implements Telegraph {
 		MessageManager.getInstance().addListener(this, Events.mapReloaded.getId());
 		MessageManager.getInstance().addListener(this, Events.blockDestroyed.getId());
 		
-		Gdx.app.log("CustomGameController", "Initializing");
+		Gdx.app.log(CLGameController.class.getSimpleName(), "Initializing");
 		
 		setLightEngine(new CustomLightEngine());
 		

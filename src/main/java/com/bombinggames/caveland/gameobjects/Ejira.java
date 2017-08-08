@@ -556,9 +556,9 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 
 				sprite.setPosition(
 					getPoint().getX(),
-					getPoint().getY()+ RenderCell.GAME_DIAGLENGTH2,//at front of grid cell
+					getPoint().getY(),
 					getPoint().getZ()
-					- 50 //only this player sprite has an offset because it has overize
+					- 100 //only this player sprite has an offset because it has overize
 				);
 				sprite.draw(batch);
 

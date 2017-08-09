@@ -93,7 +93,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 							}
 						} else {
 							//down
-							d.z = nextWaypoint.getPos().toPoint().getZ() - getPosition().getZ();
+							d.z = nextWaypoint.getPos().getZPoint() - getPosition().getZ();
 						}
 						d.nor();//direction only
 						d.scl(2f);
@@ -115,7 +115,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 				}
 			}
 
-			//look at players
+			//look at players if idle
 			if (nextWaypoint == null) {
 				LinkedList<Ejira> ejiraList = getPosition().getEntitiesNearbyHorizontal(4 * RenderCell.GAME_EDGELENGTH, Ejira.class);
 				if (!ejiraList.isEmpty()) {
@@ -188,7 +188,7 @@ public class Vanya extends MovableEntity implements Interactable, Telegraph {
 					chatCounter++;
 					break;
 				case 1:
-					text = "I guess you wonder why I can speak. On this planet some things are bit different then you may be used to know.";
+					text = "I guess you wonder why I can speak. On this planet some things are bit different than you are used to";
 					chatCounter++;
 					break;
 				case 2:

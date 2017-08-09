@@ -39,13 +39,12 @@ public class CLGameController extends Controller implements Telegraph {
 	private boolean tutorialEndFight;
 
 	@Override
-	public void init() {
-		super.init();
+	public void init(String mapName, int saveslot) {
+		super.init(mapName, saveslot);
+		Gdx.app.log(CLGameController.class.getSimpleName(), "Initializing");
 		
 		MessageManager.getInstance().addListener(this, Events.mapReloaded.getId());
 		MessageManager.getInstance().addListener(this, Events.blockDestroyed.getId());
-		
-		Gdx.app.log(CLGameController.class.getSimpleName(), "Initializing");
 		
 		setLightEngine(new CustomLightEngine());
 		

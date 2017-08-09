@@ -201,7 +201,7 @@ public class SaveSelectionScreen extends WEScreen {
 			else
 				controller.useSaveSlot(selectBox.getSelectedIndex());
 		}
-		WE.initAndStartGame(controller, view, new CustomLoading());
+		WE.initAndStartGame(new CustomLoading(), controller, view);
 		if (coop >-1) controller.activatePlayer2();
 	}
 	

@@ -49,50 +49,7 @@ public class Caveland {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		WorkingDirectory.setApplicationName("Caveland");
-		//game cvars
-		WE.getCVars().register(new IntCVar(50), "worldSpinAngle");
-		WE.getCVars().register(new BooleanCVar(true), "shouldLoadMap");
-		WE.getCVars().register(new BooleanCVar(true), "enableLightEngine");
-		WE.getCVars().register(new BooleanCVar(true), "enableFog");
-		WE.getCVars().register(new BooleanCVar(false), "enableAutoShade");
-		WE.getCVars().register(new BooleanCVar(true), "LEnormalMapRendering");
-		WE.getCVars().register(new BooleanCVar(true), "coopVerticalSplitScreen");
-		WE.getCVars().register(new FloatCVar(150), "PlayerTimeTillImpact");
-		WE.getCVars().register(new BooleanCVar(false), "ignorePlayer");
-		WE.getCVars().register(new BooleanCVar(false), "godmode");
-		WE.getCVars().register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
-		WE.getCVars().register(new FloatCVar(0.85f), "coopZoom");
-		WE.getCVars().register(new BooleanCVar(false), "experimentalCameraJoin");
-		WE.getCVars().register(new FloatCVar(400f), "jetpackMaxTime");
-		WE.getCVars().register(new FloatCVar(0.03f), "jetpackPower");
-		WE.getCVars().register(new FloatCVar(5f), "jetpackMaxSpeed");
-		
-		//register map cvars
-		CVarSystemMap.setCustomMapCVarRegistration(new CavelandMapCVars());
-
-		//configure
-		WE.setMainMenu(new MainMenuScreen());
-		RenderCell.setCustomBlockFactory(new CavelandBlocks());
-		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
-
-		//register entities
-		AbstractEntity.registerEntity("Emitter Test", ParticleEmitter.class);
-		AbstractEntity.registerEntity("TFlint", TFlint.class);
-		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
-		AbstractEntity.registerEntity("Construction Kit", ConstructionKit.class);
-		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
-		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
-		AbstractEntity.registerEntity("Vanya", Vanya.class);
-		AbstractEntity.registerEntity("Robot", Robot.class);
-		AbstractEntity.registerEntity("Spider Robot", SpiderRobot.class);
-		AbstractEntity.registerEntity("Bird", Bird.class);
-		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
-		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);
-		AbstractEntity.registerEntity("Quadrocopter", Quadrocopter.class);
-		AbstractEntity.registerEntity("Shopkeeper", Shopkeeper.class);
-
-		Map.setDefaultGenerator(new ChunkGenerator());
+		configureEngine();
 
 		if (args.length > 0) {
 			//look if contains launch parameters
@@ -103,18 +60,15 @@ public class Caveland {
 						WE.addPostLaunchCommands(() -> {
 							CLGameController controller = new CLGameController();
 							controller.useSaveSlot(0);
-							WE.initAndStartGame(controller, new CLGameView(), new CustomLoading());
+							WE.initAndStartGame(new CustomLoading(), controller, new CLGameView());
 						});
 						break;
 				}
 			}
 		}
-
+		
+		//load menu
 		WE.addPostLaunchCommands(() -> {
-			WE.getConsole().addCommand(new GiveCommand());
-			WE.getConsole().addCommand(new PortalTargetCommand());
-			WE.getConsole().addCommand(new TeleportPlayerCommand());
-
 			//load the needed assets
 			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
 			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
@@ -179,5 +133,58 @@ public class Caveland {
 			+ "reddit.com/r/gamedev\n"
 			+ "Bauhaus University Weimar\n\n"
 			+ "Wurfel Engine uses libGDX.\n";
+	}
+
+	public static void configureEngine() {
+		WorkingDirectory.setApplicationName("Caveland");
+		//game cvars
+		WE.getCVars().register(new IntCVar(50), "worldSpinAngle");
+		WE.getCVars().register(new BooleanCVar(true), "shouldLoadMap");
+		WE.getCVars().register(new BooleanCVar(true), "enableLightEngine");
+		WE.getCVars().register(new BooleanCVar(true), "enableFog");
+		WE.getCVars().register(new BooleanCVar(false), "enableAutoShade");
+		WE.getCVars().register(new BooleanCVar(true), "LEnormalMapRendering");
+		WE.getCVars().register(new BooleanCVar(true), "coopVerticalSplitScreen");
+		WE.getCVars().register(new FloatCVar(150), "PlayerTimeTillImpact");
+		WE.getCVars().register(new BooleanCVar(false), "ignorePlayer");
+		WE.getCVars().register(new BooleanCVar(false), "godmode");
+		WE.getCVars().register(new FloatCVar(600f), "playerItemDropTime");//time in ms for item drop
+		WE.getCVars().register(new FloatCVar(0.85f), "coopZoom");
+		WE.getCVars().register(new BooleanCVar(false), "experimentalCameraJoin");
+		WE.getCVars().register(new FloatCVar(400f), "jetpackMaxTime");
+		WE.getCVars().register(new FloatCVar(0.03f), "jetpackPower");
+		WE.getCVars().register(new FloatCVar(5f), "jetpackMaxSpeed");
+		
+		//register map cvars
+		CVarSystemMap.setCustomMapCVarRegistration(new CavelandMapCVars());
+
+		//configure
+		WE.setMainMenu(new MainMenuScreen());
+		RenderCell.setCustomBlockFactory(new CavelandBlocks());
+		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
+
+		//register entities
+		AbstractEntity.registerEntity("Emitter Test", ParticleEmitter.class);
+		AbstractEntity.registerEntity("TFlint", TFlint.class);
+		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
+		AbstractEntity.registerEntity("Construction Kit", ConstructionKit.class);
+		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
+		AbstractEntity.registerEntity("Spaceship", Spaceship.class);
+		AbstractEntity.registerEntity("Vanya", Vanya.class);
+		AbstractEntity.registerEntity("Robot", Robot.class);
+		AbstractEntity.registerEntity("Spider Robot", SpiderRobot.class);
+		AbstractEntity.registerEntity("Bird", Bird.class);
+		AbstractEntity.registerEntity("Pathfinding Test", PathfindingTest.class);
+		AbstractEntity.registerEntity("Exit Portal", ExitPortal.class);
+		AbstractEntity.registerEntity("Quadrocopter", Quadrocopter.class);
+		AbstractEntity.registerEntity("Shopkeeper", Shopkeeper.class);
+
+		Map.setDefaultGenerator(new ChunkGenerator());
+
+		WE.addPostLaunchCommands(() -> {
+			WE.getConsole().addCommand(new GiveCommand());
+			WE.getConsole().addCommand(new PortalTargetCommand());
+			WE.getConsole().addCommand(new TeleportPlayerCommand());
+		});
 	}
 }

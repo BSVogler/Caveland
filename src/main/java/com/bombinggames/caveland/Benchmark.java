@@ -38,7 +38,6 @@ public class Benchmark {
 
 	private static class BenchmarkController extends Controller {
 
-
 		public BenchmarkController() {
 			super();
 			setMapName("demo");
@@ -48,27 +47,44 @@ public class Benchmark {
 
 	private static class BenchmarkView extends GameView {
 
+		private Camera camera;
 
 		@Override
 		public void init(Controller controller, GameView oldView) {
 			super.init(controller, oldView);
-			Camera camera = new Camera(this);
-			BenchmarkMovement movement = new BenchmarkMovement();
-			movement.spawn(new Point(0,0,RenderCell.GAME_EDGELENGTH*6));
+			camera = new Camera(this);
+			BenchmarkMovement movement = new BenchmarkMovement(controller, this);
+			movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 6));
 			camera.setFocusEntity(movement);
 		}
-		
-		
+
+		private Camera getCamera() {
+			return camera;
+		}
+
 	}
 
 	private static class BenchmarkMovement extends MovableEntity {
 
 		private static final long serialVersionUID = 1L;
+		private final BenchmarkView view;
+		private final Controller controller;
 
-		BenchmarkMovement() {
+		BenchmarkMovement(Controller controller, BenchmarkView view) {
 			super((byte) 0);
+			this.controller = controller;
+			this.view = view;
 			setHidden(true);
-			addComponent(new MoveToAi(new Point(5000, 0, RenderCell.GAME_EDGELENGTH*4)));
+			addComponent(new MoveToAi(new Point(5000, 0, RenderCell.GAME_EDGELENGTH * 4)));
+		}
+
+		@Override
+		public void update(float dt) {
+			boolean firstStage = getPoint().x < 1000;
+			super.update(dt);
+			if (getPoint().x > 1000 && firstStage) {
+				view.addCamera(view.getCamera());
+			}
 		}
 
 		@Override

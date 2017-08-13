@@ -32,20 +32,20 @@ public class Inventory extends CollectibleContainer {
 	}
 
 	/**
-	 * Attaches/glues the inventory to the player
+	 * Spawns the inventory at the owner.
 	 *
 	 * @return
 	 */
 	public AbstractEntity spawn() {
-		super.spawn(((Ejira)getOwner()).getPosition());
+		getOwner().ifPresent(t -> super.spawn(((Ejira)t).getPosition()));
 		return this;
 	}
 
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (hasPosition() && getOwner()!=null && ((Ejira)getOwner()).hasPosition())
-			getPosition().set(((Ejira)getOwner()).getPosition());
+		if (hasPosition() && getOwner().isPresent() && ((Ejira)getOwner().get()).hasPosition())
+			getPosition().set(((Ejira)getOwner().get()).getPosition());
 	}
 
 	/**

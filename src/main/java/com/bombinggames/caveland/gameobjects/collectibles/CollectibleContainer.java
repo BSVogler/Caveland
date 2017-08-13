@@ -36,6 +36,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * An entity which contains collectibles.
@@ -46,7 +47,8 @@ public class CollectibleContainer extends AbstractEntity {
 
 	private static final long serialVersionUID = 2L;
 
-	private AbstractEntity owner;
+	private final int ownerHash;
+	private transient Optional<AbstractEntity> owner;
 	/**
 	 * links to items
 	 */
@@ -64,8 +66,9 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public CollectibleContainer(AbstractEntity owner) {
 		super((byte) 56);
-		this.owner = owner;
-		setName("Container");
+		this.ownerHash = owner.hashCode();
+		this.owner =Optional.of(owner);
+		setName("CollectibleContainer");
 		setIndestructible(true);
 	}
 
@@ -77,6 +80,7 @@ public class CollectibleContainer extends AbstractEntity {
 		super(id);
 		setName("Container");
 		setIndestructible(true);
+		ownerHash = 0;//has no owner
 	}
 
 	/**
@@ -86,15 +90,24 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public CollectibleContainer(byte id, AbstractEntity owner) {
 		super(id);
-		this.owner = owner;
+		this.ownerHash = owner.hashCode();
+		this.owner = Optional.of(owner);
 		setName("Container");
 		setIndestructible(true);
 	}
 
-	public AbstractEntity getOwner() {
-		return owner;
+	/**
+	 * to check if this container belongs to the ownerHash
+	 * @return 
+	 */
+	public int getOwnerHash() {
+		return ownerHash;
 	}
 
+	public Optional<AbstractEntity> getOwner() {
+		return owner;
+	}
+	
 	/**
 	 *
 	 * @param collectible
@@ -315,8 +328,9 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
-		//show if no owner
-		if (owner == null) {
+		//show as bagif no ownerHash
+		owner = Optional.empty();
+		if (ownerHash == 0) {//had no owner
 			if (content == null || content.isEmpty()) {
 				dispose();
 			} else {

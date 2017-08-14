@@ -1,5 +1,6 @@
 package com.bombinggames.caveland;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import static com.bombinggames.caveland.Caveland.VERSION;
 import com.bombinggames.caveland.mainmenu.CustomLoading;
@@ -7,10 +8,14 @@ import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.GameView;
+import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
+import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -26,10 +31,11 @@ public class Benchmark {
 		//WE.getCVars().register(cvar, VERSION);
 		WE.getCVars().get("ignorePlayer").setValue(true);
 		WE.addPostLaunchCommands(() -> {
+			BenchmarkView view = new BenchmarkView();
 			WE.initAndStartGame(
 				new CustomLoading(),
-				new BenchmarkController(),
-				new BenchmarkView()
+				new BenchmarkController(view),
+				view
 			);
 		});
 
@@ -38,10 +44,58 @@ public class Benchmark {
 
 	private static class BenchmarkController extends Controller {
 
-		public BenchmarkController() {
+		private float watch;
+		private BenchmarkMovement movement;
+		private int stage;
+		private final BenchmarkView view;
+
+		BenchmarkController(BenchmarkView view) {
 			super();
 			setMapName("demo");
 			useSaveSlot(0);
+			this.view = view;
+		}
+
+		@Override
+		public void update(float dt) {
+			super.update(dt);
+			float dts = Gdx.graphics.getRawDeltaTime();
+			//wait 5 seconds then start measurement
+			if (watch < 5 && watch + dts > 5) {
+				getDevTools().setCapacity(12000);//1 minute at 5 ms/frame
+				startStage(0);
+			}
+			watch += dts;
+		}
+
+		private AbstractEntity create(BenchmarkView view) {
+			movement = new BenchmarkMovement(this, view);
+			movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 6));
+			return movement;
+		}
+
+		private void endStage(int i) {
+			Path path = Paths.get("./stage"+i+".csv");
+			getDevTools().saveToFile(path);
+			System.out.println("Average delta for stage "+i+": "+getDevTools().getAverageDelta());
+			startStage(i+1);
+		}
+		
+		private void startStage(int stage){
+			this.stage = stage;
+			if (stage==1){
+				view.addCamera(view.getCamera());
+			}
+			getDevTools().clear();
+			//start movement
+			movement.getPosition().set(new Point(0, stage*Chunk.getGameDepth(), RenderCell.GAME_EDGELENGTH * 3));
+			MoveToAi ai = new MoveToAi(new Point(2000, stage*Chunk.getGameDepth(), RenderCell.GAME_EDGELENGTH * 3));
+			ai.setMinspeed(2);
+			movement.addComponent(ai);
+		}
+
+		private int getStage() {
+			return stage;
 		}
 	}
 
@@ -53,9 +107,8 @@ public class Benchmark {
 		public void init(Controller controller, GameView oldView) {
 			super.init(controller, oldView);
 			camera = new Camera(this);
-			BenchmarkMovement movement = new BenchmarkMovement(controller, this);
-			movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 6));
-			camera.setFocusEntity(movement);
+			
+			camera.setFocusEntity(((BenchmarkController) controller).create(this));
 		}
 
 		private Camera getCamera() {
@@ -68,22 +121,21 @@ public class Benchmark {
 
 		private static final long serialVersionUID = 1L;
 		private final BenchmarkView view;
-		private final Controller controller;
+		private final BenchmarkController controller;
 
-		BenchmarkMovement(Controller controller, BenchmarkView view) {
+		BenchmarkMovement(BenchmarkController controller, BenchmarkView view) {
 			super((byte) 0);
 			this.controller = controller;
 			this.view = view;
 			setHidden(true);
-			addComponent(new MoveToAi(new Point(5000, 0, RenderCell.GAME_EDGELENGTH * 4)));
 		}
 
 		@Override
 		public void update(float dt) {
-			boolean firstStage = getPoint().x < 1000;
 			super.update(dt);
-			if (getPoint().x > 1000 && firstStage) {
-				view.addCamera(view.getCamera());
+			//next stage when arrived
+			if (getComponent(MoveToAi.class) == null){
+				controller.endStage(controller.getStage());
 			}
 		}
 

@@ -201,7 +201,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter.setActive(false);
 		emitter.setHidden(true);
 		emitter.setSavePersistent(false);
-		emitter.setParticleSpread(new Vector3(1.6f, 0.6f, 0.5f));
+		emitter.setParticleSpread(new Vector3(0.8f, 0.8f, 0.2f));
 		
 		emitter2 = new ParticleEmitter(80);
 		emitter2.setParticleDelay(3);
@@ -210,7 +210,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		emitter2.setActive(false);
 		emitter2.setHidden(true);
 		emitter2.setSavePersistent(false);
-		emitter2.setParticleSpread(new Vector3(0.6f, 0.6f, 0.5f));
+		emitter2.setParticleSpread(new Vector3(0.8f, 0.8f, 0.2f));
 		
 		setSavePersistent(false);
 	}
@@ -314,6 +314,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 						WE.SOUND.play("loadAttack");
 						canPlayLoadingSound = true;
 					}
+					//slow down falling
 					Vector3 newmov = getMovement();
 					newmov.z /= 4;
 					setMovement(newmov);

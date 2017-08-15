@@ -43,6 +43,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * an AI which moves a movable entity around.
@@ -52,6 +53,7 @@ public class IdleAI implements Telegraph, Serializable, Component {
 
 	private static final long serialVersionUID = 1L;
 	
+	private final static Random RANDOMGENERATOR = new java.util.Random(1);
 	private MovableEntity body;
 	/**
 	 * position where the ai will return
@@ -89,20 +91,20 @@ public class IdleAI implements Telegraph, Serializable, Component {
 					if (body.isFloating())
 						target.add(
 							new Vector3(
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f)
+								RANDOMGENERATOR.nextFloat() - 0.5f,
+								RANDOMGENERATOR.nextFloat() - 0.5f,
+								RANDOMGENERATOR.nextFloat() - 0.5f
 							).nor().scl(idleRaidus)
 						);
 					else {
 						target.add(
 							new Vector2(
-								(float) (Math.random() - 0.5f),
-								(float) (Math.random() - 0.5f)
+								RANDOMGENERATOR.nextFloat() - 0.5f,
+								RANDOMGENERATOR.nextFloat() - 0.5f
 							).nor().scl(idleRaidus)
 						);
 					}
-				} while (i < 100 && (target.isObstacle()));
+				} while (i < 100 && target.isObstacle());
 				
 				if (i < 100){
 					body.setSpeedHorizontal(2);

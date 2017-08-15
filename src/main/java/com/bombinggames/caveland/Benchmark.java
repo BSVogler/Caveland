@@ -81,7 +81,8 @@ public class Benchmark {
 
 		private AbstractEntity create(BenchmarkView view) {
 			movement = new BenchmarkMovement(this, view);
-			movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 6));
+			movement.setColiding(false);
+			movement.setFloating(true);
 			return movement;
 		}
 
@@ -108,7 +109,10 @@ public class Benchmark {
 		
 		private void startStage(int stage){
 			this.stage = stage;
-			if (stage==1){
+			if (stage==0) {
+				movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 4));	
+				
+			} else if (stage==1){
 				view.addCamera(view.getCamera());
 			}
 			getDevTools().clear();

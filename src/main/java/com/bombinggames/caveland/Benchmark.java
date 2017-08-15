@@ -7,6 +7,7 @@ import com.bombinggames.caveland.mainmenu.CustomLoading;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
 import com.bombinggames.wurfelengine.core.Controller;
+import com.bombinggames.wurfelengine.core.DevTools;
 import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
@@ -14,8 +15,17 @@ import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,6 +58,7 @@ public class Benchmark {
 		private BenchmarkMovement movement;
 		private int stage;
 		private final BenchmarkView view;
+		private Path logFile;
 
 		BenchmarkController(BenchmarkView view) {
 			super();
@@ -75,10 +86,24 @@ public class Benchmark {
 		}
 
 		private void endStage(int i) {
-			Path path = Paths.get("./stage"+i+".csv");
-			getDevTools().saveToFile(path);
-			System.out.println("Average delta for stage "+i+": "+getDevTools().getAverageDelta());
-			startStage(i+1);
+			if (logFile == null) {
+				DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm_ss");
+				logFile = Paths.get("./benchmark" + LocalDateTime.now().format(FORMATTER)
+					+ ".csv");
+			}
+			try {
+				if (!logFile.toFile().exists())
+					logFile.toFile().createNewFile();
+				final BufferedWriter writer = Files.newBufferedWriter(logFile,
+					StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+				String res = getDevTools().getDataAsString();
+				writer.write("stage"+i+","+res+"\n");
+				writer.flush();
+			} catch (IOException ex) {
+				Logger.getLogger(DevTools.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			System.out.println("Average delta for stage " + i + ": " + getDevTools().getAverageDelta());
+			startStage(i + 1);
 		}
 		
 		private void startStage(int stage){

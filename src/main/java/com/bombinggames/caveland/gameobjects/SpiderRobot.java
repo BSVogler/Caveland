@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * A robot can carry one collectible.
+ * A robot can carry one collectible. The scanner lets the robot look for minerals ({@link #enableScanner() }). 
  * @author Benedikt Vogler
  */
 public class SpiderRobot extends Robot{
@@ -73,86 +73,18 @@ public class SpiderRobot extends Robot{
 	public void update(float dt) {
 		super.update(dt);
 		
+		//stop soudn when time is freezed
 		if (dt == 0 && walkingSound != 0) {
 			WE.SOUND.stop("robot2walk", walkingSound);
 			walkingSound = 0;
 		}
 		
-		boolean hadNoBlock = false;
-		if (workingBlock == null || workingBlock.getBlockId()== 0) {
-			hadNoBlock = true;
-		}
-		
 		if (hasPosition()) {
-			if (laserdot != null && laserdot.hasPosition()) {
-				//look for resources
-				if (moveUp) {
-					scanHeight += dt / 300f;
-				} else {
-					scanHeight -= dt / 300f;
-				}
-
-				if (scanHeight >= 1) {
-					moveUp = false;
-					scanHeight = 1;
-				}
-
-				if (scanHeight <= -0.3f) {
-					moveUp = true;
-					scanHeight = -0.3f;
-				}
-
-				if (moveRight) {
-					laserRotate += dt / 500f;
-				} else {
-					laserRotate -= dt / 500f;
-				}
-
-				if (laserRotate >= 1) {
-					moveRight = false;
-					laserRotate = 1;
-				}
-
-				if (laserRotate <= -1) {
-					moveRight = true;
-					laserRotate = -1;
-				}
-			
-				laserdot.update(
-					getAiming(),
-					getPosition().cpy().add(getOrientation().scl(20f)).add(0, 0, 20)
-				);
-				
-				//find storage
-				if (storage == null) {
-					LinkedList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH, DropSpaceFlag.class);
-					if (!flagsnearby.isEmpty()) {
-						storage = flagsnearby.getFirst().getPosition().toCoord();
-						WE.SOUND.play("robotWeep", getPosition());
-					}
-				}
-
-				//find block to work on
-				byte id = laserdot.getPosition().getBlockId();
-				if (id != 0) {
-					if (id == CavelandBlocks.CLBlocks.COAL.getId()
-						|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
-						|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
-						|| id == CavelandBlocks.CLBlocks.SULFUR.getId()
-					) {
-						if (workingBlock == null || workingBlock.getBlockId()== 0) {
-							workingBlock = laserdot.getPosition().toCoord();
-							//go to resources
-							MessageManager.getInstance().dispatchMessage(
-								this,
-								this,
-								Events.moveTo.getId(),
-								laserdot.getPosition().cpy()
-							);
-						}
-					}
-				}
+			boolean hadNoBlock = false;
+			if (workingBlock == null || workingBlock.getBlockId()== 0) {
+				hadNoBlock = true;
 			}
+			updateSight(dt);
 			//validate workingBlock
 			if (workingBlock != null) {
 				byte id = workingBlock.getBlockId();
@@ -305,7 +237,7 @@ public class SpiderRobot extends Robot{
 	}
 	
 	/**
-	 * does nothijng if already on
+	 * The scanner lets the robot look for minerals. does nothing if already on
 	 */
 	public void enableScanner() {
 		if (laserdot == null) {
@@ -314,10 +246,87 @@ public class SpiderRobot extends Robot{
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void disableScanner() {
 		if (laserdot != null) {
 			laserdot.dispose();
 			laserdot = null;
+		}
+	}
+
+	/**
+	 * updates the laser light sight related things
+	 * @param dt 
+	 */
+	private void updateSight(float dt) {
+		if (laserdot != null && laserdot.hasPosition()) {
+			//look for resources
+			if (moveUp) {
+				scanHeight += dt / 300f;
+			} else {
+				scanHeight -= dt / 300f;
+			}
+
+			if (scanHeight >= 1) {
+				moveUp = false;
+				scanHeight = 1;
+			}
+
+			if (scanHeight <= -0.3f) {
+				moveUp = true;
+				scanHeight = -0.3f;
+			}
+
+			if (moveRight) {
+				laserRotate += dt / 500f;
+			} else {
+				laserRotate -= dt / 500f;
+			}
+
+			if (laserRotate >= 1) {
+				moveRight = false;
+				laserRotate = 1;
+			}
+
+			if (laserRotate <= -1) {
+				moveRight = true;
+				laserRotate = -1;
+			}
+
+			laserdot.update(getPosition().cpy().add(getOrientation().scl(20f)).add(0, 0, 20), getAiming()
+			);
+
+			//find storage
+			if (storage == null) {
+				LinkedList<DropSpaceFlag> flagsnearby = laserdot.getPosition().getEntitiesNearby(RenderCell.GAME_EDGELENGTH, DropSpaceFlag.class);
+				if (!flagsnearby.isEmpty()) {
+					storage = flagsnearby.getFirst().getPosition().toCoord();
+					WE.SOUND.play("robotWeep", getPosition());
+				}
+			}
+
+			//find block to work on
+			byte id = laserdot.getPosition().getBlockId();
+			if (id != 0) {
+				if (id == CavelandBlocks.CLBlocks.COAL.getId()
+					|| id == CavelandBlocks.CLBlocks.IRONORE.getId()
+					|| id == CavelandBlocks.CLBlocks.CRYSTAL.getId()
+					|| id == CavelandBlocks.CLBlocks.SULFUR.getId()
+				) {
+					if (workingBlock == null || workingBlock.getBlockId()== 0) {
+						workingBlock = laserdot.getPosition().toCoord();
+						//go to resources
+						MessageManager.getInstance().dispatchMessage(
+							this,
+							this,
+							Events.moveTo.getId(),
+							laserdot.getPosition().cpy()
+						);
+					}
+				}
+			}
 		}
 	}
 }

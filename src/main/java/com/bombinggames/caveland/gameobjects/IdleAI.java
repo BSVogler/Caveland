@@ -60,8 +60,17 @@ public class IdleAI implements Telegraph, Serializable, Component {
 	 */
 	private Point home;
 	private float timeTillMove;
-	private final float idleRaidus = RenderCell.GAME_EDGELENGTH * 2;
+	private float idleRaidus = RenderCell.GAME_EDGELENGTH * 2;
 
+	/**
+	 * in game distance
+	 * @param idleRaidus 
+	 */
+	public void setIdleRaidus(float idleRaidus) {
+		this.idleRaidus = idleRaidus;
+	}
+
+	
 	/**
 	 *
 	 * @param dt

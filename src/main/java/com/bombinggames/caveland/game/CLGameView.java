@@ -22,7 +22,6 @@ import com.bombinggames.wurfelengine.core.WorkingDirectory;
 import com.bombinggames.wurfelengine.core.cvar.CVarSystemSave;
 import com.bombinggames.wurfelengine.core.map.Point;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import com.bombinggames.wurfelengine.extension.MiniMapChunkDebug;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,8 +61,6 @@ public class CLGameView extends GameView {
 	 * a widget group that can be opened modal.
 	 */
 	private WidgetGroup modalGroup;
-
-	private MiniMapChunkDebug minimap;
 
 	@Override
 	public void init(Controller controller, GameView oldView) {
@@ -445,12 +442,6 @@ public class CLGameView extends GameView {
 			);
 		}
 		getProjectionSpaceSpriteBatch().end();
-		if (WE.getCVars().getValueB("showMiniMapChunk")) {
-			if (minimap == null) {
-				minimap = new MiniMapChunkDebug(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-			}
-			minimap.render(this);
-		}
 	}
 
 	/**

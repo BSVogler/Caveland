@@ -3,6 +3,7 @@ package com.bombinggames.caveland;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.Telegram;
 import static com.bombinggames.caveland.Caveland.VERSION;
+import com.bombinggames.caveland.gameobjects.Quadrocopter;
 import com.bombinggames.caveland.mainmenu.CustomLoading;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.Camera;
@@ -13,8 +14,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
 import com.bombinggames.wurfelengine.core.map.Chunk;
-import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
+import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -62,7 +62,7 @@ public class Benchmark {
 
 		BenchmarkController(BenchmarkView view) {
 			super();
-			setMapName("demo");
+			setMapName("benchmark");
 			useSaveSlot(0);
 			this.view = view;
 		}
@@ -72,7 +72,8 @@ public class Benchmark {
 			super.update(dt);
 			float dts = Gdx.graphics.getRawDeltaTime();
 			//wait 5 seconds then start measurement
-			if (watch < 5 && watch + dts > 5) {
+			int initTime = 1;
+			if (watch < initTime && watch + dts > initTime) {
 				getDevTools().setCapacity(12000);//1 minute at 5 ms/frame
 				startStage(0);
 			}
@@ -110,17 +111,33 @@ public class Benchmark {
 		private void startStage(int stage){
 			this.stage = stage;
 			if (stage==0) {
-				movement.spawn(new Point(0, 0, RenderCell.GAME_EDGELENGTH * 4));	
-				
-			} else if (stage==1){
-				view.addCamera(view.getCamera());
-			}
+				movement.spawn(new Coordinate(0, 0, 4).toPoint());
+			}	
+			
 			getDevTools().clear();
+			
 			//start movement
-			movement.getPosition().set(new Point(0, stage*Chunk.getGameDepth(), RenderCell.GAME_EDGELENGTH * 3));
-			MoveToAi ai = new MoveToAi(new Point(2000, stage*Chunk.getGameDepth(), RenderCell.GAME_EDGELENGTH * 3));
+			int stageCenterY = stage<2?Chunk.getBlocksY()*-2:Chunk.getBlocksY()*2;
+			int stageDistanceX = Chunk.getBlocksX();
+			movement.getPosition().set(new Coordinate(0, stageCenterY, 3).toPoint());
+			MoveToAi ai = new MoveToAi(
+				new Coordinate(stageDistanceX, stageCenterY, 3).toPoint()
+			);
 			ai.setMinspeed(2);
 			movement.addComponent(ai);
+			
+			if (stage==1){
+				view.addCamera(view.getCamera());
+				//view.getCamera().update(0);
+			}
+			
+			if (stage==3){
+				for (int i = 0; i < stageDistanceX; i++) {
+					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 5).toPoint());
+					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 6).toPoint());
+					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 7).toPoint());
+				}
+			}
 		}
 
 		private int getStage() {

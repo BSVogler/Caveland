@@ -56,9 +56,11 @@ public class Benchmark {
 
 		private float watch;
 		private BenchmarkMovement movement;
-		private int stage;
+		private int stage = -1;
 		private final BenchmarkView view;
 		private Path logFile;
+		private int stageDistanceX;
+		private float initTime = 2;
 
 		BenchmarkController(BenchmarkView view) {
 			super();
@@ -67,25 +69,42 @@ public class Benchmark {
 			this.view = view;
 		}
 
-		@Override
-		public void update(float dt) {
-			super.update(dt);
-			float dts = Gdx.graphics.getRawDeltaTime();
-			//wait 5 seconds then start measurement
-			int initTime = 1;
-			if (watch < initTime && watch + dts > initTime) {
-				getDevTools().setCapacity(12000);//1 minute at 5 ms/frame
-				startStage(0);
-			}
-			watch += dts;
-		}
-
 		private AbstractEntity create(BenchmarkView view) {
 			movement = new BenchmarkMovement(this, view);
 			movement.setColiding(false);
 			movement.setFloating(true);
+			
+			stageDistanceX = Chunk.getBlocksX()*3;
+			getDevTools().setCapacity(12000);//1 minute at 5 ms/frame
+			startStage(0);
 			return movement;
 		}
+		
+		@Override
+		public void update(float dt) {
+			super.update(dt);
+			float dts = Gdx.graphics.getRawDeltaTime();
+			//wait initTime seconds then start stage and measurement
+			if (watch < initTime && watch + dts > initTime) {
+				getDevTools().clear();
+			}
+			
+			watch += dts;
+			
+			long frameid = Gdx.graphics.getFrameId();
+			//cahnge map in stage 4 every 21 frames
+			if (stage >= 4 && frameid % 21 == 0) {
+				int stageCenterY = stage < 2 ? Chunk.getBlocksY() * -2 : Chunk.getBlocksY() * 2;
+				//modify block
+				for (int i = 0; i < stageDistanceX / 3; i++) {
+					for (int z = 0; z < Chunk.getBlocksZ(); z++) {
+						getMap().setBlock(new Coordinate(i * 3, stageCenterY, z), (byte) (2 - 2 * (frameid % 2)));
+					}
+				}
+			}
+		}
+		
+
 
 		private void endStage(int i) {
 			if (logFile == null) {
@@ -105,20 +124,22 @@ public class Benchmark {
 				Logger.getLogger(DevTools.class.getName()).log(Level.SEVERE, null, ex);
 			}
 			System.out.println("Average delta for stage " + i + ": " + getDevTools().getAverageDelta());
-			startStage(i + 1);
+			
+			initTime = watch+2;
+			startStage(stage + 1);
 		}
 		
 		private void startStage(int stage){
 			this.stage = stage;
+			System.out.println("Starting stage"+stage);
+			
 			if (stage==0) {
 				movement.spawn(new Coordinate(0, 0, 4).toPoint());
 			}	
 			
-			getDevTools().clear();
 			
 			//start movement
 			int stageCenterY = stage<2?Chunk.getBlocksY()*-2:Chunk.getBlocksY()*2;
-			int stageDistanceX = Chunk.getBlocksX();
 			movement.getPosition().set(new Coordinate(0, stageCenterY, 3).toPoint());
 			MoveToAi ai = new MoveToAi(
 				new Coordinate(stageDistanceX, stageCenterY, 3).toPoint()
@@ -128,7 +149,6 @@ public class Benchmark {
 			
 			if (stage==1){
 				view.addCamera(view.getCamera());
-				//view.getCamera().update(0);
 			}
 			
 			if (stage==3){

@@ -13,6 +13,7 @@ import com.bombinggames.wurfelengine.core.GameView;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MoveToAi;
+import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import java.io.BufferedWriter;
@@ -60,7 +61,8 @@ public class Benchmark {
 		private final BenchmarkView view;
 		private Path logFile;
 		private int stageDistanceX;
-		private float initTime = 2;
+		private float initTime = 3;
+		private boolean stageRunning;
 
 		BenchmarkController(BenchmarkView view) {
 			super();
@@ -69,28 +71,37 @@ public class Benchmark {
 			this.view = view;
 		}
 
-		private AbstractEntity create(BenchmarkView view) {
-			movement = new BenchmarkMovement(this, view);
+		private AbstractEntity create() {
+			movement = new BenchmarkMovement(this);
 			movement.setColiding(false);
 			movement.setFloating(true);
+			movement.spawn(new Coordinate(0, 0, 4).toPoint());
 			
-			stageDistanceX = Chunk.getBlocksX()*3;
+			stageDistanceX = Chunk.getBlocksX() * 3;
 			getDevTools().setCapacity(12000);//1 minute at 5 ms/frame
-			startStage(0);
+			startStage();
 			return movement;
 		}
-		
+
 		@Override
 		public void update(float dt) {
 			super.update(dt);
 			float dts = Gdx.graphics.getRawDeltaTime();
-			//wait initTime seconds then start stage and measurement
-			if (watch < initTime && watch + dts > initTime) {
+
+			if (watch < initTime && watch + dts > initTime && stage <= 4) {
 				getDevTools().clear();
+				stageRunning = true;
+				//start movement
+				int stageCenterY = stage < 2 ? Chunk.getBlocksY() * -2 : Chunk.getBlocksY() * 2;
+				MoveToAi ai = new MoveToAi(
+					new Coordinate(stageDistanceX, stageCenterY, 3).toPoint()
+				);
+				ai.setMinspeed(2);
+				movement.addComponent(ai);
 			}
-			
+
 			watch += dts;
-			
+
 			long frameid = Gdx.graphics.getFrameId();
 			//cahnge map in stage 4 every 21 frames
 			if (stage >= 4 && frameid % 21 == 0) {
@@ -103,65 +114,65 @@ public class Benchmark {
 				}
 			}
 		}
-		
 
+		private void endStage() {
+			recordResults();
 
-		private void endStage(int i) {
+			initTime = watch + 2;//add 2 seconds delay before the start
+			stageRunning = false;
+			//end after stage 4
+			if (stage == 4) {
+				movement.dispose();
+			}
+		}
+
+		private void startStage() {
+			if (stage < 4) {
+				stage++;
+				System.out.println("Starting stage" + stage);
+
+				//add camera before stage 1 beginns
+				if (stage == 1) {
+					view.addCamera(view.getCamera());
+				}
+
+				int stageCenterY = stage < 2 ? Chunk.getBlocksY() * -2 : Chunk.getBlocksY() * 2;
+				movement.getPosition().set(new Coordinate(0, stageCenterY, 3).toPoint());
+				if (stage == 3) {
+					for (int i = 0; i < stageDistanceX; i++) {
+						new Quadrocopter().spawn(new Coordinate(i * 1, stageCenterY, 5).toPoint());
+						new Quadrocopter().spawn(new Coordinate(i * 1, stageCenterY, 6).toPoint());
+						new Quadrocopter().spawn(new Coordinate(i * 1, stageCenterY, 7).toPoint());
+						new ParticleEmitter().spawn(new Coordinate(i * 1, stageCenterY, 7).toPoint());
+						new ParticleEmitter().spawn(new Coordinate(i * 1, stageCenterY, 7).toPoint());
+					}
+				}
+			}
+		}
+
+		private boolean getStageRunning() {
+			return stageRunning;
+		}
+
+		private void recordResults() {
 			if (logFile == null) {
 				DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm_ss");
 				logFile = Paths.get("./benchmark" + LocalDateTime.now().format(FORMATTER)
 					+ ".csv");
 			}
 			try {
-				if (!logFile.toFile().exists())
+				if (!logFile.toFile().exists()) {
 					logFile.toFile().createNewFile();
+				}
 				final BufferedWriter writer = Files.newBufferedWriter(logFile,
 					StandardCharsets.UTF_8, StandardOpenOption.APPEND);
 				String res = getDevTools().getDataAsString();
-				writer.write("stage"+i+","+res+"\n");
+				writer.write("stage" + stage + "," + res + "\n");
 				writer.flush();
 			} catch (IOException ex) {
 				Logger.getLogger(DevTools.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			System.out.println("Average delta for stage " + i + ": " + getDevTools().getAverageDelta());
-			
-			initTime = watch+2;
-			startStage(stage + 1);
-		}
-		
-		private void startStage(int stage){
-			this.stage = stage;
-			System.out.println("Starting stage"+stage);
-			
-			if (stage==0) {
-				movement.spawn(new Coordinate(0, 0, 4).toPoint());
-			}	
-			
-			
-			//start movement
-			int stageCenterY = stage<2?Chunk.getBlocksY()*-2:Chunk.getBlocksY()*2;
-			movement.getPosition().set(new Coordinate(0, stageCenterY, 3).toPoint());
-			MoveToAi ai = new MoveToAi(
-				new Coordinate(stageDistanceX, stageCenterY, 3).toPoint()
-			);
-			ai.setMinspeed(2);
-			movement.addComponent(ai);
-			
-			if (stage==1){
-				view.addCamera(view.getCamera());
-			}
-			
-			if (stage==3){
-				for (int i = 0; i < stageDistanceX; i++) {
-					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 5).toPoint());
-					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 6).toPoint());
-					new Quadrocopter().spawn(new Coordinate(i*1, stageCenterY, 7).toPoint());
-				}
-			}
-		}
-
-		private int getStage() {
-			return stage;
+			System.out.println("Average delta for stage " + stage + ": " + getDevTools().getAverageDelta());
 		}
 	}
 
@@ -173,8 +184,8 @@ public class Benchmark {
 		public void init(Controller controller, GameView oldView) {
 			super.init(controller, oldView);
 			camera = new Camera(this);
-			
-			camera.setFocusEntity(((BenchmarkController) controller).create(this));
+
+			camera.setFocusEntity(((BenchmarkController) controller).create());
 		}
 
 		private Camera getCamera() {
@@ -186,13 +197,11 @@ public class Benchmark {
 	private static class BenchmarkMovement extends MovableEntity {
 
 		private static final long serialVersionUID = 1L;
-		private final BenchmarkView view;
 		private final BenchmarkController controller;
 
-		BenchmarkMovement(BenchmarkController controller, BenchmarkView view) {
+		BenchmarkMovement(BenchmarkController controller) {
 			super((byte) 0);
 			this.controller = controller;
-			this.view = view;
 			setHidden(true);
 		}
 
@@ -200,8 +209,9 @@ public class Benchmark {
 		public void update(float dt) {
 			super.update(dt);
 			//next stage when arrived
-			if (getComponent(MoveToAi.class) == null){
-				controller.endStage(controller.getStage());
+			if (controller.getStageRunning() && getComponent(MoveToAi.class) == null) {
+				controller.endStage();
+				controller.startStage();
 			}
 		}
 

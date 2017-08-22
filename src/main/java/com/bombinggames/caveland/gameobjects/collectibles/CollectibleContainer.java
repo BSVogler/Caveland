@@ -81,6 +81,7 @@ public class CollectibleContainer extends AbstractEntity {
 		setName("Container");
 		setIndestructible(true);
 		ownerHash = 0;//has no owner
+		owner = Optional.empty();
 	}
 
 	/**
@@ -291,6 +292,9 @@ public class CollectibleContainer extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
+		if (!owner.isPresent() && content.isEmpty())
+			dispose();
+			
 		content.removeIf(
 			(AbstractEntity item) -> item.shouldBeDisposed()
 		);

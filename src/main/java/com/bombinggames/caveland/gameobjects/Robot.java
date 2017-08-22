@@ -73,10 +73,8 @@ public class Robot extends MovableEntity implements Telegraph, HasTeam{
 		super(id, steps);
 		setType(0);
 		setTeamId(0);
-		setObstacle(true);
 		setWalkingAnimationCycling(true);
 		setDamageSounds(new String[]{"robotHit"});
-		setObstacle(true);
 		setMass(40);
 	}
 

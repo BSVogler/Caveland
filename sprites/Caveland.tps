@@ -813,7 +813,7 @@
                 <false/>
             </struct>
             <key type="filename">Normals/entitiesNormal/e6-0.png</key>
-            <key type="filename">entities/e43-0.png</key>
+            <key type="filename">entities/e5-0.png</key>
             <key type="filename">entities/e6-0.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>

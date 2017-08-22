@@ -696,6 +696,13 @@ e3-8
   orig: 100, 173
   offset: 6, 21
   index: -1
+e5-0
+  rotate: false
+  xy: 2219, 202
+  size: 101, 100
+  orig: 200, 200
+  offset: 49, 27
+  index: -1
 e6-0
   rotate: false
   xy: 1558, 640
@@ -1220,13 +1227,6 @@ e42-15
   size: 114, 149
   orig: 200, 223
   offset: 22, 34
-  index: -1
-e43-0
-  rotate: false
-  xy: 2219, 202
-  size: 101, 100
-  orig: 200, 200
-  offset: 49, 27
   index: -1
 e44-0
   rotate: false

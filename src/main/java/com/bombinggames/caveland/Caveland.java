@@ -6,6 +6,7 @@ import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.game.ChunkGenerator;
 import com.bombinggames.caveland.gameobjects.Bird;
+import com.bombinggames.caveland.gameobjects.ColorBall;
 import com.bombinggames.caveland.gameobjects.ExitPortal;
 import com.bombinggames.caveland.gameobjects.MineCart;
 import com.bombinggames.caveland.gameobjects.PathfindingTest;
@@ -126,7 +127,7 @@ public class Caveland {
 			+ "Bauhaus University Weimar\n\n"
 			+ "Wurfel Engine uses libGDX.\n";
 	}
-
+	
 	public static void configureEngine() {
 		WorkingDirectory.setApplicationName("Caveland");
 		//game cvars
@@ -159,6 +160,7 @@ public class Caveland {
 		AbstractEntity.registerEntity("Emitter Test", ParticleEmitter.class);
 		AbstractEntity.registerEntity("TFlint", TFlint.class);
 		AbstractEntity.registerEntity("Torch", TorchCollectible.class);
+		AbstractEntity.registerEntity("ColorBall", ColorBall.class);
 		AbstractEntity.registerEntity("Construction Kit", ConstructionKit.class);
 		AbstractEntity.registerEntity("Mine Cart", MineCart.class);
 		AbstractEntity.registerEntity("Spaceship", Spaceship.class);

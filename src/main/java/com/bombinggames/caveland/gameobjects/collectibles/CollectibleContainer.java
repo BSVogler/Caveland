@@ -39,7 +39,7 @@ import java.util.Iterator;
 import java.util.Optional;
 
 /**
- * An entity which contains collectibles.
+ * An entity which contains collectibles. Containerws wihtout an owner and no content are disposed.
  *
  * @author Benedikt Vogler
  */
@@ -48,7 +48,7 @@ public class CollectibleContainer extends AbstractEntity {
 	private static final long serialVersionUID = 2L;
 
 	private final int ownerHash;
-	private transient Optional<AbstractEntity> owner;
+	private transient Optional<Object> owner;
 	/**
 	 * links to items
 	 */
@@ -64,7 +64,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 *
 	 * @param owner
 	 */
-	public CollectibleContainer(AbstractEntity owner) {
+	public CollectibleContainer(Object owner) {
 		super((byte) 56);
 		this.ownerHash = owner.hashCode();
 		this.owner =Optional.of(owner);
@@ -89,7 +89,7 @@ public class CollectibleContainer extends AbstractEntity {
 	 * @param id for custom sprite id
 	 * @param owner
 	 */
-	public CollectibleContainer(byte id, AbstractEntity owner) {
+	public CollectibleContainer(byte id, Object owner) {
 		super(id);
 		this.ownerHash = owner.hashCode();
 		this.owner = Optional.of(owner);
@@ -105,7 +105,7 @@ public class CollectibleContainer extends AbstractEntity {
 		return ownerHash;
 	}
 
-	public Optional<AbstractEntity> getOwner() {
+	public Optional<Object> getOwner() {
 		return owner;
 	}
 	
@@ -292,8 +292,6 @@ public class CollectibleContainer extends AbstractEntity {
 	@Override
 	public void update(float dt) {
 		super.update(dt);
-		if (!owner.isPresent() && content.isEmpty())
-			dispose();
 			
 		content.removeIf(
 			(AbstractEntity item) -> item.shouldBeDisposed()
@@ -306,6 +304,12 @@ public class CollectibleContainer extends AbstractEntity {
 				}
 			}
 		}
+	}
+	
+
+	@Override
+	public boolean shouldBeDisposed() {
+		return (!owner.isPresent() && content.isEmpty()) || super.shouldBeDisposed();
 	}
 
 	/**

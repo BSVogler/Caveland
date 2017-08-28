@@ -166,7 +166,7 @@ public class Benchmark {
 				}
 				final BufferedWriter writer = Files.newBufferedWriter(logFile,
 					StandardCharsets.UTF_8, StandardOpenOption.APPEND);
-				String res = getDevTools().getDataAsString();
+				String res = getDevTools().getDataAsString(stage==0?3:1);
 				writer.write("stage" + stage + "," + res + "\n");
 				writer.flush();
 			} catch (IOException ex) {

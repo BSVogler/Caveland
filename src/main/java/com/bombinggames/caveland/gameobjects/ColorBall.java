@@ -23,10 +23,10 @@ public class ColorBall extends SimpleEntity {
 	public void update(float dt) {
 		super.update(dt);
 		getColor().set(
-			Math.abs((getPosition().x%1*getPosition().x)%1),
+			Math.abs((getPosition().y%1*getPosition().x)%1),
 			Math.abs((getPosition().y%1*getPosition().y)%1),
-			Math.abs((getPosition().z%1*getPosition().z)%1),
-		1);
+			Math.abs((getPosition().y%1*getPosition().z)%1),
+		0.5f);
 	}
 	
 	

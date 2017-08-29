@@ -91,14 +91,14 @@ public class MainMenuScreen extends AbstractMainMenu {
 		);
 		
 		//two players game
-		Image twoPlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2players.png")));
+		Image twoPlayer = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/2players.png")));
 		twoPlayer.setPosition(
 			stage.getWidth()/2-twoPlayer.getWidth()/2+200,
 			stage.getHeight()*0.25f
 		);
 		stage.addActor(twoPlayer);
 		
-		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/2playersButton.png")));
+		MenuItem button2Player = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/2playersButton.png")));
 		button2Player.setPosition(
 			stage.getWidth()/2-button1Player.getWidth()/2+200,
 			stage.getHeight()*0.2f
@@ -127,7 +127,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		int i=2;
 		final int top = (int) (stage.getHeight()*0.05f);
 		
-		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_options.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/mi_options.png")));
 		menuItems[i].addAction(
 			new Action() {
 			@Override
@@ -149,7 +149,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		menuItems[i].setPosition(stage.getWidth() / 2 - 400, top-20);
 
 		i++;
-		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_credits.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/mi_credits.png")));
 		menuItems[i].addAction(new Action() {
 			@Override
 			public boolean act(float delta) {
@@ -160,7 +160,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 		menuItems[i].setPosition(stage.getWidth() / 2 - menuItems[i].getWidth() / 2, top);
 
 		i++;
-		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/mi_exit.png")));
+		menuItems[i] = new MenuItem(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/mi_exit.png")));
 		menuItems[i].addAction(new Action() {
 			@Override
 			public boolean act(float delta) {
@@ -175,7 +175,7 @@ public class MainMenuScreen extends AbstractMainMenu {
 			addButton(menuItem);
 		}
 
-		background = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/background.jpg"));
+		background = new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/background.jpg"));
 		backgroundPosY = -Gdx.graphics.getHeight();
 
 		font = new BitmapFont();

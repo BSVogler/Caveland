@@ -33,7 +33,7 @@ public class CoopControlsSelectionScreen extends WEScreen {
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		this.batch = batch;
 		
-		this.content = new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/controlScreen.png"));
+		this.content = new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/controlScreen.png"));
 		//this.mainbg = background;
 		
 		//stage

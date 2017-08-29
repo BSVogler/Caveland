@@ -71,14 +71,14 @@ public class Caveland {
 		//load menu
 		WE.addPostLaunchCommands(() -> {
 			//load the needed assets
-			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusound.wav", Sound.class);
-			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/menusoundAbort.wav", Sound.class);
-			WE.getAssetManager().load("com/bombinggames/caveland/MainMenu/bong.wav", Sound.class);
+			WE.getAssetManager().load("com/bombinggames/caveland/mainmenu/menusound.wav", Sound.class);
+			WE.getAssetManager().load("com/bombinggames/caveland/mainmenu/menusoundAbort.wav", Sound.class);
+			WE.getAssetManager().load("com/bombinggames/caveland/mainmenu/bong.wav", Sound.class);
 			WE.getAssetManager().finishLoading();
 
-			WE.SOUND.register("menuSelect", "com/bombinggames/caveland/MainMenu/menusound.wav");
-			WE.SOUND.register("menuAbort", "com/bombinggames/caveland/MainMenu/menusoundAbort.wav");
-			WE.SOUND.register("menuConfirm", "com/bombinggames/caveland/MainMenu/bong.wav");
+			WE.SOUND.register("menuSelect", "com/bombinggames/caveland/mainmenu/menusound.wav");
+			WE.SOUND.register("menuAbort", "com/bombinggames/caveland/mainmenu/menusoundAbort.wav");
+			WE.SOUND.register("menuConfirm", "com/bombinggames/caveland/mainmenu/bong.wav");
 		});
 
 		WE.launch("Caveland " + VERSION, args);

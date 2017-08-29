@@ -55,7 +55,7 @@ public class SaveSelectionScreen extends WEScreen {
 		//this.background = background;
 		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
 		
-		this.ship = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/ship.png")));
+		this.ship = new Sprite(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/ship.png")));
 		this.ship.setPosition(Gdx.graphics.getWidth()*1.5f, Gdx.graphics.getHeight()*0.7f);
 		
 		Skin skin = WE.getEngineView().getSkin();
@@ -153,7 +153,7 @@ public class SaveSelectionScreen extends WEScreen {
 		stage.addActor(newgameButton);
 		
 		//new empty map button
-		Image newEmptyMapImage = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/MainMenu/grass.jpg")));
+		Image newEmptyMapImage = new Image(new Texture(Gdx.files.internal("com/bombinggames/caveland/mainmenu/grass.jpg")));
 		newEmptyMapImage.setBounds(stage.getWidth()*0.8f, rowtwo, 200, 97);
 		stage.addActor(newEmptyMapImage);
 		

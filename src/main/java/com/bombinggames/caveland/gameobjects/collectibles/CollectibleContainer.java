@@ -381,4 +381,8 @@ public class CollectibleContainer extends AbstractEntity {
 	public boolean handleMessage(Telegram msg) {
 		return true;
 	}
+
+	public void setOwner(Object owner) {
+		this.owner=Optional.of(owner);
+	}
 }

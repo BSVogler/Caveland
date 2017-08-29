@@ -220,11 +220,10 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 				if (containerSearch.isPresent()) {
 					container = containerSearch.get();
 				}
-			}
-			
-			//respawn container if needed
-			if (container == null || container.shouldBeDisposed()) {
-				container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
+				//respawn container if needed
+				if (container == null || container.shouldBeDisposed()) {
+					container = (CollectibleContainer) new CollectibleContainer((byte) 0, this).spawn(getPosition().toPoint());
+				}
 			}
 		}
 	}

@@ -132,7 +132,7 @@ public class Benchmark {
 				System.out.println("Starting stage" + stage);
 
 				//add camera before stage 1 beginns
-				if (stage == 1) {
+				if (stage == 1 || (stage>1 && view.getCameras().isEmpty())) {
 					view.addCamera(view.getCamera());
 				}
 

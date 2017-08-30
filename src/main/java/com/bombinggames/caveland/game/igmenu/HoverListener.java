@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.Game.igmenu;
+package com.bombinggames.caveland.game.igmenu;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

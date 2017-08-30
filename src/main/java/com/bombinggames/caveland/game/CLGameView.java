@@ -10,7 +10,7 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.bombinggames.caveland.Game.igmenu.IGMenu;
+import com.bombinggames.caveland.game.igmenu.IGMenu;
 import com.bombinggames.caveland.gameobjects.Ejira;
 import com.bombinggames.caveland.gameobjects.GrassBlock;
 import com.bombinggames.wurfelengine.WE;

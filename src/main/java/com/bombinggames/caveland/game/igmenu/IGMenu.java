@@ -1,4 +1,4 @@
-package com.bombinggames.caveland.Game.igmenu;
+package com.bombinggames.caveland.game.igmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,12 +14,12 @@ import com.bombinggames.wurfelengine.WE;
  * @author Benedikt Vogler
  */
 public class IGMenu extends WidgetGroup {
-	private final Image continueImg = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/continue.png")));
-	private final Image editor = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/editor.png")));
-	private final Image save = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/save.png")));;
-	private final Image exit = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/exit.png")));;
-	private final Image background = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/background.png")));
-	private final Image haken = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/Game/igmenu/haken.png")));
+	private final Image continueImg = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/continue.png")));
+	private final Image editor = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/editor.png")));
+	private final Image save = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/save.png")));;
+	private final Image exit = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/exit.png")));;
+	private final Image background = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/background.png")));
+	private final Image haken = new Image(new Texture(Gdx.files.local("com/bombinggames/caveland/game/igmenu/haken.png")));
 	private final HoverListener saveWiggle;
 	private final HoverListener exitWiggle;
 	private final HoverListener editorWiggle;

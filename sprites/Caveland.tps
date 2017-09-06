@@ -58,7 +58,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">FloydSteinbergAlpha</enum>
+        <enum type="SettingsBase::DitherType">PngQuantMedium</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>

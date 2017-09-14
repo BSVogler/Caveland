@@ -209,7 +209,7 @@ public class Benchmark {
 		public void update(float dt) {
 			super.update(dt);
 			//next stage when arrived
-			if (controller.getStageRunning() && getComponent(MoveToAi.class) == null) {
+			if (controller.getStageRunning() && getComponents(MoveToAi.class) == null) {
 				controller.endStage();
 				controller.startStage();
 			}

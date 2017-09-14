@@ -66,7 +66,7 @@ public class OvenLogic extends AbstractBlockLogicExtension implements Interactab
 	public void interact(CLGameView view, AbstractEntity actor) {
 		if (actor instanceof Ejira) {
 			//lege objekte aus Inventar  hier rein
-			Collectible frontItem = ((Ejira) actor).getInventory().retrieveFrontItemReference();
+			Collectible frontItem = ((Ejira) actor).getInventory().retrieveCollectible(0);
 			if (frontItem != null) {
 				addCollectible(frontItem);
 			}

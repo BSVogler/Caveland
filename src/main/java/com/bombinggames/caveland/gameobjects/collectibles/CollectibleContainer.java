@@ -154,26 +154,10 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public Collectible get(int index) {
 		if (content.size() > index) {
-			return getCollectibles().get(index);
+			return content.get(index);
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * Get the content of the container.
-	 *
-	 * @return
-	 */
-	public ArrayList<Collectible> getCollectibles() {
-		ArrayList<Collectible> col = new ArrayList<>(3);
-		content.stream().forEach((AbstractEntity ent) -> {
-			if (ent instanceof Collectible) {
-				col.add((Collectible) ent);
-			}
-		}
-		);
-		return col;
 	}
 
 	/**
@@ -186,7 +170,7 @@ public class CollectibleContainer extends AbstractEntity {
 	}
 
 	/**
-	 * Makes the object appear in the world
+	 * Makes the object appear in the world. Removes the object from the container. If there is no n'th returns null.
 	 *
 	 * @param pos
 	 * @return
@@ -213,7 +197,9 @@ public class CollectibleContainer extends AbstractEntity {
 	 */
 	public Collectible retrieveCollectibleReference(int pos) {
 		Collectible collectible = retrieveCollectible(pos);
-		collectible.removeFromMap();
+		if (collectible != null) {
+			collectible.removeFromMap();
+		}
 		return collectible;
 	}
 

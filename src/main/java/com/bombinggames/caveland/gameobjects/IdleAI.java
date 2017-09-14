@@ -87,7 +87,7 @@ public class IdleAI implements Telegraph, Serializable, Component {
 			}
 
 			//generate new movement goal
-			if (timeTillMove <= 0 && body.getComponent(MoveToAi.class) == null) {
+			if (timeTillMove <= 0 && body.getComponents(MoveToAi.class) == null) {
 				timeTillMove = 1500;
 
 				Point target;

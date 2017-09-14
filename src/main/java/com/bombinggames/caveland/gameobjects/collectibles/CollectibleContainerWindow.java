@@ -65,7 +65,7 @@ public class CollectibleContainerWindow extends ActionBox {
 			Ejira player = (Ejira) actor;
 			//add item?
 			if (selection.id == 0) {
-				Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+				Collectible frontItem = player.getInventory().retrieveCollectible(0);
 				if (frontItem != null) {
 					parent.add(frontItem);
 				}

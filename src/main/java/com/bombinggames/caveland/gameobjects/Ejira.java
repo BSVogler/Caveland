@@ -653,7 +653,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	 * try throwing an item from inventory. Throw must be prepared beforehand
 	 */
 	public void throwItem() {
-		Collectible item = inventory.retrieveFrontItem();
+		Collectible item = inventory.retrieveCollectible(0);
 		if (item != null && prepareThrow) {//throw is performed if there is an item to throw
 			//play animation
 			if (action != 't') {//check if not in loaded position
@@ -681,7 +681,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	 */
 	public void dropItem(){
 		prepareThrow = false;
-		Collectible item = inventory.retrieveFrontItem();
+		Collectible item = inventory.retrieveCollectible(0);
 		if (item != null) {//throw is performed if there is an item to throw
 			item.setPosition(getPosition().cpy().add(0, 0, GAME_EDGELENGTH * 0.1f));
 			item.setMovement(Vector3.Zero.cpy());//throw with 3 m/s+current movement

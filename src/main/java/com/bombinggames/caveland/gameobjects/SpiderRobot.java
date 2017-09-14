@@ -111,7 +111,7 @@ public class SpiderRobot extends Robot{
 				//move carry to storage
 				carry.setPosition(getPosition().cpy());
 				if (storage != null) {
-					if (getComponent(MoveToAi.class) == null) {
+					if (getComponents(MoveToAi.class) == null) {
 						MessageManager.getInstance().dispatchMessage(
 							this,
 							this,

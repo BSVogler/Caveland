@@ -269,7 +269,7 @@ public class ConstructionSite extends AbstractBlockLogicExtension implements Int
 				switch (num.id) {
 					case 0:
 						if (canAddFrontItem(actor)) {
-							Collectible frontItem = player.getInventory().retrieveFrontItemReference();
+							Collectible frontItem = player.getInventory().retrieveCollectible(0);
 							if (frontItem != null) {
 								parent.container.add(frontItem);
 							}

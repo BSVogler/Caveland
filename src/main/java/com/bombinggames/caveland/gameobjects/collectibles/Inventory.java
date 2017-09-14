@@ -49,40 +49,6 @@ public class Inventory extends CollectibleContainer {
 	}
 
 	/**
-	 * Deletes the object from inventory. Makes the object appear in the world.
-	 *
-	 * @return the frontmost element. Can return null if empty.
-	 * @see #retrieveFrontItemReference()
-	 */
-	public Collectible retrieveFrontItem() {
-		Collectible result = null;
-		if (get(0) != null) {
-			result = retrieveCollectible(0);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Deletes the object from inventory. Makes the object appear not in the
-	 * world.
-	 *
-	 * @return the frontmost element. can return null if empty.
-	 * @see #retrieveFrontItem()
-	 */
-	public Collectible retrieveFrontItemReference() {
-		Collectible result = null;
-		if (get(0) != null) {
-			result = retrieveCollectibleReference(0);
-		}
-
-		if (result == null) {
-			return null;
-		}
-		return result;
-	}
-
-	/**
 	 * Get a reference to the prototype and keeps the item in inventory.
 	 *
 	 * @param def
@@ -266,7 +232,7 @@ public class Inventory extends CollectibleContainer {
 	 */
 	public void action(CLGameView view, AbstractEntity actor) {
 		//Get the first item and activate it. Then put it back.
-		Collectible item = retrieveFrontItemReference();
+		Collectible item = retrieveCollectible(0);
 		if (item != null && item instanceof Interactable && ((Interactable) item).interactable()) {
 			//spawn it
 			item.setFloating(false);

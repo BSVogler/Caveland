@@ -121,6 +121,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setHidden(true);
 		collectible.preventPickup();
 		collectible.setFloating(true);
+		collectible.setColiding(false);
 		collectible.setPosition(getPosition().cpy());
 		content.add(collectible);
 		return true;
@@ -139,6 +140,7 @@ public class CollectibleContainer extends AbstractEntity {
 		collectible.setHidden(true);
 		collectible.preventPickup();
 		collectible.setFloating(true);
+		collectible.setColiding(false);
 		collectible.setPosition(getPosition().cpy());
 		content.add(0, collectible);
 		return true;
@@ -195,6 +197,7 @@ public class CollectibleContainer extends AbstractEntity {
 			collectible.setFloating(false);
 			collectible.allowPickup();
 			collectible.setHidden(false);
+			collectible.setColiding(true);
 			return collectible;
 		} else {
 			return null;
@@ -228,6 +231,7 @@ public class CollectibleContainer extends AbstractEntity {
 			content.remove(collectible);
 			collectible.setFloating(false);
 			collectible.allowPickup();
+			collectible.setColiding(true);
 			collectible.setHidden(false);
 		}
 		return collectible;

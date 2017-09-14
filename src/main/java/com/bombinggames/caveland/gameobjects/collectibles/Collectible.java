@@ -84,7 +84,7 @@ public class Collectible extends CLMovableEntity implements Serializable {
 	}
 
 	/**
-	 *
+	 * Can not be picked up.
 	 */
 	public void preventPickup() {
 		preventPickup = true;

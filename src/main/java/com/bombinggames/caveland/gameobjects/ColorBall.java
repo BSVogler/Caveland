@@ -5,18 +5,22 @@
  */
 package com.bombinggames.caveland.gameobjects;
 
-import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
+import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 
 /**
  *
  * @author Benedikt S. Vogler
  */
-public class ColorBall extends SimpleEntity {
+public class ColorBall extends MovableEntity {
+
+	private static final long serialVersionUID = 1L;
 	
 	public ColorBall() {
 		super((byte) 5);
 		setMass(2);
 		setName("ColorBall");
+		addComponent(new EntityShadow());
 	}
 
 	@Override

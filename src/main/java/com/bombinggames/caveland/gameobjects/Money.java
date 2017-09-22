@@ -39,7 +39,7 @@ public class Money extends CLMovableEntity {
 	private static final long serialVersionUID = 1L;
 	
 	public Money() {
-		super((byte) 20, 0, false);
+		super((byte) 20, 0);
 		setMass(0.1f);
 		setName("money");
 	}

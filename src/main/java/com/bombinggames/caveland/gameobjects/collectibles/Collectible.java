@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.gameobjects.CLMovableEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.EntityAnimation;
+import com.bombinggames.wurfelengine.core.gameobjects.EntityShadow;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -29,7 +30,8 @@ public class Collectible extends CLMovableEntity implements Serializable {
 	 * @param def the definition.
 	 */
 	protected Collectible(CollectibleType def) {
-		super(def.getId(), 0, true);
+		super(def.getId(), 0);
+		addComponent(new EntityShadow());
 		this.def = def;
 		setFloating(false);
 		//setSpeed(0.2f);

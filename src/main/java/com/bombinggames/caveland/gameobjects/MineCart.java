@@ -59,7 +59,7 @@ public class MineCart extends MovableEntity implements Interactable {
 	 * Has a front and back plate while the main part ist hidden.
 	 */
 	public MineCart() {
-		super((byte) 42, 0, false);//add shadow to front because main part is hidden
+		super((byte) 42, 0);//add shadow to front because main part is hidden
 		setMass(40);
 		setName("Minecart");
 		setOrientation(new Vector2(1, 1));

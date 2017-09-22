@@ -36,6 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,11 +99,11 @@ public class Recipe {
 				return new Image(
 					new SpriteDrawable(
 						new Sprite(
-							AbstractGameObject.getSprite('e', resultClass.newInstance().getSpriteId(), (byte) 0)
+							AbstractGameObject.getSprite('e', resultClass.getDeclaredConstructor().newInstance().getSpriteId(), (byte) 0)
 						)
 					)
 				);
-			} catch (InstantiationException | IllegalAccessException ex) {
+			} catch (InvocationTargetException | IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException ex) {
 				Logger.getLogger(CraftingRecipesList.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}

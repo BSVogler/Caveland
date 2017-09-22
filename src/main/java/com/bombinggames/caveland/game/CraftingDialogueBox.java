@@ -9,6 +9,7 @@ import com.bombinggames.caveland.gameobjects.collectibles.CollectibleType;
 import com.bombinggames.caveland.gameobjects.collectibles.Inventory;
 import com.bombinggames.wurfelengine.WE;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -228,7 +229,11 @@ public class CraftingDialogueBox extends ActionBox {
 					recipe.getResultType().createInstance().spawn(inventory.getPosition().cpy());
 				} else {
 					try {
-					recipe.getResultClass().newInstance().spawn(inventory.getPosition().cpy());
+						try {
+							recipe.getResultClass().getDeclaredConstructor().newInstance().spawn(inventory.getPosition().cpy());
+						} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+							Logger.getLogger(CraftingDialogueBox.class.getName()).log(Level.SEVERE, null, ex);
+						}
 					} catch (InstantiationException | IllegalAccessException ex) {
 						Logger.getLogger(CraftingDialogueBox.class.getName()).log(Level.SEVERE, null, ex);
 					}

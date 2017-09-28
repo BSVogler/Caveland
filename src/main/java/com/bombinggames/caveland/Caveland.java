@@ -31,7 +31,6 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractGameObject;
 import com.bombinggames.wurfelengine.core.gameobjects.ParticleEmitter;
 import com.bombinggames.wurfelengine.core.map.Map;
-import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import java.io.File;
 import java.io.InputStream;
 
@@ -153,7 +152,7 @@ public class Caveland {
 
 		//configure
 		WE.setMainMenu(new MainMenuScreen());
-		RenderCell.setCustomBlockFactory(new CavelandBlocks());
+		Map.setBlockConfig(new CavelandBlocks());
 		AbstractGameObject.setCustomSpritesheet("com/bombinggames/caveland/Spritesheet");
 
 		//register entities

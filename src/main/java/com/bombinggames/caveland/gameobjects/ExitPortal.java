@@ -3,6 +3,7 @@ package com.bombinggames.caveland.gameobjects;
 import com.bombinggames.caveland.game.CLGameView;
 import com.bombinggames.caveland.game.ChunkGenerator;
 import com.bombinggames.caveland.gameobjects.logicblocks.LiftLogic;
+import com.bombinggames.wurfelengine.core.Controller;
 import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
@@ -87,7 +88,7 @@ public class ExitPortal extends Portal implements Interactable {
 	public Coordinate getGround(){
 		Coordinate ground = getPosition().toCoord();
 		//find ground
-		while (!RenderCell.isObstacle(ground.getBlockId())) {
+		while (!Controller.getMap().getBlockConfig().isObstacle(ground.getBlockId())) {
 			ground.add(0, 0, -1);
 		}
 		return ground;

@@ -64,7 +64,7 @@ public class LiftLogicGround extends AbstractBlockLogicExtension implements Inte
 
 		//clear entry
 		int groundBlock = getPosition().cpy().goToNeighbour(5).add(0, 0, 1).getBlock();
-		if ((groundBlock&255) != 0 && RenderCell.isObstacle(groundBlock)) {
+		if ((groundBlock&255) != 0 && Controller.getMap().getBlockConfig().isObstacle(groundBlock)) {
 			getPosition().cpy().goToNeighbour(5).add(0, 0, 1).destroy();
 		}
 	}

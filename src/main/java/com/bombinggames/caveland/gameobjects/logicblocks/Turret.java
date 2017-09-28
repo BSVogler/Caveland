@@ -34,6 +34,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.bombinggames.caveland.game.CavelandBlocks;
 import com.bombinggames.caveland.gameobjects.Robot;
 import com.bombinggames.wurfelengine.core.map.Intersection;
+import com.bombinggames.wurfelengine.core.map.Map;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 import com.bombinggames.wurfelengine.extension.shooting.Weapon;
 import java.util.Iterator;
@@ -118,7 +119,7 @@ public class Turret extends AbstractPowerBlock {
 						Intersection intersect = gun.getFixedPos().rayMarching(vecToTarget,
 							MAXDISTANCE,
 							null,
-							(Byte t) -> !RenderCell.isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
+							(Byte t) -> !Map.getBlockConfig().isTransparent(t,(byte) 0) && t != CavelandBlocks.CLBlocks.TURRET.getId()
 						);
 
 						if (

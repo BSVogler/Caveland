@@ -17,15 +17,15 @@ import com.bombinggames.caveland.gameobjects.logicblocks.PowerTorch;
 import com.bombinggames.caveland.gameobjects.logicblocks.RobotFactory;
 import com.bombinggames.caveland.gameobjects.logicblocks.Turret;
 import com.bombinggames.wurfelengine.core.map.AbstractBlockLogicExtension;
-import com.bombinggames.wurfelengine.core.map.CustomBlocks;
+import com.bombinggames.wurfelengine.core.map.BlockConfig;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
 
 /**
  * Using this class registers the logicblocks.
- * @see RenderCell#setCustomBlockFactory(com.bombinggames.wurfelengine.core.map.CustomBlocks) 
+ * @see RenderCell#setCustomBlocks(com.bombinggames.wurfelengine.core.map.CustomBlocks) 
  * @author Benedikt Vogler
  */
-public class CavelandBlocks implements CustomBlocks {
+public class CavelandBlocks extends BlockConfig {
 
 	static {
 		//this could be refacoted to ClBlocks constructor but then here a simple call to CLBlocks.values() is needed so the enums are initialized
@@ -321,6 +321,9 @@ public class CavelandBlocks implements CustomBlocks {
 
 	@Override
 	public boolean isObstacle(byte id, byte value) {
+		if (id < 10) {
+			return super.isObstacle(id, value);
+		}
 		if (id==12) return true;
 		if (id==13) return false;
 		if (id==14) return true;

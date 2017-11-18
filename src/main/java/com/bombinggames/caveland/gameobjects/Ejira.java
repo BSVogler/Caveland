@@ -183,7 +183,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 		super((byte) 30, 0);
 		playerNumber = number;
 		setName("Ejira");
-		setStepSound1Grass("step");
+		setSoundGrass("step");
 		setJumpingSound("urfJump");
 		setFriction((float) WE.getCVars().get("playerfriction").getValue());
 		setDimensionZ((int) (RenderCell.GAME_EDGELENGTH*1.4f));

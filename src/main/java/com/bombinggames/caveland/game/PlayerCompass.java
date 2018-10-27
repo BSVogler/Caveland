@@ -65,10 +65,10 @@ public class PlayerCompass {
 				Sprite bgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 1));
 				bgSprite.setScale(player.getHealth()/100f);
 				bgSprite.setPosition(cent.x, cent.y);
-				bgSprite.draw(view.getProjectionSpaceSpriteBatch());
+				bgSprite.draw(view.getSpriteBatchProjection());
 				Sprite fgSprite = new Sprite(AbstractGameObject.getSprite('i', (byte) 11, (byte) 0));
 				fgSprite.setPosition(cent.x, cent.y);
-				fgSprite.draw(view.getProjectionSpaceSpriteBatch());
+				fgSprite.draw(view.getSpriteBatchProjection());
 			}
 		}
 	}

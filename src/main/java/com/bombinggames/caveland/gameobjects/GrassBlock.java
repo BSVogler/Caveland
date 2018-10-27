@@ -126,7 +126,7 @@ public class GrassBlock extends RenderCell {
 						}
 					}
 					gras.setRotation(i * 0.4f - 10.2f + wind + RANDOMGENERATOR.nextFloat() * noisenum * WINDAMPLITUDE / 2+forceRot*0.3f);
-					gras.draw(view.getGameSpaceSpriteBatch());
+					gras.draw(view.getSpriteBatchWorld());
 				}
 			}
 		}

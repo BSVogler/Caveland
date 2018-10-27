@@ -409,16 +409,16 @@ public class CLGameView extends GameView {
 		super.render();
 		//Draw HUD
 		setShader(getShader());
-		getProjectionSpaceSpriteBatch().begin();
+		getSpriteBatchProjection().begin();
 		getPlayer(0).getInventory().drawHUD(this, getCameras().get(0));
 		if (coop > -1) {
 			getPlayer(1).getInventory().drawHUD(this, getCameras().get(1));
 		}
-		getProjectionSpaceSpriteBatch().end();
+		getSpriteBatchProjection().end();
 
 		useDefaultShader();
 		//getSpriteBatch().setColor(Color.WHITE.cpy());
-		getProjectionSpaceSpriteBatch().begin();
+		getSpriteBatchProjection().begin();
 		if (coop > -1) {
 			PlayerCompass pC = new PlayerCompass();
 			pC.drawHUD(getPlayer(1), this, getCameras().get(0));
@@ -441,7 +441,7 @@ public class CLGameView extends GameView {
 				Color.WHITE.cpy()
 			);
 		}
-		getProjectionSpaceSpriteBatch().end();
+		getSpriteBatchProjection().end();
 	}
 
 	/**

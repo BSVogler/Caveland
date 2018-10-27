@@ -534,7 +534,7 @@ public class Ejira extends CLMovableEntity implements Controllable, HasTeam {
 	@Override
 	public void render(GameView view) {
 		if (!WE.getCVars().getValueB("ignorePlayer") && textureNormal != null) {
-			SpriteBatchWithZAxis batch = view.getGameSpaceSpriteBatch();
+			SpriteBatchWithZAxis batch = view.getSpriteBatchWorld();
 			batch.end();//inject new batch here
 
 			//bind normal map to texture unit 1

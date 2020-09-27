@@ -14,7 +14,7 @@ import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.Position;
 import com.bombinggames.wurfelengine.core.map.rendering.RenderCell;
-import com.bombinggames.wurfelengine.extension.AimBand;
+import com.bombinggames.wurfelengine.utilities.AimBand;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.LinkedList;

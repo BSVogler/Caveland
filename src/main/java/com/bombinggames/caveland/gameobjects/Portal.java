@@ -8,7 +8,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.AbstractEntity;
 import com.bombinggames.wurfelengine.core.gameobjects.MovableEntity;
 import com.bombinggames.wurfelengine.core.map.Chunk;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
-import com.bombinggames.wurfelengine.extension.AimBand;
+import com.bombinggames.wurfelengine.utilities.AimBand;
 import java.util.LinkedList;
 
 /**

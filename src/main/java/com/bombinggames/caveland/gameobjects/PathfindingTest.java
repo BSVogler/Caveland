@@ -37,7 +37,7 @@ import com.bombinggames.wurfelengine.core.gameobjects.SimpleEntity;
 import com.bombinggames.wurfelengine.core.map.Coordinate;
 import com.bombinggames.wurfelengine.core.map.PfNode;
 import com.bombinggames.wurfelengine.core.map.Point;
-import com.bombinggames.wurfelengine.extension.AimBand;
+import com.bombinggames.wurfelengine.utilities.AimBand;
 import java.util.ArrayList;
 
 /**

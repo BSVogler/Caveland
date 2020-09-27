@@ -43,7 +43,7 @@ import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_E
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.GAME_EDGELENGTH2;
 import static com.bombinggames.wurfelengine.core.map.rendering.RenderCell.VIEW_HEIGHT2;
 import com.bombinggames.wurfelengine.core.map.rendering.SpriteBatchWithZAxis;
-import com.bombinggames.wurfelengine.extension.AimBand;
+import com.bombinggames.wurfelengine.utilities.AimBand;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;

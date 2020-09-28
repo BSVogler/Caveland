@@ -33,7 +33,7 @@
 	</scm>
 
 	<properties>
-		<libGdxVersion>1.9.10</libGdxVersion>
+		<libGdxVersion>1.9.11</libGdxVersion>
 		<gdxControllerNativesUrl>http://libgdx.badlogicgames.com/nightlies/dist/extensions/gdx-controllers</gdxControllerNativesUrl>
 		<gdxNativesUrl>http://libgdx.badlogicgames.com/nightlies/dist</gdxNativesUrl>
 	</properties>
